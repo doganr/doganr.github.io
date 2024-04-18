@@ -1,0 +1,35 @@
+node_modules/
+
+# Editor settings
+.vscode/
+.idea/
+*.sublime*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional build output directory
+dist
+
+# Build output
+dist/
+build/
+
+# Cache
+.cache/
+*.tmp
+*.temp
