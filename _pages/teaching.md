@@ -2,11 +2,21 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Materials for courses you taught. Replace this text with your description.
+description: Materials and course details will be available soon.
 nav: true
 nav_order: 6
 ---
 
-For now, this page is assumed to be a static description of your courses. You can convert it to a collection similar to `_projects/` so that you can have a dedicated page for each course.
+## Teaching
 
-Organize your courses by years, topics, or universities, however you like!
+Thank you for your interest.
+
+Details about the courses I have taught and teaching materials will be added here soon.  
+This section is currently under construction and will include:
+
+- Course descriptions and syllabi
+- Lecture slides and assignments
+- Resources for students
+- Teaching philosophy
+
+Please check back later.
