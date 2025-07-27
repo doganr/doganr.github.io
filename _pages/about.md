@@ -3,14 +3,15 @@ layout: about
 title: "About"
 permalink: /
 subtitle: >
-  <a href='https://www.trabzon.edu.tr'>Trabzon University</a> · Department of Artificial Intelligence Engineering · Assistant Professor · Currently Visiting Scholar at <a href='https://www.osu.edu'>The Ohio State University</a>
+  <a href='https://www.trabzon.edu.tr'>Trabzon University</a> · Department of Artificial Intelligence Engineering · Assistant Professor 
 
 profile:
   align: right
   image: prof_pic.jpg
   image_circular: true # crops the image to make it circular
   more_info: >
-    <p>Asst. Prof. Dr. Ramazan Özgür Doğan</p>
+    <p><b><center>Asst. Prof. Dr.</center></b></p>
+    <p><b><center>Ramazan Özgür Doğan</center></b></p>
     <p>Department of Artificial Intelligence Engineering</p>
     <p>Faculty of Computer and Information Sciences</p>
     <p>Trabzon University, Türkiye</p>
