@@ -10,8 +10,6 @@ profile:
   image: prof_pic.jpg
   image_circular: true # crops the image to make it circular
   more_info: >
-    <p><b><center>Asst. Prof. Dr.</center></b></p>
-    <p><b><center>Ramazan Özgür Doğan</center></b></p>
     <p>Department of Artificial Intelligence Engineering</p>
     <p>Faculty of Computer and Information Sciences</p>
     <p>Trabzon University, Türkiye</p>
