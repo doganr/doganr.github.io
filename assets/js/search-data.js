@@ -32,7 +32,7 @@ ninja.data = [{
           },
         },{id: "nav-teaching",
           title: "teaching",
-          description: "Materials and course details will be available soon.",
+          description: "Materials and Course Details.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/teaching/";
@@ -461,6 +461,16 @@ ninja.data = [{
           description: "another project with an image 🎉",
           section: "Projects",handler: () => {
               window.location.href = "/projects/9_project/";
+            },},{id: "teaching-programming-1",
+          title: 'Programming 1',
+          description: "Introduction to programming with Python. Offered in the Spring semester.",
+          section: "Teaching",handler: () => {
+              window.location.href = "/teaching/programming1/";
+            },},{id: "teaching-programming-2",
+          title: 'Programming 2',
+          description: "Advanced programming with OOP. Offered in the Fall semester.",
+          section: "Teaching",handler: () => {
+              window.location.href = "/teaching/programming2/";
             },},{
         id: 'social-email',
         title: 'email',
