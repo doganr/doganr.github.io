@@ -7,6 +7,13 @@ nav: true
 nav_order: 6
 display_categories: [spring, fall]
 horizontal: false
+dropdown: true
+children:
+  - title: Programing I
+    permalink: /teaching/programing1/
+  - title: divider
+  - title: Programing II
+    permalink: /teaching/programing2/
 ---
 
 ## Teaching
