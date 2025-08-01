@@ -30,14 +30,21 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "nav-teaching",
-          title: "teaching",
-          description: "Materials and Course Details.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/teaching/";
-          },
-        },{id: "post-a-post-with-plotly-js",
+        },{id: "dropdown-programing-i",
+              title: "Programing I",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/teaching/programing1/";
+              },
+            },{id: "dropdown-programing-ii",
+              title: "Programing II",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/teaching/programing2/";
+              },
+            },{id: "post-a-post-with-plotly-js",
         
           title: "a post with plotly.js",
         
@@ -463,14 +470,14 @@ ninja.data = [{
               window.location.href = "/projects/9_project/";
             },},{id: "teaching-programming-1",
           title: 'Programming 1',
-          description: "Introduction to programming with Python. Offered in the Spring semester.",
+          description: "Introduction to programming with Python. Offered in the Fall semester.",
           section: "Teaching",handler: () => {
-              window.location.href = "/teaching/programming1/";
+              window.location.href = "/teaching/programing1/";
             },},{id: "teaching-programming-2",
           title: 'Programming 2',
-          description: "Advanced programming with OOP. Offered in the Fall semester.",
+          description: "Advanced programming with OOP. Offered in the Spring semester.",
           section: "Teaching",handler: () => {
-              window.location.href = "/teaching/programming2/";
+              window.location.href = "/teaching/programing2/";
             },},{
         id: 'social-email',
         title: 'email',
