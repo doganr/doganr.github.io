@@ -11,7 +11,7 @@ contact_note: >
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Asst. Prof. Dr. Ramazan Özgür Doğan is a researcher specializing in deep learning, biomedical imaging, and AI-driven pharmacological analysis. He is currently affiliated with Trabzon University.
 footer_text: >
-  © 2025 Asst. Prof. Dr. Ramazan Özgür Doğan · Trabzon University, Department of Artificial Intelligence Engineering.
+  Trabzon University, Department of Artificial Intelligence Engineering.
 keywords: deep learning, medical imaging, artificial intelligence, computer vision
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: 🧠 # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
@@ -457,7 +457,7 @@ third_party_libraries:
     integrity:
       js: "sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc="
     url:
-      js: https://cdn.jsdelivr.net/npm/imagesloaded@{{version}}/imagesloaded.pkgd.min.js
+      js: "https://cdn.jsdelivr.net/npm/imagesloaded@{{version}}/imagesloaded.pkgd.min.js"
     version: "5.0.0"
   img-comparison-slider:
     integrity:

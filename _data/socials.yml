@@ -10,13 +10,13 @@
 email: dogan@outlook.com # your email address
 # facebook_id: # your facebook id
 # flickr_id: # your flickr id
-# github_username: # your GitHub user name
+github_username: doganr # your GitHub user name
 # gitlab_username: # your GitLab user name
 # hal_id: # your HAL id (https://hal.science/)
-# ieee_id: # your ieeexplore.ieee.org/author/id
+ieee_id: 427880724318877 # your ieeexplore.ieee.org/author/id
 # inspirehep_id: 1010907 # Inspire HEP author ID
 instagram_id: rozgurdogan # your instagram id
-# kaggle_id: # your kaggle id
+kaggle_id: doganr # your kaggle id
 # keybase_username: # your keybase user name
 # lastfm_id: # your lastfm id
 # lattes_id: # your ID on Lattes (Brazilian Lattes CV)
@@ -24,15 +24,15 @@ instagram_id: rozgurdogan # your instagram id
 linkedin_username: doganr # your LinkedIn user name
 # mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 # medium_username: # your Medium username
-# orcid_id: # your ORCID ID
+orcid_id: 0000-0001-6415-5755  # your ORCID ID
 # osf_id: # your OSF ID
 # pinterest_id: # your pinterest id
 # publons_id: # your ID on Publons
 # quora_username: # your Quora username
-# research_gate_profile: # your profile on ResearchGate
+research_gate_profile: https://www.researchgate.net/profile/Ramazan-Dogan # your profile on ResearchGate
 # rss_icon: true # comment this line to hide the RSS icon
 scholar_userid: F2NkKNAAAAAJ # your Google Scholar ID
-# scopus_id: # your profile on Scopus
+scopus_id: 56247021800 # your profile on Scopus
 # semanticscholar_id: # your Semantic Scholar ID
 # spotify_id: # your spotify id
 # stackoverflow_id: # your stackoverflow id
