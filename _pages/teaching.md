@@ -1,22 +1,13 @@
 ---
 layout: page
-title: teaching
+title: Teaching
 permalink: /teaching/
-description: Materials and Course Details.
+description: Teaching materials, course content, and academic resources from the classes I have instructed.
 nav: true
 nav_order: 6
 display_categories: [spring, fall]
 horizontal: false
-dropdown: true
-children:
-  - title: Programing I
-    permalink: /teaching/programing1/
-  - title: divider
-  - title: Programing II
-    permalink: /teaching/programing2/
 ---
-
-## Teaching
 
 <div class="teaching">
 {% if site.enable_teaching_categories and page.display_categories %}
