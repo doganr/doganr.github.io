@@ -30,21 +30,14 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "dropdown-programing-i",
-              title: "Programing I",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/teaching/programing1/";
-              },
-            },{id: "dropdown-programing-ii",
-              title: "Programing II",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/teaching/programing2/";
-              },
-            },{id: "post-a-post-with-plotly-js",
+        },{id: "nav-teaching",
+          title: "Teaching",
+          description: "Teaching materials, course content, and academic resources from the classes I have instructed.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/teaching/";
+          },
+        },{id: "post-a-post-with-plotly-js",
         
           title: "a post with plotly.js",
         
@@ -470,12 +463,12 @@ ninja.data = [{
               window.location.href = "/projects/9_project/";
             },},{id: "teaching-programming-1",
           title: 'Programming 1',
-          description: "Introduction to programming with Python. Offered in the Fall semester.",
+          description: "This course introduces fundamental programming concepts using the Python language. Students will learn how to design algorithms, use basic data types and control structures, write functions, and develop problem-solving skills through hands-on exercises and mini-projects.",
           section: "Teaching",handler: () => {
               window.location.href = "/teaching/programing1/";
             },},{id: "teaching-programming-2",
           title: 'Programming 2',
-          description: "Advanced programming with OOP. Offered in the Spring semester.",
+          description: "This course builds upon the foundations of Programming I by covering more advanced topics such as functional programming, file operations, and modular code design in Python. Students will explore data processing, algorithmic thinking, and develop structured programs through practical examples and projects.",
           section: "Teaching",handler: () => {
               window.location.href = "/teaching/programing2/";
             },},{
