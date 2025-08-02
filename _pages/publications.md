@@ -1,7 +1,7 @@
 ---
 layout: page
 permalink: /publications/
-title: publications
+title: Publications
 description: Research publications sorted by year and category. Includes journal articles, conference papers, and collaborative work.
 nav: true
 nav_order: 2

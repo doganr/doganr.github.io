@@ -1,6 +1,6 @@
 ---
 layout: about
-title: "about"
+title: "About"
 permalink: /
 subtitle: >
   <a href='https://www.trabzon.edu.tr'>Trabzon University</a> · Department of Artificial Intelligence Engineering · Assistant Professor 

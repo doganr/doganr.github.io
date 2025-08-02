@@ -1,7 +1,7 @@
 ---
 layout: page
 permalink: /repositories/
-title: repositories
+title: Repositories
 description: A curated list of my GitHub repositories and open-source contributions related to deep learning, medical imaging, and AI research.
 nav: true
 nav_order: 4
