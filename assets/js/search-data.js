@@ -472,13 +472,6 @@ ninja.data = [{
           section: "Teaching",handler: () => {
               window.location.href = "/teaching/programing2/";
             },},{
-        id: 'social-dblp',
-        title: 'DBLP',
-        section: 'Socials',
-        handler: () => {
-          window.open("https://dblp.org/pid/355/9431.html", "_blank");
-        },
-      },{
         id: 'social-email',
         title: 'email',
         section: 'Socials',
@@ -493,11 +486,18 @@ ninja.data = [{
           window.open("https://github.com/doganr", "_blank");
         },
       },{
-        id: 'social-ieee',
-        title: 'IEEE Xplore',
+        id: 'social-kaggle',
+        title: 'Kaggle',
         section: 'Socials',
         handler: () => {
-          window.open("https://ieeexplore.ieee.org/author/427880724318877/", "_blank");
+          window.open("https://www.kaggle.com/doganr", "_blank");
+        },
+      },{
+        id: 'social-x',
+        title: 'X',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://twitter.com/rozgurdogan", "_blank");
         },
       },{
         id: 'social-instagram',
@@ -505,13 +505,6 @@ ninja.data = [{
         section: 'Socials',
         handler: () => {
           window.open("https://instagram.com/rozgurdogan", "_blank");
-        },
-      },{
-        id: 'social-kaggle',
-        title: 'Kaggle',
-        section: 'Socials',
-        handler: () => {
-          window.open("https://www.kaggle.com/doganr", "_blank");
         },
       },{
         id: 'social-linkedin',
@@ -542,11 +535,11 @@ ninja.data = [{
           window.open("https://scholar.google.com/citations?user=F2NkKNAAAAAJ", "_blank");
         },
       },{
-        id: 'social-scopus',
-        title: 'Scopus',
+        id: 'social-dblp',
+        title: 'DBLP',
         section: 'Socials',
         handler: () => {
-          window.open("https://www.scopus.com/authid/detail.uri?authorId=56247021800", "_blank");
+          window.open("https://dblp.org/pid/355/9431.html", "_blank");
         },
       },{
         id: 'social-wos_id',
@@ -556,11 +549,18 @@ ninja.data = [{
           window.open("", "_blank");
         },
       },{
-        id: 'social-x',
-        title: 'X',
+        id: 'social-scopus',
+        title: 'Scopus',
         section: 'Socials',
         handler: () => {
-          window.open("https://twitter.com/rozgurdogan", "_blank");
+          window.open("https://www.scopus.com/authid/detail.uri?authorId=56247021800", "_blank");
+        },
+      },{
+        id: 'social-ieee',
+        title: 'IEEE Xplore',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://ieeexplore.ieee.org/author/427880724318877/", "_blank");
         },
       },{
         id: 'social-yok_url',
