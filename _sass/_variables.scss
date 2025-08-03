@@ -50,3 +50,20 @@ $back-to-top-right: 30px;
 $back-to-top-diameter: 40px;
 $back-to-top-height: $back-to-top-diameter;
 $back-to-top-width: $back-to-top-diameter;
+
+// additional social icons
+.yok-icon {
+  color: #000;
+
+  svg {
+    width: 1.25em;
+    height: 1.25em;
+    vertical-align: middle;
+    fill: currentColor;
+    transition: color 0.3s ease;
+  }
+
+  &:hover {
+    color: $link-color;
+  }
+}
