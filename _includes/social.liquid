@@ -97,8 +97,8 @@
     {% when 'zotero_username' %}
       <a href="https://www.zotero.org/{{ social[1] }}" title="Zotero"><i class="ai ai-zotero"></i></a>
     {% when 'yok_url' %}
-      <a href="{{ social[1].url }}" title="{{ social[1].title }}" class="social-link yok-icon">
-        {% include custom_social/yok.svg %}
+      <a href="{{ social[1].url }}" title="{{ social[1].title }}" class="ai">
+          {% include custom_social/yok.svg %}
       </a>
     {% else %}
       <a href="{{ social[1].url }}" title="{{ social[1].title }}">
