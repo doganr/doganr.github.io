@@ -6,8 +6,6 @@
       <a href="{{ social[1] }}" title="Blogger"><i class="fa-brands fa-blogger-b"></i></a>
     {% when 'bluesky_url' %}
       <a href="{{ social[1] }}" title="Bluesky"><i class="fa-brands fa-bluesky"></i></a>
-    {% when 'dblp_url' %}
-      <a href="{{ social[1] }}" title="DBLP"><i class="ai ai-dblp"></i></a>
     {% when 'discord_id' %}
       <a href="https://discord.com/users/{{ social[1] }}" title="Discord"><i class="fa-brands fa-discord"></i></a>
     {% when 'email' %}
@@ -20,16 +18,16 @@
       <a href="https://github.com/{{ social[1] }}" title="GitHub"><i class="fa-brands fa-github"></i></a>
     {% when 'gitlab_username' %}
       <a href="https://gitlab.com/{{ social[1] }}" title="GitLab"><i class="fa-brands fa-gitlab"></i></a>
-    {% when 'hal_id' %}
-      <a href="https://cv.hal.science/{{ social[1] }}/" title="HAL"><i class="ai ai-hal"></i></a>
-    {% when 'ieee_id' %}
-      <a href="https://ieeexplore.ieee.org/author/{{ social[1] }}/" title="IEEE Xplore"><i class="ai ai-ieee"></i></a>
-    {% when 'inspirehep_id' %}
-      <a href="https://inspirehep.net/authors/{{ social[1] }}" title="Inspire HEP"><i class="ai ai-inspire"></i></a>
-    {% when 'instagram_id' %}
-      <a href="https://instagram.com/{{ social[1] }}" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
     {% when 'kaggle_id' %}
       <a href="https://www.kaggle.com/{{ social[1] }}" title="Kaggle"><i class="fa-brands fa-kaggle"></i></a>
+    {% when 'hal_id' %}
+      <a href="https://cv.hal.science/{{ social[1] }}/" title="HAL"><i class="ai ai-hal"></i></a>
+    {% when 'inspirehep_id' %}
+      <a href="https://inspirehep.net/authors/{{ social[1] }}" title="Inspire HEP"><i class="ai ai-inspire"></i></a>
+    {% when 'x_username' %}
+      <a href="https://twitter.com/{{ social[1] }}" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+    {% when 'instagram_id' %}
+      <a href="https://instagram.com/{{ social[1] }}" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
     {% when 'keybase_username' %}
       <a href="https://keybase.io/{{ social[1] }}" title="Keybase"><i class="fa-brands fa-keybase"></i></a>
     {% when 'lastfm_id' %}
@@ -44,6 +42,8 @@
       <a rel="me" href="https://{{ social[1] }}" title="Mastodon"><i class="fa-brands fa-mastodon"></i></a>
     {% when 'medium_username' %}
       <a href="https://medium.com/@{{ social[1] }}" title="Medium"><i class="fa-brands fa-medium"></i></a>
+    {% when 'dblp_url' %}
+          <a href="{{ social[1] }}" title="DBLP"><i class="ai ai-dblp"></i></a>
     {% when 'orcid_id' %}
       <a href="https://orcid.org/{{ social[1] }}" title="ORCID"><i class="ai ai-orcid"></i></a>
     {% when 'osf_id' %}
@@ -60,10 +60,12 @@
       <a href="{{ site.baseurl }}/feed.xml" title="RSS Feed"><i class="fa-solid fa-square-rss"></i></a>
     {% when 'scholar_userid' %}
       <a href="https://scholar.google.com/citations?user={{ social[1] }}" title="Google Scholar"><i class="ai ai-google-scholar"></i></a>
-    {% when 'scopus_id' %}
-      <a href="https://www.scopus.com/authid/detail.uri?authorId={{ social[1] }}" title="Scopus"><i class="ai ai-scopus"></i></a>
     {% when 'wos_id' %}
       <a href="https://www.webofscience.com/wos/author/record/{{ social[1] }}" title="WoS"><i class="ai ai-clarivate"></i></a>
+    {% when 'scopus_id' %}
+      <a href="https://www.scopus.com/authid/detail.uri?authorId={{ social[1] }}" title="Scopus"><i class="ai ai-scopus"></i></a>
+    {% when 'ieee_id' %}
+      <a href="https://ieeexplore.ieee.org/author/{{ social[1] }}/" title="IEEE Xplore"><i class="ai ai-ieee"></i></a>
     {% when 'semanticscholar_id' %}
       <a href="https://www.semanticscholar.org/author/{{ social[1] }}" title="Semantic Scholar"><i class="ai ai-semantic-scholar"></i></a>
     {% when 'spotify_id' %}
@@ -90,8 +92,6 @@
       <a href="https://wikipedia.org/wiki/User:{{ social[1] }}" title="Wikipedia"><i class="fa-brands fa-wikipedia-w"></i></a>
     {% when 'work_url' %}
       <a href="{{ social[1] }}" title="Work"><i class="fa-solid fa-briefcase"></i></a>
-    {% when 'x_username' %}
-      <a href="https://twitter.com/{{ social[1] }}" title="X"><i class="fa-brands fa-x-twitter"></i></a>
     {% when 'youtube_id' %}
       <a href="https://youtube.com/@{{ social[1] }}" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
     {% when 'zotero_username' %}

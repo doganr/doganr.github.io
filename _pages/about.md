@@ -34,6 +34,4 @@ He received his Ph.D. in Computer Engineering (Karadeniz Technical University) a
 
 Dr. Doğan has authored peer-reviewed journal articles and conference papers, and he regularly serves as a reviewer for international journals and funding programs. His current work explores multimodal learning, medical foundation models, and interpretable AI in healthcare.
 
-Check out his [selected publications](/publications/), or read the latest updates on the [blog](/blog/).
-
 When not conducting research, he enjoys mentoring students, designing machine learning models, and exploring the intersection of AI and human health.

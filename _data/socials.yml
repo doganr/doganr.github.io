@@ -53,6 +53,6 @@ x_username: rozgurdogan # your X handle
 #  title: Custom Social
 #  url: https://www.alberteinstein.com/
 yok_url: # can be any name here other than the ones already defined above
-  logo: assets/custom_social/yok.svg # can be png, svg, jpg
+  logo: assets/img/custom_social/yok.svg # can be png, svg, jpg
   title: YÖK Akademik
   url: https://akademik.yok.gov.tr/AkademikArama/AkademisyenGorevOgrenimBilgileri?islem=direct&authorId=0693793953502EFF
