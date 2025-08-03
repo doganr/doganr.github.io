@@ -472,6 +472,13 @@ ninja.data = [{
           section: "Teaching",handler: () => {
               window.location.href = "/teaching/programing2/";
             },},{
+        id: 'social-dblp',
+        title: 'DBLP',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://dblp.org/pid/355/9431.html", "_blank");
+        },
+      },{
         id: 'social-email',
         title: 'email',
         section: 'Socials',
@@ -542,11 +549,25 @@ ninja.data = [{
           window.open("https://www.scopus.com/authid/detail.uri?authorId=56247021800", "_blank");
         },
       },{
+        id: 'social-wos_id',
+        title: 'Wos_id',
+        section: 'Socials',
+        handler: () => {
+          window.open("", "_blank");
+        },
+      },{
         id: 'social-x',
         title: 'X',
         section: 'Socials',
         handler: () => {
           window.open("https://twitter.com/rozgurdogan", "_blank");
+        },
+      },{
+        id: 'social-yok_url',
+        title: 'Yok_url',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://akademik.yok.gov.tr/AkademikArama/AkademisyenGorevOgrenimBilgileri?islem=direct&authorId=0693793953502EFF", "_blank");
         },
       },{
       id: 'light-theme',
