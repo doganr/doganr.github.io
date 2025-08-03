@@ -49,7 +49,7 @@
          id="g2">
         <path
            d="m 0,-249.886 h 34.71 l 91.274,91.277 93.205,-90.621 h 34.724 L -2.568,0 H -37.926 L 63,-97.541 -91.927,-248.605 l 34.07,-0.625 136.274,133.035 29.581,-26.344 z"
-           style="fill:currentColor"
+           fill="currentColor"
            id="path1" />
       </g>
       <g
@@ -57,7 +57,7 @@
          id="g3">
         <path
            d="m 0,249.886 h -31.501 l -85.281,-83.187 -85.701,83.187 h -34.722 L 19.276,0 H 54.618 L -50.954,103.648 99.185,249.886 H 66.302 L -68.141,120.205 -97.705,148.169 Z"
-           style="fill:currentColor"
+           fill="currentColor"
            id="path2" />
       </g>
       <g
@@ -65,7 +65,7 @@
          id="g4">
         <path
            d="M 0,248.771 H 32.793 L 288.619,0 h -35.996 z"
-           style="fill:currentColor"
+           fill="currentColor"
            id="path3" />
       </g>
       <g
@@ -73,7 +73,7 @@
          id="g5">
         <path
            d="M 0,248.771 H 32.776 L 288.615,0 h -35.998 z"
-           style="fill:currentColor"
+           fill="currentColor"
            id="path4" />
       </g>
     </g>
