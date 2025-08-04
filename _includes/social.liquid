@@ -98,11 +98,9 @@
       <a href="https://www.zotero.org/{{ social[1] }}" title="Zotero"><i class="ai ai-zotero"></i></a>
     {% when 'yok_url' %}
       <a href="{{ social[1].url }}" title="{{ social[1].title }}">
-          <i class="ai ai-yok">
-              <span style="display: inline-block;">
+          <span class="ai ai-yok" style="display: inline-block;">
                 {% include custom_social/yok.svg %}
-              </span>
-          </i>
+          </span>
       </a>
     {% else %}
       <a href="{{ social[1].url }}" title="{{ social[1].title }}">
