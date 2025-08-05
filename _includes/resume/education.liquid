@@ -31,6 +31,22 @@
                   </td>
                 </tr>
               {% endif %}
+              {% if content.logo %}
+                <tr>
+                  <td class="text-center pt-2">
+                    <div style="
+                        display: inline-block;
+                        background-color: #f8f9fa;  /* Hafif gri */
+                        padding: 4px;
+                        border-radius: 6px;
+                        border: 1px solid #ddd;
+                        max-width: 100%;
+                      ">
+                        <img src="{{ content.logo }}" alt="University Logo" style="max-height: 100%; max-width: 100px; object-fit: contain; ">
+                    </div>
+                  </td>
+                </tr>
+              {% endif %}
             </tbody>
           </table>
         </div>
@@ -40,6 +56,17 @@
           </h6>
           <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem">{{ content.institution }}</h6>
           <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem; font-style: italic">{{ content.area }}</h6>
+          {% if content.thesis %}
+            <p class="ml-1 ml-md-4 mb-1" style="font-size: 0.9rem">
+              <strong>Thesis:</strong> {{ content.thesis }}
+            </p>
+          {% endif %}
+
+          {% if content.advisor %}
+            <p class="ml-1 ml-md-4 mb-1" style="font-size: 0.9rem">
+              <strong>Advisor:</strong> {{ content.advisor }}
+            </p>
+          {% endif %}
           <ul class="items">
             {% for item in content.courses %}
               <li>

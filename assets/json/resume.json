@@ -38,38 +38,43 @@
       "position": "Assistant Professor",
       "url": "https://www.trabzon.edu.tr",
       "startDate": "2024-04-01",
-      "summary": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis."
+      "summary": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis.",
+      "logo": "/assets/img/universities/tru.png"
     },
     {
       "name": "The Ohio State University",
-      "position": "Visiting Scholar",
+      "position": "Visiting Research Scholar",
       "url": "https://www.osu.edu",
       "startDate": "2024-05-01",
       "endDate": "2025-05-01",
-      "summary": "Postdoctoral research in multimodal AI models for clinical and pharmacological data analysis."
+      "summary": "Postdoctoral research in multimodal AI models for clinical and pharmacological data analysis.",
+      "logo": "/assets/img/universities/osu.png"
     },
     {
       "name": "Gumushane University",
       "position": "Assistant Professor",
       "url": "https://www.gumushane.edu.tr",
-      "startDate": "2021-12-01",
+      "startDate": "2020-08-01",
       "endDate": "2024-04-01",
-      "summary": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis."
+      "summary": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis.",
+      "logo": "/assets/img/universities/ghu.png"
     },
     {
       "name": "Youngstown State University",
-      "position": "Research Scholar",
+      "position": "Visiting Research Scholar",
       "startDate": "2019-09-01",
       "endDate": "2020-09-01",
-      "summary": "Conducted research on deep learning-based medical image segmentation, including the development of a two-phase approach using Mask R-CNN and 3D U-Net for high-accuracy automatic segmentation of the pancreas in CT imaging."
+      "summary": "Conducted research on deep learning-based medical image segmentation, including the development of a two-phase approach using Mask R-CNN and 3D U-Net for high-accuracy automatic segmentation of the pancreas in CT imaging.",
+      "logo": "/assets/img/universities/ysu.png"
     },
     {
       "name": "Gumushane University",
       "position": "Lecturer",
       "url": "https://www.gumushane.edu.tr",
       "startDate": "2011-07-01",
-      "endDate": "2021-12-01",
-      "summary": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis."
+      "endDate": "2020-08-01",
+      "summary": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis.",
+      "logo": "/assets/img/universities/ghu.png"
     }
   ],
   "education": [
@@ -78,21 +83,31 @@
       "area": "Computer Engineering",
       "studyType": "Ph.D.",
       "startDate": "2015-02-01",
-      "endDate": "2021-12-30"
+      "endDate": "2021-12-30",
+      "location": "Trabzon, Türkiye",
+      "thesis": "Investigation of different deep learning techniques in pancreas cancer tissues segmentation",
+      "advisor": "Prof. Dr. Temel KAYIKÇIOĞLU",
+      "logo": "/assets/img/universities/ktu.png"
     },
     {
       "institution": "Karadeniz Technical University",
       "area": "Computer Engineering",
       "studyType": "M.Sc.",
       "startDate": "2012-09-01",
-      "endDate": "2015-01-27"
+      "endDate": "2015-01-27",
+      "location": "Trabzon, Türkiye",
+      "thesis": "Virtual mouse control with hand shape, gesture and pozition informations",
+      "advisor": "Prof. Dr. Cemal KÖSE",
+      "logo": "/assets/img/universities/ktu.png"
     },
     {
       "institution": "Karadeniz Technical University",
       "area": "Computer Engineering",
       "studyType": "B.Sc.",
       "startDate": "2005-09-01",
-      "endDate": "2010-07-01"
+      "endDate": "2010-07-01",
+      "location": "Trabzon, Türkiye",
+      "logo": "/assets/img/universities/ktu.png"
     }
   ],
   "skills": [

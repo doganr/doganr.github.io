@@ -1,5 +1,8 @@
 <ul class="card-text font-weight-light list-group list-group-flush">
-  {% assign work = data[1] | sort: 'startDate' | reverse %}
+  {% assign active_jobs = data[1] | where_exp: "item", "item.endDate == nil or item.endDate == ''" %}
+  {% assign active_sorted = active_jobs | sort: "startDate" | reverse %}
+  {% assign completed_jobs = data[1] | where_exp: "item", "item.endDate != nil and item.endDate != ''" | sort: "endDate" | reverse %}
+  {% assign work = active_sorted | concat: completed_jobs %}
   {% for content in work %}
     <li class="list-group-item">
       <div class="row">
@@ -26,6 +29,22 @@
                       <i class="fa-solid fa-location-dot iconlocation"></i>
                       {{ content.location }}
                     </p>
+                  </td>
+                </tr>
+              {% endif %}
+              {% if content.logo %}
+                <tr>
+                  <td class="text-center pt-2">
+                    <div style="
+                        display: inline-block;
+                        background-color: #f8f9fa;
+                        padding: 4px;
+                        border-radius: 6px;
+                        border: 1px solid #ddd;
+                        max-width: 100%;
+                      ">
+                        <img src="{{ content.logo }}" alt="University Logo" style="max-height: 100%; max-width: 100px; object-fit: contain; ">
+                    </div>
                   </td>
                 </tr>
               {% endif %}
