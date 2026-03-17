@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %} – Archives{% endblock %}
+
+{% block content %}
+<div class="subpage-wrapper">
+  <div class="subpage-hero">
+    <div class="container text-center">
+      <h1 class="subpage-title" data-aos="fade-up">
+        <i class="fa-solid fa-archive me-3"></i>Archives
+      </h1>
+      <p class="subpage-subtitle" data-aos="fade-up" data-aos-delay="100">All articles, chronologically</p>
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <div class="col-lg-8 mx-auto">
+
+      {# Group articles by year #}
+      {% set ns = namespace(current_year='') %}
+
+      {% for article in dates %}
+        {# Get year from the date #}
+        {% set article_year = article.date.year|string %}
+
+        {% if article_year != ns.current_year %}
+          {% if ns.current_year != '' %}
+          </div></div><!-- close prev year -->
+          {% endif %}
+          {% set ns.current_year = article_year %}
+          <div class="archive-year-group mb-4" data-aos="fade-up">
+            <div class="archive-year-badge mb-3">
+              <span class="year-number">{{ article_year }}</span>
+            </div>
+            <div class="archive-list glass-card p-0 rounded-3 overflow-hidden">
+        {% endif %}
+
+        <a href="{{ SITEURL }}/{{ article.url }}" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">{{ article.locale_date }}</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">{{ article.title }}</span>
+          <span class="archive-category ms-auto">
+            <a href="{{ SITEURL }}/{{ article.category.url }}" class="tag-badge tag-small" onclick="event.stopPropagation()">{{ article.category }}</a>
+          </span>
+        </a>
+
+      {% endfor %}
+      {% if ns.current_year != '' %}
+      </div></div><!-- close last year -->
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

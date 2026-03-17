@@ -1,0 +1,3 @@
+Title: Teaching
+Template: teaching
+

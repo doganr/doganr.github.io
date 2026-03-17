@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav" id="mainNavbar">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand brand-logo" href="{{ SITEURL }}/">
+      {% if SITELOGO %}
+      <img src="{{ SITEURL }}/{{ SITELOGO }}" alt="{{ SITETITLE|default(SITENAME) }}" class="brand-img me-2">
+      {% endif %}
+      <span class="brand-text">
+        <span class="brand-name">{{ SITETITLE|default(SITENAME) }}</span>
+        {% if SITESUBTITLE %}
+        <small class="brand-subtitle d-none d-md-inline">{{ SITESUBTITLE }}</small>
+        {% endif %}
+      </span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="{{ SITEURL }}/">
+            <i class="fa-solid fa-house me-1"></i>{{ _('Home') }}
+          </a>
+        </li>
+
+        {% if pages and DISPLAY_PAGES_ON_MENU %}
+        {% for p in pages %}
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="{{ SITEURL }}/{{ p.url }}">
+            {{ p.title }}
+          </a>
+        </li>
+        {% endfor %}
+        {% endif %}
+
+        {% if LINKS %}
+        {% for name, link in LINKS %}
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="{{ link }}" {% if not link.startswith('/') and not link.startswith(SITEURL)
+            %}target="_blank" rel="noopener noreferrer" {% endif %}>
+            {{ name }}
+          </a>
+        </li>
+        {% endfor %}
+        {% endif %}
+
+        {% if SOCIAL %}
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-pill" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-share-nodes"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+            {% for name, link, icon in SOCIAL %}
+            <li>
+              <a class="dropdown-item" href="{{ link }}" target="_blank" rel="noopener noreferrer me">
+                <i class="{{ icon }}"></i>{{ name|capitalize }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endif %}
+
+        <!-- Theme toggle -->
+        <li class="nav-item">
+          <button class="btn btn-sm theme-toggle-btn" id="themeToggle" title="Toggle theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

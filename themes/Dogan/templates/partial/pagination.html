@@ -1,0 +1,27 @@
+{% if articles_page %}
+<nav aria-label="Page navigation" class="mt-5 d-flex justify-content-center">
+  <ul class="pagination pagination-modern">
+    {% if articles_page.has_previous() %}
+    <li class="page-item">
+      <a class="page-link" href="{{ SITEURL }}/{{ articles_previous_page.url }}" aria-label="Previous">
+        <i class="fa-solid fa-arrow-left me-1"></i> Newer
+      </a>
+    </li>
+    {% endif %}
+
+    <li class="page-item active">
+      <span class="page-link">
+        {{ articles_page.number }} / {{ articles_page.paginator.num_pages }}
+      </span>
+    </li>
+
+    {% if articles_page.has_next() %}
+    <li class="page-item">
+      <a class="page-link" href="{{ SITEURL }}/{{ articles_next_page.url }}" aria-label="Next">
+        Older <i class="fa-solid fa-arrow-right ms-1"></i>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}

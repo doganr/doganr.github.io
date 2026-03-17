@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="subpage-wrapper">
+    <section class="subpage-hero text-center" data-aos="fade-down">
+        <div class="mb-3">
+            <span class="section-badge">
+                <i class="fa-solid fa-chalkboard-user me-1"></i> Academic Courses
+            </span>
+        </div>
+        <h1 class="subpage-title">Teaching & Mentorship</h1>
+        <p class="subpage-subtitle mt-3 mx-auto" style="max-width: 600px;">
+            Courses, educational materials, and academic mentorship activities within the Department of Artificial
+            Intelligence Engineering.
+        </p>
+    </section>
+</div>
+
+<section class="py-5 mb-5">
+    <div class="container">
+
+        {# Select 'Teaching' category articles and group by 'semester' #}
+        {% set teaching_articles = articles | selectattr('category', 'equalto', 'Teaching') | selectattr('semester',
+        'defined') | list %}
+
+        {% for semester, courses in teaching_articles | groupby('semester') | reverse %}
+        <div class="mb-5" data-aos="fade-up">
+
+            <div class="d-flex align-items-center mb-4">
+                <h3 class="fw-bold m-0 text-white" style="font-size: 1.5rem; letter-spacing: -0.02em;">
+                    <i class="fa-regular fa-calendar-days me-2"
+                        style="color: var(--accent-1); font-size: 1.2rem;"></i>{{ semester }}
+                </h3>
+                <div class="flex-grow-1 ms-4"
+                    style="height: 1px; background: linear-gradient(90deg, var(--accent-1), transparent); opacity: 0.5;">
+                </div>
+            </div>
+
+            <div class="row g-4">
+                {% for course in courses %}
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+
+                    <a href="{{ SITEURL }}/{{ course.url }}" class="text-decoration-none">
+                        <div class="glass-card card-article h-100"
+                            style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
+
+                            <div class="card-article-image" style="height: 180px;">
+                                {% if course.image %}
+                                <img src="{{ SITEURL }}/{{ course.image }}" alt="{{ course.title }}">
+                                {% else %}
+                                <div class="card-article-placeholder">
+                                    <i class="fa-solid fa-laptop-code placeholder-icon"></i>
+                                </div>
+                                {% endif %}
+
+                                <div class="card-image-overlay d-flex align-items-start justify-content-end p-3">
+                                    {% if course.course_code %}
+                                    <span class="badge"
+                                        style="background: rgba(10, 10, 15, 0.8); border: 1px solid var(--accent-1); color: #fff; backdrop-filter: blur(4px);">
+                                        {{ course.course_code }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="card-article-body">
+                                <h4 class="card-article-title text-white mb-2">{{ course.title }}</h4>
+                                <p class="card-article-summary mb-4">
+                                    {{ course.summary | striptags | truncate(110) }}
+                                </p>
+
+                                <div
+                                    class="mt-auto d-flex justify-content-between align-items-center border-top border-secondary border-opacity-25 pt-3">
+                                    <span class="btn-read-more">View Course <i
+                                            class="fa-solid fa-arrow-right ms-1"></i></span>
+                                    {% if course.level %}
+                                    <span class="text-muted"
+                                        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                                        {{ course.level }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+{% endblock %}

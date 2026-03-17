@@ -1,0 +1,43 @@
+name: Deploy Pelican Site & Update Citations
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 3 * * 0'
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Kodu GitHub'dan Çek
+        uses: actions/checkout@v4
+
+      - name: Python Kurulumu
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Gerekli Paketleri Yükle
+        run: |
+          python -m pip install --upgrade pip
+          pip install pelican Markdown pybtex
+
+      # fetch_citations.py adımı tamamen kaldırıldı! 
+      # Artık aşağıdaki komut çalıştığında, eklentimiz atıfları kendisi halledecek.
+
+      - name: 🏗️ Pelican Sitesini Derle
+        run: pelican content -s publishconf.py -o output
+
+      - name: 🚀 GitHub Pages'e Yükle (Deploy)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          cname: doganr.com
+          force_orphan: true
+          commit_message: "Otomatik Güncelleme: Site derlendi ve yayınlandı"

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %} – Tags{% endblock %}
+
+{% block content %}
+<div class="subpage-wrapper">
+  <div class="subpage-hero">
+    <div class="container text-center">
+      <h1 class="subpage-title" data-aos="fade-up">
+        <i class="fa-solid fa-tags me-3"></i>Tags
+      </h1>
+      <p class="subpage-subtitle" data-aos="fade-up" data-aos-delay="100">Browse posts by topic</p>
+    </div>
+  </div>
+  <div class="container py-5">
+    <div class="col-lg-8 mx-auto">
+      <div class="glass-card p-5 rounded-3 text-center" data-aos="fade-up">
+        <div class="tags-cloud d-flex flex-wrap gap-3 justify-content-center">
+          {% for tag, articles in tags|sort %}
+          <a href="{{ SITEURL }}/{{ tag.url }}" class="tag-badge tag-cloud-item" style="font-size: {{ (articles|list|length * 0.15 + 0.85)|round(2) }}rem">
+            {{ tag }}
+            <span class="tag-count ms-1">{{ articles|list|length }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

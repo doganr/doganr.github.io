@@ -1,0 +1,27 @@
+# Pelican build output
+output/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+env/
+
+# Pelican
+*.pid
+citations_cache.json
+
+# Deploy script (tek seferlik)
+deploy.sh
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+.gemini/

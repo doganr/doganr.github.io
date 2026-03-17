@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - {{ SITENAME }}{% endblock %}
+
+{% block content %}
+<div class="container subpage-wrapper">
+    <div class="subpage-hero text-center mb-5">
+        <h1 class="subpage-title">Blog</h1>
+        <p class="subpage-subtitle">Thoughts, updates, and deep dives into AI and Deep Learning.</p>
+    </div>
+
+    <section class="articles-section py-2">
+        <div class="container">
+            {% if articles %}
+            <div class="row g-4">
+                {% for article in articles %}
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 50 }}">
+                    <article class="card-article glass-card h-100">
+
+                        {% if article.featured_image %}
+                        <div class="card-article-image">
+                            <img src="{{ SITEURL }}/{{ article.featured_image }}" alt="{{ article.title }}"
+                                class="img-fluid">
+                            <div class="card-image-overlay"></div>
+                        </div>
+                        {% else %}
+                        <div class="card-article-placeholder">
+                            <div class="placeholder-pattern">
+                                <i class="fa-solid fa-file-lines placeholder-icon"></i>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="card-article-body">
+                            <div class="mb-2">
+                                <a href="{{ SITEURL }}/{{ article.category.url }}" class="tag-badge tag-category">
+                                    <i class="fa-solid fa-folder me-1"></i>{{ article.category }}
+                                </a>
+                            </div>
+
+                            <h3 class="card-article-title">
+                                <a
+                                    href="{{ SITEURL }}/{{ article.url }}{% if not DISABLE_URL_HASH %}#{{ article.slug }}{% endif %}">
+                                    {{ article.title }}
+                                </a>
+                            </h3>
+
+                            {% if article.summary %}
+                            <p class="card-article-summary">{{ article.summary|striptags|truncate(120) }}</p>
+                            {% endif %}
+
+                            <div class="card-article-meta d-flex align-items-center gap-3 mt-auto">
+                                <span class="meta-date">
+                                    <i class="fa-regular fa-calendar me-1"></i>{{ article.locale_date }}
+                                </span>
+                                {% if article.tags %}
+                                <div class="meta-tags d-flex gap-1 flex-wrap">
+                                    {% for tag in article.tags[:2] %}
+                                    <a href="{{ SITEURL }}/{{ tag.url }}" class="tag-badge tag-small">{{ tag }}</a>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mt-3">
+                                <a href="{{ SITEURL }}/{{ article.url }}{% if not DISABLE_URL_HASH %}#{{ article.slug }}{% endif %}"
+                                    class="btn-read-more">
+                                    Read More <i class="fa-solid fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% else %}
+            <div class="empty-state text-center py-5" data-aos="fade-up">
+                <div class="empty-state-icon mb-4">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+                <h3 class="empty-state-title">No posts yet</h3>
+                <p class="empty-state-subtitle">Stay tuned — exciting content coming soon!</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </section>
+</div>
+{% endblock %}

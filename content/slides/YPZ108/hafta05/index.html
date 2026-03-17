@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 5. Hafta - Fikri Mülkiyet</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 5 — Amber & Gold Theme */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Inter', sans-serif;
+            text-transform: none;
+        }
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .glass-card:hover {
+            border-color: rgba(234, 179, 8, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .legal-badge {
+            background: rgba(234, 179, 8, 0.15);
+            color: #fbbf24;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+        .float-anim { animation: float 4s ease-in-out infinite; }
+        .shimmer-text {
+            background: linear-gradient(90deg, #fbbf24 0%, #fde68a 50%, #fbbf24 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .timeline-dot { width:16px; height:16px; border-radius:50%; border:3px solid #fbbf24; background:#020617; position:relative; z-index:2; }
+        .timeline-dot::after { content:''; position:absolute; inset:-6px; border-radius:50%; background:rgba(251,191,36,0.2); animation: pulse 2s infinite; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 1: KAPAK                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 30% 50%, #422006 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-amber-600 top-0 right-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <!-- Badge -->
+                    <div class="px-4 py-2 bg-amber-500/10 rounded-full text-xs font-bold tracking-widest mb-6 border border-amber-500/30">
+                        <span class="text-amber-400">HAFTA 05</span>
+                        <span class="text-slate-600 mx-2">•</span>
+                        <span class="text-slate-400">BİLİŞİM ETİĞİ</span>
+                    </div>
+
+                    <!-- İkon -->
+                    <div class="relative mb-8 group">
+                        <div class="absolute inset-0 bg-amber-600 rounded-full blur-[60px] opacity-30 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+                        <div class="absolute inset-[-20px] rounded-full border border-amber-500/20 animate-[spin_15s_linear_infinite]"></div>
+                        <div class="absolute inset-[-40px] rounded-full border border-yellow-500/10 border-dashed animate-[spin_25s_linear_infinite_reverse]"></div>
+                        <div class="p-8 bg-amber-500/10 rounded-full border border-amber-500/20 relative z-10 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110">
+                            <i data-lucide="copyright" style="width: 80px; height: 80px;" class="text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl mb-4 leading-tight">Fikri Mülkiyet<br>
+                        <span class="shimmer-text">Hukuku ve Etik</span>
+                    </h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">5. Hafta: Telif, Patent ve Marka</p>
+                    <div class="mt-8 flex gap-6 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span class="flex items-center gap-2"><i data-lucide="book-open" size="12" class="text-amber-500"></i> TELİF</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="lightbulb" size="12" class="text-amber-500"></i> PATENT</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="award" size="12" class="text-amber-500"></i> MARKA</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 2: FİKRİ MÜLKİYET NEDİR?            -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-amber-600 bottom-0 left-0"></div>
+                    <div class="grid grid-cols-2 gap-12 items-center text-left">
+                        <div>
+                            <div class="legal-badge mb-6">Temel Kavram</div>
+                            <h2 class="text-4xl mb-6">Zihinsel Ürünlerin<br><span class="text-amber-400">Korunması</span></h2>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-8">
+                                Fikri Mülkiyet (Intellectual Property), insan zekâsı ile yaratılan <strong class="text-white">somut olmayan varlıkları</strong> koruyan hukuk dalıdır. Yazılımdan müziğe, logolardan buluşlara kadar geniş bir yelpazede geçerlidir.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 group hover:bg-amber-500/10 transition-all cursor-default">
+                                    <div class="p-2 bg-amber-500/20 rounded-lg"><i data-lucide="sparkles" class="text-amber-400" size="20"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-sm font-bold m-0">Yaratıcılığı Teşvik Eder</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Yenilikçi fikirlerin gelişmesi için güvenli ortam sağlar.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 group hover:bg-amber-500/10 transition-all cursor-default">
+                                    <div class="p-2 bg-amber-500/20 rounded-lg"><i data-lucide="shield-check" class="text-amber-400" size="20"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-sm font-bold m-0">Emeği Korur</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Harcanan zaman ve kaynak hukuki güvence altındadır.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 group hover:bg-amber-500/10 transition-all cursor-default">
+                                    <div class="p-2 bg-amber-500/20 rounded-lg"><i data-lucide="trending-up" class="text-amber-400" size="20"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-sm font-bold m-0">Ekonomik Değer Yaratır</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Fikri mülkiyet, şirketlerin en değerli varlıklarıdır.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-amber-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <img src="images/ip_brain.png" alt="Fikri Mülkiyet" class="w-full rounded-2xl border border-amber-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500">
+                            <p class="text-[10px] text-center text-slate-500 uppercase mt-4 tracking-widest">Fikir mi? İfade mi?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.1: Fikir vs İfade (Alt Slayt) -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-3xl mb-10"><span class="text-amber-400">Önemli Ayrım:</span> Fikir vs. İfade</h2>
+                    <div class="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="glass-card p-8 text-center border-red-500/20 hover:border-red-500/40 transition-all group">
+                            <div class="p-4 bg-red-500/10 rounded-2xl inline-block mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="lightbulb-off" class="text-red-400" size="40"></i>
+                            </div>
+                            <h3 class="text-xl text-red-400 font-bold mb-4">Fikir (Korunmaz ✗)</h3>
+                            <div class="space-y-3 text-left">
+                                <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="x" class="text-red-500 shrink-0" size="14"></i> "Uçan araba yapma fikri"</div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="x" class="text-red-500 shrink-0" size="14"></i> "Sosyal medya uygulaması konsepti"</div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="x" class="text-red-500 shrink-0" size="14"></i> "Sıralama algoritması genel prensibi"</div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-8 text-center border-emerald-500/20 hover:border-emerald-500/40 transition-all group">
+                            <div class="p-4 bg-emerald-500/10 rounded-2xl inline-block mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="file-code" class="text-emerald-400" size="40"></i>
+                            </div>
+                            <h3 class="text-xl text-emerald-400 font-bold mb-4">İfade (Korunur ✓)</h3>
+                            <div class="space-y-3 text-left">
+                                <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="text-emerald-500 shrink-0" size="14"></i> "O arabanın somut mühendislik tasarımı"</div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="text-emerald-500 shrink-0" size="14"></i> "Instagram'ın kaynak kodu ve arayüzü"</div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="text-emerald-500 shrink-0" size="14"></i> "QuickSort'un spesifik implementasyonu"</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 p-4 bg-amber-500/5 rounded-xl border border-amber-500/10 max-w-2xl mx-auto">
+                        <p class="text-sm text-slate-400 italic m-0"><i data-lucide="info" size="14" class="text-amber-400 inline mr-2"></i> Sonuç: Hukuk <strong class="text-white">fikirleri değil</strong>, fikirlerin <strong class="text-amber-400">somut ifadelerini</strong> korur.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 3: TELİF HAKLARI                     -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-yellow-600 top-0 left-0"></div>
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="p-3 bg-amber-500/20 rounded-xl"><i data-lucide="book-open" class="text-amber-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Telif Hakları <span class="text-amber-400">(Copyright)</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6">
+                        <!-- Neyi Korur -->
+                        <div class="fragment glass-card p-6 text-left group hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] transition-all">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-amber-500/20 rounded-lg group-hover:bg-amber-500/30 transition-colors"><i data-lucide="shield" class="text-amber-400" size="20"></i></div>
+                                <h4 class="text-amber-400 font-bold text-sm m-0">Neyi Korur?</h4>
+                            </div>
+                            <ul class="text-[11px] space-y-2 text-slate-400 m-0 pl-0 list-none">
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="text-amber-500 shrink-0 mt-0.5" size="12"></i> Kaynak ve nesne kodları</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="text-amber-500 shrink-0 mt-0.5" size="12"></i> Kullanıcı arayüzü (UI) tasarımları</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="text-amber-500 shrink-0 mt-0.5" size="12"></i> Dokümantasyon ve kılavuzlar</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="text-amber-500 shrink-0 mt-0.5" size="12"></i> Müzik, video ve dijital içerikler</li>
+                            </ul>
+                        </div>
+
+                        <!-- Nasıl Oluşur -->
+                        <div class="fragment glass-card p-6 text-left group hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] transition-all">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-amber-500/20 rounded-lg group-hover:bg-amber-500/30 transition-colors"><i data-lucide="zap" class="text-amber-400" size="20"></i></div>
+                                <h4 class="text-amber-400 font-bold text-sm m-0">Nasıl Oluşur?</h4>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-3">Eser yaratıldığı andan itibaren <strong class="text-white">otomatik</strong> koruma başlar.</p>
+                            <div class="p-3 bg-emerald-500/5 rounded-lg border border-emerald-500/20">
+                                <p class="text-[10px] text-emerald-400 font-bold m-0">✦ Tescil zorunlu değildir</p>
+                                <p class="text-[10px] text-slate-500 m-0">Ancak ispat için kesinlikle önerilir.</p>
+                            </div>
+                        </div>
+
+                        <!-- Süre -->
+                        <div class="fragment glass-card p-6 text-left group hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] transition-all">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-amber-500/20 rounded-lg group-hover:bg-amber-500/30 transition-colors"><i data-lucide="clock" class="text-amber-400" size="20"></i></div>
+                                <h4 class="text-amber-400 font-bold text-sm m-0">Koruma Süresi</h4>
+                            </div>
+                            <div class="text-center my-3">
+                                <span class="text-4xl font-black text-white">70</span>
+                                <span class="text-xl text-amber-400 font-bold ml-1">YIL</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 text-center m-0">Yazarın ömrü + 70 yıl (Berne Convention)</p>
+                            <div class="mt-3 p-2 bg-slate-800 rounded-lg text-center">
+                                <p class="text-[9px] text-slate-500 m-0 italic">© işareti yasal bir zorunluluk değil, ama güçlü bir uyarıdır.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3.1: Yazılımda Telif — Detay -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-3xl mb-8"><i data-lucide="code" class="text-amber-400 inline mr-3" size="28"></i>Yazılımda Telif Hakları</h2>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="text-left space-y-6">
+                            <div class="fragment p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                <p class="text-xs font-bold text-amber-400 mb-1 m-0">🔐 Kaynak Kodu</p>
+                                <p class="text-[11px] text-slate-400 m-0">Yazdığınız her satır kod, otomatik olarak telif hakkınız altındadır.</p>
+                            </div>
+                            <div class="fragment p-4 bg-slate-900 border-l-4 border-yellow-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                <p class="text-xs font-bold text-yellow-400 mb-1 m-0">🎨 Kullanıcı Arayüzü</p>
+                                <p class="text-[11px] text-slate-400 m-0">UI tasarımları, ikonlar ve görsel öğeler korunur — ancak "fonksiyonellik" korunmaz.</p>
+                            </div>
+                            <div class="fragment p-4 bg-slate-900 border-l-4 border-orange-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                <p class="text-xs font-bold text-orange-400 mb-1 m-0">📝 API Tartışması</p>
+                                <p class="text-[11px] text-slate-400 m-0">Google vs. Oracle davası: API yapıları telif koruması altında mı? (2021: "Adil Kullanım" kararı)</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-6 border-amber-500/30">
+                            <div class="bg-black rounded-xl p-4 font-mono text-left mb-4">
+                                <p class="text-[10px] text-amber-400 m-0 mb-2">// Bu kod SENİN eserindir ©</p>
+                                <p class="text-[10px] text-slate-400 m-0"><span class="text-blue-400">function</span> <span class="text-yellow-300">myAlgorithm</span>(<span class="text-orange-300">data</span>) {</p>
+                                <p class="text-[10px] text-slate-400 m-0 pl-4"><span class="text-purple-400">return</span> data.<span class="text-green-400">filter</span>(<span class="text-orange-300">x</span> => x > 0)</p>
+                                <p class="text-[10px] text-slate-400 m-0 pl-8">.<span class="text-green-400">map</span>(<span class="text-orange-300">x</span> => x * <span class="text-cyan-400">2</span>);</p>
+                                <p class="text-[10px] text-slate-400 m-0">}</p>
+                            </div>
+                            <p class="text-[10px] text-slate-500 italic text-center m-0">Algoritmayı yazdığın an, telif hakları doğar.</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 4: PATENT HUKUKU                     -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-blue-600 bottom-0 left-0"></div>
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="p-3 bg-blue-500/20 rounded-xl"><i data-lucide="lightbulb" class="text-blue-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Patentler: <span class="text-blue-400">Buluşların Zırhı</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-10 items-center">
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-blue-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <img src="images/copyright_patent.png" alt="Telif vs Patent" class="w-full rounded-2xl border border-blue-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-700">
+                            <p class="text-[10px] text-center text-slate-500 italic mt-4">"Yeni, Buluş Basamağı İçeren ve Sanayiye Uygulanabilir"</p>
+                        </div>
+                        <div class="text-left space-y-6">
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                Yazılımın kendisi <span class="text-amber-400 font-bold">telif</span> ile korunurken, yazılımın gerçekleştirdiği <span class="text-blue-400 font-bold">teknik çözüm/yöntem</span> patent ile korunabilir.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="fragment flex items-start gap-4 p-3 bg-blue-500/5 rounded-xl border border-blue-500/10 hover:bg-blue-500/10 transition-all">
+                                    <i data-lucide="timer" class="text-blue-400 shrink-0 mt-1" size="20"></i>
+                                    <div>
+                                        <h4 class="text-sm text-white font-bold m-0">20 Yıl Mutlak Koruma</h4>
+                                        <p class="text-[10px] text-slate-500 m-0">Tescil tarihinden itibaren</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-start gap-4 p-3 bg-blue-500/5 rounded-xl border border-blue-500/10 hover:bg-blue-500/10 transition-all">
+                                    <i data-lucide="file-check" class="text-blue-400 shrink-0 mt-1" size="20"></i>
+                                    <div>
+                                        <h4 class="text-sm text-white font-bold m-0">Tescil Zorunlu</h4>
+                                        <p class="text-[10px] text-slate-500 m-0">Telif'ten farklı olarak, başvuru yapılmalıdır</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-start gap-4 p-3 bg-blue-500/5 rounded-xl border border-blue-500/10 hover:bg-blue-500/10 transition-all">
+                                    <i data-lucide="globe" class="text-blue-400 shrink-0 mt-1" size="20"></i>
+                                    <div>
+                                        <h4 class="text-sm text-white font-bold m-0">Kamuya Açıklama Karşılığı</h4>
+                                        <p class="text-[10px] text-slate-500 m-0">Buluşun detayları yayınlanır, tekel hakkı verilir</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4.1: Telif vs Patent Karşılaştırma -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-3xl mb-8"><span class="text-amber-400">Telif</span> vs. <span class="text-blue-400">Patent</span></h2>
+                    <div class="max-w-4xl mx-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-700">
+                                    <th class="p-3 text-xs text-slate-500 uppercase tracking-widest"></th>
+                                    <th class="p-3 text-xs text-amber-400 uppercase tracking-widest font-bold">© Telif Hakkı</th>
+                                    <th class="p-3 text-xs text-blue-400 uppercase tracking-widest font-bold">⚙ Patent</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-[12px] text-slate-300">
+                                <tr class="border-b border-slate-800 hover:bg-slate-900/50 transition-colors">
+                                    <td class="p-3 font-bold text-slate-400">Koruma Objesi</td>
+                                    <td class="p-3">İfade / Yazılım kodu</td>
+                                    <td class="p-3">Teknik çözüm / Yöntem</td>
+                                </tr>
+                                <tr class="border-b border-slate-800 hover:bg-slate-900/50 transition-colors">
+                                    <td class="p-3 font-bold text-slate-400">Tescil</td>
+                                    <td class="p-3"><span class="text-emerald-400">Otomatik</span></td>
+                                    <td class="p-3"><span class="text-red-400">Zorunlu Başvuru</span></td>
+                                </tr>
+                                <tr class="border-b border-slate-800 hover:bg-slate-900/50 transition-colors">
+                                    <td class="p-3 font-bold text-slate-400">Süre</td>
+                                    <td class="p-3">Ömür + 70 yıl</td>
+                                    <td class="p-3">20 yıl</td>
+                                </tr>
+                                <tr class="border-b border-slate-800 hover:bg-slate-900/50 transition-colors">
+                                    <td class="p-3 font-bold text-slate-400">Maliyet</td>
+                                    <td class="p-3"><span class="text-emerald-400">Ücretsiz</span></td>
+                                    <td class="p-3"><span class="text-red-400">Pahalı (başvuru + bakım)</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/50 transition-colors">
+                                    <td class="p-3 font-bold text-slate-400">Yazılımda</td>
+                                    <td class="p-3">Kaynak kodu korunur</td>
+                                    <td class="p-3">Algoritma/yöntem korunabilir</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 5: MARKA HUKUKU                      -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(135deg, #0c0a09 0%, #1c1917 50%, #0c0a09 100%)">
+                <div class="flex items-center gap-4 mb-10">
+                    <div class="p-3 bg-yellow-500/20 rounded-xl"><i data-lucide="award" class="text-yellow-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">Markalar <span class="text-yellow-400">(Trademarks)</span></h2>
+                </div>
+
+                <div class="grid grid-cols-4 gap-5 mb-8">
+                    <div class="fragment glass-card p-5 flex flex-col items-center group border-yellow-500/10 hover:border-yellow-500/40 hover:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
+                        <div class="p-3 bg-yellow-500/10 rounded-xl mb-3 group-hover:scale-110 transition-transform group-hover:bg-yellow-500/20">
+                            <i data-lucide="fingerprint" class="text-yellow-400" size="28"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-white m-0">Kimlik</h4>
+                        <p class="text-[9px] text-slate-500 mt-1 m-0">Ürünü tanıtan işaret</p>
+                    </div>
+                    <div class="fragment glass-card p-5 flex flex-col items-center group border-yellow-500/10 hover:border-yellow-500/40 hover:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
+                        <div class="p-3 bg-yellow-500/10 rounded-xl mb-3 group-hover:scale-110 transition-transform group-hover:bg-yellow-500/20">
+                            <i data-lucide="scan-eye" class="text-yellow-400" size="28"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-white m-0">Ayırt Edicilik</h4>
+                        <p class="text-[9px] text-slate-500 mt-1 m-0">Rakiplerden farklılaşma</p>
+                    </div>
+                    <div class="fragment glass-card p-5 flex flex-col items-center group border-yellow-500/10 hover:border-yellow-500/40 hover:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
+                        <div class="p-3 bg-yellow-500/10 rounded-xl mb-3 group-hover:scale-110 transition-transform group-hover:bg-yellow-500/20">
+                            <i data-lucide="heart-handshake" class="text-yellow-400" size="28"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-white m-0">Güven</h4>
+                        <p class="text-[9px] text-slate-500 mt-1 m-0">Tüketici ile bağ kurar</p>
+                    </div>
+                    <div class="fragment glass-card p-5 flex flex-col items-center group border-yellow-500/10 hover:border-yellow-500/40 hover:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
+                        <div class="p-3 bg-yellow-500/10 rounded-xl mb-3 group-hover:scale-110 transition-transform group-hover:bg-yellow-500/20">
+                            <i data-lucide="infinity" class="text-yellow-400" size="28"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-white m-0">Yenilenebilir</h4>
+                        <p class="text-[9px] text-slate-500 mt-1 m-0">10 yılda bir uzatılabilir</p>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-900/60 rounded-xl border border-yellow-700/20 max-w-3xl mx-auto">
+                    <p class="text-sm text-slate-300 m-0 leading-relaxed"><i data-lucide="info" size="14" class="text-yellow-400 inline mr-2"></i>
+                        Dijital dünyada logolar, domain isimleri, uygulama simgeleri ve hatta <strong class="text-yellow-400">ses markaları</strong> (Netflix "tudum") bile marka olarak tescil edilebilir.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 6: KORSANLIK VE PAYLAŞIM             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(to bottom, #020617, #422006)">
+                <div class="grid grid-cols-2 gap-10 items-center">
+                    <!-- SOL: Görsel -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-amber-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                        <img src="images/piracy_ethics.png" alt="Korsanlık vs Etik" class="w-full rounded-2xl border border-amber-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:480px; object-fit:cover;">
+                    </div>
+
+                    <!-- SAĞ: İçerik -->
+                    <div class="text-left">
+                        <h2 class="text-3xl mb-6"><span class="text-red-400">Kopyalamak</span> Çalmak mıdır?</h2>
+
+                        <div class="space-y-5">
+                            <div class="fragment glass-card p-5 border-red-500/20 hover:border-red-500/40 hover:shadow-[0_0_30px_rgba(220,38,38,0.15)] transition-all group">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="p-2 bg-red-500/20 rounded-lg group-hover:bg-red-500/30 transition-colors"><i data-lucide="skull" class="text-red-400" size="20"></i></div>
+                                    <h3 class="text-base text-red-400 font-bold m-0">Korsanlık Bakışı</h3>
+                                </div>
+                                <p class="text-[11px] text-slate-300 italic m-0 leading-relaxed">"Dijital bir dosyayı kopyaladığımda aslı kaybolmuyor. Bir şey çalmadım ki?"</p>
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <span class="text-[9px] bg-red-900/30 text-red-300 px-2 py-1 rounded-full">Torrent Siteleri</span>
+                                    <span class="text-[9px] bg-red-900/30 text-red-300 px-2 py-1 rounded-full">Crack Yazılımlar</span>
+                                    <span class="text-[9px] bg-red-900/30 text-red-300 px-2 py-1 rounded-full">Mod APK</span>
+                                </div>
+                            </div>
+
+                            <div class="fragment glass-card p-5 border-emerald-500/20 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-all group">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="p-2 bg-emerald-500/20 rounded-lg group-hover:bg-emerald-500/30 transition-colors"><i data-lucide="scale" class="text-emerald-400" size="20"></i></div>
+                                    <h3 class="text-base text-emerald-400 font-bold m-0">Etik/Hukuki Bakış</h3>
+                                </div>
+                                <p class="text-[11px] text-slate-300 italic m-0 leading-relaxed">"Eser sahibinin emeğinden doğan geliri engellemek, onun mülkiyet hakkını ihlal etmektir."</p>
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <span class="text-[9px] bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded-full">FSEK Md. 71</span>
+                                    <span class="text-[9px] bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded-full">Tazminat Hakkı</span>
+                                    <span class="text-[9px] bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded-full">Cezai Yaptırım</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                            <p class="text-[10px] text-slate-400 m-0"><i data-lucide="info" size="12" class="text-amber-400 inline mr-1"></i> <strong class="text-amber-400">FSEK Md. 71:</strong> Eser sahibinin izinsiz çoğaltılmasına 1-5 yıl hapis ve adli para cezası öngörülmektedir.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 7: İNTERAKTİF SENARYO                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-amber-600 top-0 right-0"></div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-amber-500/20 rounded-lg animate-pulse"><i data-lucide="mouse-pointer-click" class="text-amber-400" size="20"></i></div>
+                        <span class="legal-badge">ETİK İKİLEM // VAKA SİMÜLASYONU</span>
+                    </div>
+
+                    <h2 class="text-3xl mb-6 text-left"><span class="text-amber-400">Senaryo:</span> Kod Kopyalama</h2>
+
+                    <div class="glass-card p-6 text-left border-amber-400/30 mb-6">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-amber-500/20 rounded-xl text-amber-500 shrink-0"><i data-lucide="code" size="28"></i></div>
+                            <div class="text-slate-300 text-[13px] leading-relaxed">
+                                <p class="mb-3 text-slate-200">
+                                    Açık kaynak kodlu bir kütüphaneden harika bir algoritma buldunuz. Lisans şartı <span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded border border-amber-500/30 font-bold">"atıf yapma" (attribution)</span> zorunluluğu getiriyor.
+                                </p>
+                                <div class="bg-black/60 p-3 rounded-xl border border-slate-700 relative">
+                                    <i data-lucide="quote" class="absolute -top-2 -left-1 text-slate-600" size="14"></i>
+                                    <p class="text-slate-400 italic m-0 pl-3">
+                                        Patronunuz: <span class="text-white font-bold">"Rakipler görmesin, kodun kaynağını gizle!"</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="group p-4 bg-slate-800 border border-slate-700 rounded-xl hover:border-red-500 hover:bg-red-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(220,38,38,0.2)]">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="p-2 bg-slate-900 rounded-lg group-hover:bg-red-900/50 transition-colors"><i data-lucide="building" class="text-slate-400 group-hover:text-red-400 transition-colors" size="18"></i></div>
+                                <h4 class="font-bold text-white text-sm group-hover:text-red-400 m-0">Şirket Çıkarı</h4>
+                            </div>
+                            <p class="text-[10px] text-slate-400 italic m-0">"Gizlerim. Şirketin güvenliği bir etiketle uğraşmaktan önemli."</p>
+                        </div>
+                        <div class="group p-4 bg-slate-800 border border-slate-700 rounded-xl hover:border-emerald-500 hover:bg-emerald-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="p-2 bg-slate-900 rounded-lg group-hover:bg-emerald-900/50 transition-colors"><i data-lucide="badge-check" class="text-slate-400 group-hover:text-emerald-400 transition-colors" size="18"></i></div>
+                                <h4 class="font-bold text-white text-sm group-hover:text-emerald-400 m-0">Mesleki Etik</h4>
+                            </div>
+                            <p class="text-[10px] text-slate-400 italic m-0">"Lisansa uyarım. Gizlice değer üretmek dürüstlük değildir."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 8: KAPANIŞ                           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 100%, #422006 0%, #000 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2 class="text-4xl mb-4">Haftaya Bakış</h2>
+                    <p class="text-xl text-slate-400 mb-10">Sıradaki Konu: <span class="text-amber-400 border-b border-amber-400">Lisans Anlaşmaları ve Bilişim Hukuku</span></p>
+
+                    <div class="glass-card p-6 max-w-3xl mb-8 border-amber-500/30">
+                        <h4 class="text-white text-sm font-bold mb-6 text-center tracking-widest">BU HAFTA NE ÖĞRENDİK?</h4>
+                        <div class="grid grid-cols-4 gap-6 text-center">
+                            <div>
+                                <i data-lucide="brain" class="text-amber-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-amber-400 text-xs font-bold m-0">Fikri Mülkiyet</p>
+                                <p class="text-slate-500 text-[10px] m-0">Fikir vs İfade</p>
+                            </div>
+                            <div>
+                                <i data-lucide="book-open" class="text-yellow-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-yellow-400 text-xs font-bold m-0">Telif Hakları</p>
+                                <p class="text-slate-500 text-[10px] m-0">Otomatik Koruma</p>
+                            </div>
+                            <div>
+                                <i data-lucide="lightbulb" class="text-blue-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-blue-400 text-xs font-bold m-0">Patentler</p>
+                                <p class="text-slate-500 text-[10px] m-0">20 Yıl Tescilli</p>
+                            </div>
+                            <div>
+                                <i data-lucide="award" class="text-emerald-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-emerald-400 text-xs font-bold m-0">Markalar</p>
+                                <p class="text-slate-500 text-[10px] m-0">Süresiz Yenilenebilir</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-sm italic text-slate-300">
+                        <i data-lucide="quote" class="inline text-amber-400" size="14"></i>
+                        Okumadan "Kabul Ediyorum" dediğimiz o uzun metinlerde aslında neler yazıyor?
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false,
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+</html>

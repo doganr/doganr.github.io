@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section position-relative" style="padding-top: 8rem; padding-bottom: 5rem;">
+  <div class="hero-bg-gradient"></div>
+  <div id="particles-js" class="position-absolute top-0 start-0 w-100 h-100"
+    style="z-index: 0; opacity: 0.8; overflow: hidden;"></div>
+  <div class="container">
+    <div class="row align-items-center justify-content-between">
+
+      <div class="col-lg-7 text-start mb-5 mb-lg-0" data-aos="fade-right">
+        <h1 class="hero-title fw-bold mb-2" style="font-size: 2.5rem; text-align: left;">
+          Asst. Prof. Ramazan Özgür Doğan
+        </h1>
+        <p class="text-info mb-4" style="font-size: 1.1rem; font-weight: 500;">
+          Trabzon University · Department of Artificial Intelligence Engineering
+        </p>
+
+        <div class="hero-bio mb-4" style="font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary);">
+          <p class="mb-3">
+            Dr. Doğan is a faculty member in the Department of Artificial Intelligence
+            Engineering at Trabzon University. His research focuses on deep learning, biomedical image and signal
+            processing, and AI-powered applications in pharmacology and drug interaction prediction.
+          </p>
+          <p class="mb-3">
+            He received his Ph.D. in Computer Engineering (Karadeniz Technical University) and has held academic
+            positions in both Türkiye and the United States, including research visits at The Ohio State University and
+            Youngstown State University.
+          </p>
+          <p>
+            His current work explores multimodal learning, medical foundation models, and interpretable AI in
+            healthcare.
+          </p>
+        </div>
+
+        {% if SOCIAL %}
+        <div class="hero-social d-flex gap-3 justify-content-start mt-2" data-aos="fade-up" data-aos-delay="200">
+          {% for name, link, icon in SOCIAL %}
+          <a href="{{ link }}" target="_blank" rel="noopener noreferrer me" class="social-btn" title="{{ name }}">
+            <i class="{{ icon }}"></i>
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="300">
+
+        <div class="position-relative d-inline-block mb-4">
+          {% if SITELOGO %}
+
+          <div class="position-absolute top-50 start-50 translate-middle rounded-circle"
+            style="width: 280px; height: 280px; background: var(--gradient-main); opacity: 0.4; filter: blur(30px); z-index: -1; animation: pulse-hero 4s ease-in-out infinite;">
+          </div>
+
+          <img src="{{ SITEURL }}/{{ SITELOGO }}" alt="{{ SITETITLE }}"
+            class="rounded-circle shadow-lg position-relative"
+            style="width: 260px; height: 260px; object-fit: cover; border: 3px solid rgba(255,255,255,0.1); z-index: 2;">
+
+          <div class="avatar-ring" style="z-index: 3;"></div>
+
+          {% else %}
+          <div class="rounded-circle d-flex align-items-center justify-content-center"
+            style="width: 260px; height: 260px; background: rgba(255,255,255,0.05); border: 3px dashed rgba(255,255,255,0.2);">
+            <span class="text-muted">Profil Fotoğrafı</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="terminal-window mx-auto" style="max-width: 380px;" data-aos="zoom-in">
+          <div class="terminal-header">
+            <div class="terminal-dot dot-red"></div>
+            <div class="terminal-dot dot-yellow"></div>
+            <div class="terminal-dot dot-green"></div>
+            <div class="terminal-title">dogan@trabzon.edu.tr: ~</div>
+          </div>
+
+          <div class="terminal-body">
+            <div class="mb-1">
+              <span class="terminal-prompt">dogan@trabzon.edu.tr</span>:<span class="terminal-path">~</span>$ whoami
+            </div>
+            <div class="mb-2 text-white">
+              Asst. Prof. Ramazan Özgür DOĞAN
+            </div>
+
+            <div class="mb-1">
+              <span class="terminal-prompt">dogan@trabzon.edu.tr</span>:<span class="terminal-path">~</span>$ cat
+              department.py
+            </div>
+            <div class="mb-3" style="color: #adb5bd;">
+              <span style="color: #f1fa8c;">class</span> <span style="color: #50fa7b;">Affiliation</span>:<br>
+              &nbsp;&nbsp;dept = <span style="color: #f1fa8c;">"AI Engineering"</span><br>
+              &nbsp;&nbsp;univ = <span style="color: #f1fa8c;">"Trabzon University"</span><br>
+              &nbsp;&nbsp;loc = <span style="color: #f1fa8c;">"Türkiye"</span>
+            </div>
+
+            <div>
+              <span class="terminal-prompt">dogan@trabzon.edu.tr</span>:<span class="terminal-path">~</span>$ <span
+                class="terminal-cursor"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="scroll-indicator d-none d-md-flex" style="bottom: 20px;">
+    <div class="scroll-mouse">
+      <div class="scroll-wheel"></div>
+    </div>
+  </div>
+</section>
+
+<section class="selected-publications-section py-5 mb-5">
+  <div class="container">
+
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <div class="mb-3">
+        <span class="section-badge">
+          <i class="fa-solid fa-book-journal-whills me-1"></i> Research Outputs
+        </span>
+      </div>
+
+      <h2 class="section-title text-capitalize mb-3">Selected Publications</h2>
+
+      <div class="mx-auto"
+        style="width: 80px; height: 4px; background: var(--gradient-main); border-radius: 2px; box-shadow: 0 0 15px var(--accent-glow);">
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+
+        {% for pub in publications %}
+        {% if pub.selected and 'true' in pub.selected %}
+        <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+          <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+            {% if pub.abbr %}
+            <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+              style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+              {{ pub.abbr }}
+            </span>
+            {% endif %}
+
+            {% if pub.preview %}
+            <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+              style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+              <img src="{{ SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
+                class="img-fluid" style="max-height: 100%; object-fit: contain;">
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="col-sm-9 mt-3 mt-sm-0">
+            <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+              {% if pub.html %}
+              <a href="{{ pub.html }}" target="_blank" class="text-decoration-none text-body">{{ pub.title }}</a>
+              {% else %}
+              {{ pub.title }}
+              {% endif %}
+            </h5>
+
+            <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+              {{ pub.author | replace('Doğan, Ramazan Özgür', '<span style="border-bottom: 1px solid #aaa;">Doğan,
+                Ramazan Özgür</span>') | replace('Dogan, Ramazan Ozgur', '<span
+                style="border-bottom: 1px solid #aaa;">Dogan, Ramazan Ozgur</span>') | safe }}
+            </div>
+
+            <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+              {% if pub.journal %}{{ pub.journal }},{% elif pub.booktitle %}{{ pub.booktitle }},{% endif %} {{ pub.year
+              }}
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mb-2">
+              {% if pub.doi %}
+              <a href="{{ pub.doi }}" target="_blank" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                style="font-size: 0.75rem;">DOI</a>
+              {% endif %}
+
+              <a href="#" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                style="font-size: 0.75rem;">BIB</a>
+
+              {% if pub.html %}
+              <a href="{{ pub.html }}" target="_blank" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                style="font-size: 0.75rem;">HTML</a>
+              {% endif %}
+
+              {% if pub.code %}
+              <a href="{{ pub.code }}" target="_blank" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                style="font-size: 0.75rem;">CODE</a>
+              {% endif %}
+            </div>
+
+            {% if pub.google_scholar_id %}
+            <div class="mt-2 badges">
+              <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=F2NkKNAAAAAJ&citation_for_view=F2NkKNAAAAAJ:{{ pub.google_scholar_id }}"
+                aria-label="Google Scholar link" role="button" rel="external nofollow noopener" target="_blank">
+                <img
+                  src="https://img.shields.io/badge/scholar-{% if pub.citation_count != '0' %}{{ pub.citation_count }}{% else %}N/A{% endif %}-4285F4?logo=googlescholar&labelColor=beige"
+                  alt="Google Scholar citations"
+                  style="height: 22px; border-radius: 4px; transition: transform 0.2s ease;"
+                  onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              </a>
+            </div>
+            {% endif %}
+
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block additional_js %}
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 70, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": ["#6c63ff", "#00d4ff"] }, // Mor ve Mavi Noktalar
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.6, "random": true },
+        "size": { "value": 3.5, "random": true },
+        "line_linked": {
+          "enable": true,
+          "distance": 160,
+          "color": "#6c63ff", // Mor bağ çizgileri
+          "opacity": 0.4,
+          "width": 1.2
+        },
+        "move": {
+          "enable": true,
+          "speed": 1.5, // Zarif ve yavaş hareket
+          "direction": "none",
+          "random": true,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false
+        }
+      },
+      "interactivity": {
+        "detect_on": "window", // Fareyi tüm ekranda algılar
+        "events": {
+          "onhover": { "enable": true, "mode": "grab" }, // Fareye doğru ağ uzatma
+          "onclick": { "enable": true, "mode": "push" }, // Tıklayınca yeni ağ ekleme
+          "resize": true
+        },
+        "modes": {
+          "grab": { "distance": 200, "line_linked": { "opacity": 0.8 } },
+          "push": { "particles_nb": 3 }
+        }
+      },
+      "retina_detect": true
+    });
+  });
+</script>
+{% endblock %}

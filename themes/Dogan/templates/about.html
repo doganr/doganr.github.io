@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}About & CV - {{ SITENAME }}{% endblock %}
+
+{% block content %}
+<div class="container subpage-wrapper pb-5">
+    <section class="subpage-hero text-center" data-aos="fade-down">
+        <div class="mb-3">
+            <span class="section-badge">
+                <i class="fa-solid fa-user me-1"></i> About Me
+            </span>
+        </div>
+        <h1 class="subpage-title">Curriculum Vitae</h1>
+        <p class="subpage-subtitle">{{ CV_DATA.basics.title }} {{ CV_DATA.basics.name }}</p>
+    </section>
+
+    <div class="row" style="padding-top:20px;">
+        <div class="col-lg-3 d-none d-lg-block mb-4">
+            <div class="glass-card p-4 sticky-top" style="top: 100px; border-top: 3px solid var(--accent-1);">
+                <h5 class="fw-bold mb-4 text-white">
+                    <i class="fa-solid fa-list-ul me-2 text-info"></i> Contents
+                </h5>
+                <nav class="nav flex-column gap-1" id="cv-sidebar-nav">
+                    <a class="nav-link text-secondary px-0 py-2" href="#basics">Basics</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#work">Work Experience</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#education">Education</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#skills">Skills</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#languages">Languages</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#awards">Awards</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+
+            <section id="basics" class="mb-5" style="scroll-margin-top: 100px;">
+                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">Basics</h2>
+                <div class="glass-card p-4" data-aos="fade-up">
+                    <div class="row g-3">
+                        <div class="col-md-3 font-weight-bold text-white">Name</div>
+                        <div class="col-md-9 text-secondary">{{ CV_DATA.basics.name }}</div>
+
+                        <div class="col-md-3 font-weight-bold text-white">Title</div>
+                        <div class="col-md-9 text-secondary">{{ CV_DATA.basics.title }}</div>
+
+                        <div class="col-md-3 font-weight-bold text-white">Email</div>
+                        <div class="col-md-9"><a href="mailto:{{ CV_DATA.basics.email }}"
+                                class="text-info text-decoration-none">{{ CV_DATA.basics.email }}</a></div>
+
+                        <div class="col-md-3 font-weight-bold text-white">Website</div>
+                        <div class="col-md-9"><a href="{{ CV_DATA.basics.website }}" target="_blank"
+                                class="text-info text-decoration-none">{{ CV_DATA.basics.website }}</a></div>
+
+                        <div class="col-md-3 font-weight-bold text-white">Summary</div>
+                        <div class="col-md-9 text-secondary" style="line-height: 1.7;">{{ CV_DATA.basics.summary }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="work" class="mb-5" style="scroll-margin-top: 100px;">
+                <h2 class="section-title mb-4 fw-light border-bottom pb-2"
+                    style="font-size: 1.8rem; letter-spacing: -0.5px;">Work Experience</h2>
+
+                <div class="timeline-container">
+                    {% for job in CV_DATA.work %}
+                    <div class="timeline-item" data-aos="fade-up">
+                        <div class="timeline-dot"></div>
+
+                        <div class="timeline-card">
+                            <span class="timeline-date-text">{{ job.date }}</span>
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="flex-grow-1">
+                                    <h4 class="fw-bold text-white mb-1" style="font-size: 1.15rem;">{{ job.role }}</h4>
+                                    <h5 class="text-info mb-2 fw-normal" style="font-size: 1rem;">
+                                        {% if job.url %}<a href="{{ job.url }}" target="_blank"
+                                            class="text-info text-decoration-none">{{ job.institution }}</a>{% else %}{{
+                                        job.institution }}{% endif %}
+                                    </h5>
+                                    <p class="text-secondary small mb-0" style="line-height: 1.6; opacity: 0.8;">{{
+                                        job.description }}</p>
+                                </div>
+
+                                <div class="d-none d-md-block">
+                                    <img src="{{ SITEURL }}/images/universities/{{ job.logo }}"
+                                        alt="{{ job.institution }}"
+                                        style="width: 50px; height: 50px; object-fit: contain; filter: grayscale(1) opacity(0.7); transition: all 0.3s;"
+                                        onmouseover="this.style.filter='grayscale(0) opacity(1)'"
+                                        onmouseout="this.style.filter='grayscale(1) opacity(0.7)'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section id="education" class="mb-5" style="scroll-margin-top: 100px;">
+                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 1.8rem;">Education</h2>
+
+                <div class="timeline-container">
+                    {% for edu in CV_DATA.education %}
+                    <div class="timeline-item" data-aos="fade-up">
+                        <div class="timeline-dot" style="border-color: var(--accent-1);"></div>
+
+                        <div class="timeline-card">
+                            <span class="timeline-date-text">{{ edu.date }}</span>
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="flex-grow-1">
+                                    <h4 class="fw-bold text-white mb-1" style="font-size: 1.15rem;">{{ edu.degree }}
+                                    </h4>
+                                    <h5 class="text-info mb-1 fw-normal" style="font-size: 1rem;">{{ edu.institution }}
+                                    </h5>
+                                    <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot me-1"></i> {{
+                                        edu.location }}</p>
+
+                                    {% if edu.details %}
+                                    <div class="ps-3 border-start border-secondary border-opacity-25 mt-2">
+                                        {% for detail in edu.details %}
+                                        <p class="mb-1 text-secondary small" style="font-size: 0.85rem;"><strong
+                                                class="text-info">{{ detail.label }}:</strong> {{ detail.text }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="d-none d-md-block">
+                                    <img src="{{ SITEURL }}/images/universities/{{ edu.logo }}"
+                                        alt="{{ edu.institution }}"
+                                        style="width: 50px; height: 50px; object-fit: contain; filter: grayscale(1) opacity(0.7); transition: all 0.3s;"
+                                        onmouseover="this.style.filter='grayscale(0) opacity(1)'"
+                                        onmouseout="this.style.filter='grayscale(1) opacity(0.7)'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section id="skills" class="mb-5" style="scroll-margin-top: 100px;">
+                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">Skills</h2>
+                <div class="row g-4">
+                    {% for skill in CV_DATA.skills %}
+                    <div class="col-md-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                        <div class="glass-card p-4 h-100">
+                            <h4 class="skill-category-title border-bottom border-secondary border-opacity-25 pb-2 mb-3"
+                                style="font-size: 1.2rem;">
+                                <i class="fa-solid {{ skill.icon }} me-2" style="color: {{ skill.color }}"></i>
+                                {{ skill.category }}
+                            </h4>
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                {% for tag in skill.tags %}
+                                <span class="badge skill-badge"
+                                    style="--skill-color: {{ skill.color }}; --skill-bg: {{ skill.badge_bg }};">
+                                    {{ tag }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <div class="row">
+                <div class="col-md-6 mb-5" data-aos="fade-up">
+                    <section id="languages" style="scroll-margin-top: 100px;">
+                        <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">Languages
+                        </h2>
+                        <div class="glass-card p-4 h-100">
+                            {% for lang in CV_DATA.languages %}
+                            <div
+                                class="mb-{% if loop.last %}0{% else %}3 pb-3 border-bottom border-secondary border-opacity-25{% endif %}">
+                                <h4 class="text-white mb-1">{{ lang.name }}</h4>
+                                <p class="text-info mb-0">{{ lang.level }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-md-6 mb-5" data-aos="fade-up" data-aos-delay="100">
+                    <section id="awards" style="scroll-margin-top: 100px;">
+                        <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">Awards</h2>
+                        <div class="glass-card p-4 h-100">
+                            {% for award in CV_DATA.awards %}
+                            <div class="d-flex align-items-start mb-{% if not loop.last %}4{% else %}0{% endif %}">
+                                <div class="badge rounded-pill px-2 py-1 text-dark fw-bold me-3 mt-1 shadow"
+                                    style="background: #ffd700; font-size: 0.75rem; min-width: 90px;"><i
+                                        class="fa-solid fa-trophy me-1"></i> {{ award.date[:4] }}</div>
+                                <div>
+                                    <h5 class="fw-bold text-white mb-1" style="font-size: 1rem;">{{ award.title }}</h5>
+                                    <p class="text-secondary mb-0" style="font-size: 0.85rem;">{{ award.institution }}
+                                    </p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

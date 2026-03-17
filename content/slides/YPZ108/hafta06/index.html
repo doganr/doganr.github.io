@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 6. Hafta - Lisans Anlaşmaları ve Bilişim Hukuku</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 6 — Teal & Indigo Theme */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Inter', sans-serif;
+            text-transform: none;
+        }
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(45, 212, 191, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .glass-card:hover {
+            border-color: rgba(45, 212, 191, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .legal-badge {
+            background: rgba(45, 212, 191, 0.15);
+            color: #2dd4bf;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            border: 1px solid rgba(45, 212, 191, 0.3);
+        }
+
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+        .float-anim { animation: float 4s ease-in-out infinite; }
+        .shimmer-text {
+            background: linear-gradient(90deg, #2dd4bf 0%, #818cf8 50%, #2dd4bf 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        /* License spectrum bar */
+        .license-spectrum {
+            background: linear-gradient(90deg, #10b981 0%, #3b82f6 50%, #ef4444 100%);
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        /* EULA scroll animation */
+        @keyframes scroll-text { 0%{transform:translateY(0)} 100%{transform:translateY(-50%)} }
+        .eula-scroll { animation: scroll-text 15s linear infinite; }
+        .eula-scroll:hover { animation-play-state: paused; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 1: KAPAK                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 30% 50%, #134e4a 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-teal-600 top-0 left-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <!-- Badge -->
+                    <div class="px-4 py-2 bg-teal-500/10 rounded-full text-xs font-bold tracking-widest mb-6 border border-teal-500/30">
+                        <span class="text-teal-400">HAFTA 06</span>
+                        <span class="text-slate-600 mx-2">•</span>
+                        <span class="text-slate-400">BİLİŞİM ETİĞİ</span>
+                    </div>
+
+                    <!-- İkon -->
+                    <div class="relative mb-8 group">
+                        <div class="absolute inset-0 bg-teal-600 rounded-full blur-[60px] opacity-30 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+                        <div class="absolute inset-[-20px] rounded-full border border-teal-500/20 animate-[spin_15s_linear_infinite]"></div>
+                        <div class="absolute inset-[-40px] rounded-full border border-indigo-500/10 border-dashed animate-[spin_25s_linear_infinite_reverse]"></div>
+                        <div class="p-8 bg-teal-500/10 rounded-full border border-teal-500/20 relative z-10 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110">
+                            <i data-lucide="file-key" style="width: 80px; height: 80px;" class="text-teal-400 drop-shadow-[0_0_15px_rgba(45,212,191,0.8)]"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl mb-4 leading-tight">Lisans Anlaşmaları ve<br>
+                        <span class="shimmer-text">Bilişim Hukuku</span>
+                    </h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">6. Hafta: Yazılımın Hukuki Sınırları</p>
+                    <div class="mt-8 flex gap-6 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span class="flex items-center gap-2"><i data-lucide="lock" size="12" class="text-teal-500"></i> KAPALI KAYNAK</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="unlock" size="12" class="text-teal-500"></i> AÇIK KAYNAK</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="gavel" size="12" class="text-teal-500"></i> BİLİŞİM HUKUKU</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 2: YAZILIM LİSANSI NEDİR?            -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-teal-600 bottom-0 left-0"></div>
+                    <div class="grid grid-cols-2 gap-12 items-center text-left">
+                        <div>
+                            <div class="legal-badge mb-6">Sözleşme Hukuku</div>
+                            <h2 class="text-4xl mb-6">Mülkiyet Değil,<br><span class="text-teal-400">Kullanım Hakkı</span></h2>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                                Bir yazılımı satın aldığınızda, genellikle yazılımın kendisine değil, onu belirli kurallar çerçevesinde <strong class="text-white">kullanma hakkına (Lisans)</strong> sahip olursunuz. Bu, ev kiralamak gibidir — kullanırsınız ama sahibi değilsiniz.
+                            </p>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-4 p-3 bg-teal-500/5 rounded-xl border border-teal-500/10 hover:bg-teal-500/10 transition-all cursor-default">
+                                    <div class="p-2 bg-teal-500/20 rounded-lg"><i data-lucide="ruler" class="text-teal-400" size="20"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-sm font-bold m-0">Kullanım Sınırları</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Kaç cihazda kullanılabilir, ticari mi kişisel mi?</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 p-3 bg-teal-500/5 rounded-xl border border-teal-500/10 hover:bg-teal-500/10 transition-all cursor-default">
+                                    <div class="p-2 bg-teal-500/20 rounded-lg"><i data-lucide="copy" class="text-teal-400" size="20"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-sm font-bold m-0">Kopyalama & Dağıtım</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Kod paylaşılabilir mi, değiştirilebilir mi?</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 p-3 bg-teal-500/5 rounded-xl border border-teal-500/10 hover:bg-teal-500/10 transition-all cursor-default">
+                                    <div class="p-2 bg-teal-500/20 rounded-lg"><i data-lucide="shield-off" class="text-teal-400" size="20"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-sm font-bold m-0">Sorumluluk Reddi</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Disclaimer: "Bu yazılımdan doğan zararlardan sorumlu değiliz"</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <!-- GÖRSEL: EULA / Lisans temalı görsel -> images/eula.png -->
+                            <div class="absolute inset-0 bg-teal-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <div class="glass-card p-6 border-teal-500/30 overflow-hidden" style="max-height: 420px;">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <i data-lucide="scroll-text" class="text-teal-400" size="20"></i>
+                                    <span class="text-teal-400 text-xs font-bold tracking-widest uppercase">EULA Örneği</span>
+                                </div>
+                                <div class="bg-black/60 rounded-xl p-4 h-[280px] overflow-hidden relative">
+                                    <div class="eula-scroll">
+                                        <p class="text-[9px] text-slate-500 font-mono leading-relaxed m-0">
+                                            1. LİSANS VERİLMESİ<br>
+                                            Bu Sözleşme kapsamında size münhasır olmayan, devredilemez, sınırlı bir lisans verilmektedir.<br><br>
+                                            2. KISITLAMALAR<br>
+                                            Yazılımı tersine mühendislik, kaynak koda dönüştürme veya ayrıştırma yapmanız yasaktır.<br><br>
+                                            3. GARANTİ REDDİ<br>
+                                            Yazılım "OLDUĞU GİBİ" sağlanmaktadır. Geliştiriciler, ticari elverişlilik veya belirli bir amaca uygunluk konusunda garanti vermez.<br><br>
+                                            4. SORUMLULUK SINIRLAMASI<br>
+                                            Hiçbir durumda geliştiriciler dolaylı, arızi, özel veya sonuç olarak ortaya çıkan herhangi bir zarardan sorumlu tutulamaz.<br><br>
+                                            5. FESİH<br>
+                                            İşbu Sözleşme, siz herhangi bir hükmünü ihlal ettiğinizde otomatik olarak sona erer.<br><br>
+                                            6. UYGULANACAK HUKUK<br>
+                                            İşbu Sözleşme, Türkiye Cumhuriyeti Kanunlarına tabi olacaktır.
+                                        </p>
+                                        <p class="text-[9px] text-slate-500 font-mono leading-relaxed m-0">
+                                            1. LİSANS VERİLMESİ<br>
+                                            Bu Sözleşme kapsamında size münhasır olmayan ve devredilemez bir lisans verilmektedir.<br><br>
+                                            2. KISITLAMALAR<br>
+                                            Tersine mühendislik yasaktır...
+                                        </p>
+                                    </div>
+                                    <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
+                                </div>
+                                <p class="text-[9px] text-slate-600 italic text-center mt-3 m-0">"Okudum, onaylıyorum" derken gerçekten okudunuz mu?</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.1: EULA Gerçekleri Alt Slayt -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-3xl mb-8"><i data-lucide="alert-triangle" class="text-amber-400 inline mr-3" size="28"></i>EULA <span class="text-amber-400">Gerçekleri</span></h2>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="fragment glass-card p-6 text-center border-amber-500/10 hover:border-amber-500/30 transition-all group">
+                            <div class="text-4xl font-black text-white mb-2 group-hover:scale-110 transition-transform">76</div>
+                            <div class="text-amber-400 text-xs font-bold mb-2">Sayfa Ortalama</div>
+                            <p class="text-[10px] text-slate-500 m-0">Bir EULA okumak ortalama 76 dakika sürer. Yılda 250+ saat!</p>
+                        </div>
+                        <div class="fragment glass-card p-6 text-center border-red-500/10 hover:border-red-500/30 transition-all group">
+                            <div class="text-4xl font-black text-white mb-2 group-hover:scale-110 transition-transform">%1</div>
+                            <div class="text-red-400 text-xs font-bold mb-2">Okuyan Kullanıcı</div>
+                            <p class="text-[10px] text-slate-500 m-0">Araştırmalara göre kullanıcıların sadece %1'i EULA'yı okuyor.</p>
+                        </div>
+                        <div class="fragment glass-card p-6 text-center border-teal-500/10 hover:border-teal-500/30 transition-all group">
+                            <div class="text-4xl font-black text-white mb-2 group-hover:scale-110 transition-transform">7.500</div>
+                            <div class="text-teal-400 text-xs font-bold mb-2">Kelime (iTunes)</div>
+                            <p class="text-[10px] text-slate-500 m-0">Apple iTunes EULA'sı, Shakespeare'in Hamlet'inden daha uzundur.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 p-4 bg-teal-500/5 rounded-xl border border-teal-500/10 max-w-2xl mx-auto">
+                        <p class="text-sm text-slate-400 italic m-0"><i data-lucide="info" size="14" class="text-teal-400 inline mr-2"></i> "Kabul ediyorum" demek hukuki bir <strong class="text-white">bağlayıcı sözleşme</strong> imzalamak anlamına gelir.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 3: LİSANS TÜRLERİ (KAPALI vs AÇIK)  -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-teal-500/20 rounded-xl"><i data-lucide="git-branch" class="text-teal-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Yazılım Lisans <span class="text-teal-400">Yelpazesi</span></h2>
+                    </div>
+
+                    <!-- Spectrum Bar -->
+                    <div class="max-w-3xl mx-auto mb-10">
+                        <div class="license-spectrum mb-2"></div>
+                        <div class="flex justify-between text-[9px] text-slate-500 uppercase tracking-widest">
+                            <span>Açık (Permissive)</span>
+                            <span>Copyleft</span>
+                            <span>Kapalı (Restrictive)</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="fragment glass-card p-6 text-left border-emerald-500/20 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all group">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-emerald-500/20 rounded-lg group-hover:bg-emerald-500/30 transition-colors"><i data-lucide="unlock" class="text-emerald-400" size="24"></i></div>
+                                <div>
+                                    <h3 class="text-xl text-emerald-400 font-bold m-0">Açık Kaynak</h3>
+                                    <span class="text-[9px] text-slate-500 uppercase tracking-widest">Open Source</span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">Kod erişilebilir. İnceleme, değiştirme ve (lisansa bağlı olarak) dağıtma hakkı verir.</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-[9px] bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded-full">Linux</span>
+                                <span class="text-[9px] bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded-full">Android</span>
+                                <span class="text-[9px] bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded-full">VLC</span>
+                                <span class="text-[9px] bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded-full">VS Code</span>
+                                <span class="text-[9px] bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded-full">Firefox</span>
+                            </div>
+                            <div class="p-2 bg-emerald-500/5 rounded-lg border border-emerald-500/10">
+                                <p class="text-[9px] text-slate-500 m-0 italic">✦ Şeffaflık, topluluk katkısı, güvenlik denetimi avantajı</p>
+                            </div>
+                        </div>
+
+                        <div class="fragment glass-card p-6 text-left border-red-500/20 hover:border-red-500/40 hover:shadow-[0_0_30px_rgba(239,68,68,0.1)] transition-all group">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-red-500/20 rounded-lg group-hover:bg-red-500/30 transition-colors"><i data-lucide="lock" class="text-red-400" size="24"></i></div>
+                                <div>
+                                    <h3 class="text-xl text-red-400 font-bold m-0">Kapalı Kaynak</h3>
+                                    <span class="text-[9px] text-slate-500 uppercase tracking-widest">Proprietary</span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">Kod gizlidir. Kullanıcı sadece çalıştırılabilir dosyayı kullanır. Tersine mühendislik yasaktır.</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-[9px] bg-red-900/30 text-red-300 px-2 py-1 rounded-full">Windows</span>
+                                <span class="text-[9px] bg-red-900/30 text-red-300 px-2 py-1 rounded-full">Adobe</span>
+                                <span class="text-[9px] bg-red-900/30 text-red-300 px-2 py-1 rounded-full">macOS</span>
+                                <span class="text-[9px] bg-red-900/30 text-red-300 px-2 py-1 rounded-full">Office</span>
+                                <span class="text-[9px] bg-red-900/30 text-red-300 px-2 py-1 rounded-full">AutoCAD</span>
+                            </div>
+                            <div class="p-2 bg-red-500/5 rounded-lg border border-red-500/10">
+                                <p class="text-[9px] text-slate-500 m-0 italic">✦ Ticari sır, gelir modeli, müşteri desteği avantajı</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3.1: Açık Kaynak Lisans Detayları -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-3xl mb-8">Açık Kaynak: <span class="text-teal-400">Hangi Özgürlük?</span></h2>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="fragment glass-card p-6 text-center border-emerald-500/10 hover:border-emerald-500/40 hover:shadow-[0_0_25px_rgba(16,185,129,0.15)] transition-all group">
+                            <div class="p-3 bg-emerald-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-emerald-500/20">
+                                <i data-lucide="check-circle" class="text-emerald-400" size="32"></i>
+                            </div>
+                            <h4 class="text-emerald-400 font-bold mb-2 uppercase text-sm">MIT / BSD</h4>
+                            <p class="text-[10px] text-slate-400 mb-3 italic">"Her şeyi yapabilirsin, sadece ismimi belirt."</p>
+                            <div class="license-spectrum mb-2" style="background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                            <span class="text-[8px] text-slate-500 font-bold uppercase tracking-widest">En İzin Verici</span>
+                        </div>
+
+                        <div class="fragment glass-card p-6 text-center border-blue-500/10 hover:border-blue-500/40 hover:shadow-[0_0_25px_rgba(59,130,246,0.15)] transition-all group">
+                            <div class="p-3 bg-blue-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-blue-500/20">
+                                <i data-lucide="repeat" class="text-blue-400" size="32"></i>
+                            </div>
+                            <h4 class="text-blue-400 font-bold mb-2 uppercase text-sm">GNU / GPL</h4>
+                            <p class="text-[10px] text-slate-400 mb-3 italic">"Kodumu kullanırsan, sen de açık kaynak yapmalısın."</p>
+                            <div class="license-spectrum mb-2" style="background: linear-gradient(90deg, #3b82f6, #6366f1);"></div>
+                            <span class="text-[8px] text-slate-500 font-bold uppercase tracking-widest">Copyleft (Bulaşıcı)</span>
+                        </div>
+
+                        <div class="fragment glass-card p-6 text-center border-indigo-500/10 hover:border-indigo-500/40 hover:shadow-[0_0_25px_rgba(99,102,241,0.15)] transition-all group">
+                            <div class="p-3 bg-indigo-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-indigo-500/20">
+                                <i data-lucide="shield" class="text-indigo-400" size="32"></i>
+                            </div>
+                            <h4 class="text-indigo-400 font-bold mb-2 uppercase text-sm">Apache 2.0</h4>
+                            <p class="text-[10px] text-slate-400 mb-3 italic">"Kullanabilirsin ama patent haklarımı da koruyorum."</p>
+                            <div class="license-spectrum mb-2" style="background: linear-gradient(90deg, #6366f1, #818cf8);"></div>
+                            <span class="text-[8px] text-slate-500 font-bold uppercase tracking-widest">Ticari Dostu</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-3 bg-blue-500/5 rounded-xl border border-blue-500/10 max-w-2xl mx-auto">
+                        <p class="text-[10px] text-slate-400 m-0"><i data-lucide="alert-circle" size="12" class="text-blue-400 inline mr-1"></i> <strong class="text-blue-400">Dikkat:</strong> GPL lisanslı bir kodu kendi projenizde kullanırsanız, projenizin <strong class="text-white">tamamını</strong> açık kaynak yapmanız gerekebilir!</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 4: BİLİŞİM HUKUKU & SUÇLAR           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-red-600 top-0 right-0"></div>
+                    <div class="grid grid-cols-2 gap-10 items-center">
+                        <!-- SOL: Görsel Alanı -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-red-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <!-- GÖRSEL: Bilişim suçları / siber güvenlik temalı -> images/cyber_crime.png -->
+                            <img src="images/cyber_crime.png" alt="Bilişim Suçları" class="w-full rounded-2xl border border-red-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:460px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-red-500/20 items-center justify-center flex-col" style="height:400px;">
+                                <i data-lucide="shield-alert" class="text-red-400 mb-4" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/cyber_crime.png</p>
+                            </div>
+                        </div>
+
+                        <!-- SAĞ: İçerik -->
+                        <div class="text-left">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="p-3 bg-red-500/20 rounded-xl"><i data-lucide="gavel" class="text-red-400" size="28"></i></div>
+                                <h2 class="text-3xl m-0">TCK ve <span class="text-red-400">Bilişim Suçları</span></h2>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="fragment p-4 bg-slate-900 border-l-4 border-red-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-red-400 font-black text-lg shrink-0">243</span>
+                                        <div>
+                                            <p class="text-xs font-bold text-red-400 mb-1 m-0">Bilişim Sistemine Girme</p>
+                                            <p class="text-[11px] text-slate-400 m-0">Yetkisiz erişim, sadece "merak" olsa bile <strong class="text-white">suçtur</strong>. 1-3 yıl hapis.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fragment p-4 bg-slate-900 border-l-4 border-orange-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-orange-400 font-black text-lg shrink-0">244</span>
+                                        <div>
+                                            <p class="text-xs font-bold text-orange-400 mb-1 m-0">Verileri Bozma / Erişilmez Kılma</p>
+                                            <p class="text-[11px] text-slate-400 m-0">Ransomware, DDoS gibi eylemler. 2-5 yıl hapis cezası.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fragment p-4 bg-slate-900 border-l-4 border-yellow-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-yellow-400 font-black text-lg shrink-0">245</span>
+                                        <div>
+                                            <p class="text-xs font-bold text-yellow-400 mb-1 m-0">Banka / Kredi Kartı Dolandırıcılığı</p>
+                                            <p class="text-[11px] text-slate-400 m-0">Kimlik hırsızlığı ve sahte kart üretimi. 4-7 yıl hapis.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4.1: Gerçek Davalar Alt Slayt -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-4"><i data-lucide="landmark" class="text-teal-400 inline mr-2" size="24"></i>Güncel <span class="text-teal-400">Vaka Çalışmaları</span></h2>
+                    <div class="grid grid-cols-2 gap-5">
+                        <!-- Google vs Oracle -->
+                        <div class="fragment glass-card p-4 text-left border-teal-500/20 hover:border-teal-500/40 transition-all">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="p-1.5 bg-teal-500/20 rounded-lg"><i data-lucide="code" class="text-teal-400" size="16"></i></div>
+                                <h4 class="text-teal-400 font-bold text-sm m-0">Google vs. Oracle (2021)</h4>
+                            </div>
+                            <!-- Java/Android Kod Örneği -->
+                            <div class="bg-[#1a1a2e] rounded-lg p-2.5 font-mono text-left mb-2 border border-teal-500/10 relative overflow-hidden">
+                                <div class="flex items-center gap-1.5 mb-1.5">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-red-500/70"></div>
+                                    <div class="w-1.5 h-1.5 rounded-full bg-yellow-500/70"></div>
+                                    <div class="w-1.5 h-1.5 rounded-full bg-green-500/70"></div>
+                                    <span class="text-[7px] text-slate-600 ml-1.5 font-sans">MainActivity.java</span>
+                                </div>
+                                <p class="text-[8px] m-0 leading-[1.4]"><span class="text-slate-600">// Oracle'ın sahipliğini iddia ettiği API'ler</span></p>
+                                <p class="text-[8px] m-0 leading-[1.4]"><span class="text-red-400">import</span> <span class="text-teal-300">java.lang.Object</span>;</p>
+                                <p class="text-[8px] m-0 leading-[1.4]"><span class="text-red-400">import</span> <span class="text-teal-300">java.io.InputStream</span>;</p>
+                                <p class="text-[8px] m-0 leading-[1.4]"><span class="text-red-400">import</span> <span class="text-teal-300">java.util.List</span>;</p>
+                                <p class="text-[8px] m-0 leading-[1.4]">&nbsp;</p>
+                                <p class="text-[8px] m-0 leading-[1.4]"><span class="text-purple-400">public class</span> <span class="text-yellow-300">MainActivity</span> <span class="text-purple-400">extends</span> <span class="text-green-400">Activity</span> {</p>
+                                <p class="text-[8px] m-0 leading-[1.4] pl-3"><span class="text-purple-400">@Override protected void</span> <span class="text-yellow-300">onCreate</span>(<span class="text-green-400">Bundle</span> <span class="text-orange-300">s</span>) {</p>
+                                <p class="text-[8px] m-0 leading-[1.4] pl-5"><span class="text-purple-400">super</span>.<span class="text-blue-300">onCreate</span>(s);</p>
+                                <p class="text-[8px] m-0 leading-[1.4] pl-5"><span class="text-green-400">List</span>&lt;<span class="text-green-400">String</span>&gt; d = <span class="text-purple-400">new</span> <span class="text-green-400">ArrayList</span>&lt;&gt;();</p>
+                                <p class="text-[8px] m-0 leading-[1.4]">  } }</p>
+                                <!-- Tartışmalı satır vurgusu -->
+                                <div class="absolute top-[24px] left-0 right-0 bg-red-500/10 border-l-2 border-red-500 pointer-events-none" style="height:26px;"></div>
+                            </div>
+                            <p class="text-[10px] text-slate-300 mb-1.5 leading-snug m-0">Google, Android'de <strong class="text-white">Java API yapılarını</strong> kullandı. ABD Yüksek Mahkemesi: <strong class="text-emerald-400">"Adil Kullanım"</strong></p>
+                            <div class="p-1.5 bg-emerald-500/5 rounded-lg border border-emerald-500/10">
+                                <p class="text-[9px] text-emerald-400 m-0">✦ API declaration korunsa da reimplementation adil kullanımdır.</p>
+                            </div>
+                        </div>
+
+                        <!-- GitHub Copilot -->
+                        <div class="fragment glass-card p-4 text-left border-amber-500/20 hover:border-amber-500/40 transition-all">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="p-1.5 bg-amber-500/20 rounded-lg"><i data-lucide="bot" class="text-amber-400" size="16"></i></div>
+                                <h4 class="text-amber-400 font-bold text-sm m-0">GitHub Copilot Tartışması</h4>
+                            </div>
+                            <!-- Copilot AI Terminal Efekti -->
+                            <div class="bg-[#1a1a2e] rounded-lg p-2.5 font-mono text-left mb-2 border border-amber-500/10 relative overflow-hidden">
+                                <div class="flex items-center gap-1.5 mb-1.5">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-red-500/70"></div>
+                                    <div class="w-1.5 h-1.5 rounded-full bg-yellow-500/70"></div>
+                                    <div class="w-1.5 h-1.5 rounded-full bg-green-500/70"></div>
+                                    <span class="text-[7px] text-slate-600 ml-1.5 font-sans">Copilot Suggestion</span>
+                                    <span class="ml-auto text-[7px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full font-sans border border-amber-500/30">AI ✨</span>
+                                </div>
+                                <p class="text-[8px] m-0 leading-[1.4]"><span class="text-slate-500">// Sen yazdın:</span></p>
+                                <p class="text-[8px] m-0 leading-[1.4]"><span class="text-purple-400">def</span> <span class="text-yellow-300">quick_sort</span>(<span class="text-orange-300">arr</span>):</p>
+                                <p class="text-[8px] m-0 leading-[1.4]">&nbsp;</p>
+                                <p class="text-[8px] m-0 leading-[1.4]"><span class="text-slate-600">// 🤖 Copilot önerdi (GPL kodundan mı?):</span></p>
+                                <p class="text-[8px] m-0 leading-[1.4] opacity-60" style="text-shadow: 0 0 8px rgba(251,191,36,0.4);">  <span class="text-purple-400/70">if</span> <span class="text-blue-300/70">len</span>(arr) &lt;= <span class="text-cyan-400/70">1</span>: <span class="text-purple-400/70">return</span> arr</p>
+                                <p class="text-[8px] m-0 leading-[1.4] opacity-60" style="text-shadow: 0 0 8px rgba(251,191,36,0.4);">  pivot = arr[<span class="text-cyan-400/70">0</span>]</p>
+                                <p class="text-[8px] m-0 leading-[1.4] opacity-60" style="text-shadow: 0 0 8px rgba(251,191,36,0.4);">  left = [x <span class="text-purple-400/70">for</span> x <span class="text-purple-400/70">in</span> arr <span class="text-purple-400/70">if</span> x &lt; pivot]</p>
+                                <p class="text-[8px] m-0 leading-[1.4] opacity-60" style="text-shadow: 0 0 8px rgba(251,191,36,0.4);">  <span class="text-purple-400/70">return</span> quick_sort(left)+[pivot]+...</p>
+                                <p class="text-[8px] m-0 leading-[1.4] opacity-60"><span class="inline-block w-1.5 h-2.5 bg-amber-400 animate-pulse"></span></p>
+                                <!-- GPL uyarı şeridi -->
+                                <div class="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-red-500/10 to-transparent flex items-end justify-center pb-0.5">
+                                    <span class="text-[7px] text-red-400/60 font-sans">⚠ Kaynak: GPL-3.0 lisanslı repo?</span>
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-slate-300 mb-1.5 leading-snug m-0">AI, açık kaynak kodla eğitildi. Ürettiği kod <strong class="text-white">GPL kaynaklı</strong> olabilir. <strong class="text-amber-400">Lisans ihlali mi?</strong></p>
+                            <div class="p-1.5 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <p class="text-[9px] text-amber-400 m-0">✦ Hukuki gri alan — AI üretimi kodun telif durumu belirsiz.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 5: YAZILIMCININ SORUMLULUĞU           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(135deg, #020617 0%, #134e4a 100%)">
+                <div class="grid grid-cols-2 gap-10 items-center">
+                    <div class="text-left">
+                        <div class="legal-badge mb-6">Hukuki Sorumluluk</div>
+                        <h2 class="text-3xl mb-6">Yazılımcının <span class="text-teal-400">Hukuki Sorumluluğu</span></h2>
+                        <div class="glass-card p-5 border-teal-500/30 mb-6">
+                            <h3 class="text-lg text-teal-400 font-bold italic mb-3 m-0">Malpractice?</h3>
+                            <p class="text-[11px] text-slate-300 leading-relaxed m-0">
+                                Bir doktorun hatası can alabilir, bir yazılımcının hatası ise milyonlarca veriyi veya finansal sistemi çökertebilir.
+                                <strong class="text-white">Hukuk, "bilerek veya ağır ihmal ile" yapılan hataları cezalandırır.</strong>
+                            </p>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="fragment flex gap-4 items-center p-3 bg-teal-500/5 rounded-xl border border-teal-500/10 hover:bg-teal-500/10 transition-all">
+                                <div class="p-2 bg-teal-500/20 rounded-lg"><i data-lucide="alert-triangle" class="text-teal-400" size="20"></i></div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white m-0">Kusursuz Yazılım Yoktur</h4>
+                                    <p class="text-[10px] text-slate-500 m-0">Hukuki koruma için test süreçleri belgelenmelidir.</p>
+                                </div>
+                            </div>
+                            <div class="fragment flex gap-4 items-center p-3 bg-teal-500/5 rounded-xl border border-teal-500/10 hover:bg-teal-500/10 transition-all">
+                                <div class="p-2 bg-teal-500/20 rounded-lg"><i data-lucide="file-signature" class="text-teal-400" size="20"></i></div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white m-0">Sözleşme Önemlidir</h4>
+                                    <p class="text-[10px] text-slate-500 m-0">Kimin sorumlu olduğu sözleşmede netleştirilmelidir.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SAĞ: Görsel Alanı -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-teal-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                        <!-- GÖRSEL: Sorumluluk/hukuk temalı -> images/responsibility.png -->
+                        <img src="images/responsibility.png" alt="Yazılımcı Sorumluluğu" class="w-full rounded-2xl border border-teal-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:460px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden glass-card p-12 border-teal-500/20 items-center justify-center flex-col" style="height:400px;">
+                            <i data-lucide="scale" class="text-teal-400 mb-4" size="80"></i>
+                            <p class="text-slate-500 text-sm">images/responsibility.png</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 6: İNTERAKTİF SENARYO                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-teal-600 top-0 right-0"></div>
+                <div class="grid grid-cols-2 gap-8 items-center">
+                    <!-- SOL: Görsel -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-teal-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                        <img src="images/deadline.png" alt="Proje Teslimi" class="w-full rounded-2xl border border-teal-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:520px; object-fit:cover;">
+                    </div>
+
+                    <!-- SAĞ: İçerik -->
+                    <div class="text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="p-1.5 bg-teal-500/20 rounded-lg animate-pulse"><i data-lucide="mouse-pointer-click" class="text-teal-400" size="16"></i></div>
+                            <span class="legal-badge" style="margin-bottom:0;">ETİK İKİLEM</span>
+                        </div>
+
+                        <h2 class="text-2xl mb-4 m-0"><span class="text-teal-400">Senaryo:</span> Bulaşıcı Lisans</h2>
+
+                        <div class="glass-card p-4 border-teal-400/30 mb-4">
+                            <p class="text-[11px] text-slate-200 mb-2 m-0 leading-relaxed">
+                                Şirketin en önemli ticari projesinde, yanlışlıkla <span class="bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/30 font-bold text-[10px]">GPL lisanslı</span> küçük bir kütüphane kullandınız. Teslimine <strong class="text-red-400">1 gün</strong> kala fark ettiniz.
+                            </p>
+                            <div class="bg-black/60 p-2.5 rounded-lg border border-slate-700 relative">
+                                <i data-lucide="quote" class="absolute -top-1.5 -left-0.5 text-slate-600" size="12"></i>
+                                <p class="text-[10px] text-slate-400 italic m-0 pl-3">
+                                    Yöneticiniz: <span class="text-white font-bold">"Kimse fark etmez, devam et!"</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-red-500 hover:bg-red-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(220,38,38,0.2)]">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-red-900/50 transition-colors"><i data-lucide="flame" class="text-slate-400 group-hover:text-red-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-red-400 m-0">Risk Al</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Küçük kütüphane, fark edilmez. Proje öncelik."</p>
+                            </div>
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-emerald-500 hover:bg-emerald-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-emerald-900/50 transition-colors"><i data-lucide="shield-check" class="text-slate-400 group-hover:text-emerald-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-emerald-400 m-0">Hukuki Güvenlik</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Raporlarım. İhlal şirketi batırabilir."</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 p-2 bg-red-500/5 rounded-lg border border-red-500/10">
+                            <p class="text-[9px] text-red-400/80 m-0"><i data-lucide="alert-triangle" size="10" class="inline mr-1"></i> GPL ihlali tespit edilirse tüm projenin kaynak kodunu açmak zorunda kalabilirsiniz!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 7: KAPANIŞ                           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 100%, #134e4a 0%, #000 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2 class="text-4xl mb-4">Haftaya Bakış</h2>
+                    <p class="text-xl text-slate-400 mb-10">Sıradaki Konu: <span class="text-teal-400 border-b border-teal-400">Gözetim Toplumu ve Mahremiyet Dengesi</span></p>
+
+                    <div class="glass-card p-6 max-w-3xl mb-8 border-teal-500/30">
+                        <h4 class="text-white text-sm font-bold mb-6 text-center tracking-widest">BU HAFTA NE ÖĞRENDİK?</h4>
+                        <div class="grid grid-cols-4 gap-6 text-center">
+                            <div>
+                                <i data-lucide="scroll-text" class="text-teal-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-teal-400 text-xs font-bold m-0">EULA</p>
+                                <p class="text-slate-500 text-[10px] m-0">Lisans Sözleşmesi</p>
+                            </div>
+                            <div>
+                                <i data-lucide="git-branch" class="text-emerald-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-emerald-400 text-xs font-bold m-0">Açık Kaynak</p>
+                                <p class="text-slate-500 text-[10px] m-0">MIT, GPL, Apache</p>
+                            </div>
+                            <div>
+                                <i data-lucide="gavel" class="text-red-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-red-400 text-xs font-bold m-0">TCK 243-245</p>
+                                <p class="text-slate-500 text-[10px] m-0">Bilişim Suçları</p>
+                            </div>
+                            <div>
+                                <i data-lucide="scale" class="text-amber-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-amber-400 text-xs font-bold m-0">Sorumluluk</p>
+                                <p class="text-slate-500 text-[10px] m-0">Yazılımcı Hukuku</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-sm italic text-slate-300">
+                        <i data-lucide="quote" class="inline text-teal-400" size="14"></i>
+                        Güvenlik için mahremiyetten ne kadar vazgeçebiliriz? Gözetim toplumu kapıda mı?
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false,
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+</html>

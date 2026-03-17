@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Publications - {{ SITENAME }}{% endblock %}
+
+{% block content %}
+<div class="container subpage-wrapper">
+    <section class="subpage-hero text-center" data-aos="fade-down">
+        <div class="mb-3">
+            <span class="section-badge">
+                <i class="fa-solid fa-book me-1"></i> Academic Outcomes
+            </span>
+        </div>
+        <h1 class="subpage-title">Publications</h1>
+        <p class="subpage-subtitle mt-3 mx-auto" style="max-width: 600px;">
+            Research articles, conference proceedings, and reviews.
+        </p>
+    </section>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            {% for year, year_pubs in publications|groupby('year')|reverse %}
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">{{ year }}</h3>
+
+            {% for pub in year_pubs %}
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-end text-end pe-4">
+                    {% if pub.abbr %}
+                    <span class="badge rounded-1 mb-3 px-3 py-1"
+                        style="background-color: #00e5ff; color: #fff; font-size: 0.75rem; letter-spacing: 0.5px;">
+                        {{ pub.abbr }}
+                    </span>
+                    {% endif %}
+
+                    {% if pub.preview %}
+                    <img src="{{ SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
+                        class="img-fluid" style="max-height: 120px; object-fit: contain;">
+                    {% endif %}
+                </div>
+
+                <div class="col-sm-9">
+                    <h5 class="mb-1" style="font-size: 1.1rem; font-weight: 500;">
+                        {% if pub.html %}
+                        <a href="{{ pub.html }}" target="_blank" class="text-decoration-none text-body">{{ pub.title
+                            }}</a>
+                        {% else %}
+                        {{ pub.title }}
+                        {% endif %}
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        {{ pub.author | replace('Doğan, Ramazan Özgür', '<span
+                            style="border-bottom: 1px solid #aaa;">Doğan, Ramazan Özgür</span>') | replace('Dogan,
+                        Ramazan Ozgur', '<span style="border-bottom: 1px solid #aaa;">Dogan, Ramazan Ozgur</span>') |
+                        replace('Dogan, Hulya', 'Dogan, Hulya') | safe }}
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+                        {% if pub.journal %}{{ pub.journal }},{% elif pub.booktitle %}{{ pub.booktitle }},{% endif %} {{
+                        pub.year }}
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        {% if pub.doi %}
+                        <a href="{{ pub.doi }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-0 px-3 py-1"
+                            style="font-size: 0.7rem; letter-spacing: 0.5px; border-color: #ddd;">DOI</a>
+                        {% endif %}
+
+                        <a href="#" class="btn btn-sm btn-outline-dark rounded-0 px-3 py-1"
+                            style="font-size: 0.7rem; letter-spacing: 0.5px; border-color: #ddd;">BIB</a>
+
+                        {% if pub.html %}
+                        <a href="{{ pub.html }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-0 px-3 py-1"
+                            style="font-size: 0.7rem; letter-spacing: 0.5px; border-color: #ddd;">HTML</a>
+                        {% endif %}
+
+                        {% if pub.code %}
+                        <a href="{{ pub.code }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-0 px-3 py-1"
+                            style="font-size: 0.7rem; letter-spacing: 0.5px; border-color: #ddd;">CODE</a>
+                        {% endif %}
+                    </div>
+
+                    {% if pub.google_scholar_id %}
+                    <div class="mt-2 badges">
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=F2NkKNAAAAAJ&citation_for_view=F2NkKNAAAAAJ:{{ pub.google_scholar_id }}"
+                            aria-label="Google Scholar link" role="button" rel="external nofollow noopener"
+                            target="_blank">
+                            <img src="https://img.shields.io/badge/scholar-{% if pub.citation_count != '0' %}{{ pub.citation_count }}{% else %}N/A{% endif %}-4285F4?logo=googlescholar&labelColor=beige"
+                                alt="Google Scholar citations"
+                                style="height: 22px; border-radius: 4px; transition: transform 0.2s ease;"
+                                onmouseover="this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.transform='scale(1)'">
+                        </a>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

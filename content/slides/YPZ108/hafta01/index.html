@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 1. Hafta - Reveal.js Görsel Versiyon</title>
+    
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Specific overwrites for week 1 if any, mostly moved to common style.css */
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+        
+        /* Matrix Rain Effect */
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.2;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            animation: matrix-fall linear infinite;
+            opacity: 0.7;
+        }
+        @keyframes matrix-fall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(200%); }
+        }
+        .matrix-column span {
+            display: block;
+            opacity: 0.8;
+        }
+        .matrix-column span:last-child {
+            color: #fff;
+            text-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00;
+        }
+        /* Farklı sütunlar için farklı hızlar ve pozisyonlar */
+        .matrix-column:nth-child(1) { left: 2%; animation-duration: 8s; animation-delay: 0s; }
+        .matrix-column:nth-child(2) { left: 8%; animation-duration: 10s; animation-delay: -2s; }
+        .matrix-column:nth-child(3) { left: 14%; animation-duration: 7s; animation-delay: -4s; }
+        .matrix-column:nth-child(4) { left: 20%; animation-duration: 9s; animation-delay: -1s; }
+        .matrix-column:nth-child(5) { left: 26%; animation-duration: 11s; animation-delay: -3s; }
+        .matrix-column:nth-child(6) { left: 32%; animation-duration: 8s; animation-delay: -5s; }
+        .matrix-column:nth-child(7) { left: 38%; animation-duration: 10s; animation-delay: -2s; }
+        .matrix-column:nth-child(8) { left: 44%; animation-duration: 7s; animation-delay: -6s; }
+        .matrix-column:nth-child(9) { left: 50%; animation-duration: 9s; animation-delay: -1s; }
+        .matrix-column:nth-child(10) { left: 56%; animation-duration: 12s; animation-delay: -4s; }
+        .matrix-column:nth-child(11) { left: 62%; animation-duration: 8s; animation-delay: -3s; }
+        .matrix-column:nth-child(12) { left: 68%; animation-duration: 10s; animation-delay: -5s; }
+        .matrix-column:nth-child(13) { left: 74%; animation-duration: 7s; animation-delay: -2s; }
+        .matrix-column:nth-child(14) { left: 80%; animation-duration: 9s; animation-delay: -6s; }
+        .matrix-column:nth-child(15) { left: 86%; animation-duration: 11s; animation-delay: -1s; }
+        .matrix-column:nth-child(16) { left: 92%; animation-duration: 8s; animation-delay: -4s; }
+        .matrix-column:nth-child(17) { left: 98%; animation-duration: 10s; animation-delay: -3s; }
+        
+        /* İçerik her zaman üstte kalsın */
+        .cover-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Shake Animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+        }
+        .shake-effect {
+            animation: shake 0.8s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- Slayt 1: Kapak -->
+            <section data-background-gradient="radial-gradient(circle, #0a0a0a 0%, #000000 100%)">
+                <!-- Matrix Rain Effect -->
+                <div class="matrix-rain">
+                    <div class="matrix-column"><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>0</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span></div>
+                    <div class="matrix-column"><span>0</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span><span>1</span><span>0</span></div>
+                    <div class="matrix-column"><span>1</span><span>1</span><span>0</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span></div>
+                    <div class="matrix-column"><span>0</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span><span>0</span></div>
+                    <div class="matrix-column"><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>1</span></div>
+                    <div class="matrix-column"><span>0</span><span>1</span><span>1</span><span>0</span><span>0</span><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span></div>
+                    <div class="matrix-column"><span>1</span><span>0</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span></div>
+                    <div class="matrix-column"><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span><span>0</span></div>
+                    <div class="matrix-column"><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span></div>
+                    <div class="matrix-column"><span>0</span><span>0</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span></div>
+                    <div class="matrix-column"><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span><span>1</span><span>1</span></div>
+                    <div class="matrix-column"><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span></div>
+                    <div class="matrix-column"><span>1</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span><span>0</span><span>1</span></div>
+                    <div class="matrix-column"><span>0</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span></div>
+                    <div class="matrix-column"><span>1</span><span>0</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>1</span></div>
+                    <div class="matrix-column"><span>0</span><span>1</span><span>1</span><span>0</span><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span><span>1</span><span>1</span><span>0</span></div>
+                    <div class="matrix-column"><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span><span>0</span><span>1</span></div>
+                </div>
+                
+                <!-- Ana İçerik -->
+                <div class="cover-content flex flex-col items-center">
+                    <div class="p-6 bg-emerald-500/10 rounded-full mb-8 animate-pulse border border-emerald-500/30">
+                        <i data-lucide="cpu" style="width: 80px; height: 80px;" class="text-emerald-400"></i>
+                    </div>
+                    <h1 class="text-6xl mb-4 leading-tight">Kod Yazmak mı,<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Kader Yazmak mı?</span></h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">Bilişim Etiği: 1. Hafta Giriş</p>
+                    <div class="mt-8 flex items-center gap-2 text-emerald-500/60 text-sm font-mono">
+                        <span class="animate-pulse">▌</span>
+                        <span>system.ethics.initialize()</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slayt 2: İkilem - 3 Aşamalı Görsel Hikaye -->
+            <section>
+                <!-- Sahne 1: Normal Seyir -->
+                <section data-background-color="#020617">
+                    <div class="flex flex-col items-center">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i data-lucide="car" class="text-emerald-400" style="width: 28px; height: 28px;"></i>
+                            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm">Sahne 1/3</span>
+                        </div>
+                        <div class="glass-card w-full max-w-4xl p-4">
+                            <img src="images/karar_ani_1.png" alt="Normal seyir - tehlike yok" class="w-full rounded-lg mb-4" style="max-height: 400px; object-fit: contain;">
+                            <div class="flex items-center justify-center gap-4">
+                                <span class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg text-sm font-semibold">
+                                    <i data-lucide="check-circle" class="inline-block mr-2" style="width: 16px; height: 16px;"></i>
+                                    Otopilot Aktif
+                                </span>
+                                <span class="px-4 py-2 bg-slate-500/20 text-slate-300 rounded-lg text-sm">
+                                    Kırmızı ışığa uzaktan yaklaşılıyor
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-slate-400 text-sm mt-4 italic">
+                            Henüz fren mesafesine girilmedi. Her şey normal görünüyor...
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Sahne 2: Fren Patlaması Fark Edildi -->
+                <section data-background-color="#0c0a18">
+                    <div class="flex flex-col items-center">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i data-lucide="alert-triangle" class="text-yellow-400 animate-pulse" style="width: 28px; height: 28px;"></i>
+                            <h2 class="text-2xl m-0 text-yellow-400">UYARI!</h2>
+                            <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-sm">Sahne 2/3</span>
+                        </div>
+                        <div class="glass-card w-full max-w-4xl p-4 border-yellow-500/30">
+                            <img src="images/karar_ani_2.png" alt="Fren patlaması - uyarı" class="w-full rounded-lg mb-4" style="max-height: 400px; object-fit: contain;">
+                            <div class="flex items-center justify-center gap-4 flex-wrap">
+                                <span class="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm font-semibold animate-pulse">
+                                    <i data-lucide="alert-octagon" class="inline-block mr-2" style="width: 16px; height: 16px;"></i>
+                                    FREN SİSTEMİ ARIZASI
+                                </span>
+                                <span class="px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg text-sm">
+                                    <i data-lucide="users" class="inline-block mr-2" style="width: 16px; height: 16px;"></i>
+                                    5 yaya yaya geçidinde
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-yellow-300 text-sm mt-4 font-semibold">
+                            Durmak imkansız! Yayalar henüz tehlikenin farkında değil...
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Sahne 3: Kaos Anı - Karar (Overlay Versiyon) -->
+                <section data-background-color="#1a0a0a">
+                    <div class="flex flex-col items-center">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i data-lucide="shield-alert" class="text-red-500 animate-pulse" style="width: 28px; height: 28px;"></i>
+                            <h2 class="text-2xl m-0 text-red-400">KARAR ANI!</h2>
+                            <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-sm">Sahne 3/3</span>
+                        </div>
+                        
+                        <!-- Ana Görsel Container - Overlay ile -->
+                        <div class="relative w-full max-w-5xl" style="height: 450px;">
+                            <!-- Arka Plan Görseli -->
+                            <img src="images/karar_ani_3.png" alt="Kaos anı - karar" 
+                                 class="absolute inset-0 w-full h-full object-contain rounded-xl">
+                            
+                            <!-- Dikey Karar Çizgisi (Ortada) -->
+                            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-white to-transparent transform -translate-x-1/2" 
+                                 style="box-shadow: 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3);"></div>
+                            
+                            <!-- Üstte "?" simgesi -->
+                            <div class="absolute left-1/2 top-4 transform -translate-x-1/2 z-10">
+                                <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/50 animate-pulse">
+                                    <span class="text-2xl font-bold text-white">?</span>
+                                </div>
+                            </div>
+                            
+                            <!-- SOL TARAF: Bireysel Hak (Sola kır = yayalara çarp = kendini kurtar) -->
+                            <div class="fragment absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-3">
+                                <!-- Seçenek Kartı -->
+                                <div class="p-3 bg-blue-900/80 backdrop-blur-sm border-2 border-blue-500 rounded-xl shadow-lg shadow-blue-500/30" style="max-width: 180px;">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <i data-lucide="user" class="text-blue-400" style="width: 20px; height: 20px;"></i>
+                                        <span class="text-blue-300 font-bold text-sm">A) Bireysel Hak</span>
+                                    </div>
+                                    <p class="text-[11px] text-blue-200/80">Kendini kurtar</p>
+                                    <p class="text-[10px] text-blue-200/60">→ Yayalar zarar görür</p>
+                                </div>
+                                <!-- Ok işareti (sola doğru) -->
+                                <div class="flex items-center">
+                                    <i data-lucide="chevron-left" class="text-blue-400 -mr-2" style="width: 32px; height: 32px;"></i>
+                                    <div class="w-12 h-1 bg-gradient-to-l from-blue-500 to-blue-400"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- SAĞ TARAF: Toplumsal Fayda (Sağa kır = yolcu zarar görür = yayaları kurtar) -->
+                            <div class="fragment absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-3">
+                                <!-- Ok işareti (sağa doğru) -->
+                                <div class="flex items-center">
+                                    <div class="w-12 h-1 bg-gradient-to-r from-red-500 to-red-400"></div>
+                                    <i data-lucide="chevron-right" class="text-red-400 -ml-2" style="width: 32px; height: 32px;"></i>
+                                </div>
+                                <!-- Seçenek Kartı -->
+                                <div class="p-3 bg-red-900/80 backdrop-blur-sm border-2 border-red-500 rounded-xl shadow-lg shadow-red-500/30" style="max-width: 180px;">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <i data-lucide="users" class="text-red-400" style="width: 20px; height: 20px;"></i>
+                                        <span class="text-red-300 font-bold text-sm">B) Toplumsal Fayda</span>
+                                    </div>
+                                    <p class="text-[11px] text-red-200/80">Yayaları kurtar</p>
+                                    <p class="text-[10px] text-red-200/60">→ Yolcu zarar görür</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Alt Soru -->
+                            <div class="fragment absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                                <div class="px-4 py-2 bg-black/70 backdrop-blur-sm rounded-full border border-white/20">
+                                    <p class="text-xs text-slate-300 italic m-0">Bu kararı kim vermeli? Yazılımcı mı? Toplum mu?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slayt 3: Ahlak vs Etik (Buzdağı Analiz Ekranı) -->
+            <section data-background-gradient="linear-gradient(to bottom, #0a0a0a, #0d1a0d)">
+                <style>
+                    /* Scanning animation for iceberg */
+                    @keyframes scan-line {
+                        0% { top: 0%; opacity: 0; }
+                        50% { opacity: 0.8; }
+                        100% { top: 100%; opacity: 0; }
+                    }
+                    .scan-effect::after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                        height: 2px;
+                        background: linear-gradient(90deg, transparent, #10b981, transparent);
+                        animation: scan-line 3s linear infinite;
+                        box-shadow: 0 0 10px #10b981, 0 0 20px #10b981;
+                    }
+                    /* Pointer line animation */
+                    @keyframes pulse-line {
+                        0%, 100% { opacity: 0.6; }
+                        50% { opacity: 1; }
+                    }
+                    .pointer-line { animation: pulse-line 2s ease-in-out infinite; }
+                    
+                    /* Kayık gibi dalgalanma animasyonu */
+                    @keyframes wave-float {
+                        0%, 100% { 
+                            transform: translateY(0px) rotate(0deg); 
+                        }
+                        25% { 
+                            transform: translateY(-4px) rotate(1deg); 
+                        }
+                        50% { 
+                            transform: translateY(0px) rotate(0deg); 
+                        }
+                        75% { 
+                            transform: translateY(4px) rotate(-1deg); 
+                        }
+                    }
+                    .wave-boat { 
+                        animation: wave-float 3s ease-in-out infinite; 
+                        transform-origin: center;
+                    }
+                </style>
+                
+                <h2 class="mb-4 text-emerald-300 text-2xl">
+                    <i data-lucide="scan" class="inline-block mr-2 text-emerald-400" style="width: 28px; height: 28px;"></i>
+                    Kavram Analizi
+                </h2>
+                
+                <!-- Ana Container - Relative positioning için -->
+                <div class="relative w-full max-w-6xl mx-auto" style="height: 560px;">
+                    
+                    <!-- Merkezi Buzdağı Görseli - Geniş Dikdörtgen -->
+                    <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 scan-effect" style="width: 840px; height: 520px;">
+                        <!-- Teknolojik çerçeve -->
+                        <div class="absolute inset-0 border-2 border-emerald-500/30 rounded-lg" style="box-shadow: 0 0 30px rgba(16,185,129,0.2), inset 0 0 30px rgba(16,185,129,0.1);"></div>
+                        <!-- Köşe işaretleri - Büyük -->
+                        <div class="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-emerald-400"></div>
+                        <div class="absolute top-0 right-0 w-10 h-10 border-t-2 border-r-2 border-emerald-400"></div>
+                        <div class="absolute bottom-0 left-0 w-10 h-10 border-b-2 border-l-2 border-cyan-400"></div>
+                        <div class="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-cyan-400"></div>
+                        <!-- Görsel -->
+                        <img src="images/buzdagi.png" alt="Buzdağı - Ahlak ve Etik metaforu" 
+                             class="w-full h-full object-contain p-3">
+                        <!-- Su çizgisi göstergesi - Ortaya yakın (%45) -->
+                        <div class="absolute left-0 right-0 flex items-center" style="top: 45%;">
+                            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"></div>
+                            <span class="wave-boat px-3 py-1 bg-black/50 rounded text-[10px] text-cyan-400/80 font-mono border border-cyan-500/30">SU SEVİYESİ</span>
+                            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- SOL ÜST: AHLAK - Görselin üzerinde + Pointer -->
+                    <div class="fragment absolute z-10" style="left: 200px; top: 100px;">
+                        <div class="p-4 bg-emerald-950/80 backdrop-blur-md border border-emerald-500/50 rounded-xl" style="width: 220px; box-shadow: 0 0 40px rgba(16,185,129,0.25);">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="p-2 bg-emerald-500/30 rounded-lg">
+                                    <i data-lucide="users" class="text-emerald-400" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-emerald-400 text-base font-bold m-0">AHLAK</h3>
+                                    <p class="text-emerald-300/70 text-[9px] font-mono">▲ GÖRÜNEN YÜZ</p>
+                                </div>
+                            </div>
+                            <p class="text-emerald-200/80 text-xs italic mb-2">"Ne yapmalıyım?"</p>
+                            <ul class="text-[10px] text-left space-y-1 text-emerald-100/90">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>Toplumsal alışkanlıklar</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>Kültürel normlar</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>Doğru/Yanlış pratiği</li>
+                            </ul>
+                        </div>
+                        <!-- Pointer Line - Karttan resme (sağa doğru) -->
+                        <svg class="pointer-line absolute" style="left: 220px; top: 60px; width: 120px; height: 60px;" viewBox="0 0 120 60">
+                            <circle cx="8" cy="30" r="5" fill="none" stroke="#5C0120" stroke-width="2"/>
+                            <circle cx="8" cy="30" r="2" fill="#5C0120"/>
+                            <path d="M 13 30 L 50 30 L 80 15 L 110 15" stroke="#5C0120" stroke-width="2" fill="none" stroke-dasharray="4,2"/>
+                            <polygon points="110,15 103,11 103,19" fill="#5C0120"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- SAĞ ALT: ETİK - Görselin üzerinde + Pointer -->
+                    <div class="fragment absolute z-10" style="right: 250px; bottom: 100px;">
+                        <!-- Pointer Line - Resimden karta (soldan sağa) -->
+                        <svg class="pointer-line absolute" style="right: 220px; bottom: 60px; width: 120px; height: 60px;" viewBox="0 0 120 60">
+                            <polygon points="10,45 17,41 17,49" fill="#5C0120"/>
+                            <path d="M 10 45 L 40 45 L 70 30 L 107 30" stroke="#5C0120" stroke-width="2" fill="none" stroke-dasharray="4,2"/>
+                            <circle cx="112" cy="30" r="5" fill="none" stroke="#5C0120" stroke-width="2"/>
+                            <circle cx="112" cy="30" r="2" fill="#5C0120"/>
+                        </svg>
+                        <div class="p-4 bg-cyan-950/80 backdrop-blur-md border border-cyan-500/50 rounded-xl" style="width: 220px; box-shadow: 0 0 40px rgba(6,182,212,0.25);">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="p-2 bg-cyan-500/30 rounded-lg">
+                                    <i data-lucide="scale" class="text-cyan-400" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-cyan-400 text-base font-bold m-0">ETİK</h3>
+                                    <p class="text-cyan-300/70 text-[9px] font-mono">▼ DERİNLİK</p>
+                                </div>
+                            </div>
+                            <p class="text-cyan-200/80 text-xs italic mb-2">"Neden yapmalıyım?"</p>
+                            <ul class="text-[10px] text-left space-y-1 text-cyan-100/90">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>Felsefi sorgulama</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>Evrensel ilkeler</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>Mantıksal analiz</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Alt bilgi -->
+                    <div class="fragment absolute bottom-0 left-1/2 transform -translate-x-1/2 z-10">
+                        <div class="px-4 py-2 bg-black/70 backdrop-blur-sm rounded-full border border-emerald-500/30 flex items-center gap-2">
+                            <i data-lucide="info" class="text-emerald-400/70" style="width: 14px; height: 14px;"></i>
+                            <p class="text-[10px] text-emerald-200/70 m-0 font-mono">Ahlak görüneni, Etik görünmeyeni sorgular</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+
+            <!-- Slayt 4: Neden Etik? - 4 Parçalı Hikaye Seti -->
+            <section>
+                <style>
+                    /* === KAPAK: Glitch Effect === */
+                    @keyframes glitch {
+                        0%, 100% { text-shadow: 2px 0 #ff0040, -2px 0 #00ffff; }
+                        25% { text-shadow: -2px 0 #ff0040, 2px 0 #00ffff; transform: translateX(-2px); }
+                        50% { text-shadow: 2px 2px #ff0040, -2px -2px #00ffff; }
+                        75% { text-shadow: -2px 2px #ff0040, 2px -2px #00ffff; transform: translateX(2px); }
+                    }
+                    .glitch-text { animation: glitch 0.5s ease-in-out infinite; }
+                    
+                    /* === JET HIZI: Exponential Curve === */
+                    @keyframes rocket-rise {
+                        0% { height: 10%; }
+                        100% { height: 95%; }
+                    }
+                    .expo-curve { animation: rocket-rise 3s ease-in infinite; }
+                    @keyframes blink-fast {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0.3; }
+                    }
+                    .blink-marker { animation: blink-fast 0.5s ease-in-out infinite; }
+                    
+                    /* === POLİTİKA: Platform Float === */
+                    @keyframes float-question {
+                        0%, 100% { transform: translateY(0); }
+                        50% { transform: translateY(-10px); }
+                    }
+                    .float-q { animation: float-question 2s ease-in-out infinite; }
+                    
+                    /* === GÖRÜNMEZLİK: Matrix Rain === */
+                    @keyframes matrix-fall {
+                        0% { transform: translateY(-100%); opacity: 1; }
+                        100% { transform: translateY(200%); opacity: 0; }
+                    }
+                    .matrix-char { animation: matrix-fall 2s linear infinite; }
+                    .black-box {
+                        transition: all 0.3s ease;
+                    }
+                    .black-box:hover {
+                        background: rgba(239, 68, 68, 0.2) !important;
+                        border-color: #ef4444 !important;
+                        box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+                    }
+                    .black-box:hover .bias-hidden { display: none; }
+                    .black-box:hover .bias-detected { display: block !important; }
+                </style>
+                
+                <!-- SLAYT 4.0: NEDEN BİLİŞİM ETİĞİ? - KAPAK -->
+                <section data-background-color="#000000">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <!-- Glitch Başlık -->
+                        <h1 class="glitch-text text-5xl font-black text-white mb-4 tracking-tight">
+                            NEDEN <span class="text-emerald-400">BİLİŞİM</span> ETİĞİ?
+                        </h1>
+                        
+                        <!-- Alt Başlık -->
+                        <p class="text-slate-500 text-xs font-mono tracking-widest mb-8">
+                            James Moor (1985) • Üç temel etik sorun
+                        </p>
+                        
+                        <!-- 3 Neon Kart Menü -->
+                        <div class="flex gap-6 mb-8">
+                            <!-- 1. Logical Malleability -->
+                            <div class="group px-6 py-4 bg-amber-500/10 border border-amber-500/30 rounded-xl hover:bg-amber-500/20 hover:border-amber-500 transition-all cursor-pointer" style="width: 300px;">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="cpu" class="text-amber-400" style="width: 18px; height: 18px;"></i>
+                                    <span class="text-amber-400 font-mono text-xs tracking-wider">01</span>
+                                </div>
+                                <h3 class="text-amber-400 font-bold text-sm mb-1">Mantıksal Esneklik</h3>
+                                <p class="text-amber-300/50 text-[10px] font-mono m-0">logical malleability</p>
+                            </div>
+                            
+                            <!-- 2. Policy Vacuum -->
+                            <div class="group px-6 py-4 bg-purple-500/10 border border-purple-500/30 rounded-xl hover:bg-purple-500/20 hover:border-purple-500 transition-all cursor-pointer" style="width: 300px;">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="search-x" class="text-purple-400" style="width: 18px; height: 18px;"></i>
+                                    <span class="text-purple-400 font-mono text-xs tracking-wider">02</span>
+                                </div>
+                                <h3 class="text-purple-400 font-bold text-sm mb-1">Politika Boşluğu</h3>
+                                <p class="text-purple-300/50 text-[10px] font-mono m-0">policy vacuum</p>
+                            </div>
+                            
+                            <!-- 3. Invisibility Factor -->
+                            <div class="group px-6 py-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl hover:bg-emerald-500/20 hover:border-emerald-500 transition-all cursor-pointer" style="width: 300px;">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="ghost" class="text-emerald-400" style="width: 18px; height: 18px;"></i>
+                                    <span class="text-emerald-400 font-mono text-xs tracking-wider">03</span>
+                                </div>
+                                <h3 class="text-emerald-400 font-bold text-sm mb-1">Görünmezlik Faktörü</h3>
+                                <p class="text-emerald-300/50 text-[10px] font-mono m-0">invisibility factor</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Alt Mesaj -->
+                        <div class="max-w-2xl p-4 bg-slate-900/50 border border-slate-700 rounded-xl">
+                            <p class="text-slate-400 text-sm text-center m-0 leading-relaxed">
+                                Bilgisayarların özel doğası <span class="text-white">(hız, esneklik, gizlilik)</span>, 
+                                standart etik kuralların <span class="text-red-400 font-bold">yetersiz kalmasına</span> neden olur.
+                            </p>
+                        </div>
+                        
+                        <!-- Aşağı ok -->
+                        <div class="mt-8 animate-bounce">
+                            <i data-lucide="chevrons-down" class="text-slate-600" style="width: 32px; height: 32px;"></i>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- SLAYT 4.1: LOGICAL MALLEABILITY - HIZ VE ESNEKLİK -->
+                <section data-background-gradient="linear-gradient(135deg, #0a0a0a 0%, #1a0a00 100%)">
+                    <div class="flex flex-col items-center justify-center h-full px-4">
+                        
+                        <!-- Üst Başlık -->
+                        <div class="text-center mb-3">
+                            <div class="flex items-center justify-center gap-2 mb-2">
+                                <i data-lucide="cpu" class="text-amber-400" style="width: 20px; height: 20px;"></i>
+                                <p class="text-amber-400/60 text-[10px] font-mono tracking-widest m-0">01 • logical malleability</p>
+                            </div>
+                            <h2 class="text-2xl font-black">
+                                <span class="text-amber-400">İki</span> 
+                                "<span class="text-white">Moore</span>" 
+                                <span class="text-purple-400">Sorunu</span>
+                            </h2>
+                        </div>
+                        
+                        <!-- Ana Timeline Karşılaştırma -->
+                        <div class="flex items-stretch justify-center gap-3">
+                            
+                            <!-- SOL: Gordon Moore - 1965 -->
+                            <div class="flex flex-col" style="width: 360px;">
+                                <!-- Tarih Badge -->
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="px-3 py-1.5 bg-amber-500 rounded-lg">
+                                        <span class="text-black text-xl font-black">1965</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-amber-400 text-xs font-bold m-0">MOORE YASASI</p>
+                                        <p class="text-amber-300/50 text-[10px] font-mono m-0">Electronics Dergisi</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Kart -->
+                                <div class="flex-1 rounded-xl border-2 border-amber-500/50 overflow-hidden" style="box-shadow: 0 0 30px rgba(251, 191, 36, 0.2);">
+                                    <!-- Görsel -->
+                                    <div class="relative h-40 overflow-hidden bg-amber-950/20">
+                                        <img src="images/moore-gordon.jpg" alt="Gordon Moore" 
+                                             class="w-full h-full object-cover object-center">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+                                        
+                                        <!-- İsim Overlay -->
+                                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                                            <h3 class="text-xl font-black text-white mb-0">Gordon Moore</h3>
+                                            <p class="text-amber-300 text-xs font-mono m-0">Intel Kurucusu</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Bilgi -->
+                                    <div class="p-3 bg-black">
+                                        <div class="p-2 bg-amber-500/10 border-l-3 border-amber-500 rounded-r mb-2">
+                                            <p class="text-slate-200 text-xs leading-relaxed m-0">
+                                                "Donanım hızı her <span class="text-amber-400 font-bold">2 yılda bir katlanır</span>." (Üstel Hız)
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-amber-400">
+                                            <i data-lucide="rocket" style="width: 14px; height: 14px;"></i>
+                                            <span class="text-xs font-bold">ÜSTEL BÜYÜME → JET HIZI</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- ORTA: 20 YIL FARKI -->
+                            <div class="flex flex-col items-center justify-center px-2">
+                                <div class="h-8 w-0.5 bg-gradient-to-b from-amber-500 to-slate-600"></div>
+                                
+                                <div class="my-2 px-3 py-2 bg-gradient-to-br from-amber-500/20 to-purple-500/20 border-2 border-slate-500 rounded-lg text-center" style="box-shadow: 0 0 20px rgba(100, 100, 100, 0.2);">
+                                    <p class="text-3xl font-black text-white m-0">20</p>
+                                    <p class="text-slate-400 text-[10px] font-mono m-0">YIL</p>
+                                </div>
+                                
+                                <div class="h-8 w-0.5 bg-gradient-to-b from-slate-600 to-purple-500"></div>
+                            </div>
+                            
+                            <!-- SAĞ: James Moor - 1985 -->
+                            <div class="flex flex-col" style="width: 360px;">
+                                <!-- Tarih Badge -->
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="px-3 py-1.5 bg-purple-500 rounded-lg">
+                                        <span class="text-white text-xl font-black">1985</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-purple-400 text-xs font-bold m-0">MANTIKSAL ESNEKLİK</p>
+                                        <p class="text-purple-300/50 text-[10px] font-mono m-0">"What is Computer Ethics?"</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Kart -->
+                                <div class="flex-1 rounded-xl border-2 border-purple-500/50 overflow-hidden" style="box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);">
+                                    <!-- Görsel -->
+                                    <div class="relative h-40 overflow-hidden bg-purple-950/20">
+                                        <img src="images/moor-james.jpg" alt="James Moor" 
+                                             class="w-full h-full object-cover object-center">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+                                        
+                                        <!-- İsim Overlay -->
+                                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                                            <h3 class="text-xl font-black text-white mb-0">James Moor</h3>
+                                            <p class="text-purple-300 text-xs font-mono m-0">Bilgisayar Etiği Filozofu</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Bilgi -->
+                                    <div class="p-3 bg-black">
+                                        <div class="p-2 bg-purple-500/10 border-l-3 border-purple-500 rounded-r mb-2">
+                                            <p class="text-slate-200 text-xs leading-relaxed m-0">
+                                                "Bilgisayar sadece hızlı değil; <span class="text-purple-400 font-bold">her şekle girebilir</span>." (Banka, Silah, İletişim)
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-purple-400">
+                                            <i data-lucide="shapes" style="width: 14px; height: 14px;"></i>
+                                            <span class="text-xs font-bold">MANTIKSAL ŞEKİLLENDİRİLEBİLİRLİK</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- Alt Mesaj - Formül -->
+                        <div class="mt-3 p-3 bg-gradient-to-r from-amber-500/10 via-red-500/20 to-purple-500/10 border border-slate-600 rounded-xl max-w-2xl">
+                            <div class="flex items-center justify-center gap-3 text-center">
+                                <span class="text-amber-400 font-bold text-sm">ESNEKLİK</span>
+                                <span class="text-slate-500 text-lg">+</span>
+                                <span class="text-purple-400 font-bold text-sm">HIZ</span>
+                                <span class="text-slate-500 text-lg">=</span>
+                                <span class="text-red-400 font-black text-sm shake-effect px-3 py-1 bg-red-500/20 border border-red-500 rounded-full">KONTROLSÜZ GÜÇ</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </section>
+                
+                <!-- SLAYT 4.2: POLICY VACUUM -->
+                <section data-background-gradient="linear-gradient(135deg, #0a0a0a 0%, #0a001a 100%)">
+                    <div class="flex flex-col h-full">
+                        <!-- Başlık -->
+                        <div class="flex flex-col items-center justify-center mb-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-lucide="search-x" class="text-purple-400" style="width: 20px; height: 20px;"></i>
+                                <p class="text-purple-400/60 text-[10px] font-mono tracking-widest m-0">02 • policy vacuum</p>
+                            </div>
+                            <h2 class="text-purple-400 text-2xl font-bold m-0">Politika Boşluğu</h2>
+                        </div>
+                        
+                        <!-- 3 Kolonlu Ana İçerik -->
+                        <div class="flex items-center justify-between flex-1 gap-4 px-4">
+                            
+                            <!-- Sol: Yeni Teknoloji -->
+                            <div class="w-72 text-left">
+                                <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <i data-lucide="bot" class="text-cyan-400" style="width: 20px; height: 20px;"></i>
+                                        <span class="text-cyan-400 font-bold text-sm">YENİ TEKNOLOJİ</span>
+                                    </div>
+                                    <p class="text-slate-300 text-sm leading-relaxed m-0">
+                                        Yeni eylemleri <span class="text-cyan-400 font-bold">mümkün kılar</span>
+                                    </p>
+                                </div>
+                                <p class="text-slate-500 text-xs italic text-center">(Wild West)</p>
+                            </div>
+                            
+                            <!-- Orta: Video + Boşluk Görselleştirme -->
+                            <div class="flex-1 flex flex-col items-center justify-center">
+                                <!-- Video -->
+                                <div class="mb-3">
+                                    <div class="relative rounded-xl overflow-hidden border-2 border-purple-500/50" style="width: 180px; height: 320px; box-shadow: 0 0 30px rgba(168,85,247,0.4);">
+                                        <iframe 
+                                            src="https://www.youtube.com/embed/4bWJL7sbI0M" 
+                                            title="Deepfake Örneği" 
+                                            frameborder="0" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen
+                                            style="width: 100%; height: 100%;">
+                                        </iframe>
+                                    </div>
+                                </div>
+                                
+                                <!-- Boşluk Çizgisi -->
+                                <div class="relative w-full max-w-md" style="height: 40px;">
+                                    <div class="absolute left-0 w-1/3 h-1 bg-gradient-to-r from-cyan-600 to-cyan-400 top-1/2 -translate-y-1/2" style="box-shadow: 0 0 15px rgba(6,182,212,0.5);"></div>
+                                    <div class="absolute left-1/3 right-1/3 top-1/2 -translate-y-1/2 border-t-2 border-dashed border-purple-500/50"></div>
+                                    <div class="absolute right-0 w-1/3 h-1 bg-gradient-to-l from-slate-600 to-slate-500 top-1/2 -translate-y-1/2"></div>
+                                    <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 px-2 py-1 bg-purple-500/30 rounded text-purple-300 text-[10px] font-mono">VACUUM</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sağ: Eski Yasalar -->
+                            <div class="w-72 text-right">
+                                <div class="p-4 bg-slate-500/10 border border-slate-500/30 rounded-xl mb-3">
+                                    <div class="flex items-center justify-end gap-2 mb-2">
+                                        <span class="text-slate-400 font-bold text-sm">ESKİ YASALAR</span>
+                                        <i data-lucide="scale" class="text-slate-400" style="width: 20px; height: 20px;"></i>
+                                    </div>
+                                    <p class="text-slate-400 text-sm leading-relaxed m-0">
+                                        Henüz <span class="text-slate-300 font-bold">oluşmamış</span>
+                                    </p>
+                                </div>
+                                <p class="text-slate-500 text-xs italic text-center">Deepfake suç mu? Sanat mı?</p>
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- Alt Mesaj -->
+                        <div class="flex justify-center gap-4 mb-4 px-4">
+                            <div class="p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl max-w-md">
+                                <p class="text-purple-300 text-xs font-bold m-0 mb-1">Kavramsal Kargaşa <span class="text-purple-400/50 text-[10px] font-normal">(conceptual muddle)</span></p>
+                                <p class="text-slate-400 text-xs m-0">Eski tanımlar yetersiz kalır. Yeni kavramlar gerekir.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- SLAYT 4.3: INVISIBILITY FACTOR - KOMPAKT -->
+                <section data-background-gradient="linear-gradient(135deg, #0a0a0a 0%, #001a0a 100%)">
+                    <div class="flex flex-col items-center justify-center h-full px-6">
+                        
+                        <!-- Başlık -->
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-emerald-500/20 rounded-lg">
+                                <i data-lucide="ghost" class="text-emerald-400" style="width: 24px; height: 24px;"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-emerald-400 text-xl font-bold m-0">Görünmezlik Faktörü</h2>
+                                <p class="text-emerald-400/50 text-[10px] font-mono m-0">03 • invisibility factor</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Ana İçerik: Kara Kutu + 3 Kart yan yana -->
+                        <div class="flex items-center justify-center gap-6 w-full max-w-4xl">
+                            
+                            <!-- Sol: Kara Kutu (Kompakt) -->
+                            <div class="flex flex-col items-center">
+                                <div class="black-box relative bg-black border-2 border-emerald-500/50 rounded-xl flex items-center justify-center cursor-pointer" style="width: 140px; height: 120px; box-shadow: 0 0 25px rgba(16,185,129,0.3);">
+                                    <!-- Matrix overlay -->
+                                    <div class="absolute inset-0 overflow-hidden opacity-20 rounded-xl">
+                                        <div class="matrix-char absolute text-emerald-500 font-mono text-[8px]" style="left: 15%; top: 10%;">01</div>
+                                        <div class="matrix-char absolute text-emerald-500 font-mono text-[8px]" style="left: 45%; top: 30%;">10</div>
+                                        <div class="matrix-char absolute text-emerald-500 font-mono text-[8px]" style="left: 75%; top: 50%;">11</div>
+                                    </div>
+                                    <!-- İçerik -->
+                                    <div class="bias-hidden text-center z-10">
+                                        <i data-lucide="lock" class="text-emerald-500/50 mx-auto mb-1" style="width: 28px; height: 28px;"></i>
+                                        <p class="text-emerald-500/60 text-[10px] font-mono m-0">BLACK BOX</p>
+                                    </div>
+                                    <div class="bias-detected text-center hidden z-10">
+                                        <i data-lucide="alert-triangle" class="text-red-400 mx-auto mb-1 animate-pulse" style="width: 28px; height: 28px;"></i>
+                                        <p class="text-red-400 text-[10px] font-bold font-mono m-0">BIAS!</p>
+                                    </div>
+                                </div>
+                                <p class="text-emerald-500/40 text-[9px] font-mono mt-1">[ hover ]</p>
+                            </div>
+                            
+                            <!-- Sağ: 3 Tür Kartları (Yatay Kompakt) -->
+                            <div class="flex flex-col gap-2 flex-1" style="max-width: 550px;">
+                                
+                                <!-- Kart 1 -->
+                                <div class="flex items-center gap-3 p-2.5 bg-emerald-500/5 border border-emerald-500/20 rounded-lg">
+                                    <div class="p-1.5 bg-emerald-500/20 rounded">
+                                        <i data-lucide="copy" class="text-emerald-400" style="width: 14px; height: 14px;"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <span class="text-emerald-300 text-xs font-bold">Görünmez Kötüye Kullanım</span>
+                                        <span class="text-slate-500 text-[10px] ml-2">Veri kopyalama, izinsiz erişim</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Kart 2 (TEHLİKELİ) -->
+                                <div class="flex items-center gap-3 p-2.5 bg-red-500/10 border-2 border-red-500/40 rounded-lg" style="box-shadow: 0 0 15px rgba(239, 68, 68, 0.15);">
+                                    <div class="p-1.5 bg-red-500/20 rounded">
+                                        <i data-lucide="code" class="text-red-400" style="width: 14px; height: 14px;"></i>
+                                    </div>
+                                    <div class="flex-1 flex items-center gap-2">
+                                        <span class="text-red-300 text-xs font-bold">Görünmez Programlama Değerleri</span>
+                                        <span class="px-1.5 py-0.5 bg-red-500 text-white text-[8px] font-bold rounded shake-effect">TEHLİKE</span>
+                                    </div>
+                                    <span class="text-slate-500 text-[10px]">Kodcunun önyargısı</span>
+                                </div>
+                                
+                                <!-- Kart 3 -->
+                                <div class="flex items-center gap-3 p-2.5 bg-emerald-500/5 border border-emerald-500/20 rounded-lg">
+                                    <div class="p-1.5 bg-emerald-500/20 rounded">
+                                        <i data-lucide="brain-circuit" class="text-emerald-400" style="width: 14px; height: 14px;"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <span class="text-emerald-300 text-xs font-bold">Görünmez Karmaşık Hesaplama</span>
+                                        <span class="text-slate-500 text-[10px] ml-2">Denetlenemez sonuçlar</span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- Alt Mesaj -->
+                        <div class="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg max-w-2xl">
+                            <p class="text-slate-300 text-xs text-center m-0">
+                                İnşaat mühendisinin hatası <span class="text-slate-400">görülür</span> (bina çatlar) — 
+                                Yazılım mühendisinin hatası <span class="text-emerald-400 font-bold">kodun içinde gizlidir</span>.
+                            </p>
+                        </div>
+                        
+                    </div>
+                </section>
+                
+            </section>
+
+            <!-- Slayt 5: PAPA Modeli - 5 Parçalı Nested Vertical Set -->
+            <section>
+                <style>
+                    /* === PAPA MODEL: Cyberpunk Neon Styles === */
+                    
+                    /* Neon Box Animation */
+                    @keyframes neon-pulse {
+                        0%, 100% { 
+                            box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor;
+                        }
+                        50% { 
+                            box-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
+                        }
+                    }
+                    .neon-box {
+                        animation: neon-pulse 2s ease-in-out infinite;
+                    }
+                    
+                    /* Binary Rain Effect */
+                    @keyframes binary-fall {
+                        0% { transform: translateY(-100%); opacity: 0.8; }
+                        100% { transform: translateY(200%); opacity: 0; }
+                    }
+                    .binary-char {
+                        animation: binary-fall 4s linear infinite;
+                        font-family: 'Courier New', monospace;
+                    }
+                    
+                    /* Glitch Effect for Accuracy */
+                    @keyframes glitch-skew {
+                        0%, 100% { transform: skew(0deg); }
+                        20% { transform: skew(-2deg); }
+                        40% { transform: skew(2deg); }
+                        60% { transform: skew(-1deg); }
+                        80% { transform: skew(1deg); }
+                    }
+                    .glitch-effect {
+                        animation: glitch-skew 3s ease-in-out infinite;
+                    }
+                    @keyframes glitch-flash {
+                        0%, 100% { opacity: 1; }
+                        92% { opacity: 1; }
+                        93% { opacity: 0.8; clip-path: inset(10% 0 85% 0); }
+                        94% { opacity: 1; clip-path: none; }
+                        96% { opacity: 0.9; clip-path: inset(40% 0 50% 0); }
+                        97% { opacity: 1; clip-path: none; }
+                    }
+                    .glitch-container {
+                        animation: glitch-flash 4s ease-in-out infinite;
+                    }
+                    
+                    /* Copy Shadow Effect for Property */
+                    .copy-shadow {
+                        position: relative;
+                    }
+                    .copy-shadow::before {
+                        content: '';
+                        position: absolute;
+                        top: 8px;
+                        left: 8px;
+                        width: 100%;
+                        height: 100%;
+                        background: currentColor;
+                        opacity: 0.15;
+                        border-radius: inherit;
+                        z-index: -1;
+                    }
+                    .copy-shadow::after {
+                        content: '';
+                        position: absolute;
+                        top: 16px;
+                        left: 16px;
+                        width: 100%;
+                        height: 100%;
+                        background: currentColor;
+                        opacity: 0.08;
+                        border-radius: inherit;
+                        z-index: -2;
+                    }
+                    
+                    /* WiFi Ping Animation for Accessibility */
+                    @keyframes wifi-ping {
+                        0% { transform: scale(0.8); opacity: 1; }
+                        100% { transform: scale(2); opacity: 0; }
+                    }
+                    .wifi-ring {
+                        animation: wifi-ping 2s ease-out infinite;
+                    }
+                    .wifi-ring-2 { animation-delay: 0.4s; }
+                    .wifi-ring-3 { animation-delay: 0.8s; }
+                </style>
+                
+                <!-- SLAYT 5.0: GENEL BAKIŞ -->
+                <section data-background-color="#000000">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <!-- Devasa P-A-P-A Harfleri -->
+                        <div class="flex items-center justify-center gap-6 mb-8">
+                            <!-- P -->
+                            <div class="neon-box flex flex-col items-center p-6 border-2 border-emerald-500 rounded-xl text-emerald-500" style="min-width: 120px;">
+                                <span class="text-7xl font-black tracking-tighter">P</span>
+                                <span class="text-xs font-mono opacity-50 mt-2">Privacy</span>
+                            </div>
+                            <!-- A -->
+                            <div class="neon-box flex flex-col items-center p-6 border-2 border-cyan-500 rounded-xl text-cyan-500" style="min-width: 120px; animation-delay: 0.5s;">
+                                <span class="text-7xl font-black tracking-tighter">A</span>
+                                <span class="text-xs font-mono opacity-50 mt-2">Accuracy</span>
+                            </div>
+                            <!-- P -->
+                            <div class="neon-box flex flex-col items-center p-6 border-2 border-purple-500 rounded-xl text-purple-500" style="min-width: 120px; animation-delay: 1s;">
+                                <span class="text-7xl font-black tracking-tighter">P</span>
+                                <span class="text-xs font-mono opacity-50 mt-2">Property</span>
+                            </div>
+                            <!-- A -->
+                            <div class="neon-box flex flex-col items-center p-6 border-2 border-orange-500 rounded-xl text-orange-500" style="min-width: 120px; animation-delay: 1.5s;">
+                                <span class="text-7xl font-black tracking-tighter">A</span>
+                                <span class="text-xs font-mono opacity-50 mt-2">Accessibility</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Referans -->
+                        <div class="mb-6">
+                            <p class="font-mono text-slate-500 text-sm">
+                                <span class="text-emerald-500/60">&gt;</span> SYS.ARCHITECT: <span class="text-slate-400">Richard O. Mason (1986)</span>
+                            </p>
+                        </div>
+                        
+                        <!-- Mesaj -->
+                        <div class="px-6 py-3 bg-white/5 border border-white/10 rounded-full">
+                            <p class="text-slate-300 text-xl font-light italic m-0">
+                                "Bilgi Çağının <span class="text-red-400 font-semibold">4 Mahşer Atlısı</span>"
+                            </p>
+                        </div>
+                        
+                        <!-- Aşağı ok -->
+                        <div class="mt-12 animate-bounce">
+                            <i data-lucide="chevrons-down" class="text-slate-600" style="width: 32px; height: 32px;"></i>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- SLAYT 5.1: PRIVACY (GİZLİLİK) -->
+                <section data-background-color="#000000">
+                    <!-- Binary Rain Arka Plan -->
+                    <div class="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 5%; animation-delay: 0s;">01101001</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 12%; animation-delay: 0.3s;">10010110</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 19%; animation-delay: 0.6s;">11001101</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 26%; animation-delay: 0.9s;">00110011</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 33%; animation-delay: 1.2s;">10101010</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 40%; animation-delay: 1.5s;">01010101</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 47%; animation-delay: 1.8s;">11110000</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 54%; animation-delay: 2.1s;">00001111</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 61%; animation-delay: 2.4s;">10011001</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 68%; animation-delay: 2.7s;">01100110</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 75%; animation-delay: 3.0s;">11011011</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 82%; animation-delay: 3.3s;">00100100</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 89%; animation-delay: 3.6s;">10110110</div>
+                        <div class="binary-char absolute text-emerald-500 text-xs" style="left: 96%; animation-delay: 3.9s;">01001001</div>
+                    </div>
+                    
+                    <div class="flex items-center justify-center gap-16 h-full relative z-10">
+                        <!-- Sol: İkon -->
+                        <div class="flex flex-col items-center">
+                            <div class="neon-box p-8 border-2 border-emerald-500 rounded-2xl text-emerald-500 mb-4" style="background: rgba(16, 185, 129, 0.05);">
+                                <i data-lucide="eye" class="text-emerald-400" style="width: 100px; height: 100px;"></i>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <i data-lucide="lock" class="text-emerald-500/60" style="width: 20px; height: 20px;"></i>
+                                <span class="text-emerald-500/60 font-mono text-xs">ENCRYPTED</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ: Metin -->
+                        <div class="max-w-md text-left">
+                            <h2 class="text-5xl font-black text-emerald-400 mb-4">
+                                <span class="text-emerald-600">P</span> - Privacy
+                            </h2>
+                            <p class="text-emerald-300/70 text-sm font-mono uppercase tracking-widest mb-6">GİZLİLİK</p>
+                            
+                            <p class="text-3xl text-white italic font-light leading-relaxed mb-8">
+                                "Hakkındaki bilgileri <span class="text-emerald-400 font-semibold">saklama gücü</span> kimde?"
+                            </p>
+                            
+                            <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
+                                <p class="text-emerald-400/80 text-xs font-mono uppercase tracking-wider mb-2">CASE STUDY</p>
+                                <p class="text-emerald-200/80 text-sm m-0">
+                                    Çerezler, Konum Verisi, Gözetim Kapitalizmi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- SLAYT 5.2: ACCURACY (DOĞRULUK) -->
+                <section data-background-color="#000000">
+                    <div class="glitch-container flex items-center justify-center gap-16 h-full">
+                        <!-- Sol: İkon -->
+                        <div class="flex flex-col items-center glitch-effect">
+                            <div class="neon-box p-8 border-2 border-cyan-500 rounded-2xl text-cyan-500 mb-4" style="background: rgba(6, 182, 212, 0.05);">
+                                <i data-lucide="target" class="text-cyan-400" style="width: 100px; height: 100px;"></i>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <i data-lucide="alert-triangle" class="text-cyan-500/60" style="width: 20px; height: 20px;"></i>
+                                <span class="text-cyan-500/60 font-mono text-xs">VERIFY</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ: Metin -->
+                        <div class="max-w-md text-left">
+                            <h2 class="text-5xl font-black text-cyan-400 mb-4">
+                                <span class="text-cyan-600">A</span> - Accuracy
+                            </h2>
+                            <p class="text-cyan-300/70 text-sm font-mono uppercase tracking-widest mb-6">DOĞRULUK</p>
+                            
+                            <p class="text-3xl text-white italic font-light leading-relaxed mb-8">
+                                "<span class="text-cyan-400 font-semibold">Yanlış bilginin</span> bedelini kim öder?"
+                            </p>
+                            
+                            <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
+                                <p class="text-cyan-400/80 text-xs font-mono uppercase tracking-wider mb-2">CASE STUDY</p>
+                                <p class="text-cyan-200/80 text-sm m-0">
+                                    Kredi notu hataları, Yanlış tıbbi teşhis koyan Yapay Zeka.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Glitch Overlay -->
+                    <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+                        <div class="absolute w-full h-px bg-cyan-400" style="top: 20%; animation: glitch-flash 2s infinite;"></div>
+                        <div class="absolute w-full h-px bg-cyan-400" style="top: 45%; animation: glitch-flash 3s infinite 0.5s;"></div>
+                        <div class="absolute w-full h-px bg-cyan-400" style="top: 70%; animation: glitch-flash 2.5s infinite 1s;"></div>
+                    </div>
+                </section>
+                
+                <!-- SLAYT 5.3: PROPERTY (MÜLKİYET) -->
+                <section data-background-color="#000000">
+                    <div class="flex items-center justify-center gap-16 h-full">
+                        <!-- Sol: İkon -->
+                        <div class="flex flex-col items-center">
+                            <div class="copy-shadow neon-box p-8 border-2 border-purple-500 rounded-2xl text-purple-500 mb-4" style="background: rgba(168, 85, 247, 0.05);">
+                                <i data-lucide="copyright" class="text-purple-400" style="width: 100px; height: 100px;"></i>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <i data-lucide="copy" class="text-purple-500/60" style="width: 20px; height: 20px;"></i>
+                                <span class="text-purple-500/60 font-mono text-xs">OWNERSHIP</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ: Metin -->
+                        <div class="max-w-md text-left">
+                            <h2 class="text-5xl font-black text-purple-400 mb-4">
+                                <span class="text-purple-600">P</span> - Property
+                            </h2>
+                            <p class="text-purple-300/70 text-sm font-mono uppercase tracking-widest mb-6">MÜLKİYET</p>
+                            
+                            <p class="text-3xl text-white italic font-light leading-relaxed mb-8">
+                                "<span class="text-purple-400 font-semibold">Dijital varlığın</span> sahibi kim?"
+                            </p>
+                            
+                            <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl">
+                                <p class="text-purple-400/80 text-xs font-mono uppercase tracking-wider mb-2">CASE STUDY</p>
+                                <p class="text-purple-200/80 text-sm m-0">
+                                    Yazılım korsanlığı, AI'ın sanatçıların eserlerini 'öğrenmesi'.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- SLAYT 5.4: ACCESSIBILITY (ERİŞİLEBİLİRLİK) -->
+                <section data-background-color="#000000">
+                    <div class="flex items-center justify-center gap-16 h-full">
+                        <!-- Sol: İkon -->
+                        <div class="flex flex-col items-center relative">
+                            <!-- WiFi Ping Rings -->
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none" style="top: -20px;">
+                                <div class="wifi-ring absolute w-48 h-48 border-2 border-orange-500/30 rounded-full"></div>
+                                <div class="wifi-ring wifi-ring-2 absolute w-64 h-64 border-2 border-orange-500/20 rounded-full"></div>
+                                <div class="wifi-ring wifi-ring-3 absolute w-80 h-80 border-2 border-orange-500/10 rounded-full"></div>
+                            </div>
+                            
+                            <div class="neon-box p-8 border-2 border-orange-500 rounded-2xl text-orange-500 mb-4 relative z-10" style="background: rgba(249, 115, 22, 0.05);">
+                                <i data-lucide="globe" class="text-orange-400" style="width: 100px; height: 100px;"></i>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2 relative z-10">
+                                <i data-lucide="wifi" class="text-orange-500/60" style="width: 20px; height: 20px;"></i>
+                                <span class="text-orange-500/60 font-mono text-xs">CONNECTED</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ: Metin -->
+                        <div class="max-w-md text-left">
+                            <h2 class="text-5xl font-black text-orange-400 mb-4">
+                                <span class="text-orange-600">A</span> - Accessibility
+                            </h2>
+                            <p class="text-orange-300/70 text-sm font-mono uppercase tracking-widest mb-6">ERİŞİLEBİLİRLİK</p>
+                            
+                            <p class="text-3xl text-white italic font-light leading-relaxed mb-8">
+                                "Bilgiye erişim bir <span class="text-orange-400 font-semibold">hak</span> mı, <span class="text-orange-400 font-semibold">ayrıcalık</span> mı?"
+                            </p>
+                            
+                            <div class="p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl">
+                                <p class="text-orange-400/80 text-xs font-mono uppercase tracking-wider mb-2">CASE STUDY</p>
+                                <p class="text-orange-200/80 text-sm m-0">
+                                    Dijital uçurum (Digital Divide), Engelli bireylerin web deneyimi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </section>
+
+            <!-- Slayt 6: Siber Vaka Dosyaları - Nested Vertical Set -->
+            <section>
+                <style>
+                    /* === CASE FILE STYLES === */
+                    .case-preview-card {
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                    }
+                    .case-preview-card:hover {
+                        transform: scale(1.05);
+                    }
+                    
+                    /* REC indicator blink */
+                    @keyframes rec-blink {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0.3; }
+                    }
+                    .rec-indicator {
+                        animation: rec-blink 1s ease-in-out infinite;
+                    }
+                    
+                    /* Face ID scan animation */
+                    @keyframes scan-line-move {
+                        0% { top: 0%; }
+                        50% { top: 100%; }
+                        100% { top: 0%; }
+                    }
+                    .scan-line {
+                        animation: scan-line-move 2s ease-in-out infinite;
+                    }
+                    
+                    /* Glitch effect for detail slides */
+                    @keyframes detail-glitch {
+                        0%, 100% { opacity: 1; }
+                        92% { opacity: 1; }
+                        93% { opacity: 0.7; transform: translateX(-2px); }
+                        94% { opacity: 1; transform: translateX(0); }
+                        96% { opacity: 0.8; transform: translateX(2px); }
+                        97% { opacity: 1; transform: translateX(0); }
+                    }
+                    .detail-glitch {
+                        animation: detail-glitch 4s ease-in-out infinite;
+                    }
+                </style>
+                
+                <!-- SLAYT 6.0: ANA SAYFA - GENEL BAKIŞ -->
+                <section data-background-color="#000000">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <!-- Başlık -->
+                        <div class="flex items-center gap-3 mb-4">
+                            <i data-lucide="folder-open" class="text-red-500" style="width: 40px; height: 40px;"></i>
+                            <h2 class="text-4xl font-black text-white m-0">
+                                SİBER <span class="text-red-500">VAKA</span> DOSYALARI
+                            </h2>
+                        </div>
+                        <p class="text-slate-500 font-mono text-sm mb-10">> CLASSIFIED // ETHICS_FAILURES.db</p>
+                        
+                        <!-- 3 Küçük Önizleme Kartı -->
+                        <div class="flex items-center justify-center gap-8">
+                            
+                            <!-- Kart 1: Microsoft Tay -->
+                            <div class="case-preview-card p-4 bg-black/80 border-2 border-pink-500/50 rounded-xl" style="width: 250px; box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);">
+                                <div class="relative h-28 mb-3 rounded-lg overflow-hidden">
+                                    <img src="images/tayandyou.jpg" alt="Microsoft Tay" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                    <div class="absolute top-2 left-2 px-2 py-0.5 bg-pink-500/30 rounded text-[9px] font-mono text-pink-300">
+                                        #01
+                                    </div>
+                                </div>
+                                <h3 class="text-pink-400 font-bold text-sm mb-1">Microsoft Tay</h3>
+                                <p class="text-pink-300/60 text-[10px] font-mono">Radikalleşen AI</p>
+                            </div>
+                            
+                            <!-- Kart 2: Roomba -->
+                            <div class="case-preview-card p-4 bg-black/80 border-2 border-amber-500/50 rounded-xl" style="width: 250px; box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);">
+                                <div class="relative h-28 mb-3 rounded-lg overflow-hidden">
+                                    <img src="images/roomba.jpg" alt="Roomba" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                    <div class="absolute top-2 left-2 px-2 py-0.5 bg-amber-500/30 rounded text-[9px] font-mono text-amber-300">
+                                        #02
+                                    </div>
+                                    <!-- Mini REC indicator -->
+                                    <div class="rec-indicator absolute top-2 right-2 flex items-center gap-1">
+                                        <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                        <span class="text-red-400 text-[8px] font-mono">REC</span>
+                                    </div>
+                                </div>
+                                <h3 class="text-amber-400 font-bold text-sm mb-1">Roomba Sızıntısı</h3>
+                                <p class="text-amber-300/60 text-[10px] font-mono">Mahremiyet İhlali</p>
+                            </div>
+                            
+                            <!-- Kart 3: Robert Williams -->
+                            <div class="case-preview-card p-4 bg-black/80 border-2 border-cyan-500/50 rounded-xl" style="width: 250px; box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);">
+                                <div class="relative h-28 mb-3 rounded-lg overflow-hidden">
+                                    <img src="images/robertw.jpg" alt="Robert Williams" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                    <div class="absolute top-2 left-2 px-2 py-0.5 bg-cyan-500/30 rounded text-[9px] font-mono text-cyan-300">
+                                        #03
+                                    </div>
+                                    <!-- Mini Face Target -->
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-12 h-14 border border-cyan-400/50 rounded"></div>
+                                    </div>
+                                </div>
+                                <h3 class="text-cyan-400 font-bold text-sm mb-1">Algoritmik Hata</h3>
+                                <p class="text-cyan-300/60 text-[10px] font-mono">Hatalı Yüz Tanıma</p>
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- Alt Bilgi -->
+                        <div class="mt-10 flex items-center gap-2 text-slate-600 text-xs font-mono">
+                            <i data-lucide="chevrons-down" class="animate-bounce" style="width: 16px; height: 16px;"></i>
+                            <span>Detaylar için aşağı kaydır</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- SLAYT 6.1: MICROSOFT TAY DETAY -->
+                <section data-background-color="#000000">
+                    <div class="flex items-center justify-center gap-10 h-full px-6">
+                        
+                        <!-- Sol: Büyük Görsel (676x612 oranında - neredeyse kare) -->
+                        <div class="relative flex-shrink-0">
+                            <!-- Görsel Çerçeve -->
+                            <div class="border-2 border-pink-500/50 rounded-2xl overflow-hidden" style="box-shadow: 0 0 50px rgba(236, 72, 153, 0.4);">
+                                <img src="images/tayandyou.jpg?v=2" alt="Microsoft Tay" 
+                                     class="block" style="width: 500px; height: auto;">
+                            </div>
+                            
+                            <!-- Köşe İşaretleri -->
+                            <div class="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-pink-400"></div>
+                            <div class="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-pink-400"></div>
+                            <div class="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-pink-400"></div>
+                            <div class="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-pink-400"></div>
+                            
+                            <!-- Twitter Badge -->
+                            <div class="absolute top-4 left-4 px-3 py-1.5 bg-black/90 border border-pink-500/50 rounded-lg flex items-center gap-2">
+                                <i data-lucide="twitter" class="text-pink-400" style="width: 16px; height: 16px;"></i>
+                                <span class="text-pink-300 text-xs font-mono">@TayandYou</span>
+                            </div>
+                            
+                            <!-- FAILURE Badge -->
+                            <div class="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 bg-red-500/20 border border-red-500/50 rounded-lg backdrop-blur-sm">
+                                <div class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></div>
+                                <span class="text-red-400 font-mono text-xs font-bold">FAILURE</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ: İçerik -->
+                        <div class="max-w-md">
+                            <!-- Case Number -->
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="px-3 py-1 bg-pink-500/20 border border-pink-500/50 rounded-lg">
+                                    <span class="text-pink-400 font-mono text-sm">VAKA #01</span>
+                                </div>
+                                <span class="text-pink-500/50 font-mono text-xs">2016.03.23</span>
+                            </div>
+                            
+                            <!-- Title -->
+                            <h2 class="text-4xl font-black text-pink-400 mb-2">Microsoft Tay</h2>
+                            <p class="text-pink-300/70 text-lg font-mono mb-5">24 Saatte Radikalleşen Yapay Zeka</p>
+                            
+                            <!-- Description Box -->
+                            <div class="p-4 bg-pink-500/10 border-l-4 border-pink-500 rounded-r-lg mb-5">
+                                <p class="text-slate-300 text-sm leading-relaxed">
+                                    Microsoft'un Twitter üzerinden kullanıma sunduğu chatbot, internet trollerinden öğrenerek 
+                                    <span class="text-pink-400 font-semibold">saatler içinde nefret söylemi</span> üretmeye başladı.
+                                    24 saat içinde kapatıldı.
+                                </p>
+                            </div>
+                            
+                            <!-- Chat Bubbles -->
+                            <div class="space-y-2 mb-5">
+                                <div class="flex items-start gap-2">
+                                    <div class="w-7 h-7 rounded-full bg-pink-500/30 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="bot" class="text-pink-400" style="width: 14px; height: 14px;"></i>
+                                    </div>
+                                    <div class="px-3 py-2 bg-slate-800/80 border border-slate-700 rounded-lg rounded-tl-none">
+                                        <p class="text-slate-400 text-sm italic">"Hello World! Humans are cool!"</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2 pl-9">
+                                    <div class="px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg">
+                                        <p class="text-red-400 text-sm italic font-mono">[ 24 SAAT SONRA... ⚠️ ]</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Key Points -->
+                            <div class="space-y-2 mb-5">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="alert-circle" class="text-pink-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400 text-sm">Denetimsiz öğrenme riski</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="users" class="text-pink-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400 text-sm">Kötü niyetli kullanıcı manipülasyonu</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="shield-off" class="text-pink-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400 text-sm">Yetersiz güvenlik önlemleri</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Source Button -->
+                            <a href="https://www.bbc.com/turkce/haberler/2016/03/160322_tay_chatbot_microsoft_kufur" 
+                               target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 px-6 py-3 bg-pink-500/20 border border-pink-500/50 rounded-lg text-pink-400 font-mono text-sm hover:bg-pink-500/30 transition-colors">
+                                <span>[ KAYNAĞA GİT ]</span>
+                                <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+                            </a>
+                        </div>
+                        
+                    </div>
+                </section>
+                
+                <!-- SLAYT 6.2: ROOMBA DETAY -->
+                <section data-background-color="#000000">
+                    <div class="flex items-center justify-center gap-12 h-full px-8">
+                        
+                        <!-- Sol: Büyük Görsel (Güvenlik Kamerası Estetiği) -->
+                        <div class="relative" style="width: 400px; height: 450px;">
+                            <!-- Görsel Çerçeve -->
+                            <div class="absolute inset-0 border-2 border-amber-500/50 rounded-2xl overflow-hidden" style="box-shadow: 0 0 40px rgba(251, 191, 36, 0.3);">
+                                <img src="images/roomba.jpg" alt="Roomba Sızıntısı" class="w-full h-full object-cover">
+                                <!-- Gradient Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                
+                                <!-- Güvenlik Kamerası Overlay -->
+                                <div class="absolute inset-0 pointer-events-none">
+                                    <!-- Köşe Vizörleri -->
+                                    <div class="absolute top-4 left-4 w-12 h-12 border-t-2 border-l-2 border-amber-400/60"></div>
+                                    <div class="absolute top-4 right-4 w-12 h-12 border-t-2 border-r-2 border-amber-400/60"></div>
+                                    <div class="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-amber-400/60"></div>
+                                    <div class="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-amber-400/60"></div>
+                                    
+                                    <!-- Yatay Çizgiler -->
+                                    <div class="absolute top-1/3 left-0 right-0 h-px bg-amber-500/20"></div>
+                                    <div class="absolute top-2/3 left-0 right-0 h-px bg-amber-500/20"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- REC Indicator (Üstte) -->
+                            <div class="rec-indicator absolute -top-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/80 border border-red-500/50 rounded-lg">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <span class="text-red-400 font-mono text-sm font-bold">● REC</span>
+                            </div>
+                            
+                            <!-- Timestamp (Altta) -->
+                            <div class="absolute -bottom-4 left-4 px-3 py-1.5 bg-black/80 border border-amber-500/30 rounded-lg">
+                                <span class="text-amber-400/80 font-mono text-xs">CAM_01 // 2022.12.19 // 14:32:07</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ: İçerik -->
+                        <div class="max-w-md">
+                            <!-- Case Number -->
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="px-3 py-1 bg-amber-500/20 border border-amber-500/50 rounded-lg">
+                                    <span class="text-amber-400 font-mono text-sm">VAKA #02</span>
+                                </div>
+                                <span class="text-amber-500/50 font-mono text-xs">2022.12.19</span>
+                            </div>
+                            
+                            <!-- Title -->
+                            <h2 class="text-4xl font-black text-amber-400 mb-2">Roomba Sızıntısı</h2>
+                            <p class="text-amber-300/70 text-lg font-mono mb-6">Evinizin İçi Artık Özel Değil</p>
+                            
+                            <!-- Description -->
+                            <div class="p-4 bg-amber-500/10 border-l-4 border-amber-500 rounded-r-lg mb-6">
+                                <p class="text-slate-300 text-sm leading-relaxed">
+                                    iRobot'un robot süpürgeleri, AI eğitimi için ev içi görüntüler topluyordu.
+                                    Bu <span class="text-amber-400 font-semibold">mahrem görüntüler</span>, veri etiketleyiciler 
+                                    tarafından sosyal medyada sızdırıldı. Tuvaletler, yatak odaları...
+                                </p>
+                            </div>
+                            
+                            <!-- Key Points -->
+                            <div class="space-y-2 mb-6">
+                                <div class="flex items-center gap-2 text-sm">
+                                    <i data-lucide="eye" class="text-amber-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400">Sürekli gözetim cihazları</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <i data-lucide="database" class="text-amber-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400">Veri toplama şeffaflığı eksikliği</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <i data-lucide="share-2" class="text-amber-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400">Üçüncü taraf veri paylaşımı</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Source Button -->
+                            <a href="https://www.technologyreview.com/2022/12/19/1065306/roomba-irobot-robot-vacuums-artificial-intelligence-training-data-privacy/" 
+                               target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 px-6 py-3 bg-amber-500/20 border border-amber-500/50 rounded-lg text-amber-400 font-mono text-sm hover:bg-amber-500/30 transition-colors">
+                                <span>[ KAYNAĞA GİT ]</span>
+                                <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+                            </a>
+                        </div>
+                        
+                    </div>
+                </section>
+                
+                <!-- SLAYT 6.3: ROBERT WILLIAMS DETAY -->
+                <section data-background-color="#000000">
+                    <div class="flex items-center justify-center gap-12 h-full px-8">
+                        
+                        <!-- Sol: Karşılaştırmalı Görseller (TUTUKLANAN vs GERÇEK SUÇLU) -->
+                        <div class="relative flex items-center gap-4" style="width: 500px;">
+                            
+                            <!-- Robert Williams (Yanlış Tutuklanan) -->
+                            <div class="relative" style="width: 220px; height: 280px;">
+                                <div class="absolute inset-0 border-2 border-red-500/50 rounded-xl overflow-hidden" style="box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);">
+                                    <img src="images/robertw.jpg" alt="Robert Williams - Yanlış Tutuklanan" class="w-full h-full object-cover">
+                                    <!-- Gradient Overlay -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                                    
+                                    <!-- Face ID Overlay -->
+                                    <div class="absolute inset-0 pointer-events-none flex items-center justify-center" style="padding-bottom: 20%;">
+                                        <div class="relative w-20 h-24 border-2 border-red-400 rounded" style="box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);">
+                                            <div class="absolute -top-0.5 -left-0.5 w-2 h-2 border-t border-l border-red-300"></div>
+                                            <div class="absolute -top-0.5 -right-0.5 w-2 h-2 border-t border-r border-red-300"></div>
+                                            <div class="absolute -bottom-0.5 -left-0.5 w-2 h-2 border-b border-l border-red-300"></div>
+                                            <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 border-b border-r border-red-300"></div>
+                                            <div class="scan-line absolute left-0 right-0 h-0.5 bg-red-400"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Label -->
+                                <div class="absolute -bottom-6 left-0 right-0 text-center">
+                                    <span class="px-3 py-1 bg-red-500/20 border border-red-500/50 rounded-full text-red-400 text-xs font-mono">
+                                        ❌ TUTUKLANAN
+                                    </span>
+                                </div>
+                                
+                                <!-- Error Badge -->
+                                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-red-500/30 border border-red-500 rounded text-[10px] font-mono text-red-300 font-bold">
+                                    FALSE POSITIVE
+                                </div>
+                            </div>
+                            
+                            <!-- Ortadaki Bağlantı / VS -->
+                            <div class="flex flex-col items-center gap-2 z-10">
+                                <div class="w-px h-8 bg-gradient-to-b from-red-500/50 to-transparent"></div>
+                                <div class="w-12 h-12 rounded-full bg-black border-2 border-cyan-500/50 flex items-center justify-center" style="box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);">
+                                    <span class="text-cyan-400 font-black text-lg">≠</span>
+                                </div>
+                                <div class="w-px h-8 bg-gradient-to-b from-transparent to-emerald-500/50"></div>
+                            </div>
+                            
+                            <!-- Gerçek Suçlu -->
+                            <div class="relative" style="width: 220px; height: 280px;">
+                                <div class="absolute inset-0 border-2 border-emerald-500/50 rounded-xl overflow-hidden" style="box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);">
+                                    <img src="images/robertw_2.jpg" alt="Gerçek Suçlu" class="w-full h-full object-cover">
+                                    <!-- Gradient Overlay -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                                    
+                                    <!-- Face ID Overlay -->
+                                    <div class="absolute inset-0 pointer-events-none flex items-center" style="padding-left: 30%;">
+                                        <div class="relative w-20 h-24 border-2 border-emerald-400 rounded" style="box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); transform: translateX(-50%);">
+                                            <div class="absolute -top-0.5 -left-0.5 w-2 h-2 border-t border-l border-emerald-300"></div>
+                                            <div class="absolute -top-0.5 -right-0.5 w-2 h-2 border-t border-r border-emerald-300"></div>
+                                            <div class="absolute -bottom-0.5 -left-0.5 w-2 h-2 border-b border-l border-emerald-300"></div>
+                                            <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 border-b border-r border-emerald-300"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Label -->
+                                <div class="absolute -bottom-6 left-0 right-0 text-center">
+                                    <span class="px-3 py-1 bg-emerald-500/20 border border-emerald-500/50 rounded-full text-emerald-400 text-xs font-mono">
+                                        ✓ GERÇEK SUÇLU
+                                    </span>
+                                </div>
+                                
+                                <!-- Match Badge -->
+                                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-emerald-500/30 border border-emerald-500 rounded text-[10px] font-mono text-emerald-300 font-bold">
+                                    ACTUAL MATCH
+                                </div>
+                            </div>
+                            
+                            <!-- Alt Açıklama -->
+                            <div class="absolute -bottom-16 left-0 right-0 text-center">
+                                <p class="text-slate-500 text-xs font-mono italic">
+                                    AI sistemi bu iki farklı kişiyi aynı kişi olarak tanımladı
+                                </p>
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- Sağ: İçerik -->
+                        <div class="max-w-md">
+                            <!-- Case Number -->
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="px-3 py-1 bg-cyan-500/20 border border-cyan-500/50 rounded-lg">
+                                    <span class="text-cyan-400 font-mono text-sm">VAKA #03</span>
+                                </div>
+                                <span class="text-cyan-500/50 font-mono text-xs">2020.06.24</span>
+                            </div>
+                            
+                            <!-- Title -->
+                            <h2 class="text-4xl font-black text-cyan-400 mb-2">Algoritmik Hata</h2>
+                            <p class="text-cyan-300/70 text-lg font-mono mb-6">Yapay Zeka Tarafından Suçlanmak</p>
+                            
+                            <!-- Description -->
+                            <div class="p-4 bg-cyan-500/10 border-l-4 border-cyan-500 rounded-r-lg mb-6">
+                                <p class="text-slate-300 text-sm leading-relaxed">
+                                    Robert Williams, ABD'de <span class="text-cyan-400 font-semibold">hatalı yüz tanıma sistemi</span> 
+                                    yüzünden haksız yere tutuklanan ilk belgelenmiş vaka oldu. 
+                                    30 saat gözaltında tutuldu.
+                                </p>
+                            </div>
+                            
+                            <!-- Key Points -->
+                            <div class="space-y-2 mb-6">
+                                <div class="flex items-center gap-2 text-sm">
+                                    <i data-lucide="scan-face" class="text-cyan-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400">Yüz tanıma algoritma önyargısı</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <i data-lucide="scale" class="text-cyan-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400">Adalet sisteminde AI kullanımı</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <i data-lucide="user-x" class="text-cyan-400" style="width: 16px; height: 16px;"></i>
+                                    <span class="text-slate-400">Koyu tenli bireylerde yüksek hata oranı</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Source Button -->
+                            <a href="https://www.nytimes.com/2020/06/24/technology/facial-recognition-arrest.html" 
+                               target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500/20 border border-cyan-500/50 rounded-lg text-cyan-400 font-mono text-sm hover:bg-cyan-500/30 transition-colors">
+                                <span>[ KAYNAĞA GİT ]</span>
+                                <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+                            </a>
+                        </div>
+                        
+                    </div>
+                </section>
+                
+            </section>
+
+            <!-- Slayt 7: Kapanış -->
+            <section data-background-gradient="radial-gradient(circle, #0a0a0a 0%, #000 100%)">
+                <div class="p-12">
+                    <h2 class="text-5xl mb-8 text-emerald-300">Dersin Sonu</h2>
+                    <p class="text-xl text-emerald-200/60 mb-12">Haftaya: <span class="text-emerald-400 border-b border-emerald-400">Faydacılık vs. Deontoloji</span></p>
+                    <div class="glass-card max-w-lg mx-auto bg-emerald-500/5 border-emerald-500/20">
+                        <i data-lucide="help-circle" class="text-emerald-400 mb-4 mx-auto"></i>
+                        <p class="text-sm italic text-emerald-200/80">"Birini öldürüp beşini kurtarmak her zaman doğru mudur?"</p>
+                    </div>
+                    <div class="mt-8 flex items-center justify-center gap-2 text-emerald-500/40 text-sm font-mono">
+                        <span class="animate-pulse">▌</span>
+                        <span>system.ethics.shutdown()</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false, 
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200, 
+            height: 700, 
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<meta name="author" content="{{ article.author.name }}" />
+<meta name="description" content="{{ article.summary|striptags|escape }}" />
+<meta name="keywords" content="{{ article.tags|join(', ')|escape }}">
+{% endblock %}
+
+{% block title %} – {{ article.title|striptags|escape }}{% endblock %}
+
+{% block content %}
+<!-- Article page -->
+<div class="article-page-wrapper">
+
+  <!-- Article Hero -->
+  <div class="article-hero">
+    <div class="article-hero-bg"></div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-down">
+            <ol class="breadcrumb justify-content-center glass-breadcrumb">
+              <li class="breadcrumb-item"><a href="{{ SITEURL }}/">Home</a></li>
+              <li class="breadcrumb-item"><a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ article.title|truncate(30) }}</li>
+            </ol>
+          </nav>
+
+          <!-- Category -->
+          <div class="mb-3" data-aos="fade-up">
+            <a href="{{ SITEURL }}/{{ article.category.url }}" class="tag-badge tag-category tag-lg">
+              <i class="fa-solid fa-folder me-2"></i>{{ article.category }}
+            </a>
+          </div>
+
+          <!-- Title -->
+          <h1 class="article-hero-title" id="{{ article.slug }}" data-aos="fade-up" data-aos-delay="50">
+            {{ article.title }}
+          </h1>
+
+          <!-- Meta -->
+          <div class="article-hero-meta d-flex align-items-center justify-content-center gap-4 mt-4" data-aos="fade-up" data-aos-delay="100">
+            <span class="meta-item">
+              <i class="fa-solid fa-user-pen me-2"></i>{{ article.author }}
+            </span>
+            <span class="meta-separator">·</span>
+            <span class="meta-item">
+              <i class="fa-regular fa-calendar me-2"></i>{{ article.locale_date }}
+            </span>
+            {% if PLUGINS and 'post_stats' in PLUGINS %}
+            <span class="meta-separator">·</span>
+            <span class="meta-item">
+              <i class="fa-regular fa-clock me-2"></i>{{ article.stats['read_mins'] }} min read
+            </span>
+            {% endif %}
+          </div>
+
+          <!-- Tags -->
+          {% if article.tags %}
+          <div class="article-hero-tags d-flex flex-wrap justify-content-center gap-2 mt-4" data-aos="fade-up" data-aos-delay="150">
+            {% for tag in article.tags %}
+            <a href="{{ SITEURL }}/{{ tag.url }}" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>{{ tag }}
+            </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article Body -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <!-- Featured Image -->
+        {% if article.featured_image %}
+        <div class="article-featured-image mb-5 glass-card overflow-hidden rounded-3" data-aos="fade-up">
+          <img src="{{ article.featured_image }}" alt="{{ article.title }}" class="img-fluid w-100">
+        </div>
+        {% endif %}
+
+        <!-- Article Content -->
+        <div class="article-content glass-card p-4 p-md-5 rounded-3" data-aos="fade-up">
+          {{ article.content }}
+        </div>
+
+        <!-- Author Box -->
+        <div class="author-box glass-card p-4 rounded-3 mt-4 d-flex align-items-center gap-4" data-aos="fade-up">
+          <div class="author-avatar-placeholder">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div>
+            <p class="author-box-name mb-1">{{ article.author }}</p>
+            <p class="author-box-bio mb-0 text-muted">{{ SITEDESCRIPTION|default('') }}</p>
+          </div>
+        </div>
+
+        <!-- Tags Cloud -->
+        {% if article.tags %}
+        <div class="tag-cloud-section glass-card p-4 rounded-3 mt-4" data-aos="fade-up">
+          <h5 class="tag-cloud-title mb-3">
+            <i class="fa-solid fa-tags me-2"></i>Tags
+          </h5>
+          <div class="d-flex flex-wrap gap-2">
+            {% for tag in article.tags %}
+            <a href="{{ SITEURL }}/{{ tag.url }}" class="tag-badge">{{ tag }}</a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Neighbors (prev/next) -->
+        {% if article.prev_article or article.next_article %}
+        <div class="row g-3 mt-4" data-aos="fade-up">
+          {% if article.prev_article %}
+          <div class="col-md-6">
+            <a href="{{ SITEURL }}/{{ article.prev_article.url }}" class="neighbor-card glass-card p-3 rounded-3 d-flex align-items-center gap-3 text-decoration-none h-100">
+              <i class="fa-solid fa-arrow-left neighbor-icon"></i>
+              <div>
+                <small class="neighbor-label">Previous</small>
+                <p class="neighbor-title mb-0">{{ article.prev_article.title|truncate(60) }}</p>
+              </div>
+            </a>
+          </div>
+          {% endif %}
+          {% if article.next_article %}
+          <div class="col-md-6">
+            <a href="{{ SITEURL }}/{{ article.next_article.url }}" class="neighbor-card glass-card p-3 rounded-3 d-flex align-items-center justify-content-end gap-3 text-decoration-none text-end h-100">
+              <div>
+                <small class="neighbor-label">Next</small>
+                <p class="neighbor-title mb-0">{{ article.next_article.title|truncate(60) }}</p>
+              </div>
+              <i class="fa-solid fa-arrow-right neighbor-icon"></i>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+      </div>
+
+      <!-- Sidebar / Table of Contents placeholder -->
+      <div class="col-lg-3 offset-lg-1 d-none d-lg-block">
+        <div class="toc-sidebar sticky-lg-top" style="top: 90px;">
+          <div class="glass-card p-4 rounded-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-list-ul me-2"></i>Contents
+            </h6>
+            <div id="toc-content" class="toc-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <!-- Share box -->
+          <div class="glass-card p-4 rounded-3 mt-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-share-nodes me-2"></i>Share
+            </h6>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="https://twitter.com/intent/tweet?url={{ SITEURL }}/{{ article.url }}&text={{ article.title|urlencode }}" target="_blank" class="share-btn share-twitter" title="Twitter/X">
+                <i class="fa-brands fa-x-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/shareArticle?url={{ SITEURL }}/{{ article.url }}&title={{ article.title|urlencode }}" target="_blank" class="share-btn share-linkedin" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+              <button class="share-btn share-copy" title="Copy link" onclick="copyLink()">
+                <i class="fa-solid fa-link"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+// Copy link
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector('.share-copy');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-link"></i>', 2000);
+  });
+}
+</script>
+{% endblock %}
