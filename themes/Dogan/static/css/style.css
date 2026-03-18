@@ -1727,6 +1727,23 @@ body {
   :root {
     --navbar-h: 60px;
   }
+
+  /* Mobile menu background — prevent floating text */
+  .glass-nav .navbar-collapse {
+    background: rgba(10, 10, 15, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  [data-theme="light"] .glass-nav .navbar-collapse {
+    background: rgba(244, 244, 251, 0.95);
+    box-shadow: 0 12px 40px rgba(108, 99, 255, 0.1);
+  }
 }
 
 /* Light mode text fixes */

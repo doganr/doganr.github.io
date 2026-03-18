@@ -24,17 +24,20 @@
             {% for pub in year_pubs %}
             <div class="row mb-5 align-items-start" data-aos="fade-up">
 
-                <div class="col-sm-3 d-flex flex-column align-items-end text-end pe-4">
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
                     {% if pub.abbr %}
-                    <span class="badge rounded-1 mb-3 px-3 py-1"
-                        style="background-color: #00e5ff; color: #fff; font-size: 0.75rem; letter-spacing: 0.5px;">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
                         {{ pub.abbr }}
                     </span>
                     {% endif %}
 
                     {% if pub.preview %}
-                    <img src="{{ SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
-                        class="img-fluid" style="max-height: 120px; object-fit: contain;">
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="{{ SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
                     {% endif %}
                 </div>
 
