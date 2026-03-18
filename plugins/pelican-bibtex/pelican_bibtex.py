@@ -12,19 +12,39 @@ logger = logging.getLogger(__name__)
 # --- AYARLAR ---
 USER_ID = "F2NkKNAAAAAJ"
 CACHE_FILE = 'citations_cache.json'
-CACHE_DAYS = 7  # Atıflar kaç günde bir Google'dan güncellensin? (Geliştirme aşamasında 7 iyidir)
+CACHE_DAYS = 1  # Atıflar kaç günde bir Google'dan güncellensin?
 
-def fetch_scholar_citations(scholar_ids):
+def load_cache():
+    """Önbellek dosyasından atıf verilerini oku."""
+    if os.path.exists(CACHE_FILE):
+        with open(CACHE_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            logger.info(f"--> Atıflar önbellekten okundu ({len(data)} kayıt)")
+            return data
+    return {}
+
+def fetch_scholar_citations(scholar_ids, allow_fetch=True):
     citations = {}
     
     # 1. Önbellek (Cache) Kontrolü
     if os.path.exists(CACHE_FILE):
         file_mod_time = datetime.fromtimestamp(os.path.getmtime(CACHE_FILE))
+
+        # Eğer fetch kapalıysa (CI/CD ortamı) → sadece cache'den oku
+        if not allow_fetch:
+            logger.info("--> SCHOLAR_FETCH=False: Sadece önbellekten okunuyor (Google'a istek atılmayacak)")
+            return load_cache()
+
         # Eğer dosya CACHE_DAYS'den daha yeniyse, Google'a gitme!
         if datetime.now() - file_mod_time < timedelta(days=CACHE_DAYS):
             logger.info(f"--> Atıflar önbellekten okunuyor (Son güncelleme: {file_mod_time.strftime('%Y-%m-%d %H:%M')})")
             with open(CACHE_FILE, 'r', encoding='utf-8') as f:
                 return json.load(f)
+    elif not allow_fetch:
+        # Cache yok ve fetch de kapalı → boş döndür
+        logger.warning("--> SCHOLAR_FETCH=False ve önbellek dosyası bulunamadı! Atıf verileri gösterilemeyecek.")
+        logger.warning("    Önce lokal ortamda `pelican content` çalıştırarak önbelleği oluşturun.")
+        return {}
 
     # 2. Önbellek eskiyse veya yoksa Google'dan Çek
     logger.warning(f"--> Önbellek süresi dolmuş veya yok. Google Scholar'dan {len(scholar_ids)} makale için güncel atıflar çekiliyor...")
@@ -42,14 +62,14 @@ def fetch_scholar_citations(scholar_ids):
             citations[paper_id] = count
             logger.info(f"    [+] Başarılı: {paper_id} -> {count} Atıf")
         except Exception as e:
-            logger.error(f"    [-] Hata: {paper_id} çekilemedi.")
-            citations[paper_id] = "N/A"
+            logger.error(f"    [-] Hata: {paper_id} çekilemedi: {e}")
+            citations[paper_id] = "0"
             
         time.sleep(2) # Banlanmamak için zorunlu bekleme süresi
 
     # 3. Yeni verileri kaydet
     with open(CACHE_FILE, 'w', encoding='utf-8') as f:
-        json.dump(citations, f)
+        json.dump(citations, f, indent=2)
         
     return citations
 
@@ -64,6 +84,9 @@ def add_publications(generator, **kwargs):
         logger.warning('`pelican_bibtex` failed to parse file %s: %s', refs_file, str(e))
         return
 
+    # SCHOLAR_FETCH ayarını oku (varsayılan: True → lokal geliştirmede aktif)
+    allow_fetch = generator.settings.get('SCHOLAR_FETCH', True)
+
     # Önce tüm Scholar ID'lerini topla
     scholar_ids = []
     for entry in bibdata.entries.values():
@@ -71,7 +94,7 @@ def add_publications(generator, **kwargs):
         if sid: scholar_ids.append(sid)
 
     # Atıfları Getir (Önbellekten veya Google'dan)
-    citations_data = fetch_scholar_citations(scholar_ids)
+    citations_data = fetch_scholar_citations(scholar_ids, allow_fetch=allow_fetch)
 
     publications = []
     for key, entry in bibdata.entries.items():

@@ -11,6 +11,11 @@ from pelicanconf import *
 SITEURL = "https://doganr.com"
 RELATIVE_URLS = False
 
+# CI/CD ortamında Google Scholar'a istek atma, sadece commit'lenmiş
+# citations_cache.json dosyasından oku. Atıfları güncellemek için
+# lokal ortamda `pelican content` çalıştırın.
+SCHOLAR_FETCH = False
+
 FEED_ALL_ATOM = "feeds/all.atom.xml"
 CATEGORY_FEED_ATOM = "feeds/{slug}.atom.xml"
 

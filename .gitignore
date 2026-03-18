@@ -12,7 +12,6 @@ env/
 
 # Pelican
 *.pid
-citations_cache.json
 
 # Deploy script (tek seferlik)
 deploy.sh

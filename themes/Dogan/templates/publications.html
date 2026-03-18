@@ -41,8 +41,8 @@
                     {% endif %}
                 </div>
 
-                <div class="col-sm-9">
-                    <h5 class="mb-1" style="font-size: 1.1rem; font-weight: 500;">
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
                         {% if pub.html %}
                         <a href="{{ pub.html }}" target="_blank" class="text-decoration-none text-body">{{ pub.title
                             }}</a>
@@ -52,34 +52,39 @@
                     </h5>
 
                     <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
-                        {{ pub.author | replace('Doğan, Ramazan Özgür', '<span
-                            style="border-bottom: 1px solid #aaa;">Doğan, Ramazan Özgür</span>') | replace('Dogan,
-                        Ramazan Ozgur', '<span style="border-bottom: 1px solid #aaa;">Dogan, Ramazan Ozgur</span>') |
-                        replace('Dogan, Hulya', 'Dogan, Hulya') | safe }}
+                        {{ pub.author | replace('Ramazan Özgür Doğan', '<span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>') | replace('Ramazan Ozgur Dogan', '<span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>') | safe }}
                     </div>
 
                     <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
                         {% if pub.journal %}{{ pub.journal }},{% elif pub.booktitle %}{{ pub.booktitle }},{% endif %} {{
-                        pub.year }}
+                        pub.year
+                        }}
                     </div>
 
                     <div class="d-flex flex-wrap gap-2 mb-2">
                         {% if pub.doi %}
-                        <a href="{{ pub.doi }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-0 px-3 py-1"
-                            style="font-size: 0.7rem; letter-spacing: 0.5px; border-color: #ddd;">DOI</a>
+                        <a href="{{ pub.doi }}" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">DOI</a>
                         {% endif %}
 
-                        <a href="#" class="btn btn-sm btn-outline-dark rounded-0 px-3 py-1"
-                            style="font-size: 0.7rem; letter-spacing: 0.5px; border-color: #ddd;">BIB</a>
+                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">BIB</a>
 
                         {% if pub.html %}
-                        <a href="{{ pub.html }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-0 px-3 py-1"
-                            style="font-size: 0.7rem; letter-spacing: 0.5px; border-color: #ddd;">HTML</a>
+                        <a href="{{ pub.html }}" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">HTML</a>
                         {% endif %}
 
                         {% if pub.code %}
-                        <a href="{{ pub.code }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-0 px-3 py-1"
-                            style="font-size: 0.7rem; letter-spacing: 0.5px; border-color: #ddd;">CODE</a>
+                        <a href="{{ pub.code }}" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">CODE</a>
                         {% endif %}
                     </div>
 
