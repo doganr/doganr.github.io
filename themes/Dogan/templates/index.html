@@ -10,27 +10,16 @@
 
       <div class="col-lg-7 text-start mb-5 mb-lg-0" data-aos="fade-right">
         <h1 class="hero-title fw-bold mb-2" style="font-size: 2.5rem; text-align: left;">
-          Asst. Prof. Ramazan Özgür Doğan
+          {{ HERO_NAME }}
         </h1>
         <p class="text-info mb-4" style="font-size: 1.1rem; font-weight: 500;">
-          Trabzon University · Department of Artificial Intelligence Engineering
+          {{ HERO_AFFILIATION }}
         </p>
 
         <div class="hero-bio mb-4" style="font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary);">
-          <p class="mb-3">
-            Dr. Doğan is a faculty member in the Department of Artificial Intelligence
-            Engineering at Trabzon University. His research focuses on deep learning, biomedical image and signal
-            processing, and AI-powered applications in pharmacology and drug interaction prediction.
-          </p>
-          <p class="mb-3">
-            He received his Ph.D. in Computer Engineering (Karadeniz Technical University) and has held academic
-            positions in both Türkiye and the United States, including research visits at The Ohio State University and
-            Youngstown State University.
-          </p>
-          <p>
-            His current work explores multimodal learning, medical foundation models, and interpretable AI in
-            healthcare.
-          </p>
+          <p class="mb-3">{{ HERO_BIO_1 }}</p>
+          <p class="mb-3">{{ HERO_BIO_2 }}</p>
+          <p>{{ HERO_BIO_3 }}</p>
         </div>
 
         {% if SOCIAL %}
@@ -53,7 +42,7 @@
             style="width: 280px; height: 280px; background: var(--gradient-main); opacity: 0.4; filter: blur(30px); z-index: -1; animation: pulse-hero 4s ease-in-out infinite;">
           </div>
 
-          <img src="{{ SITEURL }}/{{ SITELOGO }}" alt="{{ SITETITLE }}"
+          <img src="{{ MAIN_SITEURL }}/{{ SITELOGO }}" alt="{{ SITETITLE }}"
             class="rounded-circle shadow-lg position-relative"
             style="width: 260px; height: 260px; object-fit: cover; border: 3px solid rgba(255,255,255,0.1); z-index: 2;">
 
@@ -72,7 +61,7 @@
             <div class="terminal-dot dot-red"></div>
             <div class="terminal-dot dot-yellow"></div>
             <div class="terminal-dot dot-green"></div>
-            <div class="terminal-title">dogan@trabzon.edu.tr: ~</div>
+            <div class="terminal-title">{{ HERO_TERMINAL_TITLE }}</div>
           </div>
 
           <div class="terminal-body">
@@ -80,7 +69,7 @@
               <span class="terminal-prompt">dogan@trabzon.edu.tr</span>:<span class="terminal-path">~</span>$ whoami
             </div>
             <div class="mb-2 text-white">
-              Asst. Prof. Ramazan Özgür DOĞAN
+              {{ HERO_NAME }}
             </div>
 
             <div class="mb-1">
@@ -89,9 +78,9 @@
             </div>
             <div class="mb-3" style="color: #adb5bd;">
               <span style="color: #f1fa8c;">class</span> <span style="color: #50fa7b;">Affiliation</span>:<br>
-              &nbsp;&nbsp;dept = <span style="color: #f1fa8c;">"AI Engineering"</span><br>
-              &nbsp;&nbsp;univ = <span style="color: #f1fa8c;">"Trabzon University"</span><br>
-              &nbsp;&nbsp;loc = <span style="color: #f1fa8c;">"Türkiye"</span>
+              &nbsp;&nbsp;dept = <span style="color: #f1fa8c;">"{{ HERO_TERMINAL_DEPT }}"</span><br>
+              &nbsp;&nbsp;univ = <span style="color: #f1fa8c;">"{{ HERO_TERMINAL_UNIV }}"</span><br>
+              &nbsp;&nbsp;loc = <span style="color: #f1fa8c;">"{{ HERO_TERMINAL_LOC }}"</span>
             </div>
 
             <div>
@@ -119,11 +108,11 @@
     <div class="section-header text-center mb-5" data-aos="fade-up">
       <div class="mb-3">
         <span class="section-badge">
-          <i class="fa-solid fa-book-journal-whills me-1"></i> Research Outputs
+          <i class="fa-solid fa-book-journal-whills me-1"></i> {{ PUB_BADGE }}
         </span>
       </div>
 
-      <h2 class="section-title text-capitalize mb-3">Selected Publications</h2>
+      <h2 class="section-title text-capitalize mb-3">{{ PUB_TITLE }}</h2>
 
       <div class="mx-auto"
         style="width: 80px; height: 4px; background: var(--gradient-main); border-radius: 2px; box-shadow: 0 0 15px var(--accent-glow);">
@@ -148,7 +137,7 @@
             {% if pub.preview %}
             <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
               style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
-              <img src="{{ SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
+              <img src="{{ MAIN_SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
                 class="img-fluid" style="max-height: 100%; object-fit: contain;">
             </div>
             {% endif %}
@@ -225,20 +214,20 @@
     particlesJS("particles-js", {
       "particles": {
         "number": { "value": 70, "density": { "enable": true, "value_area": 800 } },
-        "color": { "value": ["#6c63ff", "#00d4ff"] }, // Mor ve Mavi Noktalar
+        "color": { "value": ["#6c63ff", "#00d4ff"] },
         "shape": { "type": "circle" },
         "opacity": { "value": 0.6, "random": true },
         "size": { "value": 3.5, "random": true },
         "line_linked": {
           "enable": true,
           "distance": 160,
-          "color": "#6c63ff", // Mor bağ çizgileri
+          "color": "#6c63ff",
           "opacity": 0.4,
           "width": 1.2
         },
         "move": {
           "enable": true,
-          "speed": 1.5, // Zarif ve yavaş hareket
+          "speed": 1.5,
           "direction": "none",
           "random": true,
           "straight": false,
@@ -247,10 +236,10 @@
         }
       },
       "interactivity": {
-        "detect_on": "window", // Fareyi tüm ekranda algılar
+        "detect_on": "window",
         "events": {
-          "onhover": { "enable": true, "mode": "grab" }, // Fareye doğru ağ uzatma
-          "onclick": { "enable": true, "mode": "push" }, // Tıklayınca yeni ağ ekleme
+          "onhover": { "enable": true, "mode": "grab" },
+          "onclick": { "enable": true, "mode": "push" },
           "resize": true
         },
         "modes": {

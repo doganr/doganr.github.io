@@ -16,7 +16,7 @@
   <meta name="author" content="{{ AUTHOR }}" />
   <meta name="description" content="{{ SITEDESCRIPTION|default(SITENAME) }}" />
 
-  <link rel="icon" type="image/x-icon" href="{{ SITEURL }}/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="{{ MAIN_SITEURL }}/favicon.ico">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,14 +31,17 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
+  <!-- Flag Icons (language switcher) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+
   <!-- Highlight.js for code -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 
   <!-- Custom Theme CSS -->
-  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/style.css">
+  <link rel="stylesheet" type="text/css" href="{{ MAIN_SITEURL }}/{{ THEME_STATIC_DIR }}/css/style.css">
 
   {% if CUSTOM_CSS %}
-  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ CUSTOM_CSS }}">
+  <link rel="stylesheet" type="text/css" href="{{ MAIN_SITEURL }}/{{ CUSTOM_CSS }}">
   {% endif %}
 
   <title>{{ SITENAME }}{% block title %}{% endblock %}</title>
@@ -67,7 +70,7 @@
   <!-- Highlight.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <!-- Custom JS -->
-  <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/js/theme.js"></script>
+  <script src="{{ MAIN_SITEURL }}/{{ THEME_STATIC_DIR }}/js/theme.js"></script>
 
   {% block additional_js %}{% endblock %}
 </body>

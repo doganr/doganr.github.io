@@ -1,5 +1,4 @@
-Title: Teaching
+Title: Dersler
 Template: teaching
 Slug: teaching
-Lang: en
-
+Lang: tr

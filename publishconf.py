@@ -9,6 +9,7 @@ from pelicanconf import *
 
 # If your site is available via HTTPS, make sure SITEURL begins with https://
 SITEURL = "https://doganr.com"
+MAIN_SITEURL = "https://doganr.com"
 RELATIVE_URLS = False
 
 # CI/CD ortamında Google Scholar'a istek atma, sadece commit'lenmiş

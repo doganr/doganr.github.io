@@ -5,13 +5,12 @@
     <section class="subpage-hero text-center" data-aos="fade-down">
         <div class="mb-3">
             <span class="section-badge">
-                <i class="fa-solid fa-chalkboard-user me-1"></i> Academic Courses
+                <i class="fa-solid fa-chalkboard-user me-1"></i> {{ TEACH_BADGE }}
             </span>
         </div>
-        <h1 class="subpage-title">Teaching & Mentorship</h1>
+        <h1 class="subpage-title">{{ TEACH_TITLE }}</h1>
         <p class="subpage-subtitle mt-3 mx-auto" style="max-width: 600px;">
-            Courses, educational materials, and academic mentorship activities within the Department of Artificial
-            Intelligence Engineering.
+            {{ TEACH_SUBTITLE }}
         </p>
     </section>
 </div>
@@ -46,7 +45,7 @@
 
                             <div class="card-article-image" style="height: 180px;">
                                 {% if course.image %}
-                                <img src="{{ SITEURL }}/{{ course.image }}" alt="{{ course.title }}">
+                                <img src="{{ MAIN_SITEURL }}/{{ course.image }}" alt="{{ course.title }}">
                                 {% else %}
                                 <div class="card-article-placeholder">
                                     <i class="fa-solid fa-laptop-code placeholder-icon"></i>
@@ -71,7 +70,7 @@
 
                                 <div
                                     class="mt-auto d-flex justify-content-between align-items-center border-top border-secondary border-opacity-25 pt-3">
-                                    <span class="btn-read-more">View Course <i
+                                    <span class="btn-read-more">{{ TEACH_VIEW_COURSE }} <i
                                             class="fa-solid fa-arrow-right ms-1"></i></span>
                                     {% if course.level %}
                                     <span class="text-muted"

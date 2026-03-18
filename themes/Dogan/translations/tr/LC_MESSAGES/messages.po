@@ -1,0 +1,87 @@
+# Turkish translations for Dogan Theme.
+# This file is distributed under the same license as the Dogan project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Dogan Theme 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-18 15:00+0300\n"
+"PO-Revision-Date: 2026-03-18 15:00+0300\n"
+"Last-Translator: Ramazan Özgür Doğan <dogan@trabzon.edu.tr>\n"
+"Language-Team: Turkish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Home"
+msgstr "Ana Sayfa"
+
+msgid "Archives"
+msgstr "Arşivler"
+
+msgid "Categories"
+msgstr "Kategoriler"
+
+#, python-format
+msgid "Category %(name)s"
+msgstr "%(name)s Kategorisi"
+
+msgid "Tags"
+msgstr "Etiketler"
+
+#, python-format
+msgid "Tag %(name)s"
+msgstr "%(name)s Etiketi"
+
+msgid "Authors"
+msgstr "Yazarlar"
+
+#, python-format
+msgid "Posts by %(name)s"
+msgstr "%(name)s kişisinin paylaşımları"
+
+#, python-format
+msgid "Posted on %(when)s in %(category)s"
+msgstr "%(when)s tarihinde %(category)s kategorisinde paylaşıldı"
+
+#, python-format
+msgid "%(minutes)s min read"
+msgstr "%(minutes)s dk okuma"
+
+msgid "Continue reading"
+msgstr "Okumaya devam et"
+
+msgid "Tagged with"
+msgstr "Etiket:"
+
+msgid "Like this article? Share it with your friends!"
+msgstr "Bu makaleyi sevdiniz mi? Arkadaşlarınızla paylaşın!"
+
+msgid "You might enjoy"
+msgstr "Sevebilirsiniz"
+
+msgid "Previous Post"
+msgstr "Önceki Yazı"
+
+msgid "Next Post"
+msgstr "Sonraki Yazı"
+
+msgid "Older Posts"
+msgstr "Eski Yazılar"
+
+msgid "Newer Posts"
+msgstr "Yeni Yazılar"
+
+msgid "Search"
+msgstr "Ara"
+
+msgid "Search Results"
+msgstr "Arama Sonuçları"
+
+msgid "Search..."
+msgstr "Ara..."
+
+msgid "Please enable JavaScript to view comments."
+msgstr "Yorumları görüntülemek için lütfen JavaScript'i etkinleştirin."

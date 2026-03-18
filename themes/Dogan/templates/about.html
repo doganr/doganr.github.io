@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}About & CV - {{ SITENAME }}{% endblock %}
+{% block title %}{{ ABOUT_BADGE }} - {{ SITENAME }}{% endblock %}
 
 {% block content %}
 <div class="container subpage-wrapper pb-5">
     <section class="subpage-hero text-center" data-aos="fade-down">
         <div class="mb-3">
             <span class="section-badge">
-                <i class="fa-solid fa-user me-1"></i> About Me
+                <i class="fa-solid fa-user me-1"></i> {{ ABOUT_BADGE }}
             </span>
         </div>
-        <h1 class="subpage-title">Curriculum Vitae</h1>
+        <h1 class="subpage-title">{{ ABOUT_TITLE }}</h1>
         <p class="subpage-subtitle">{{ CV_DATA.basics.title }} {{ CV_DATA.basics.name }}</p>
     </section>
 
@@ -18,15 +18,15 @@
         <div class="col-lg-3 d-none d-lg-block mb-4">
             <div class="glass-card p-4 sticky-top" style="top: 100px; border-top: 3px solid var(--accent-1);">
                 <h5 class="fw-bold mb-4 text-white">
-                    <i class="fa-solid fa-list-ul me-2 text-info"></i> Contents
+                    <i class="fa-solid fa-list-ul me-2 text-info"></i> {{ ABOUT_SIDEBAR_TITLE }}
                 </h5>
                 <nav class="nav flex-column gap-1" id="cv-sidebar-nav">
-                    <a class="nav-link text-secondary px-0 py-2" href="#basics">Basics</a>
-                    <a class="nav-link text-secondary px-0 py-2" href="#work">Work Experience</a>
-                    <a class="nav-link text-secondary px-0 py-2" href="#education">Education</a>
-                    <a class="nav-link text-secondary px-0 py-2" href="#skills">Skills</a>
-                    <a class="nav-link text-secondary px-0 py-2" href="#languages">Languages</a>
-                    <a class="nav-link text-secondary px-0 py-2" href="#awards">Awards</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#basics">{{ ABOUT_SIDEBAR_BASICS }}</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#work">{{ ABOUT_SIDEBAR_WORK }}</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#education">{{ ABOUT_SIDEBAR_EDU }}</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#skills">{{ ABOUT_SIDEBAR_SKILLS }}</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#languages">{{ ABOUT_SIDEBAR_LANGS }}</a>
+                    <a class="nav-link text-secondary px-0 py-2" href="#awards">{{ ABOUT_SIDEBAR_AWARDS }}</a>
                 </nav>
             </div>
         </div>
@@ -34,24 +34,24 @@
         <div class="col-lg-9">
 
             <section id="basics" class="mb-5" style="scroll-margin-top: 100px;">
-                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">Basics</h2>
+                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">{{ ABOUT_SIDEBAR_BASICS }}</h2>
                 <div class="glass-card p-4" data-aos="fade-up">
                     <div class="row g-3">
-                        <div class="col-md-3 font-weight-bold text-white">Name</div>
+                        <div class="col-md-3 font-weight-bold text-white">{{ ABOUT_CV_NAME }}</div>
                         <div class="col-md-9 text-secondary">{{ CV_DATA.basics.name }}</div>
 
-                        <div class="col-md-3 font-weight-bold text-white">Title</div>
+                        <div class="col-md-3 font-weight-bold text-white">{{ ABOUT_CV_TITLE }}</div>
                         <div class="col-md-9 text-secondary">{{ CV_DATA.basics.title }}</div>
 
-                        <div class="col-md-3 font-weight-bold text-white">Email</div>
+                        <div class="col-md-3 font-weight-bold text-white">{{ ABOUT_CV_EMAIL }}</div>
                         <div class="col-md-9"><a href="mailto:{{ CV_DATA.basics.email }}"
                                 class="text-info text-decoration-none">{{ CV_DATA.basics.email }}</a></div>
 
-                        <div class="col-md-3 font-weight-bold text-white">Website</div>
+                        <div class="col-md-3 font-weight-bold text-white">{{ ABOUT_CV_WEBSITE }}</div>
                         <div class="col-md-9"><a href="{{ CV_DATA.basics.website }}" target="_blank"
                                 class="text-info text-decoration-none">{{ CV_DATA.basics.website }}</a></div>
 
-                        <div class="col-md-3 font-weight-bold text-white">Summary</div>
+                        <div class="col-md-3 font-weight-bold text-white">{{ ABOUT_CV_SUMMARY }}</div>
                         <div class="col-md-9 text-secondary" style="line-height: 1.7;">{{ CV_DATA.basics.summary }}
                         </div>
                     </div>
@@ -60,7 +60,7 @@
 
             <section id="work" class="mb-5" style="scroll-margin-top: 100px;">
                 <h2 class="section-title mb-4 fw-light border-bottom pb-2"
-                    style="font-size: 1.8rem; letter-spacing: -0.5px;">Work Experience</h2>
+                    style="font-size: 1.8rem; letter-spacing: -0.5px;">{{ ABOUT_SIDEBAR_WORK }}</h2>
 
                 <div class="timeline-container">
                     {% for job in CV_DATA.work %}
@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div class="d-none d-md-block">
-                                    <img src="{{ SITEURL }}/images/universities/{{ job.logo }}"
+                                    <img src="{{ MAIN_SITEURL }}/images/universities/{{ job.logo }}"
                                         alt="{{ job.institution }}"
                                         style="width: 50px; height: 50px; object-fit: contain; filter: grayscale(1) opacity(0.7); transition: all 0.3s;"
                                         onmouseover="this.style.filter='grayscale(0) opacity(1)'"
@@ -96,7 +96,7 @@
             </section>
 
             <section id="education" class="mb-5" style="scroll-margin-top: 100px;">
-                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 1.8rem;">Education</h2>
+                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 1.8rem;">{{ ABOUT_SIDEBAR_EDU }}</h2>
 
                 <div class="timeline-container">
                     {% for edu in CV_DATA.education %}
@@ -125,7 +125,7 @@
                                 </div>
 
                                 <div class="d-none d-md-block">
-                                    <img src="{{ SITEURL }}/images/universities/{{ edu.logo }}"
+                                    <img src="{{ MAIN_SITEURL }}/images/universities/{{ edu.logo }}"
                                         alt="{{ edu.institution }}"
                                         style="width: 50px; height: 50px; object-fit: contain; filter: grayscale(1) opacity(0.7); transition: all 0.3s;"
                                         onmouseover="this.style.filter='grayscale(0) opacity(1)'"
@@ -139,7 +139,7 @@
             </section>
 
             <section id="skills" class="mb-5" style="scroll-margin-top: 100px;">
-                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">Skills</h2>
+                <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">{{ ABOUT_SIDEBAR_SKILLS }}</h2>
                 <div class="row g-4">
                     {% for skill in CV_DATA.skills %}
                     <div class="col-md-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
@@ -166,7 +166,7 @@
             <div class="row">
                 <div class="col-md-6 mb-5" data-aos="fade-up">
                     <section id="languages" style="scroll-margin-top: 100px;">
-                        <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">Languages
+                        <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">{{ ABOUT_SIDEBAR_LANGS }}
                         </h2>
                         <div class="glass-card p-4 h-100">
                             {% for lang in CV_DATA.languages %}
@@ -182,7 +182,7 @@
 
                 <div class="col-md-6 mb-5" data-aos="fade-up" data-aos-delay="100">
                     <section id="awards" style="scroll-margin-top: 100px;">
-                        <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">Awards</h2>
+                        <h2 class="section-title mb-4 fw-light border-bottom pb-2" style="font-size: 2rem;">{{ ABOUT_SIDEBAR_AWARDS }}</h2>
                         <div class="glass-card p-4 h-100">
                             {% for award in CV_DATA.awards %}
                             <div class="d-flex align-items-start mb-{% if not loop.last %}4{% else %}0{% endif %}">

@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}Publications - {{ SITENAME }}{% endblock %}
+{% block title %}{{ PUBPAGE_TITLE }} - {{ SITENAME }}{% endblock %}
 
 {% block content %}
 <div class="container subpage-wrapper">
     <section class="subpage-hero text-center" data-aos="fade-down">
         <div class="mb-3">
             <span class="section-badge">
-                <i class="fa-solid fa-book me-1"></i> Academic Outcomes
+                <i class="fa-solid fa-book me-1"></i> {{ PUBPAGE_BADGE }}
             </span>
         </div>
-        <h1 class="subpage-title">Publications</h1>
+        <h1 class="subpage-title">{{ PUBPAGE_TITLE }}</h1>
         <p class="subpage-subtitle mt-3 mx-auto" style="max-width: 600px;">
-            Research articles, conference proceedings, and reviews.
+            {{ PUBPAGE_SUBTITLE }}
         </p>
     </section>
 
@@ -35,7 +35,7 @@
                     {% if pub.preview %}
                     <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
                         style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
-                        <img src="{{ SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
+                        <img src="{{ MAIN_SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
                             class="img-fluid" style="max-height: 100%; object-fit: contain;">
                     </div>
                     {% endif %}

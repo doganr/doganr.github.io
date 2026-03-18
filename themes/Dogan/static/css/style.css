@@ -325,6 +325,34 @@ body {
   transform: rotate(15deg);
 }
 
+/* Language switcher */
+.lang-switch-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.lang-switch-btn:hover {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  transform: rotate(15deg);
+}
+
+.lang-switch-btn .fi {
+  font-size: 1.1rem;
+  border-radius: 2px;
+}
+
 /* ── PAGE WRAPPER ── */
 .page-wrapper {
   padding-top: var(--navbar-h);

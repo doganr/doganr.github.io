@@ -7,7 +7,7 @@
       <div class="col-md-4 text-center text-md-start">
         <a href="{{ SITEURL }}/" class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none">
           {% if SITELOGO %}
-          <img src="{{ SITEURL }}/{{ SITELOGO }}" alt="{{ SITENAME }}" class="footer-logo">
+          <img src="{{ MAIN_SITEURL }}/{{ SITELOGO }}" alt="{{ SITENAME }}" class="footer-logo">
           {% endif %}
           <span class="footer-brand-name">{{ SITENAME }}</span>
         </a>
@@ -36,7 +36,7 @@
           &copy; {{ now.year if now else '2026' }} <strong>{{ AUTHOR }}</strong>
         </p>
         <p class="footer-powered mt-1 mb-0">
-          Powered by <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>
+          {{ FOOTER_POWERED }} <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>
           &amp; <a href="https://getbootstrap.com/" target="_blank" class="footer-link">Bootstrap 5</a>
         </p>
       </div>
@@ -46,7 +46,7 @@
     <!-- Bottom bar -->
     <div class="footer-bottom mt-4 pt-3 text-center">
       <p class="footer-bottom-text mb-0">
-        Built with <i class="fa-solid fa-code" style="color: var(--accent-2);"></i> and a lot of ☕
+        {{ FOOTER_BUILT_WITH }} <i class="fa-solid fa-code" style="color: var(--accent-2);"></i> {{ FOOTER_AND_COFFEE }}
       </p>
     </div>
   </div>

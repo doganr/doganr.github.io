@@ -3,7 +3,7 @@
     <!-- Brand -->
     <a class="navbar-brand brand-logo" href="{{ SITEURL }}/">
       {% if SITELOGO %}
-      <img src="{{ SITEURL }}/{{ SITELOGO }}" alt="{{ SITETITLE|default(SITENAME) }}" class="brand-img me-2">
+      <img src="{{ MAIN_SITEURL }}/{{ SITELOGO }}" alt="{{ SITETITLE|default(SITENAME) }}" class="brand-img me-2">
       {% endif %}
       <span class="brand-text">
         <span class="brand-name">{{ SITETITLE|default(SITENAME) }}</span>
@@ -66,6 +66,19 @@
           </ul>
         </li>
         {% endif %}
+
+        <!-- Language switcher -->
+        <li class="nav-item">
+          {% if '/tr' in SITEURL or DEFAULT_LANG == 'tr' %}
+          <a class="btn btn-sm lang-switch-btn" href="{{ MAIN_SITEURL }}/" title="Switch to English">
+            <span class="fi fi-gb"></span>
+          </a>
+          {% else %}
+          <a class="btn btn-sm lang-switch-btn" href="{{ MAIN_SITEURL }}/tr/" title="Türkçe'ye geç">
+            <span class="fi fi-tr"></span>
+          </a>
+          {% endif %}
+        </li>
 
         <!-- Theme toggle -->
         <li class="nav-item">

@@ -1,5 +1,5 @@
-Title: Publications
+Title: Yayınlar
 Date: 2026-02-11
 Template: publications
 Slug: publications
-Lang: en
+Lang: tr
