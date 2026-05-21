@@ -2393,9 +2393,10 @@
             </section>
 
             <!-- ============================================================= -->
-            <!-- === SLAYT: KIRMIZI USB SÜRPRİZ! ============================ -->
+            <!-- === SLAYT: KIRMIZI USB SÜRPRİZ! (GİZLİ — sunumda atlanacak) === -->
+            <!-- Tekrar aktifleştirmek için aşağıdaki data-visibility="hidden" sil -->
             <!-- ============================================================= -->
-            <section data-background-color="#0f172a" data-transition="zoom" class="relative overflow-hidden">
+            <section data-visibility="hidden" data-background-color="#0f172a" data-transition="zoom" class="relative overflow-hidden">
                 <div class="scan-line"></div>
                 <div style="position:absolute; inset:0; pointer-events:none; z-index:0;" class="matrix-bg opacity-25"></div>
                 <div style="position:absolute; inset:0; pointer-events:none; z-index:0;">
@@ -2519,8 +2520,8 @@
                         </p>
 
                         <p class="text-sm text-slate-600 mb-7 max-w-[360px] fragment fade-up">
-                            Görünmez tehlikeleri görünür kıldıysam — görev tamam.
-                            <span style="color: #047857; font-weight: 700;">Hadi konuşalım.</span>
+                            1954'ten kuantuma uzanan 70 yıllık bir yolculuk.
+                            <span style="color: #047857; font-weight: 700;">Şimdi sıra sizde.</span>
                         </p>
 
                         <div class="flex flex-col items-center justify-center gap-1 fragment fade-up">
@@ -2554,7 +2555,8 @@
             height: 700,
             margin: 0.05,
             mouseWheel: true,
-            slideNumber: 'c/t'
+            slideNumber: 'c/t',
+            fragments: false
         });
 
         // === MATRIX KOD YAĞMURU (kapak slaytında) ===
