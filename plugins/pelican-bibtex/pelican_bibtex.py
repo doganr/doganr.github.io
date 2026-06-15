@@ -123,6 +123,15 @@ def add_publications(generator, **kwargs):
                 authors.append(name.replace('{', '').replace('}', ''))
         pub['author'] = ', '.join(authors)
         
+        bib_fields = []
+        if authors:
+            bib_fields.append(('author', ' and '.join(authors)))
+        for _f in ['title','journal','booktitle','volume','number','pages','year','publisher','doi']:
+            _v = entry.fields.get(_f, '').replace('{','').replace('}','').strip()
+            if _v:
+                bib_fields.append((_f, _v))
+        pub['bibtex'] = '@%s{%s,\n' % (entry.type, key) + ',\n'.join('  %s = {%s}' % (k, v) for k, v in bib_fields) + '\n}'
+
         publications.append(pub)
 
     generator.context['publications'] = publications

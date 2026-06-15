@@ -1,3 +1,6 @@
+import datetime
+CURRENT_YEAR = datetime.date.today().year
+
 AUTHOR = 'Ramazan Ozgur Dogan'
 SITENAME = 'Doğan R.'
 SITEURL = ""

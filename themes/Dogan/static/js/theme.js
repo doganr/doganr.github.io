@@ -182,6 +182,8 @@ function initCodeHighlight() {
 function initParticles() {
   const container = document.getElementById('particles');
   if (!container) return;
+  if (document.getElementById('particles-js')) return; // ana sayfa particles.js kullanir
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const canvas = document.createElement('canvas');
   container.appendChild(canvas);
@@ -201,8 +203,8 @@ function initParticles() {
       this.y = Math.random() * H;
       this.vx = (Math.random() - 0.5) * 0.4;
       this.vy = (Math.random() - 0.5) * 0.4;
-      this.r = Math.random() * 1.5 + 0.5;
-      this.alpha = Math.random() * 0.3 + 0.05;
+      this.r = Math.random() * 1.6 + 0.6;
+      this.alpha = Math.random() * 0.4 + 0.12;
       const colors = ['108, 99, 255', '0, 212, 255', '255, 101, 132'];
       this.color = colors[Math.floor(Math.random() * colors.length)];
     }
@@ -220,7 +222,7 @@ function initParticles() {
   }
 
   resize();
-  particles = Array.from({ length: 80 }, () => new Particle());
+  particles = Array.from({ length: 115 }, () => new Particle());
 
   window.addEventListener('resize', resize, { passive: true });
 
@@ -233,19 +235,23 @@ function initParticles() {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
+        if (dist < 150) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(108, 99, 255, ${0.06 * (1 - dist / 120)})`;
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = `rgba(108, 99, 255, ${0.13 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.65;
           ctx.stroke();
         }
       }
     }
-    requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
   }
-  animate();
+  let rafId = requestAnimationFrame(animate);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) cancelAnimationFrame(rafId);
+    else rafId = requestAnimationFrame(animate);
+  });
 }
 
 // ── Smooth reading progress bar ───────────────────────────
@@ -285,8 +291,24 @@ function setActiveNavLink() {
   });
 }
 
+// ── BibTeX copy buttons ──────────────────────────────────
+function initBibCopy() {
+  document.querySelectorAll('.bib-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const bib = btn.dataset.bib;
+      if (!bib) return;
+      navigator.clipboard.writeText(bib).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      });
+    });
+  });
+}
+
 // ── Init all ─────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  initBibCopy();
   initScrollAnimations();
   generateTOC();
   initCodeHighlight();

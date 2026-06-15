@@ -7,7 +7,7 @@
       <div class="col-md-4 text-center text-md-start">
         <a href="{{ SITEURL }}/" class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none">
           {% if SITELOGO %}
-          <img src="{{ MAIN_SITEURL }}/{{ SITELOGO }}" alt="{{ SITENAME }}" class="footer-logo">
+          <img src="{{ MAIN_SITEURL }}/{{ SITELOGO }}" alt="{{ SITENAME }}" class="footer-logo" loading="lazy" width="28" height="28">
           {% endif %}
           <span class="footer-brand-name">{{ SITENAME }}</span>
         </a>
@@ -22,7 +22,7 @@
         <div class="footer-social d-flex gap-3 justify-content-center">
           {% for name, link, icon in SOCIAL %}
           <a href="{{ link }}" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
-            title="{{ name|capitalize }}">
+            title="{{ name|capitalize }}" aria-label="{{ name|capitalize }}">
             <i class="{{ icon }}"></i>
           </a>
           {% endfor %}
@@ -33,7 +33,7 @@
       <!-- Copyright -->
       <div class="col-md-4 text-center text-md-end">
         <p class="footer-copy mb-0">
-          &copy; {{ now.year if now else '2026' }} <strong>{{ AUTHOR }}</strong>
+          &copy; {{ CURRENT_YEAR }} <strong>{{ AUTHOR }}</strong>
         </p>
         <p class="footer-powered mt-1 mb-0">
           {{ FOOTER_POWERED }} <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>

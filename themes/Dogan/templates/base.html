@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="{{ ROBOTS|default('index, follow') }}" />
   <meta name="author" content="{{ AUTHOR }}" />
-  <meta name="description" content="{{ SITEDESCRIPTION|default(SITENAME) }}" />
+  <meta name="description" content="{% block description %}{{ SITEDESCRIPTION|default(SITENAME) }}{% endblock %}" />
 
   <link rel="icon" type="image/x-icon" href="{{ MAIN_SITEURL }}/favicon.ico">
 
@@ -43,6 +43,8 @@
   {% if CUSTOM_CSS %}
   <link rel="stylesheet" type="text/css" href="{{ MAIN_SITEURL }}/{{ CUSTOM_CSS }}">
   {% endif %}
+
+  <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
 
   <title>{{ SITENAME }}{% block title %}{% endblock %}</title>
 

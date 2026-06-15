@@ -35,7 +35,7 @@
                     {% if pub.preview %}
                     <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
                         style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
-                        <img src="{{ MAIN_SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview"
+                        <img src="{{ MAIN_SITEURL }}/images/publication_preview/{{ pub.preview }}" alt="Article Preview" loading="lazy" decoding="async"
                             class="img-fluid" style="max-height: 100%; object-fit: contain;">
                     </div>
                     {% endif %}
@@ -72,8 +72,8 @@
                             style="font-size: 0.75rem;">DOI</a>
                         {% endif %}
 
-                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
-                            style="font-size: 0.75rem;">BIB</a>
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="{{ pub.bibtex|e }}">BIB</button>
 
                         {% if pub.html %}
                         <a href="{{ pub.html }}" target="_blank"
@@ -94,7 +94,7 @@
                             aria-label="Google Scholar link" role="button" rel="external nofollow noopener"
                             target="_blank">
                             <img src="https://img.shields.io/badge/scholar-{% if pub.citation_count != '0' %}{{ pub.citation_count }}{% else %}N/A{% endif %}-4285F4?logo=googlescholar&labelColor=beige"
-                                alt="Google Scholar citations"
+                                alt="Google Scholar citations" loading="lazy"
                                 style="height: 22px; border-radius: 4px; transition: transform 0.2s ease;"
                                 onmouseover="this.style.transform='scale(1.05)'"
                                 onmouseout="this.style.transform='scale(1)'">

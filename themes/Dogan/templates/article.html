@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% block meta %}
+{% block description %}{{ article.summary|striptags|escape }}{% endblock %}
+
+{% block head %}
 <meta name="author" content="{{ article.author.name }}" />
-<meta name="description" content="{{ article.summary|striptags|escape }}" />
 <meta name="keywords" content="{{ article.tags|join(', ')|escape }}">
 {% endblock %}
 

@@ -45,7 +45,7 @@
 
                             <div class="card-article-image" style="height: 180px;">
                                 {% if course.image %}
-                                <img src="{{ MAIN_SITEURL }}/{{ course.image }}" alt="{{ course.title }}">
+                                <img src="{{ MAIN_SITEURL }}/{{ course.image }}" alt="{{ course.title }}" loading="lazy" decoding="async">
                                 {% else %}
                                 <div class="card-article-placeholder">
                                     <i class="fa-solid fa-laptop-code placeholder-icon"></i>
