@@ -1,5 +1,6 @@
 # Pelican build output
 output/
+local/
 
 # Python
 __pycache__/
