@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Ramazan Ozgur Dogan" />
+  <meta name="description" content="Whether you&#39;re a student or a researcher transitioning into AI, Python is your entry point. Here&#39;s the roadmap I recommend — built from years of teaching Programming and Applications courses at Trabzon and Gumushane universities." />
+
+  <link rel="icon" type="image/x-icon" href="https://doganr.com/favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+  <!-- Flag Icons (language switcher) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+
+  <!-- Highlight.js for code -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+  <!-- Custom Theme CSS -->
+  <link rel="stylesheet" type="text/css" href="https://doganr.com/theme/css/style.css">
+
+
+  <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+
+  <title>Doğan R. – Getting Started with Python for AI Research: A Practical Roadmap</title>
+
+<meta name="author" content="Ramazan Ozgur Dogan" />
+<meta name="keywords" content="python, deep learning, tutorial, education, programming">
+</head>
+
+<body>
+
+  <!-- Animated background particles -->
+  <div class="bg-particles" id="particles"></div>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav" id="mainNavbar">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand brand-logo" href="https://doganr.com/tr/">
+      <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="brand-img me-2">
+      <span class="brand-text">
+        <span class="brand-name">Doğan R.</span>
+        <small class="brand-subtitle d-none d-md-inline">Dr. Öğr. Üyesi • Trabzon Üniversitesi</small>
+      </span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/">
+            <i class="fa-solid fa-house me-1"></i>Ana Sayfa
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/about.html">
+            Hakkımda
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/publications.html">
+            Yayınlar
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/teaching.html">
+            Dersler
+          </a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-pill" href="#" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Social links menu">
+            <i class="fa-solid fa-share-nodes"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+            <li>
+              <a class="dropdown-item" href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-github"></i>Github
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-linkedin"></i>Linkedin
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-google-scholar"></i>Google scholar
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-solid fa-envelope"></i>E-posta
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Language switcher -->
+        <li class="nav-item">
+          <a class="btn btn-sm lang-switch-btn" href="https://doganr.com/" title="Switch to English" aria-label="Switch to English">
+            <span class="fi fi-gb"></span>
+          </a>
+        </li>
+
+        <!-- Theme toggle -->
+        <li class="nav-item">
+          <button class="btn btn-sm theme-toggle-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle light/dark theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Main content wrapper -->
+  <div class="page-wrapper">
+<!-- Article page -->
+<div class="article-page-wrapper">
+
+  <!-- Article Hero -->
+  <div class="article-hero">
+    <div class="article-hero-bg"></div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-down">
+            <ol class="breadcrumb justify-content-center glass-breadcrumb">
+              <li class="breadcrumb-item"><a href="https://doganr.com/tr/">Home</a></li>
+              <li class="breadcrumb-item"><a href="https://doganr.com/tr/category/teaching.html">Teaching</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Getting Started with...</li>
+            </ol>
+          </nav>
+
+          <!-- Category -->
+          <div class="mb-3" data-aos="fade-up">
+            <a href="https://doganr.com/tr/category/teaching.html" class="tag-badge tag-category tag-lg">
+              <i class="fa-solid fa-folder me-2"></i>Teaching
+            </a>
+          </div>
+
+          <!-- Title -->
+          <h1 class="article-hero-title" id="python-ai-research-roadmap" data-aos="fade-up" data-aos-delay="50">
+            Getting Started with Python for AI Research: A Practical Roadmap
+          </h1>
+
+          <!-- Meta -->
+          <div class="article-hero-meta d-flex align-items-center justify-content-center gap-4 mt-4" data-aos="fade-up" data-aos-delay="100">
+            <span class="meta-item">
+              <i class="fa-solid fa-user-pen me-2"></i>Ramazan Ozgur Dogan
+            </span>
+            <span class="meta-separator">·</span>
+            <span class="meta-item">
+              <i class="fa-regular fa-calendar me-2"></i>Tue, 05 Mar 2024
+            </span>
+          </div>
+
+          <!-- Tags -->
+          <div class="article-hero-tags d-flex flex-wrap justify-content-center gap-2 mt-4" data-aos="fade-up" data-aos-delay="150">
+            <a href="https://doganr.com/tr/tag/python.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>python
+            </a>
+            <a href="https://doganr.com/tr/tag/deep-learning.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>deep learning
+            </a>
+            <a href="https://doganr.com/tr/tag/tutorial.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>tutorial
+            </a>
+            <a href="https://doganr.com/tr/tag/education.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>education
+            </a>
+            <a href="https://doganr.com/tr/tag/programming.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>programming
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article Body -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <!-- Featured Image -->
+
+        <!-- Article Content -->
+        <div class="article-content glass-card p-4 p-md-5 rounded-3" data-aos="fade-up">
+          <h1>Getting Started with Python for AI Research: A Practical Roadmap</h1>
+<p>I've been teaching programming and machine learning to undergraduate and graduate students for over a decade.
+One of the most common questions I get: <strong>"How do I start learning Python for AI research?"</strong></p>
+<p>Here's the honest, practical roadmap I now give to every new student.</p>
+<h2>Step 0: Get Your Environment Right</h2>
+<p>Don't waste time on setup. Use these:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install Miniconda (minimal Anaconda)</span>
+wget<span class="w"> </span>https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash<span class="w"> </span>Miniconda3-latest-Linux-x86_64.sh
+
+<span class="c1"># Create a dedicated environment</span>
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>airesearch<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+conda<span class="w"> </span>activate<span class="w"> </span>airesearch
+
+<span class="c1"># Install core packages</span>
+pip<span class="w"> </span>install<span class="w"> </span>numpy<span class="w"> </span>pandas<span class="w"> </span>matplotlib<span class="w"> </span>scikit-learn<span class="w"> </span>torch<span class="w"> </span>torchvision<span class="w"> </span>jupyter
+</code></pre></div>
+
+<p>Use <strong>VS Code</strong> or <strong>JupyterLab</strong> as your IDE. Avoid Notepad or IDLE.</p>
+<h2>Step 1: Master Python Basics (4 weeks)</h2>
+<p>You need solid fundamentals before touching ML:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Data types you MUST know well</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">lookup</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Ramazan&quot;</span><span class="p">,</span> <span class="s2">&quot;university&quot;</span><span class="p">:</span> <span class="s2">&quot;Trabzon&quot;</span><span class="p">}</span>
+
+<span class="c1"># List comprehensions — essential Python skill</span>
+<span class="n">squares</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Functions and scope</span>
+<span class="k">def</span> <span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dot product divided by magnitudes.&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+<span class="c1"># Classes — needed for PyTorch</span>
+<span class="k">class</span> <span class="nc">NeuralNetwork</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_weights</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_initialize_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span>
+                <span class="k">for</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+</code></pre></div>
+
+<p><strong>Resources:</strong>
+- <a href="https://docs.python.org/3/tutorial/">Python Tutorial</a> — official, comprehensive
+- <em>Automate the Boring Stuff with Python</em> — free online, excellent for beginners</p>
+<h2>Step 2: NumPy and Matplotlib (2 weeks)</h2>
+<p>99% of ML code uses NumPy:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Matrix operations — your bread and butter</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>   <span class="c1"># 100 samples, 10 features</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>     <span class="c1"># 10 → 5 transformation</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">B</span>                       <span class="c1"># Matrix multiply: (100, 5)</span>
+
+<span class="c1"># Broadcasting — powerful and confusing at first</span>
+<span class="n">signal</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">window</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="c1"># These shapes broadcast correctly</span>
+<span class="n">filtered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">window</span> <span class="o">/</span> <span class="n">window</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
+
+<span class="c1"># Always visualize your data</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">signal</span><span class="p">[:</span><span class="mi">200</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Raw&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">filtered</span><span class="p">[:</span><span class="mi">200</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Filtered&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;signal_comparison.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</code></pre></div>
+
+<h2>Step 3: Scikit-learn for Classical ML (3 weeks)</h2>
+<p>Before deep learning, understand classical ML:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="c1"># Load your data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_my_dataset</span><span class="p">()</span>
+
+<span class="c1"># Always scale features</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Split carefully — don&#39;t leak test data!</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_scaled</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span>
+<span class="p">)</span>
+
+<span class="c1"># Train and evaluate</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Cross-validation is more reliable than a single split</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;f1_macro&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CV F1: </span><span class="si">{</span><span class="n">cv_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">cv_scores</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)))</span>
+</code></pre></div>
+
+<h2>Step 4: PyTorch for Deep Learning (8+ weeks)</h2>
+<p>Now you're ready for the main event:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">TensorDataset</span>
+
+<span class="c1"># Everything is a Tensor</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>  <span class="c1"># Batch of 32 RGB images</span>
+
+<span class="c1"># Define a simple CNN</span>
+<span class="k">class</span> <span class="nc">SimpleCNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleCNN</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">SimpleCNN</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">batch_x</span><span class="p">,</span> <span class="n">batch_y</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">batch_x</span><span class="p">),</span> <span class="n">batch_y</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></div>
+
+<h2>The Mistakes I See Most Often</h2>
+<table>
+<thead>
+<tr>
+<th>Mistake</th>
+<th>Correct Practice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Not splitting test set early</td>
+<td>Hold out test set FIRST, never touch it</td>
+</tr>
+<tr>
+<td>Forgetting <code>model.eval()</code></td>
+<td>Always switch modes during evaluation</td>
+</tr>
+<tr>
+<td>No learning rate scheduling</td>
+<td>Use cosine annealing or ReduceLROnPlateau</td>
+</tr>
+<tr>
+<td>No seed setting</td>
+<td><code>torch.manual_seed(42)</code>, <code>np.random.seed(42)</code></td>
+</tr>
+<tr>
+<td>Overfitting to validation set</td>
+<td>Use test set only at the very end</td>
+</tr>
+</tbody>
+</table>
+<h2>Recommended Papers to Read First</h2>
+<ol>
+<li><strong>ResNet</strong> — He et al., 2015 — understand residual connections</li>
+<li><strong>U-Net</strong> — Ronneberger et al., 2015 — segmentation architecture</li>
+<li><strong>Attention is All You Need</strong> — Vaswani et al., 2017 — transformers</li>
+<li><strong>ViT</strong> — Dosovitskiy et al., 2020 — vision transformers</li>
+</ol>
+<hr>
+<p>This roadmap usually takes <strong>6-9 months</strong> for a motivated beginner with a STEM background. The key is
+<strong>consistent daily practice</strong> — 1 hour every day beats a 10-hour weekend session.</p>
+<p>Good luck! 🚀</p>
+        </div>
+
+        <!-- Author Box -->
+        <div class="author-box glass-card p-4 rounded-3 mt-4 d-flex align-items-center gap-4" data-aos="fade-up">
+          <div class="author-avatar-placeholder">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div>
+            <p class="author-box-name mb-1">Ramazan Ozgur Dogan</p>
+            <p class="author-box-bio mb-0 text-muted">Dr. Öğr. Üyesi Ramazan Özgür Doğan'ın akademik blogu — Trabzon Üniversitesi'nde yapay zeka araştırmacısı. Derin öğrenme, tıbbi görüntüleme ve daha fazlası.</p>
+          </div>
+        </div>
+
+        <!-- Tags Cloud -->
+        <div class="tag-cloud-section glass-card p-4 rounded-3 mt-4" data-aos="fade-up">
+          <h5 class="tag-cloud-title mb-3">
+            <i class="fa-solid fa-tags me-2"></i>Tags
+          </h5>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="https://doganr.com/tr/tag/python.html" class="tag-badge">python</a>
+            <a href="https://doganr.com/tr/tag/deep-learning.html" class="tag-badge">deep learning</a>
+            <a href="https://doganr.com/tr/tag/tutorial.html" class="tag-badge">tutorial</a>
+            <a href="https://doganr.com/tr/tag/education.html" class="tag-badge">education</a>
+            <a href="https://doganr.com/tr/tag/programming.html" class="tag-badge">programming</a>
+          </div>
+        </div>
+
+        <!-- Neighbors (prev/next) -->
+
+      </div>
+
+      <!-- Sidebar / Table of Contents placeholder -->
+      <div class="col-lg-3 offset-lg-1 d-none d-lg-block">
+        <div class="toc-sidebar sticky-lg-top" style="top: 90px;">
+          <div class="glass-card p-4 rounded-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-list-ul me-2"></i>Contents
+            </h6>
+            <div id="toc-content" class="toc-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <!-- Share box -->
+          <div class="glass-card p-4 rounded-3 mt-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-share-nodes me-2"></i>Share
+            </h6>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="https://twitter.com/intent/tweet?url=https://doganr.com/tr/drafts/python-ai-research-roadmap-en.html&text=Getting%20Started%20with%20Python%20for%20AI%20Research%3A%20A%20Practical%20Roadmap" target="_blank" class="share-btn share-twitter" title="Twitter/X">
+                <i class="fa-brands fa-x-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/shareArticle?url=https://doganr.com/tr/drafts/python-ai-research-roadmap-en.html&title=Getting%20Started%20with%20Python%20for%20AI%20Research%3A%20A%20Practical%20Roadmap" target="_blank" class="share-btn share-linkedin" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+              <button class="share-btn share-copy" title="Copy link" onclick="copyLink()">
+                <i class="fa-solid fa-link"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+  </div>
+
+  <!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-glow"></div>
+  <div class="container">
+    <div class="row gy-4 align-items-center">
+
+      <!-- Brand -->
+      <div class="col-md-4 text-center text-md-start">
+        <a href="https://doganr.com/tr/" class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none">
+          <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="footer-logo" loading="lazy" width="28" height="28">
+          <span class="footer-brand-name">Doğan R.</span>
+        </a>
+        <p class="footer-tagline mt-2 mb-0">Dr. Öğr. Üyesi • Trabzon Üniversitesi</p>
+      </div>
+
+      <!-- Social Links -->
+      <div class="col-md-4 text-center">
+        <div class="footer-social d-flex gap-3 justify-content-center">
+          <a href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Github" aria-label="Github">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Linkedin" aria-label="Linkedin">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Google scholar" aria-label="Google scholar">
+            <i class="fa-brands fa-google-scholar"></i>
+          </a>
+          <a href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="E-posta" aria-label="E-posta">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="col-md-4 text-center text-md-end">
+        <p class="footer-copy mb-0">
+          &copy; 2026 <strong>Ramazan Ozgur Dogan</strong>
+        </p>
+        <p class="footer-powered mt-1 mb-0">
+          Altyapı <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>
+          &amp; <a href="https://getbootstrap.com/" target="_blank" class="footer-link">Bootstrap 5</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom mt-4 pt-3 text-center">
+      <p class="footer-bottom-text mb-0">
+        Bol miktarda ☕ ve <i class="fa-solid fa-code" style="color: var(--accent-2);"></i> ile hazırlandı.
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Highlight.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- Custom JS -->
+  <script src="https://doganr.com/theme/js/theme.js"></script>
+
+<script>
+// Copy link
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector('.share-copy');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-link"></i>', 2000);
+  });
+}
+</script>
+</body>
+
+</html>

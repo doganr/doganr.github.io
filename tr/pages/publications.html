@@ -1,0 +1,2044 @@
+
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Ramazan Ozgur Dogan" />
+  <meta name="description" content="Dr. Öğr. Üyesi Ramazan Özgür Doğan'ın akademik blogu — Trabzon Üniversitesi'nde yapay zeka araştırmacısı. Derin öğrenme, tıbbi görüntüleme ve daha fazlası." />
+
+  <link rel="icon" type="image/x-icon" href="https://doganr.com/favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+  <!-- Flag Icons (language switcher) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+
+  <!-- Highlight.js for code -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+  <!-- Custom Theme CSS -->
+  <link rel="stylesheet" type="text/css" href="https://doganr.com/theme/css/style.css">
+
+
+  <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+
+  <title>Doğan R.Yayınlar - Doğan R.</title>
+
+</head>
+
+<body>
+
+  <!-- Animated background particles -->
+  <div class="bg-particles" id="particles"></div>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav" id="mainNavbar">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand brand-logo" href="https://doganr.com/tr/">
+      <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="brand-img me-2">
+      <span class="brand-text">
+        <span class="brand-name">Doğan R.</span>
+        <small class="brand-subtitle d-none d-md-inline">Dr. Öğr. Üyesi • Trabzon Üniversitesi</small>
+      </span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/">
+            <i class="fa-solid fa-house me-1"></i>Ana Sayfa
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/about.html">
+            Hakkımda
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/publications.html">
+            Yayınlar
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/teaching.html">
+            Dersler
+          </a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-pill" href="#" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Social links menu">
+            <i class="fa-solid fa-share-nodes"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+            <li>
+              <a class="dropdown-item" href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-github"></i>Github
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-linkedin"></i>Linkedin
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-google-scholar"></i>Google scholar
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-solid fa-envelope"></i>E-posta
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Language switcher -->
+        <li class="nav-item">
+          <a class="btn btn-sm lang-switch-btn" href="https://doganr.com/" title="Switch to English" aria-label="Switch to English">
+            <span class="fi fi-gb"></span>
+          </a>
+        </li>
+
+        <!-- Theme toggle -->
+        <li class="nav-item">
+          <button class="btn btn-sm theme-toggle-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle light/dark theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Main content wrapper -->
+  <div class="page-wrapper">
+<div class="container subpage-wrapper">
+    <section class="subpage-hero text-center" data-aos="fade-down">
+        <div class="mb-3">
+            <span class="section-badge">
+                <i class="fa-solid fa-book me-1"></i> Akademik Çıktılar
+            </span>
+        </div>
+        <h1 class="subpage-title">Yayınlar</h1>
+        <p class="subpage-subtitle mt-3 mx-auto" style="max-width: 600px;">
+            Araştırma makaleleri, konferans bildirileri ve derlemeler.
+        </p>
+    </section>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2026</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Review Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/dogan2026fromhand.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        From Handcrafted Focus Measurement Operators to Deep Learning: A Comprehensive Review of Shape from Focus Strategies
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Hulya Dogan, Semih Cal
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Archives of Computational Methods in Engineering, 2026
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        <a href="10.1007/s11831-026-10547-1" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">DOI</a>
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dogan2026fromhand,
+  author = {Ramazan Ozgur Dogan and Hulya Dogan and Semih Cal},
+  title = {From Handcrafted Focus Measurement Operators to Deep Learning: A Comprehensive Review of Shape from Focus Strategies},
+  journal = {Archives of Computational Methods in Engineering},
+  year = {2026},
+  doi = {10.1007/s11831-026-10547-1}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/dualstage_us.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        <a href="https://www.mdpi.com/2076-3417/16/12/5934" target="_blank" class="text-decoration-none text-body">A Dual-Stage Multimodal Alignment Approach for Robust Breast Cancer Diagnosis via Visual–Textual Computing</a>
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Applied Sciences, 2026
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        <a href="https://doi.org/10.3390/app16125934" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">DOI</a>
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dogan2026dual,
+  author = {Ramazan Ozgur Dogan},
+  title = {A Dual-Stage Multimodal Alignment Approach for Robust Breast Cancer Diagnosis via Visual–Textual Computing},
+  journal = {Applied Sciences},
+  volume = {16},
+  number = {12},
+  pages = {5934},
+  year = {2026},
+  publisher = {MDPI},
+  doi = {https://doi.org/10.3390/app16125934}
+}">BIB</button>
+
+                        <a href="https://www.mdpi.com/2076-3417/16/12/5934" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">HTML</a>
+
+                        <a href="https://github.com/doganr/DSMA-Breast" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">CODE</a>
+                    </div>
+
+                    <div class="mt-2 badges">
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=F2NkKNAAAAAJ&citation_for_view=F2NkKNAAAAAJ:mB3voiENLucC"
+                            aria-label="Google Scholar link" role="button" rel="external nofollow noopener"
+                            target="_blank">
+                            <img src="https://img.shields.io/badge/scholar-1-4285F4?logo=googlescholar&labelColor=beige"
+                                alt="Google Scholar citations" loading="lazy"
+                                style="height: 22px; border-radius: 4px; transition: transform 0.2s ease;"
+                                onmouseover="this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.transform='scale(1)'">
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/teymur2026radiomics.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Radiomics-based differentiation of benign and malignant breast masses on contrast-enhanced mammography: a reproducible workflow using open-source tools
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Aykut Teymur, Sibel Kul, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Hayati Türe, Temel Kayıkçıoğlu, Onur Bektaş, Sinan Erdemi, Cemal Aydoğan
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Diagnostic and interventional radiology (Ankara, Turkey), 2026
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{teymur2026radiomics,
+  author = {Aykut Teymur and Sibel Kul and Ramazan Özgür Doğan and Hayati Türe and Temel Kayıkçıoğlu and Onur Bektaş and Sinan Erdemi and Cemal Aydoğan},
+  title = {Radiomics-based differentiation of benign and malignant breast masses on contrast-enhanced mammography: a reproducible workflow using open-source tools},
+  journal = {Diagnostic and interventional radiology (Ankara, Turkey)},
+  year = {2026}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2025</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/swin_sff.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        <a href="https://www.sciencedirect.com/science/article/abs/pii/S0143816625002933" target="_blank" class="text-decoration-none text-body">Swin transformer-based shape-from-focus technique for accurate 3D shape estimation</a>
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Hulya Dogan, Alper Yilmaz
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Optics and Lasers in Engineering, 2025
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        <a href="https://doi.org/10.1016/j.optlaseng.2025.109108" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">DOI</a>
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dogan2025swin,
+  author = {Ramazan Ozgur Dogan and Hulya Dogan and Alper Yilmaz},
+  title = {Swin transformer-based shape-from-focus technique for accurate 3D shape estimation},
+  journal = {Optics and Lasers in Engineering},
+  volume = {193},
+  pages = {109108},
+  year = {2025},
+  publisher = {Elsevier},
+  doi = {https://doi.org/10.1016/j.optlaseng.2025.109108}
+}">BIB</button>
+
+                        <a href="https://www.sciencedirect.com/science/article/abs/pii/S0143816625002933" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">HTML</a>
+
+                        <a href="https://github.com/doganr/swin_sff" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">CODE</a>
+                    </div>
+
+                    <div class="mt-2 badges">
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=F2NkKNAAAAAJ&citation_for_view=F2NkKNAAAAAJ:QIV2ME_5wuYC"
+                            aria-label="Google Scholar link" role="button" rel="external nofollow noopener"
+                            target="_blank">
+                            <img src="https://img.shields.io/badge/scholar-8-4285F4?logo=googlescholar&labelColor=beige"
+                                alt="Google Scholar citations" loading="lazy"
+                                style="height: 22px; border-radius: 4px; transition: transform 0.2s ease;"
+                                onmouseover="this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.transform='scale(1)'">
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Enhanced Multi-Head Self-Attention Transformer-Based Method for Prediction of Drug-Drug Interactions
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Semih Cal, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Hulya Dogan
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2025 13th International Symposium on Digital Forensics and Security (ISDFS), 2025
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{cal2025enhanced,
+  author = {Semih Cal and Ramazan Ozgur Dogan and Hulya Dogan},
+  title = {Enhanced Multi-Head Self-Attention Transformer-Based Method for Prediction of Drug-Drug Interactions},
+  booktitle = {2025 13th International Symposium on Digital Forensics and Security (ISDFS)},
+  pages = {1--6},
+  year = {2025}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/danismaz2025two.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Two-phase deep learning method for image fusion-based extended depth of focus: S. Danismaz et al.
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Sibel Danismaz, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Hulya Dogan
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+The Journal of Supercomputing, 2025
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{danismaz2025two,
+  author = {Sibel Danismaz and Ramazan Ozgur Dogan and Hulya Dogan},
+  title = {Two-phase deep learning method for image fusion-based extended depth of focus: S. Danismaz et al.},
+  journal = {The Journal of Supercomputing},
+  volume = {81},
+  number = {14},
+  pages = {1298},
+  year = {2025},
+  publisher = {Springer US New York}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        A Video-Based Mobile Palmprint Dataset and an Illumination-Robust Deep Learning Architecture for Unconstrained Environments
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Betül Koşmaz Sünnetci, Özkan Bingöl, Eyüp Gedikli, Murat Ekinci, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Salih Türk, Nihan Güngör
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Applied Sciences, 2025
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{kocsmaz2025video,
+  author = {Betül Koşmaz Sünnetci and Özkan Bingöl and Eyüp Gedikli and Murat Ekinci and Ramazan Özgür Doğan and Salih Türk and Nihan Güngör},
+  title = {A Video-Based Mobile Palmprint Dataset and an Illumination-Robust Deep Learning Architecture for Unconstrained Environments},
+  journal = {Applied Sciences},
+  volume = {15},
+  number = {21},
+  pages = {11368},
+  year = {2025},
+  publisher = {MDPI}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2024</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/dogan2024dl.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Dl-edof: Novel multi-focus image data set and deep learning-based approach for more accurate and specimen-free extended depth of focus
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Hulya Dogan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Ilyas Ay, Sena F Sezen
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Journal of Imaging Informatics in Medicine, 2024
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dogan2024dl,
+  author = {Hulya Dogan and Ramazan Ozgur Dogan and Ilyas Ay and Sena F Sezen},
+  title = {Dl-edof: Novel multi-focus image data set and deep learning-based approach for more accurate and specimen-free extended depth of focus},
+  journal = {Journal of Imaging Informatics in Medicine},
+  volume = {37},
+  number = {4},
+  pages = {1991--2013},
+  year = {2024},
+  publisher = {Springer International Publishing Cham}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Cross-view Gait Recognition Based on Fine-Tuned Deep Networks
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Büşranur Yaprak, Eyüp Gedikli, Özkan Bingöl, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2024 32nd Signal Processing and Communications Applications Conference (SIU), 2024
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{yaprak2024cross,
+  author = {Büşranur Yaprak and Eyüp Gedikli and Özkan Bingöl and Ramazan Özgür Doğan},
+  title = {Cross-view Gait Recognition Based on Fine-Tuned Deep Networks},
+  booktitle = {2024 32nd Signal Processing and Communications Applications Conference (SIU)},
+  pages = {1--4},
+  year = {2024}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Selecting the Best Frames from Videos for Palmprint Biometric Verification
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Salih Türk, Özkan Bingöl, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2024 8th International Artificial Intelligence and Data Processing Symposium (IDAP), 2024
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{turk2024selecting,
+  author = {Salih Türk and Özkan Bingöl and Ramazan Özgür Doğan},
+  title = {Selecting the Best Frames from Videos for Palmprint Biometric Verification},
+  booktitle = {2024 8th International Artificial Intelligence and Data Processing Symposium (IDAP)},
+  pages = {1--5},
+  year = {2024}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Performance Improvement in Blood Cell Segmentation with Deep Learning-based Image Fusion Approach
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Fatma Tuana Dogu, Hulya Dogan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, F Sena Sezen
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2024 8th International Artificial Intelligence and Data Processing Symposium (IDAP), 2024
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dogu2024performance,
+  author = {Fatma Tuana Dogu and Hulya Dogan and Ramazan Ozgur Dogan and F Sena Sezen},
+  title = {Performance Improvement in Blood Cell Segmentation with Deep Learning-based Image Fusion Approach},
+  booktitle = {2024 8th International Artificial Intelligence and Data Processing Symposium (IDAP)},
+  pages = {1--5},
+  year = {2024}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Extracting 3D Structure of Blood Cells Using Shape From Focus Strategies
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Fatma Tuana Doğu, Hülya Doğan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, İlyas Ay, F Sena Sezen
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2024 Innovations in Intelligent Systems and Applications Conference (ASYU), 2024
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougu2024extracting,
+  author = {Fatma Tuana Doğu and Hülya Doğan and Ramazan Özgür Doğan and İlyas Ay and F Sena Sezen},
+  title = {Extracting 3D Structure of Blood Cells Using Shape From Focus Strategies},
+  booktitle = {2024 Innovations in Intelligent Systems and Applications Conference (ASYU)},
+  pages = {1--6},
+  year = {2024}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/dougu2024kan.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Kan Hücrelerinin Optimum Odaklı Görüntülenmesi için Derin Öğrenme Tabanlı Yaklaşımın Geliştirilmesi
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Fatma Tuana Doğu, Zeinab Danaei, Hülya Doğan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Feride Sena Sezen
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Kahramanmaraş Sütçü İmam üniversitesi Mühendislik Bilimleri Dergisi, 2024
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dougu2024kan,
+  author = {Fatma Tuana Doğu and Zeinab Danaei and Hülya Doğan and Ramazan Özgür Doğan and Feride Sena Sezen},
+  title = {Kan Hücrelerinin Optimum Odaklı Görüntülenmesi için Derin Öğrenme Tabanlı Yaklaşımın Geliştirilmesi},
+  journal = {Kahramanmaraş Sütçü İmam üniversitesi Mühendislik Bilimleri Dergisi},
+  volume = {27},
+  number = {4},
+  pages = {1465--1476},
+  year = {2024},
+  publisher = {Kahramanmaras Sutcu Imam University}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        High-Accuracy Hand Segmentation for Palmprint Biometric Systems Improving Auto-Encoder Techniques
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Kadir Yalcin, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Hulya Dogan, Ozkan Bingol
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2024 8th International Symposium on Innovative Approaches in Smart Technologies (ISAS), 2024
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{yalcin2024high,
+  author = {Kadir Yalcin and Ramazan Ozgur Dogan and Hulya Dogan and Ozkan Bingol},
+  title = {High-Accuracy Hand Segmentation for Palmprint Biometric Systems Improving Auto-Encoder Techniques},
+  booktitle = {2024 8th International Symposium on Innovative Approaches in Smart Technologies (ISAS)},
+  pages = {1--4},
+  year = {2024}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2023</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Review Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/ecg.gif" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        <a href="https://link.springer.com/article/10.1007/s11831-023-09916-x" target="_blank" class="text-decoration-none text-body">A Comprehensive Review of Computer-based Techniques for R-Peaks/QRS Complex Detection in ECG Signal</a>
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Hulya Dogan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Archives of Computational Methods in Engineering, 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        <a href="https://doi.org/10.1007/s11831-023-09916-x" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">DOI</a>
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dogan2023comprehensive,
+  author = {Hulya Dogan and Ramazan Ozgur Dogan},
+  title = {A Comprehensive Review of Computer-based Techniques for R-Peaks/QRS Complex Detection in ECG Signal},
+  journal = {Archives of Computational Methods in Engineering},
+  volume = {30},
+  number = {6},
+  year = {2023},
+  publisher = {Springer Naature},
+  doi = {https://doi.org/10.1007/s11831-023-09916-x}
+}">BIB</button>
+
+                        <a href="https://link.springer.com/article/10.1007/s11831-023-09916-x" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">HTML</a>
+
+                    </div>
+
+                    <div class="mt-2 badges">
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=F2NkKNAAAAAJ&citation_for_view=F2NkKNAAAAAJ:roLk4NBRz8UC"
+                            aria-label="Google Scholar link" role="button" rel="external nofollow noopener"
+                            target="_blank">
+                            <img src="https://img.shields.io/badge/scholar-41-4285F4?logo=googlescholar&labelColor=beige"
+                                alt="Google Scholar citations" loading="lazy"
+                                style="height: 22px; border-radius: 4px; transition: transform 0.2s ease;"
+                                onmouseover="this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.transform='scale(1)'">
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/dougan20233b.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        3B Şekil Oluşturmak için Alt Örneklemesiz Shearlet Dönüşümüne Dayalı Yeni ve Yüksek Kaliteli Odaklama Ölçüm Operatörü
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Hülya Doğan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Mühendislik Bilimleri ve Araştırmaları Dergisi, 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dougan20233b,
+  author = {Hülya Doğan and Ramazan Özgür Doğan},
+  title = {3B Şekil Oluşturmak için Alt Örneklemesiz Shearlet Dönüşümüne Dayalı Yeni ve Yüksek Kaliteli Odaklama Ölçüm Operatörü},
+  journal = {Mühendislik Bilimleri ve Araştırmaları Dergisi},
+  volume = {5},
+  number = {1},
+  pages = {9--19},
+  year = {2023},
+  publisher = {Bandirma Onyedi Eylul University}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/dougan2023ilacc.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        İlaç-İlaç Etkileşimi Tahmini için Konvolüsyonel Sinir Ağı Tabanlı Yeni Bir Yaklaşım
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Hülya Doğan, Feride Sena Sezen
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Süleyman Demirel üniversitesi Fen Bilimleri Enstitüsü Dergisi, 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dougan2023ilacc,
+  author = {Ramazan Özgür Doğan and Hülya Doğan and Feride Sena Sezen},
+  title = {İlaç-İlaç Etkileşimi Tahmini için Konvolüsyonel Sinir Ağı Tabanlı Yeni Bir Yaklaşım},
+  journal = {Süleyman Demirel üniversitesi Fen Bilimleri Enstitüsü Dergisi},
+  volume = {27},
+  number = {1},
+  pages = {137--144},
+  year = {2023},
+  publisher = {Süleyman Demirel University}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        An Extensive Study: Creation of A New Inverted Microscope Image Data Set and Improving Auto-Encoder Models for Higher Accuracy Segmentation of HaCaT Cell Culture Line
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Zeynep Sevim, Hulya Dogan, Zeynep Demir, Feride Sena Sezen, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2023 5th International Congress on Human-Computer Interaction, Optimization and Robotic Applications (HORA), 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{sevim2023extensive,
+  author = {Zeynep Sevim and Hulya Dogan and Zeynep Demir and Feride Sena Sezen and Ramazan Ozgur Dogan},
+  title = {An Extensive Study: Creation of A New Inverted Microscope Image Data Set and Improving Auto-Encoder Models for Higher Accuracy Segmentation of HaCaT Cell Culture Line},
+  booktitle = {2023 5th International Congress on Human-Computer Interaction, Optimization and Robotic Applications (HORA)},
+  pages = {1--6},
+  year = {2023}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Deep Learning Based Focus Measurement Operator for 3D Imaging in Microscopic Systems
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Hülya Doğan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2023 31st Signal Processing and Communications Applications Conference (SIU), 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougan2023deep,
+  author = {Hülya Doğan and Ramazan Özgür Doğan},
+  title = {Deep Learning Based Focus Measurement Operator for 3D Imaging in Microscopic Systems},
+  booktitle = {2023 31st Signal Processing and Communications Applications Conference (SIU)},
+  pages = {1--4},
+  year = {2023}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Anomaly detection in predicted water treatment data using hybrid cnn-lstm network model
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Büşra Özgenç, Selen Ayas, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Bora çavdar, Ali Kıvanç şahin, Mustafa şinasi Ayas
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2023 31st Signal Processing and Communications Applications Conference (SIU), 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{ozgencc2023anomaly,
+  author = {Büşra Özgenç and Selen Ayas and Ramazan Özgür Doğan and Bora çavdar and Ali Kıvanç şahin and Mustafa şinasi Ayas},
+  title = {Anomaly detection in predicted water treatment data using hybrid cnn-lstm network model},
+  booktitle = {2023 31st Signal Processing and Communications Applications Conference (SIU)},
+  pages = {1--4},
+  year = {2023}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Kontrastlı Mamografi GÖrüntülerinde Kitlelerin şekil ve Birinci Dereceden İstatistiksel Özniteliklere Dayalı Sınıflandırması
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Mehmet Emin Kobya, Hayati Türe, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Temel Kayikçioğlu, Aykut Teymur, Sibel Kul
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2023 31st Signal Processing and Communications Applications Conference (SIU), 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{kobya2023kontrastli,
+  author = {Mehmet Emin Kobya and Hayati Türe and Ramazan Özgür Doğan and Temel Kayikçioğlu and Aykut Teymur and Sibel Kul},
+  title = {Kontrastlı Mamografi GÖrüntülerinde Kitlelerin şekil ve Birinci Dereceden İstatistiksel Özniteliklere Dayalı Sınıflandırması},
+  booktitle = {2023 31st Signal Processing and Communications Applications Conference (SIU)},
+  pages = {1--4},
+  year = {2023}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/emir2023floresan.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Floresan Mikroskop Sistemlerinde Yüksek Doğruluklu Nükleer Segmentasyonu için Otomatik Kodlayıcı Tabanlı Modellerin Geliştirilmesi
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Sümeyye Nur Emir, Sibel Danışmaz, Hülya Doğan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Karadeniz Fen Bilimleri Dergisi, 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{emir2023floresan,
+  author = {Sümeyye Nur Emir and Sibel Danışmaz and Hülya Doğan and Ramazan Özgür Doğan},
+  title = {Floresan Mikroskop Sistemlerinde Yüksek Doğruluklu Nükleer Segmentasyonu için Otomatik Kodlayıcı Tabanlı Modellerin Geliştirilmesi},
+  journal = {Karadeniz Fen Bilimleri Dergisi},
+  volume = {13},
+  number = {3},
+  pages = {801--813},
+  year = {2023},
+  publisher = {Giresun University}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        A hybrid CNN-LSTM framework for unsupervised anomaly detection in water distribution plant
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Ali Kivanc Sahin, Bora Cavdar, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Selen Ayas, Busra Ozgenc, Mustafa Sinasi Ayas
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2023 Innovations in Intelligent Systems and Applications Conference (ASYU), 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{sahin2023hybrid,
+  author = {Ali Kivanc Sahin and Bora Cavdar and Ramazan Ozgur Dogan and Selen Ayas and Busra Ozgenc and Mustafa Sinasi Ayas},
+  title = {A hybrid CNN-LSTM framework for unsupervised anomaly detection in water distribution plant},
+  booktitle = {2023 Innovations in Intelligent Systems and Applications Conference (ASYU)},
+  pages = {1--6},
+  year = {2023}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        An efficient 1d autoencoder-based approach for r-peaks detection in electrocardiogram signals
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Hulya Dogan, Temel Kayikcioglu
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2023 10th International Conference on Electrical and Electronics Engineering (ICEEE), 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dogan2023efficient,
+  author = {Ramazan Ozgur Dogan and Hulya Dogan and Temel Kayikcioglu},
+  title = {An efficient 1d autoencoder-based approach for r-peaks detection in electrocardiogram signals},
+  booktitle = {2023 10th International Conference on Electrical and Electronics Engineering (ICEEE)},
+  pages = {106--110},
+  year = {2023}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/danicsmaz2023odaklama.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Odaklama Derinliğinin Artırılmasında Derin Özelliklerin Odaklama Değerlerinin Çıkarılmasındaki Etkilerinin İncelenmesi
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Sibel Danışmaz, Sümeyye Nur Emir, Hülya Doğan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Eskişehir Osmangazi üniversitesi Mühendislik ve Mimarlık Fakültesi Dergisi, 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{danicsmaz2023odaklama,
+  author = {Sibel Danışmaz and Sümeyye Nur Emir and Hülya Doğan and Ramazan Özgür Doğan},
+  title = {Odaklama Derinliğinin Artırılmasında Derin Özelliklerin Odaklama Değerlerinin Çıkarılmasındaki Etkilerinin İncelenmesi},
+  journal = {Eskişehir Osmangazi üniversitesi Mühendislik ve Mimarlık Fakültesi Dergisi},
+  volume = {31},
+  number = {3},
+  pages = {917--930},
+  year = {2023},
+  publisher = {Eskişehir Osmangazi University}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        An Efficient Technique Based on Deep Learning for Automatic Focusing in Microscopic System
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Fatma Tuana Dogu, Hulya Dogan, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Ilyas Ay, Sena F Sezen
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+International Congress of Electrical and Computer Engineering, 2023
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dogu2023efficient,
+  author = {Fatma Tuana Dogu and Hulya Dogan and Ramazan Ozgur Dogan and Ilyas Ay and Sena F Sezen},
+  title = {An Efficient Technique Based on Deep Learning for Automatic Focusing in Microscopic System},
+  booktitle = {International Congress of Electrical and Computer Engineering},
+  pages = {233--248},
+  year = {2023}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2022</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Segmentation of Pectoral Muscle Region in MLO Mammography Images by Backboned U-Net
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Hayati Türe, Temel Kayikçioğlu
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2022 30th Signal Processing and Communications Applications Conference (SIU), 2022
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougan2022segmentation,
+  author = {Ramazan Özgür Doğan and Hayati Türe and Temel Kayikçioğlu},
+  title = {Segmentation of Pectoral Muscle Region in MLO Mammography Images by Backboned U-Net},
+  booktitle = {2022 30th Signal Processing and Communications Applications Conference (SIU)},
+  pages = {1--4},
+  year = {2022}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2021</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/a_two_phase.gif" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        <a href="https://www.sciencedirect.com/science/article/abs/pii/S0169260721002169" target="_blank" class="text-decoration-none text-body">A two-phase approach using mask R-CNN and 3D U-Net for high-accuracy automatic segmentation of pancreas in CT imaging</a>
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan
+                            Ozgur Dogan</span>, Hulya Dogan, Coskun Bayrak, Temel Kayikcioglu
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Computer Methods and Programs in Biomedicine, 2021
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        <a href="https://doi.org/10.1016/j.cmpb.2021.106141" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">DOI</a>
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dogan2021two,
+  author = {Ramazan Ozgur Dogan and Hulya Dogan and Coskun Bayrak and Temel Kayikcioglu},
+  title = {A two-phase approach using mask R-CNN and 3D U-Net for high-accuracy automatic segmentation of pancreas in CT imaging},
+  journal = {Computer Methods and Programs in Biomedicine},
+  volume = {207},
+  pages = {106141},
+  year = {2021},
+  publisher = {Elsevier},
+  doi = {https://doi.org/10.1016/j.cmpb.2021.106141}
+}">BIB</button>
+
+                        <a href="https://www.sciencedirect.com/science/article/abs/pii/S0169260721002169" target="_blank"
+                            class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1"
+                            style="font-size: 0.75rem;">HTML</a>
+
+                    </div>
+
+                    <div class="mt-2 badges">
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=F2NkKNAAAAAJ&citation_for_view=F2NkKNAAAAAJ:zYLM7Y9cAGgC"
+                            aria-label="Google Scholar link" role="button" rel="external nofollow noopener"
+                            target="_blank">
+                            <img src="https://img.shields.io/badge/scholar-74-4285F4?logo=googlescholar&labelColor=beige"
+                                alt="Google Scholar citations" loading="lazy"
+                                style="height: 22px; border-radius: 4px; transition: transform 0.2s ease;"
+                                onmouseover="this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.transform='scale(1)'">
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2018</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/dougan2018elektronik.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Elektronik Sağlık Kayıtlarının WCF Web Servisleri Kullanılarak Aktarılması ve Depolanması
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Temel Kayıkçıoğlu, Yavuz Yağcı, Ömer Yıldırım
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Süleyman Demirel üniversitesi Fen Bilimleri Enstitüsü Dergisi, 2018
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{dougan2018elektronik,
+  author = {Ramazan Özgür Doğan and Temel Kayıkçıoğlu and Yavuz Yağcı and Ömer Yıldırım},
+  title = {Elektronik Sağlık Kayıtlarının WCF Web Servisleri Kullanılarak Aktarılması ve Depolanması},
+  journal = {Süleyman Demirel üniversitesi Fen Bilimleri Enstitüsü Dergisi},
+  volume = {22},
+  number = {1},
+  pages = {232--236},
+  year = {2018},
+  publisher = {Süleyman Demirel University}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        R-peaks detection with convolutional neural network in electrocardiogram signal
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Temel Kayikçioğlu
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2018 26th Signal Processing and Communications Applications Conference (SIU), 2018
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougan2018r,
+  author = {Ramazan Özgür Doğan and Temel Kayikçioğlu},
+  title = {R-peaks detection with convolutional neural network in electrocardiogram signal},
+  booktitle = {2018 26th Signal Processing and Communications Applications Conference (SIU)},
+  pages = {1--4},
+  year = {2018}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2017</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Real time sending and monitoring electronic health records
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Temel Kayıkçıoğlu, Yavuz Yağcı
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2017 25th Signal Processing and Communications Applications Conference (SIU), 2017
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougan2017real,
+  author = {Ramazan Özgür Doğan and Temel Kayıkçıoğlu and Yavuz Yağcı},
+  title = {Real time sending and monitoring electronic health records},
+  booktitle = {2017 25th Signal Processing and Communications Applications Conference (SIU)},
+  pages = {1--4},
+  year = {2017}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2016</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Health-monitoring system based tele-tip for elders
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Ömer Yildirim, Ramazan Özgur Doğan, Ismail Kaya, Temel Kayikçioglu
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2016 Medical Technologies National Congress (TIPTEKNO), 2016
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{yildirim2016health,
+  author = {Ömer Yildirim and Ramazan Özgur Doğan and Ismail Kaya and Temel Kayikçioglu},
+  title = {Health-monitoring system based tele-tip for elders},
+  booktitle = {2016 Medical Technologies National Congress (TIPTEKNO)},
+  pages = {1--4},
+  year = {2016}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Remote patient monitoring and Electronic Health Record system based on web services
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Temel Kayıkçıoğlu
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2016 24th Signal Processing and Communication Application Conference (SIU), 2016
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougan2016remote,
+  author = {Ramazan Özgür Doğan and Temel Kayıkçıoğlu},
+  title = {Remote patient monitoring and Electronic Health Record system based on web services},
+  booktitle = {2016 24th Signal Processing and Communication Application Conference (SIU)},
+  pages = {1785--1788},
+  year = {2016}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2015</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Virtual mouse control with hand gesture information extraction and tracking
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Hülya Doğan, Cemal Köse
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2015 23nd Signal Processing and Communications Applications Conference (SIU), 2015
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougan2015virtual,
+  author = {Ramazan Özgür Doğan and Hülya Doğan and Cemal Köse},
+  title = {Virtual mouse control with hand gesture information extraction and tracking},
+  booktitle = {2015 23nd Signal Processing and Communications Applications Conference (SIU)},
+  pages = {1893--1896},
+  year = {2015}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/otkun2015neural.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Neural network based scalar speed control of linear permanent magnet synchronous motor
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Ozcan Otkun, <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Adem Akpinar
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Journal of the Faculty of Engineering and Architecture of Gazi University, 2015
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{otkun2015neural,
+  author = {Ozcan Otkun and Ramazan Özgür Doğan and Adem Akpinar},
+  title = {Neural network based scalar speed control of linear permanent magnet synchronous motor},
+  journal = {Journal of the Faculty of Engineering and Architecture of Gazi University},
+  volume = {30},
+  number = {3},
+  year = {2015}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2014</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Computer monitoring and control with hand movements
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Cemal Köse
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+2014 22nd Signal Processing and Communications Applications Conference (SIU), 2014
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougan2014computer,
+  author = {Ramazan Özgür Doğan and Cemal Köse},
+  title = {Computer monitoring and control with hand movements},
+  booktitle = {2014 22nd Signal Processing and Communications Applications Conference (SIU)},
+  pages = {2110--2113},
+  year = {2014}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Research Article
+                    </span>
+
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Performance Analysis of Linear Permanent Magnets Synchronous Motor by Scalar Control Method (v/f)
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        Özcan Otkun, R Özgür Doğan, A Sefa Akpinar
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Applied Mechanics and Materials, 2014
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@article{otkun2014performance,
+  author = {Özcan Otkun and R Özgür Doğan and A Sefa Akpinar},
+  title = {Performance Analysis of Linear Permanent Magnets Synchronous Motor by Scalar Control Method (v/f)},
+  journal = {Applied Mechanics and Materials},
+  volume = {666},
+  pages = {199--202},
+  year = {2014},
+  publisher = {Trans Tech Publ}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <h3 class="mb-4 mt-5 fw-bold border-bottom pb-2">2013</h3>
+
+            <div class="row mb-5 align-items-start" data-aos="fade-up">
+
+                <div class="col-sm-3 d-flex flex-column align-items-center text-center pe-sm-4">
+                    <span class="badge rounded-1 mb-2 px-3 py-1 w-100"
+                        style="background-color: #0d6efd; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px;">
+                        Conference Paper
+                    </span>
+
+                    <div class="p-2 bg-white d-flex align-items-center justify-content-center shadow-sm rounded-bottom w-100"
+                        style="height: 140px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 0 30px rgba(0,0,0,0.05);">
+                        <img src="https://doganr.com/images/publication_preview/dougan2013opengate.webp" alt="Article Preview" loading="lazy" decoding="async"
+                            class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-3 mt-sm-0">
+                    <h5 class="mb-2" style="font-size: 1.15rem; font-weight: 500;">
+                        Opengate Captive Portal İçin Kullanıcı Dostu Bir Uygulama Yazılımı
+                    </h5>
+
+                    <div class="mb-1 text-body" style="font-size: 0.95rem; font-weight: 300;">
+                        <span
+                            style="border-bottom: 1px solid #aaa;">Ramazan Özgür
+                            Doğan</span>, Hayati Türe
+                    </div>
+
+                    <div class="fst-italic text-secondary mb-3" style="font-size: 0.95rem;">
+Akademik Bilişim 2013 (AB), 2013
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-1 px-3 py-1 bib-btn"
+                            style="font-size: 0.75rem;" data-bib="@inproceedings{dougan2013opengate,
+  author = {Ramazan Özgür Doğan and Hayati Türe},
+  title = {Opengate Captive Portal İçin Kullanıcı Dostu Bir Uygulama Yazılımı},
+  booktitle = {Akademik Bilişim 2013 (AB)},
+  year = {2013}
+}">BIB</button>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  </div>
+
+  <!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-glow"></div>
+  <div class="container">
+    <div class="row gy-4 align-items-center">
+
+      <!-- Brand -->
+      <div class="col-md-4 text-center text-md-start">
+        <a href="https://doganr.com/tr/" class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none">
+          <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="footer-logo" loading="lazy" width="28" height="28">
+          <span class="footer-brand-name">Doğan R.</span>
+        </a>
+        <p class="footer-tagline mt-2 mb-0">Dr. Öğr. Üyesi • Trabzon Üniversitesi</p>
+      </div>
+
+      <!-- Social Links -->
+      <div class="col-md-4 text-center">
+        <div class="footer-social d-flex gap-3 justify-content-center">
+          <a href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Github" aria-label="Github">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Linkedin" aria-label="Linkedin">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Google scholar" aria-label="Google scholar">
+            <i class="fa-brands fa-google-scholar"></i>
+          </a>
+          <a href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="E-posta" aria-label="E-posta">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="col-md-4 text-center text-md-end">
+        <p class="footer-copy mb-0">
+          &copy; 2026 <strong>Ramazan Ozgur Dogan</strong>
+        </p>
+        <p class="footer-powered mt-1 mb-0">
+          Altyapı <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>
+          &amp; <a href="https://getbootstrap.com/" target="_blank" class="footer-link">Bootstrap 5</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom mt-4 pt-3 text-center">
+      <p class="footer-bottom-text mb-0">
+        Bol miktarda ☕ ve <i class="fa-solid fa-code" style="color: var(--accent-2);"></i> ile hazırlandı.
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Highlight.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- Custom JS -->
+  <script src="https://doganr.com/theme/js/theme.js"></script>
+
+</body>
+
+</html>
