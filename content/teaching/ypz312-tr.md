@@ -60,12 +60,9 @@ Yapay sinir ağlarına giriş ve temel kavramlar; biyolojik esin ve yapay nöron
 
 | Bileşen | Ağırlık |
 |---|:---:|
-| Dönem Sonu Sınavı | %40 |
-| Ara Sınav | %30 |
-| Proje | %20 |
-| Ödev | %10 |
-
-Yarıyıl içi çalışmalar başarı notuna %60, dönem sonu sınavı %40 katkı sağlar.
+| Dönem Sonu Sınavı | %50 |
+| Ara Sınav | %25 |
+| Proje | %25 |
 
 ## Dersin Öğrenme Çıktıları
 

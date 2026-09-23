@@ -5,7 +5,7 @@ Semester: Bahar 2026
 Course_Code: YPZ209
 Level: Lisans
 Image: images/teaching/advprog.jpg
-Summary: Python ile nesne yönelimli programlamanın derinlemesine ele alınışı — kalıtım, polimorfizm, soyut sınıflar, istisna yönetimi, çoklu iş parçacığı ve tasarım desenleri — GitHub, Docker ve PyTorch ile uygulamalı olarak.
+Summary: Python ile nesne yönelimli programlamanın derinlemesine ele alınışı — kalıtım, polimorfizm, soyut sınıflar, istisna yönetimi, çoklu iş parçacığı ve tasarım desenleri — GitHub, uygulama paketleme (PyInstaller) ve PyTorch ile uygulamalı olarak.
 Slug: ypz209
 Lang: tr
 
@@ -29,11 +29,11 @@ Lang: tr
 
 ## Dersin Amacı
 
-Bu dersin amacı öğrencilere nesne yönelimli programlama (OOP) prensiplerini derinlemesine öğretmek, algoritma tasarımı ve yüksek seviyeli programlama dilleri üzerinde ileri düzey beceriler kazandırmaktır. Öğrenciler soyut veri türleri, kalıtım, polimorfizm, çoklu iş parçacığı (thread) tabanlı programlama, hata ayıklama, test etme ve düzenli ifadeler (regular expressions) ile metin işleme konularını uygulamalı olarak öğreneceklerdir. Ayrıca öğrenciler, yapay zekâ bilimi kapsamında kullanılan veri bilimi ve yapay zekâ kütüphanelerinin (ör. NumPy, Pandas, PyTorch) hesaplama performansları hakkında bilgi sahibi olacak ve modern yazılım geliştirme araçları (ör. Docker) ile uygulama geliştirme pratiği kazanacaklardır.
+Bu dersin amacı öğrencilere nesne yönelimli programlama (OOP) prensiplerini derinlemesine öğretmek, algoritma tasarımı ve yüksek seviyeli programlama dilleri üzerinde ileri düzey beceriler kazandırmaktır. Öğrenciler soyut veri türleri, kalıtım, polimorfizm, çoklu iş parçacığı (thread) tabanlı programlama, hata ayıklama, test etme ve düzenli ifadeler (regular expressions) ile metin işleme konularını uygulamalı olarak öğreneceklerdir. Ayrıca öğrenciler, yapay zekâ bilimi kapsamında kullanılan veri bilimi ve yapay zekâ kütüphanelerinin (ör. NumPy, Pandas, PyTorch) hesaplama performansları hakkında bilgi sahibi olacak ve modern yazılım geliştirme araçları (ör. PyInstaller ile uygulama paketleme) ile uygulama geliştirme ve dağıtma pratiği kazanacaklardır.
 
 ## Ders İçeriği
 
-Nesne yönelimli programlama; kalıtım, polimorfizm ve soyut sınıflar; hata ayıklama ve istisna yönetimi; düzenli ifadeler ile metin işleme; çoklu iş parçacığı programlama; GitHub ile proje yönetimi; Docker ile uygulama konteynerleştirme; PyTorch üzerinde OOP ve yapay zekâ bilimi uygulamaları; tasarım desenleri.
+Nesne yönelimli programlama; kalıtım, polimorfizm ve soyut sınıflar; hata ayıklama ve istisna yönetimi; düzenli ifadeler ile metin işleme; çoklu iş parçacığı programlama; GitHub ile proje yönetimi; PyInstaller ile uygulama paketleme ve dağıtımı; PyTorch üzerinde OOP ve yapay zekâ bilimi uygulamaları; tasarım desenleri.
 
 ## Haftalık Program
 
@@ -49,7 +49,7 @@ Nesne yönelimli programlama; kalıtım, polimorfizm ve soyut sınıflar; hata a
 | 8 | Düzenli İfadeler (Regular Expressions) — Metin İşleme ve Veri Temizleme |
 | 9 | **Ara Sınav** |
 | 10 | Thread Tabanlı Programlama — Çoklu İş Parçacığı Yönetimi |
-| 11 | Docker ile Python Uygulamalarını Konteynerleştirme |
+| 11 | PyInstaller ile Uygulamaları Paketleme ve Dağıtma |
 | 12 | PyTorch Üzerinde OOP İncelemesi I — Model Sınıfları ve `Module` Mirası |
 | 13 | PyTorch Üzerinde OOP İncelemesi II — İleri Seviye Yapılar ve Yapay Zekâ Bilimi Uygulamaları |
 | 14 | Tasarım Desenleri (Design Patterns) — Singleton, Factory, Observer Örnekleri |
@@ -72,7 +72,7 @@ Bu dersi başarıyla tamamlayan öğrenciler:
 2. Programda hata ayıklama ve istisna yönetimini gerçekleştirebilir.
 3. Nesne yönelimli programlamanın temel prensiplerini (sınıflar, kapsülleme) ve ileri kavramlarını (kalıtım, polimorfizm, soyut sınıflar) uygulayabilir.
 4. Çoklu iş parçacığı (thread) tabanlı programlama ve asenkron programlamayı uygulayabilir.
-5. Modern yazılım geliştirme araçlarını (ör. Docker) kullanarak uygulamaları paketleyip çalıştırabilir.
+5. Modern yazılım geliştirme araçlarını (ör. PyInstaller) kullanarak uygulamaları paketleyip dağıtabilir.
 6. Yapay zekâ bilimi kapsamında PyTorch üzerinde nesne yönelimli programlama yaklaşımını kavrayarak model sınıflarını geliştirebilir.
 7. Tasarım desenlerini (design patterns) uygulayarak yeniden kullanılabilir ve sürdürülebilir yazılım geliştirebilir.
 8. Uygulamalarla pratik yaparak geliştirme sürecini daha iyi kavrar.
