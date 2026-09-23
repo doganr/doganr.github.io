@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 11. Hafta - Bilişim Suçları ve Siber Zorbalık</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 11 — Crimson & Amber Theme */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-transform: none;
+        }
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .glass-card:hover {
+            border-color: rgba(244, 63, 94, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .crime-badge {
+            background: rgba(244, 63, 94, 0.15);
+            color: #fb7185;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            border: 1px solid rgba(244, 63, 94, 0.3);
+        }
+
+        /* Animasyonlar */
+        @keyframes alert-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+            50%      { box-shadow: 0 0 0 14px rgba(244, 63, 94, 0); }
+        }
+        .alert-pulse { animation: alert-pulse 2.2s infinite ease-out; }
+
+        @keyframes cursor-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+        .cursor-blink { animation: cursor-blink 1s infinite; }
+
+        @keyframes slow-drift {
+            0%,100% { transform: translateY(0); }
+            50%     { transform: translateY(-6px); }
+        }
+        .slow-drift { animation: slow-drift 4s infinite ease-in-out; }
+
+        /* Shocking stat number */
+        .stat-mega {
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #fb7185 0%, #f43f5e 60%, #be123c 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 1: KAPAK                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 30% 50%, #4c0519 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-rose-600 top-0 left-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <!-- Badge -->
+                    <div class="px-4 py-2 bg-rose-500/10 rounded-full text-xs font-bold tracking-widest mb-6 border border-rose-500/30">
+                        <span class="text-rose-400">HAFTA 11</span>
+                        <span class="text-slate-600 mx-2">•</span>
+                        <span class="text-slate-400">BİLİŞİM ETİĞİ</span>
+                    </div>
+
+                    <!-- İkon -->
+                    <div class="relative mb-8 group">
+                        <div class="absolute inset-0 bg-rose-600 rounded-full blur-[60px] opacity-30 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+                        <div class="absolute inset-[-20px] rounded-full border border-rose-500/20 animate-[spin_15s_linear_infinite]"></div>
+                        <div class="absolute inset-[-40px] rounded-full border border-amber-500/10 border-dashed animate-[spin_25s_linear_infinite_reverse]"></div>
+                        <div class="p-8 bg-rose-500/10 rounded-full border border-rose-500/20 relative z-10 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110">
+                            <i data-lucide="shield-alert" style="width: 80px; height: 80px;" class="text-rose-400 drop-shadow-[0_0_15px_rgba(244,63,94,0.8)]"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl mb-4 leading-tight">Dijital <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-orange-400 to-amber-300">Karanlık</span></h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">11. Hafta: Bilişim Suçları ve Siber Zorbalık</p>
+                    <div class="mt-8 flex gap-6 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span class="flex items-center gap-2"><i data-lucide="bug" size="12" class="text-rose-500"></i> SUÇ</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="fish" size="12" class="text-rose-500"></i> OLTALAMA</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="message-square-warning" size="12" class="text-rose-500"></i> ZORBALIK</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 2: AÇILIŞ HİKAYESİ + İSTATİSTİKLER  -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <!-- 2.0: Kişisel hikaye -->
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-rose-600 bottom-0 right-0"></div>
+                    <div class="grid grid-cols-2 gap-10 items-center text-left">
+                        <div>
+                            <div class="crime-badge mb-6">Gerçek Hayat</div>
+                            <h2 class="text-4xl mb-4">Bir Cuma <span class="text-rose-400">Akşamı…</span></h2>
+                            <p class="text-slate-300 text-xs leading-relaxed mb-5">
+                                Aylin, Instagram'da arkadaşlarıyla kafe fotoğrafını paylaştı — <strong class="text-white">profili açıktı.</strong> Gece tanımadığı bir hesap o fotoğrafı Twitter'a aşağılayıcı yorumlarla taşıdı; saatler içinde <strong class="text-white">binlerce RT</strong> ve "nerede okuyor?" soruları. Sabaha doğru kimliği gizli bir numaradan WhatsApp'a mesaj düştü: <em>"Okulunu, bölümünü, ailenin adını biliyoruz. Hesaplarını kapat — yoksa sıradaki post seni değil, aileni utandırır."</em>
+                            </p>
+                            <div class="space-y-2">
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                    <div class="p-1.5 bg-rose-500/20 rounded-lg"><i data-lucide="share-2" class="text-rose-400" size="18"></i></div>
+                                    <p class="text-slate-300 text-xs m-0">Rızasız yeniden yayınlama → <strong class="text-white">TCK 134 + KVKK</strong></p>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                    <div class="p-1.5 bg-rose-500/20 rounded-lg"><i data-lucide="messages-square" class="text-rose-400" size="18"></i></div>
+                                    <p class="text-slate-300 text-xs m-0">Aşağılayıcı post + yorum linçi → <strong class="text-white">TCK 125 hakaret</strong></p>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                    <div class="p-1.5 bg-rose-500/20 rounded-lg"><i data-lucide="user-search" class="text-rose-400" size="18"></i></div>
+                                    <p class="text-slate-300 text-xs m-0">Okul / numara / aile avı → <strong class="text-white">doxxing + KVKK ihlali</strong></p>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                    <div class="p-1.5 bg-rose-500/20 rounded-lg"><i data-lucide="message-square-warning" class="text-rose-400" size="18"></i></div>
+                                    <p class="text-slate-300 text-xs m-0">"Aileni utandırırım" mesajı → <strong class="text-white">TCK 106 tehdit + 107 şantaj</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Hikaye görseli -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-rose-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <!-- GÖRSEL: Sol eliyle telefonuna endişeyle bakan üniversite öğrencisi, ekranda tehdit WhatsApp mesajları, arka plan loş — images/whatsapp_case.png -->
+                            <img src="images/whatsapp_case.png" alt="Tehdit mesajları" class="w-full rounded-2xl border border-rose-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:420px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-rose-500/20 items-center justify-center flex-col" style="height:420px;">
+                                <i data-lucide="message-square-warning" class="text-rose-400 mb-4 slow-drift" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/whatsapp_case.png</p>
+                                <p class="text-slate-600 text-[10px] italic mt-2">tehdit mesajlarıyla dolu telefon</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.1: USOM İstatistikleri -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-6"><i data-lucide="bar-chart-3" class="text-rose-400 inline mr-2" size="24"></i>Türkiye: <span class="text-rose-400">Dijital Tehditin Yüzü</span></h2>
+                    <p class="text-[11px] text-slate-500 italic mb-8">USOM (Ulusal Siber Olaylara Müdahale Merkezi) 2023 yıl sonu raporu</p>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="fragment glass-card p-6 border-rose-500/20 text-center">
+                            <div class="stat-mega mb-2">14M+</div>
+                            <p class="text-xs text-white font-bold m-0 mb-1">Engellenen Saldırı</p>
+                            <p class="text-[10px] text-slate-500 m-0">2023 yılı toplam</p>
+                        </div>
+                        <div class="fragment glass-card p-6 border-amber-500/20 text-center">
+                            <div class="stat-mega mb-2" style="background: linear-gradient(180deg, #fcd34d 0%, #f59e0b 60%, #b45309 100%); -webkit-background-clip: text; background-clip: text;">+%67</div>
+                            <p class="text-xs text-white font-bold m-0 mb-1">Fidye Yazılım Artışı</p>
+                            <p class="text-[10px] text-slate-500 m-0">2022 → 2023</p>
+                        </div>
+                        <div class="fragment glass-card p-6 border-orange-500/20 text-center">
+                            <div class="stat-mega mb-2" style="background: linear-gradient(180deg, #fb923c 0%, #ea580c 60%, #9a3412 100%); -webkit-background-clip: text; background-clip: text;">1/3</div>
+                            <p class="text-xs text-white font-bold m-0 mb-1">Genç Siber Zorbalık Mağduru</p>
+                            <p class="text-[10px] text-slate-500 m-0">UNICEF Türkiye 2022</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 p-3 bg-rose-500/5 rounded-xl border border-rose-500/10 max-w-3xl mx-auto">
+                        <p class="text-[10px] text-slate-400 italic m-0 text-center"><i data-lucide="quote" size="12" class="text-rose-400 inline mr-1"></i> Her <strong class="text-rose-400">2 saniyede bir</strong> Türkiye'ye bir siber saldırı girişimi olmaktadır.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 3: BİLİŞİM SUÇU NEDİR?               -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-rose-500/20 rounded-xl"><i data-lucide="scan-line" class="text-rose-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Bilişim Suçu: <span class="text-rose-400">Tanım</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8 items-center text-left">
+                        <div>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-5">
+                                Bilgisayar veya ağ sistemlerinin <strong class="text-white">araç ya da hedef</strong> olduğu, hukuken suç sayılan eylemlerdir.
+                            </p>
+                            <div class="space-y-3">
+                                <div class="fragment p-3 bg-rose-500/5 rounded-xl border-l-4 border-rose-500">
+                                    <p class="text-[11px] font-bold text-rose-400 m-0 mb-1">🎯 Bilgisayar HEDEF</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Sistemi çökertme, veri sızdırma, fidye yazılım</p>
+                                </div>
+                                <div class="fragment p-3 bg-amber-500/5 rounded-xl border-l-4 border-amber-500">
+                                    <p class="text-[11px] font-bold text-amber-400 m-0 mb-1">🛠 Bilgisayar ARAÇ</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Dolandırıcılık, hakaret, sahtecilik</p>
+                                </div>
+                                <div class="fragment p-3 bg-orange-500/5 rounded-xl border-l-4 border-orange-500">
+                                    <p class="text-[11px] font-bold text-orange-400 m-0 mb-1">📎 Bilgisayar YARDIMCI</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Delil saklama, planlama, iletişim</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Simge görsel -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-rose-500 blur-[80px] opacity-10 rounded-3xl"></div>
+                            <!-- GÖRSEL: Mahkeme terazisi ve arka planda kod akışı, sıcak kırmızı-amber tonları — images/tck_justice.png -->
+                            <img src="images/tck_justice.png" alt="Hukuk ve kod" class="w-full rounded-2xl border border-rose-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:380px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-10 border-rose-500/20 items-center justify-center flex-col" style="height:380px;">
+                                <i data-lucide="scale" class="text-rose-400 mb-4 slow-drift" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/tck_justice.png</p>
+                                <p class="text-slate-600 text-[10px] italic mt-2">hukuk terazisi + dijital kod</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3.1: Tarihsel zaman çizelgesi -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-6"><i data-lucide="clock" class="text-rose-400 inline mr-2" size="24"></i>Siber Suçun <span class="text-rose-400">Dönüm Noktaları</span></h2>
+                    <div class="max-w-3xl mx-auto space-y-3">
+                        <div class="fragment flex items-center gap-3 p-2.5 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                            <div class="text-lg font-black text-rose-400 w-16 shrink-0 text-center">1988</div>
+                            <div class="h-8 w-px bg-rose-500/20"></div>
+                            <div class="text-left">
+                                <h4 class="text-white text-xs font-bold m-0">Morris Worm</h4>
+                                <p class="text-slate-500 text-[10px] m-0">İlk internet solucanı — internetin %10'unu durdurdu</p>
+                            </div>
+                        </div>
+                        <div class="fragment flex items-center gap-3 p-2.5 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                            <div class="text-lg font-black text-amber-400 w-16 shrink-0 text-center">2000</div>
+                            <div class="h-8 w-px bg-amber-500/20"></div>
+                            <div class="text-left">
+                                <h4 class="text-white text-xs font-bold m-0">ILOVEYOU Virüsü</h4>
+                                <p class="text-slate-500 text-[10px] m-0">E-posta ile 45M bilgisayara bulaştı — 10 milyar $ zarar</p>
+                            </div>
+                        </div>
+                        <div class="fragment flex items-center gap-3 p-2.5 bg-orange-500/5 rounded-xl border border-orange-500/10">
+                            <div class="text-lg font-black text-orange-400 w-16 shrink-0 text-center">2017</div>
+                            <div class="h-8 w-px bg-orange-500/20"></div>
+                            <div class="text-left">
+                                <h4 class="text-white text-xs font-bold m-0">WannaCry</h4>
+                                <p class="text-slate-500 text-[10px] m-0">150 ülke, 200K bilgisayar — NHS hastaneleri kilitlendi</p>
+                            </div>
+                        </div>
+                        <div class="fragment flex items-center gap-3 p-2.5 bg-red-500/5 rounded-xl border border-red-500/10">
+                            <div class="text-lg font-black text-red-400 w-16 shrink-0 text-center">2021</div>
+                            <div class="h-8 w-px bg-red-500/20"></div>
+                            <div class="text-left">
+                                <h4 class="text-white text-xs font-bold m-0">Colonial Pipeline</h4>
+                                <p class="text-slate-500 text-[10px] m-0">ABD'nin en büyük boru hattı durdu — 4.4M $ fidye ödendi</p>
+                            </div>
+                        </div>
+                        <div class="fragment flex items-center gap-3 p-2.5 bg-purple-500/5 rounded-xl border border-purple-500/10">
+                            <div class="text-lg font-black text-purple-400 w-16 shrink-0 text-center">2023+</div>
+                            <div class="h-8 w-px bg-purple-500/20"></div>
+                            <div class="text-left">
+                                <h4 class="text-white text-xs font-bold m-0">AI-Destekli Saldırılar</h4>
+                                <p class="text-slate-500 text-[10px] m-0">Deepfake sesli dolandırıcılık, otomatik oltalama</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 4: TÜRK HUKUK SİSTEMİ                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #020617 0%, #4c0519 100%)">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-amber-500/20 rounded-xl"><i data-lucide="gavel" class="text-amber-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Türk Ceza Kanunu: <span class="text-amber-400">243-244-245</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-5">
+                        <div class="fragment glass-card p-5 text-center border-rose-500/20 hover:border-rose-500/40 transition-all group">
+                            <div class="p-3 bg-rose-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="key-round" class="text-rose-400" size="32"></i>
+                            </div>
+                            <div class="text-[9px] text-rose-400 font-bold uppercase tracking-widest mb-1">TCK 243</div>
+                            <h4 class="text-white font-bold text-sm m-0 mb-2">Bilişim Sistemine Girme</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-3">Hukuka aykırı erişim + kalmaya devam etme.</p>
+                            <div class="p-1.5 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                                <p class="text-[9px] text-rose-400 m-0 font-bold">1 yıl veya adli para cezası</p>
+                            </div>
+                        </div>
+                        <div class="fragment glass-card p-5 text-center border-amber-500/20 hover:border-amber-500/40 transition-all group">
+                            <div class="p-3 bg-amber-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="bug" class="text-amber-400" size="32"></i>
+                            </div>
+                            <div class="text-[9px] text-amber-400 font-bold uppercase tracking-widest mb-1">TCK 244</div>
+                            <h4 class="text-white font-bold text-sm m-0 mb-2">Sistemi Engelleme / Bozma</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-3">Veriyi silme, değiştirme, erişimi kesme.</p>
+                            <div class="p-1.5 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <p class="text-[9px] text-amber-400 m-0 font-bold">6 ay – 3 yıl hapis</p>
+                            </div>
+                        </div>
+                        <div class="fragment glass-card p-5 text-center border-orange-500/20 hover:border-orange-500/40 transition-all group">
+                            <div class="p-3 bg-orange-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="credit-card" class="text-orange-400" size="32"></i>
+                            </div>
+                            <div class="text-[9px] text-orange-400 font-bold uppercase tracking-widest mb-1">TCK 245</div>
+                            <h4 class="text-white font-bold text-sm m-0 mb-2">Banka/Kredi Kartı Kötüye Kullanımı</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-3">Başkasının kartıyla işlem, sahte kart üretimi.</p>
+                            <div class="p-1.5 bg-orange-500/5 rounded-lg border border-orange-500/10">
+                                <p class="text-[9px] text-orange-400 m-0 font-bold">3 – 6 yıl hapis</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 max-w-3xl mx-auto">
+                        <p class="text-[10px] text-amber-400 font-bold m-0 text-center"><i data-lucide="alert-triangle" size="12" class="inline mr-1"></i> "Merak ettim, şifresiz bir ağa bağlandım" demek <strong>TCK 243 kapsamındadır</strong>. Niyet aramaz.</p>
+                    </div>
+                </section>
+
+                <!-- 4.1: KVKK + 5651 bağlantısı -->
+                <section data-background-color="#020617">
+                    <h2 class="text-2xl mb-6"><i data-lucide="layers" class="text-amber-400 inline mr-2" size="24"></i>Kişisel Veri ve <span class="text-amber-400">İnternet Yayınları</span></h2>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="fragment glass-card p-5 border-amber-500/20 text-left">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="p-2 bg-amber-500/20 rounded-lg"><i data-lucide="user-lock" class="text-amber-400" size="24"></i></div>
+                                <h3 class="text-lg text-amber-400 font-bold m-0">KVKK</h3>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-3 m-0 leading-relaxed">Rızasız kişisel veri paylaşımı → <strong class="text-white">TCK 134-136</strong> ve idari para cezası.</p>
+                            <div class="space-y-1.5">
+                                <div class="flex items-start gap-2 text-[10px] text-slate-400"><i data-lucide="dot" class="text-amber-400 shrink-0" size="14"></i> Fotoğraf, ses, konum = kişisel veri</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-400"><i data-lucide="dot" class="text-amber-400 shrink-0" size="14"></i> Screenshot paylaşımı dahi ihlaldir</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-400"><i data-lucide="dot" class="text-amber-400 shrink-0" size="14"></i> KVKK ceza aralığı: 13.620 – 2.721.000 ₺ (2024)</div>
+                            </div>
+                        </div>
+                        <div class="fragment glass-card p-5 border-orange-500/20 text-left">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="p-2 bg-orange-500/20 rounded-lg"><i data-lucide="ban" class="text-orange-400" size="24"></i></div>
+                                <h3 class="text-lg text-orange-400 font-bold m-0">5651 Sayılı Kanun</h3>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-3 m-0 leading-relaxed">İnternet ortamında yapılan yayınlar ve bunlara karşı <strong class="text-white">hukuki koruma</strong>.</p>
+                            <div class="space-y-1.5">
+                                <div class="flex items-start gap-2 text-[10px] text-slate-400"><i data-lucide="dot" class="text-orange-400 shrink-0" size="14"></i> İçerik çıkarma & erişim engelleme</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-400"><i data-lucide="dot" class="text-orange-400 shrink-0" size="14"></i> "Unutulma hakkı" talebi</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-400"><i data-lucide="dot" class="text-orange-400 shrink-0" size="14"></i> Sulh ceza hakimliğine 24 saatlik başvuru</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 5: SOSYAL MÜHENDİSLİK + PHİSHİNG     -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#0c0a09">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-rose-500/20 rounded-xl"><i data-lucide="fish" class="text-rose-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">İnsan Faktörü: <span class="text-rose-400">Oltalama</span></h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center text-left">
+                        <div>
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                                Oltalama (phishing), siber saldırıların <strong class="text-white">%90'ından</strong> fazlasında başlangıç vektörüdür. En büyük güvenlik açığı insandır.
+                            </p>
+                            <div class="space-y-2">
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                    <div class="p-1.5 bg-rose-500/20 rounded-lg shrink-0"><i data-lucide="mail" class="text-rose-400" size="16"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Phishing</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Sahte e-posta ile şifre veya finansal bilgi talebi</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-orange-500/5 rounded-xl border border-orange-500/10">
+                                    <div class="p-1.5 bg-orange-500/20 rounded-lg shrink-0"><i data-lucide="smartphone" class="text-orange-400" size="16"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Smishing</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">SMS üzerinden kargo/banka kılığı</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                                    <div class="p-1.5 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="phone" class="text-amber-400" size="16"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Vishing</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Telefon aracılığıyla güven kazanma</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-red-500/5 rounded-xl border border-red-500/10">
+                                    <div class="p-1.5 bg-red-500/20 rounded-lg shrink-0"><i data-lucide="target" class="text-red-400" size="16"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Spear Phishing</h4>
+                                        <p class="text-slate-500 text-[10px] m-0">Kişiye özel, araştırılmış saldırı</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Olta Görseli -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-rose-500 blur-[80px] opacity-10 rounded-3xl"></div>
+                            <!-- GÖRSEL: Metal bir oltaya takılmış e-posta zarfı + kredi kartı, 3D render, kırmızı-amber ışıklandırma — images/phishing_hook.png -->
+                            <img src="images/phishing_hook.png" alt="Phishing olta" class="w-full rounded-2xl border border-rose-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:380px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-10 border-rose-500/20 items-center justify-center flex-col" style="height:380px;">
+                                <i data-lucide="fish" class="text-rose-400 mb-4 slow-drift" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/phishing_hook.png</p>
+                                <p class="text-slate-600 text-[10px] italic mt-2">oltaya takılı e-posta + kart</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5.1: Phishing Anatomi (Terminal) -->
+                <section data-background-color="#020617">
+                    <h2 class="text-2xl mb-6"><i data-lucide="search" class="text-rose-400 inline mr-2" size="24"></i>Bir Phishing E-postası <span class="text-rose-400">Anatomisi</span></h2>
+                    <div class="grid grid-cols-2 gap-6 items-center">
+                        <!-- Terminal simülasyon -->
+                        <div class="bg-black rounded-xl p-4 border border-slate-800 text-left">
+                            <div class="flex items-center gap-1.5 mb-3 border-b border-slate-800 pb-2">
+                                <div class="w-2 h-2 rounded-full bg-red-500/70"></div>
+                                <div class="w-2 h-2 rounded-full bg-yellow-500/70"></div>
+                                <div class="w-2 h-2 rounded-full bg-green-500/70"></div>
+                                <span class="text-[8px] text-slate-600 ml-2">mail_inspector.sh</span>
+                            </div>
+                            <div class="font-mono text-[9px] space-y-1">
+                                <p class="text-slate-500 m-0">> Gönderen: <span class="text-rose-400">ziraat-guvenIik@zr-tr.net</span> <span class="text-red-500">⚠ 1</span></p>
+                                <p class="text-slate-500 m-0">> Konu: <span class="text-amber-400">ACİL — Hesabınız Kilitlenecek! <span class="text-red-500">⚠ 2</span></span></p>
+                                <p class="text-slate-700 m-0">————————————————</p>
+                                <p class="text-slate-400 m-0">Sayın müşterimiz,</p>
+                                <p class="text-slate-400 m-0">Hesabınızda şüpheli işlem tespit edildi. <span class="text-red-500">⚠ 3</span></p>
+                                <p class="text-slate-400 m-0">Doğrulamak için <span class="text-rose-400 underline">şu linke</span> <span class="text-red-500">⚠ 4</span> 24 saat içinde tıklayın. <span class="text-red-500">⚠ 5</span></p>
+                                <p class="text-slate-700 m-0">————————————————</p>
+                                <p class="text-slate-500 m-0">Saygılarımızla, Zraat Bankası A.Ş.</p>
+                                <p class="text-slate-600 m-0"><span class="inline-block w-1.5 h-2.5 bg-rose-400 cursor-blink"></span></p>
+                            </div>
+                        </div>
+                        <!-- Kırmızı Bayraklar -->
+                        <div class="space-y-2 text-left">
+                            <div class="fragment flex items-start gap-3 p-2.5 bg-red-500/5 rounded-xl border border-red-500/10">
+                                <div class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center shrink-0 text-red-400 text-[10px] font-bold">1</div>
+                                <p class="text-[10px] text-slate-300 m-0"><strong class="text-white">Sahte domain:</strong> "zr-tr.net" ≠ "ziraatbank.com.tr"</p>
+                            </div>
+                            <div class="fragment flex items-start gap-3 p-2.5 bg-red-500/5 rounded-xl border border-red-500/10">
+                                <div class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center shrink-0 text-red-400 text-[10px] font-bold">2</div>
+                                <p class="text-[10px] text-slate-300 m-0"><strong class="text-white">Acil ton:</strong> "ACİL", "kilitlenecek" — panik yaratma</p>
+                            </div>
+                            <div class="fragment flex items-start gap-3 p-2.5 bg-red-500/5 rounded-xl border border-red-500/10">
+                                <div class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center shrink-0 text-red-400 text-[10px] font-bold">3</div>
+                                <p class="text-[10px] text-slate-300 m-0"><strong class="text-white">Muğlak uyarı:</strong> Hangi işlem? Hangi tarih? Bilgi yok</p>
+                            </div>
+                            <div class="fragment flex items-start gap-3 p-2.5 bg-red-500/5 rounded-xl border border-red-500/10">
+                                <div class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center shrink-0 text-red-400 text-[10px] font-bold">4</div>
+                                <p class="text-[10px] text-slate-300 m-0"><strong class="text-white">Gizli link:</strong> Metin "banka" gibi görünür, URL başka</p>
+                            </div>
+                            <div class="fragment flex items-start gap-3 p-2.5 bg-red-500/5 rounded-xl border border-red-500/10">
+                                <div class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center shrink-0 text-red-400 text-[10px] font-bold">5</div>
+                                <p class="text-[10px] text-slate-300 m-0"><strong class="text-white">Zaman baskısı:</strong> "24 saat içinde" — akla gelmez</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5.2: Türkiye Vaka: Kargo SMS Dolandırıcılığı -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-6"><i data-lucide="package-x" class="text-rose-400 inline mr-2" size="24"></i>Türkiye Vakası: <span class="text-rose-400">"Kargonuz Bekliyor…"</span></h2>
+                    <div class="grid grid-cols-2 gap-6 items-center">
+                        <div class="glass-card p-5 border-rose-500/30 text-left">
+                            <div class="text-[9px] text-rose-400 font-bold uppercase tracking-widest mb-3">📱 Gelen SMS</div>
+                            <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 font-mono text-[11px] text-slate-300 leading-relaxed">
+                                <p class="text-slate-500 text-[9px] m-0 mb-2">+90 5XX XXX XX XX</p>
+                                <p class="m-0">Kargonuz gümrük işlemi<br>nedeniyle bekliyor.<br>Adres güncelleme için:<br><span class="text-rose-400 underline">ytkargom-tr.co</span></p>
+                            </div>
+                            <div class="mt-4 p-2 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                                <p class="text-[10px] text-rose-400 m-0 italic">📊 2023'te USOM'a bildirilen en yaygın smishing türü.</p>
+                            </div>
+                        </div>
+                        <div class="text-left space-y-3">
+                            <div class="fragment p-3 bg-slate-900 border-l-4 border-amber-500 rounded-r-xl">
+                                <p class="text-[10px] font-bold text-amber-400 mb-0.5 m-0">🎯 Neden işe yarıyor?</p>
+                                <p class="text-[10px] text-slate-400 m-0">Herkes bir kargo bekliyor. Bağlam evrensel.</p>
+                            </div>
+                            <div class="fragment p-3 bg-slate-900 border-l-4 border-rose-500 rounded-r-xl">
+                                <p class="text-[10px] font-bold text-rose-400 mb-0.5 m-0">💀 Ne oluyor?</p>
+                                <p class="text-[10px] text-slate-400 m-0">Link → sahte MTS/Yurtiçi sitesi → kart bilgisi + SMS kodu → hesap boşaltılıyor.</p>
+                            </div>
+                            <div class="fragment p-3 bg-slate-900 border-l-4 border-emerald-500 rounded-r-xl">
+                                <p class="text-[10px] font-bold text-emerald-400 mb-0.5 m-0">✓ Ne yapmalı?</p>
+                                <p class="text-[10px] text-slate-400 m-0">Linke <strong>asla</strong> tıklama. Kargonu <em>resmî uygulamadan</em> ya da firma numarasından doğrula.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 6: SİBER ZORBALIK                    -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #020617 0%, #4c0519 100%)">
+                    <div class="bg-glow bg-rose-600 top-0 right-0"></div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-rose-500/20 rounded-xl"><i data-lucide="message-square-warning" class="text-rose-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Siber <span class="text-rose-400">Zorbalık</span></h2>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-8 max-w-3xl">
+                        Dijital araçlar kullanılarak <strong class="text-white">tekrarlanan, kasıtlı ve güç dengesizliği</strong> içeren saldırgan davranışlardır.
+                    </p>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="fragment glass-card p-4 border-rose-500/20 text-center">
+                            <i data-lucide="flame" class="text-rose-400 mb-2 mx-auto" size="28"></i>
+                            <h4 class="text-white font-bold text-xs m-0 mb-1">Flaming</h4>
+                            <p class="text-[10px] text-slate-500 m-0">Tartışmada aşağılama, küfür</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-orange-500/20 text-center">
+                            <i data-lucide="user-x" class="text-orange-400 mb-2 mx-auto" size="28"></i>
+                            <h4 class="text-white font-bold text-xs m-0 mb-1">Dışlama</h4>
+                            <p class="text-[10px] text-slate-500 m-0">Grup dışı bırakma, engelleme</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-amber-500/20 text-center">
+                            <i data-lucide="venetian-mask" class="text-amber-400 mb-2 mx-auto" size="28"></i>
+                            <h4 class="text-white font-bold text-xs m-0 mb-1">Kişilik Çalma</h4>
+                            <p class="text-[10px] text-slate-500 m-0">Başkası gibi davranıp zarar</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-red-500/20 text-center">
+                            <i data-lucide="eye" class="text-red-400 mb-2 mx-auto" size="28"></i>
+                            <h4 class="text-white font-bold text-xs m-0 mb-1">Cyberstalking</h4>
+                            <p class="text-[10px] text-slate-500 m-0">Dijital takip ve korkutma</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-pink-500/20 text-center">
+                            <i data-lucide="camera-off" class="text-pink-400 mb-2 mx-auto" size="28"></i>
+                            <h4 class="text-white font-bold text-xs m-0 mb-1">Outing</h4>
+                            <p class="text-[10px] text-slate-500 m-0">Özel bilgi/görsel ifşa</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-fuchsia-500/20 text-center">
+                            <i data-lucide="repeat" class="text-fuchsia-400 mb-2 mx-auto" size="28"></i>
+                            <h4 class="text-white font-bold text-xs m-0 mb-1">Taciz</h4>
+                            <p class="text-[10px] text-slate-500 m-0">Israrlı mesaj/arama/mention</p>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 italic mt-6">Kaynak: Nancy Willard (2007), <em>Cyberbullying and Cyberthreats</em></p>
+                </section>
+
+                <!-- 6.1: Online Disinhibition Effect -->
+                <section data-background-color="#020617">
+                    <h2 class="text-2xl mb-6"><i data-lucide="glasses" class="text-rose-400 inline mr-2" size="24"></i>Neden İnternetteki Ben <span class="text-rose-400">Gerçekteki Benden Farklı?</span></h2>
+                    <div class="grid grid-cols-2 gap-8 items-center text-left">
+                        <div>
+                            <div class="crime-badge mb-4">Psikoloji</div>
+                            <h3 class="text-xl text-white font-bold mb-3">Online Disinhibition Effect</h3>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-4">
+                                John Suler (2004), ekran arkasında insanların <strong class="text-white">çok daha cesur veya çok daha acımasız</strong> davrandığını göstermiştir. Bunun 6 sebebi vardır.
+                            </p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="fragment p-2 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                                    <p class="text-[10px] text-rose-400 font-bold m-0">🎭 Anonimlik</p>
+                                    <p class="text-[9px] text-slate-500 m-0">"Kimse beni tanımıyor"</p>
+                                </div>
+                                <div class="fragment p-2 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                                    <p class="text-[10px] text-rose-400 font-bold m-0">👁 Görünmezlik</p>
+                                    <p class="text-[9px] text-slate-500 m-0">"Yüzünü göremiyorum"</p>
+                                </div>
+                                <div class="fragment p-2 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                                    <p class="text-[10px] text-rose-400 font-bold m-0">⏱ Asenkronluk</p>
+                                    <p class="text-[9px] text-slate-500 m-0">"Sonuç anında değil"</p>
+                                </div>
+                                <div class="fragment p-2 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                                    <p class="text-[10px] text-rose-400 font-bold m-0">🧠 Solipsistik</p>
+                                    <p class="text-[9px] text-slate-500 m-0">"Sanki gerçek değilmiş gibi"</p>
+                                </div>
+                                <div class="fragment p-2 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                                    <p class="text-[10px] text-rose-400 font-bold m-0">⚖ Otorite Azalması</p>
+                                    <p class="text-[9px] text-slate-500 m-0">"Kimse durdurmuyor"</p>
+                                </div>
+                                <div class="fragment p-2 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                                    <p class="text-[10px] text-rose-400 font-bold m-0">🎮 Oyun Zihni</p>
+                                    <p class="text-[9px] text-slate-500 m-0">"Bu sadece bir oyun"</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Split face -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-rose-500 blur-[80px] opacity-10 rounded-3xl"></div>
+                            <!-- GÖRSEL: Yarı gerçek yarı dijital/avatar yüz, sol taraf normal bir insan, sağ taraf glitch'li dijital avatar, keskin kırmızı/amber kenar — images/disinhibition_mask.png -->
+                            <img src="images/disinhibition_mask.png" alt="İkiyüzlü avatar" class="w-full rounded-2xl border border-rose-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:420px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-rose-500/20 items-center justify-center flex-col" style="height:420px;">
+                                <i data-lucide="venetian-mask" class="text-rose-400 mb-4 slow-drift" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/disinhibition_mask.png</p>
+                                <p class="text-slate-600 text-[10px] italic mt-2">yarı gerçek / yarı avatar yüz</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6.2: Amanda Todd Vakası -->
+                <section data-background-gradient="linear-gradient(180deg, #020617 0%, #1a0a0a 100%)">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-red-500/20 rounded-xl alert-pulse"><i data-lucide="alert-triangle" class="text-red-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0"><span class="text-red-400">Bedel:</span> Amanda Todd</h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center text-left">
+                        <div>
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                                15 yaşındaki Amanda Todd, internette karşılaştığı bir yabancı tarafından <strong class="text-white">tehdit edildi ve ifşa edildi.</strong> Okul değiştirse de görseller yayıldı, taciz sürdü. 2012'de hayatına son verdi.
+                            </p>
+                            <p class="text-[11px] text-slate-400 mb-4 leading-relaxed italic">
+                                Ölmeden önce yüklediği sessiz video — her kartta yazdığı tek bir cümle — <strong class="text-white">siber zorbalığın bedelinin</strong> dünyaca tartışılmasına neden oldu.
+                            </p>
+                            <div class="p-3 bg-red-500/5 rounded-xl border border-red-500/10">
+                                <p class="text-[10px] text-red-400 font-bold m-0 mb-1">🧠 Araştırma Bulgusu</p>
+                                <p class="text-[10px] text-slate-400 m-0">Siber zorbalık mağduru gençlerde <strong class="text-white">intihar düşüncesi 2 kat, intihar girişimi 2.3 kat</strong> daha yüksektir (JAMA Pediatrics, 2014).</p>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Anıt mum -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-red-500 blur-[100px] opacity-10 rounded-3xl"></div>
+                            <!-- GÖRSEL: Karanlıkta yanan tek bir mum, arka planda bulanık bir telefon ekranı, sessiz ve saygılı bir ton, anma hissi — images/amanda_candle.png -->
+                            <img src="images/amanda_candle.png" alt="Anma mumu" class="w-full rounded-2xl border border-red-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:420px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-red-500/20 items-center justify-center flex-col" style="height:420px;">
+                                <i data-lucide="flame" class="text-red-400 mb-4 slow-drift" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/amanda_candle.png</p>
+                                <p class="text-slate-600 text-[10px] italic mt-2">karanlıkta yanan anma mumu</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 7: ETİK İKİLEM — İNTERAKTİF          -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-rose-600 bottom-0 left-0"></div>
+                <div class="grid grid-cols-2 gap-8 items-center">
+                    <!-- SOL: senaryo -->
+                    <div class="text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="p-1.5 bg-rose-500/20 rounded-lg animate-pulse"><i data-lucide="mouse-pointer-click" class="text-rose-400" size="16"></i></div>
+                            <span class="crime-badge" style="margin-bottom:0;">ETİK İKİLEM</span>
+                        </div>
+                        <h2 class="text-2xl mb-4 m-0"><span class="text-rose-400">Senaryo:</span> Ekran Görüntüsü</h2>
+                        <div class="glass-card p-4 border-rose-400/30 mb-4">
+                            <p class="text-[11px] text-slate-200 m-0 leading-relaxed">
+                                Sınıf WhatsApp grubunda bir arkadaşın, <strong class="text-white">hocanın</strong> kişisel bir sohbetinin ekran görüntüsünü paylaştı. Çok komik ve tüm grup gülüyor. Ama o yazışma <span class="bg-rose-500/20 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/30 font-bold text-[10px]">rızasız</span> alınmış.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-emerald-500 hover:bg-emerald-950/40 transition-all cursor-pointer">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-emerald-900/50 transition-colors"><i data-lucide="shield-check" class="text-slate-400 group-hover:text-emerald-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-emerald-400 m-0">Sustur & Bildir</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Bu KVKK ihlali. Gruptan kaldırılmalı."</p>
+                            </div>
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-red-500 hover:bg-red-950/40 transition-all cursor-pointer">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-red-900/50 transition-colors"><i data-lucide="smile" class="text-slate-400 group-hover:text-red-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-red-400 m-0">Susma, Gül</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Zaten ben paylaşmadım, sadece okudum."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SAĞ: 3 çerçeve analizi -->
+                    <div class="space-y-3 text-left">
+                        <div class="fragment p-3 bg-slate-900 border-l-4 border-blue-500 rounded-r-xl">
+                            <p class="text-[10px] font-bold text-blue-400 mb-0.5 m-0">🔵 Faydacı Bakış</p>
+                            <p class="text-[9px] text-slate-400 m-0">Gruba eğlence sağlar ama hocaya ciddi zarar, güven ve itibar kaybı. Net fayda = negatif.</p>
+                        </div>
+                        <div class="fragment p-3 bg-slate-900 border-l-4 border-purple-500 rounded-r-xl">
+                            <p class="text-[10px] font-bold text-purple-400 mb-0.5 m-0">🟣 Kant / Deontolojik</p>
+                            <p class="text-[9px] text-slate-400 m-0">"Benim yazışmam da rızasız paylaşılsa ne hissederdim?" — evrensel yasa testi çöker.</p>
+                        </div>
+                        <div class="fragment p-3 bg-slate-900 border-l-4 border-emerald-500 rounded-r-xl">
+                            <p class="text-[10px] font-bold text-emerald-400 mb-0.5 m-0">🟢 Erdem Etiği</p>
+                            <p class="text-[9px] text-slate-400 m-0">Dürüst, saygılı ve iyi niyetli bir öğrenci bu görüntüyü paylaşmaz; susmak da destek olmaktır.</p>
+                        </div>
+                        <div class="fragment p-3 bg-rose-500/5 border border-rose-500/20 rounded-xl">
+                            <p class="text-[10px] text-rose-400 m-0"><i data-lucide="gavel" size="10" class="inline mr-1"></i> <strong>Hukuki sonuç:</strong> TCK 134 (özel hayatın gizliliği), 132 (haberleşmenin gizliliği), KVKK — <strong>tümü ihlal</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 8: BYSTANDER → UPSTANDER            -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-gradient="radial-gradient(circle at 70% 50%, #431407 0%, #020617 70%, #000 100%)">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-amber-500/20 rounded-xl"><i data-lucide="hand" class="text-amber-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Seyirci Değil, <span class="text-amber-400">Destekçi Ol</span></h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-10 items-center">
+                        <div class="text-left">
+                            <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                                Siber zorbalık, <strong class="text-white">izleyenler sessiz kaldıkça</strong> güç kazanır. Darley & Latané'nin "bystander effect" araştırması gösterir: kalabalık arttıkça sorumluluk duygusu dağılır.
+                            </p>
+                            <div class="p-3 bg-amber-500/5 border border-amber-500/10 rounded-xl">
+                                <p class="text-[11px] text-amber-400 font-bold m-0 mb-1">5D Yöntemi (Hollaback!)</p>
+                                <p class="text-[10px] text-slate-400 m-0">Her üniversite öğrencisinin bilmesi gereken 5 müdahale biçimi.</p>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Upstander el -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-amber-500 blur-[80px] opacity-15 rounded-3xl"></div>
+                            <!-- GÖRSEL: Karanlığa uzanan sıcak ışıklı bir insan eli, destek metaforu, amber tonlu — images/upstander_hand.png -->
+                            <img src="images/upstander_hand.png" alt="Destek eli" class="w-full rounded-2xl border border-amber-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:360px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-10 border-amber-500/20 items-center justify-center flex-col" style="height:360px;">
+                                <i data-lucide="hand-heart" class="text-amber-400 mb-4 slow-drift" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/upstander_hand.png</p>
+                                <p class="text-slate-600 text-[10px] italic mt-2">yardıma uzanan insan eli</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 8.1: 5D yöntemi -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-8"><i data-lucide="list-checks" class="text-amber-400 inline mr-2" size="24"></i>5D <span class="text-amber-400">Müdahale Yöntemi</span></h2>
+                    <div class="grid grid-cols-5 gap-4 max-w-6xl mx-auto">
+                        <div class="fragment glass-card p-4 border-amber-500/20 text-center">
+                            <div class="text-3xl font-black text-amber-400 mb-2">1</div>
+                            <h4 class="text-white font-bold text-xs m-0 mb-2">Direct</h4>
+                            <p class="text-[9px] text-slate-500 m-0">Doğrudan karşı çık: "Bu uygun değil."</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-amber-500/20 text-center">
+                            <div class="text-3xl font-black text-amber-400 mb-2">2</div>
+                            <h4 class="text-white font-bold text-xs m-0 mb-2">Distract</h4>
+                            <p class="text-[9px] text-slate-500 m-0">Dikkati dağıt: konuyu değiştir, emoji ile böl.</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-amber-500/20 text-center">
+                            <div class="text-3xl font-black text-amber-400 mb-2">3</div>
+                            <h4 class="text-white font-bold text-xs m-0 mb-2">Delegate</h4>
+                            <p class="text-[9px] text-slate-500 m-0">Yetkiliye haber ver: öğretmen, moderatör.</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-amber-500/20 text-center">
+                            <div class="text-3xl font-black text-amber-400 mb-2">4</div>
+                            <h4 class="text-white font-bold text-xs m-0 mb-2">Document</h4>
+                            <p class="text-[9px] text-slate-500 m-0">Kanıt topla: ekran görüntüsü, zaman damgası.</p>
+                        </div>
+                        <div class="fragment glass-card p-4 border-amber-500/20 text-center">
+                            <div class="text-3xl font-black text-amber-400 mb-2">5</div>
+                            <h4 class="text-white font-bold text-xs m-0 mb-2">Delay</h4>
+                            <p class="text-[9px] text-slate-500 m-0">Sonradan ulaş: mağdura özel mesaj at, yalnız hissetmesin.</p>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 italic mt-8">Kaynak: Hollaback! — Bystander Intervention Training</p>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 9: NEREYE BAŞVURACAĞIM?              -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="p-3 bg-emerald-500/20 rounded-xl"><i data-lucide="life-buoy" class="text-emerald-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">Kurtarıcı <span class="text-emerald-400">Hatlar</span></h2>
+                </div>
+
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="fragment glass-card p-4 border-emerald-500/20 text-center">
+                        <i data-lucide="shield" class="text-emerald-400 mx-auto mb-2" size="32"></i>
+                        <h4 class="text-white font-bold text-xs m-0 mb-1">USOM</h4>
+                        <p class="text-[9px] text-slate-500 m-0 mb-2">Siber olay bildirimi</p>
+                        <p class="text-[10px] text-emerald-400 font-mono m-0">usom.gov.tr</p>
+                    </div>
+                    <div class="fragment glass-card p-4 border-blue-500/20 text-center">
+                        <i data-lucide="siren" class="text-blue-400 mx-auto mb-2" size="32"></i>
+                        <h4 class="text-white font-bold text-xs m-0 mb-1">EGM Siber Suçlar</h4>
+                        <p class="text-[9px] text-slate-500 m-0 mb-2">Resmi şikayet</p>
+                        <p class="text-[10px] text-blue-400 font-mono m-0">ihbar.egm.gov.tr</p>
+                    </div>
+                    <div class="fragment glass-card p-4 border-amber-500/20 text-center">
+                        <i data-lucide="user-lock" class="text-amber-400 mx-auto mb-2" size="32"></i>
+                        <h4 class="text-white font-bold text-xs m-0 mb-1">KVKK Kurumu</h4>
+                        <p class="text-[9px] text-slate-500 m-0 mb-2">Veri ihlali</p>
+                        <p class="text-[10px] text-amber-400 font-mono m-0">kvkk.gov.tr</p>
+                    </div>
+                    <div class="fragment glass-card p-4 border-rose-500/20 text-center">
+                        <i data-lucide="phone" class="text-rose-400 mx-auto mb-2" size="32"></i>
+                        <h4 class="text-white font-bold text-xs m-0 mb-1">Alo 183</h4>
+                        <p class="text-[9px] text-slate-500 m-0 mb-2">Çocuk, kadın, aile</p>
+                        <p class="text-[10px] text-rose-400 font-mono m-0">Aile ve Sosyal Hizmetler</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-4 bg-emerald-500/5 rounded-xl border border-emerald-500/10 max-w-3xl mx-auto">
+                    <p class="text-[11px] text-emerald-400 font-bold m-0 mb-1 text-center"><i data-lucide="camera" size="12" class="inline mr-1"></i> Şikayet Öncesi Altın Kural</p>
+                    <p class="text-[10px] text-slate-400 m-0 text-center">Ekran görüntüsü + URL + zaman damgası al. <strong class="text-white">Dijital delil saklamadan</strong> şikayet süreci çok zayıflar.</p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 10: DİJİTAL DAYANIKLILIK KİTİ       -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(135deg, #020617 0%, #431407 100%)">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-amber-500/20 rounded-xl"><i data-lucide="backpack" class="text-amber-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">Dijital Dayanıklılık <span class="text-amber-400">Kiti</span></h2>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="key-round" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Güçlü + <strong class="text-white">tek kullanımlık</strong> parola, şifre yöneticisi kullan</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="smartphone-nfc" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left"><strong class="text-white">2 aşamalı doğrulama</strong> (2FA) hayatın her yerinde</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="link-2-off" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Şüpheli link? <strong class="text-white">Asla tıklama</strong>, önce domaini incele</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="cloud-off" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Paylaştığın her şey <strong class="text-white">kalıcıdır</strong> — "silindi" göreceliyken</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="eye-off" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Konum, aile, okul, TC kimlik <strong class="text-white">gizli kalsın</strong></p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="download" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Güvenlik güncellemelerini <strong class="text-white">ertelemeyi bırak</strong></p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="wifi-off" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Açık Wi-Fi'da <strong class="text-white">banka, mail, iş yok</strong> — VPN tercih et</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="camera" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Bir saldırıya uğrarsan <strong class="text-white">ekran görüntüsü ilk refleks</strong></p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                        <div class="p-2 bg-amber-500/20 rounded-lg shrink-0"><i data-lucide="hand-heart" class="text-amber-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Tanıdığın biri zorbalığa uğrarsa <strong class="text-white">tek kelime: "Yalnız değilsin."</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 11: KAPANIŞ                          -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 100%, #4c0519 0%, #000 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2 class="text-4xl mb-4">Haftaya Bakış</h2>
+                    <p class="text-xl text-slate-400 mb-8">Sıradaki Konu: <span class="text-cyan-400 border-b border-cyan-400">Siber Güvenlik ve Savunma</span></p>
+
+                    <div class="glass-card p-6 max-w-3xl mb-6 border-rose-500/30">
+                        <h4 class="text-white text-sm font-bold mb-5 text-center tracking-widest">BU HAFTA NE ÖĞRENDİK?</h4>
+                        <div class="grid grid-cols-4 gap-6 text-center">
+                            <div>
+                                <i data-lucide="gavel" class="text-rose-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-rose-400 text-xs font-bold m-0">TCK</p>
+                                <p class="text-slate-500 text-[10px] m-0">243-244-245</p>
+                            </div>
+                            <div>
+                                <i data-lucide="fish" class="text-orange-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-orange-400 text-xs font-bold m-0">Oltalama</p>
+                                <p class="text-slate-500 text-[10px] m-0">5 Kırmızı Bayrak</p>
+                            </div>
+                            <div>
+                                <i data-lucide="message-square-warning" class="text-amber-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-amber-400 text-xs font-bold m-0">Zorbalık</p>
+                                <p class="text-slate-500 text-[10px] m-0">Amanda Todd / Disinhibition</p>
+                            </div>
+                            <div>
+                                <i data-lucide="hand" class="text-emerald-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-emerald-400 text-xs font-bold m-0">5D</p>
+                                <p class="text-slate-500 text-[10px] m-0">Destekçi Yöntem</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-4 max-w-2xl border-rose-500/20">
+                        <p class="text-sm italic text-slate-300 m-0">
+                            <i data-lucide="quote" class="inline text-rose-400" size="14"></i>
+                            "Ekranın arkasındaki sessizlik, <strong class="text-rose-400">rıza değil ihmaldir.</strong>"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false,
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+</html>

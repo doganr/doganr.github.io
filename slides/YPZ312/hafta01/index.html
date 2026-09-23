@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapay Sinir Ağları 1. Hafta — YSA'nın Dili: Tensör, Lineer Cebir, Türev</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+    <style>
+        .math-box { background: rgba(147, 197, 253, 0.06); border: 1px solid rgba(147, 197, 253, 0.22);
+            border-radius: 16px; padding: 12px 22px; margin: 0 auto; }
+        .katex { color: #e8eefc; }
+        .svg-wrap { max-width: 900px; margin: 0 auto; }
+        .svg-wrap svg { width: 100%; height: auto; }
+        .sec-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.5em; font-weight: 800;
+            color: #64748b; letter-spacing: 0.08em; }
+        .cell { width: 24px; height: 24px; border-radius: 5px; display: inline-flex; align-items: center;
+            justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+            background: rgba(96,165,250,0.18); border: 1px solid rgba(96,165,250,0.4); color: #dbeafe; }
+        .grid-mini { display: inline-grid; gap: 3px; vertical-align: middle; }
+        .dtab { border-collapse: collapse; margin: 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 0.5em; }
+        .dtab th, .dtab td { border: 1px solid rgba(255,255,255,0.12); padding: 4px 14px; color: #e2e8f0; }
+        .dtab th { color: #93c5fd; background: rgba(96,165,250,0.08); }
+        .dtab .na { color: #fca5a5; font-weight: 700; }
+        .bench { max-width: 860px; margin: 0 auto; text-align: left; }
+        .bench-row { display: grid; grid-template-columns: 150px 1fr 130px; align-items: center; gap: 14px; margin: 8px 0; }
+        .bench-label { font-weight: 800; font-size: 0.6em; color: #e2e8f0; }
+        .bench-track { background: rgba(255,255,255,0.05); border-radius: 8px; height: 28px; overflow: hidden; }
+        .bench-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding-left: 12px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.5em; font-weight: 700; color: #0b1020;
+            white-space: nowrap; width: 0; transition: width 0.7s cubic-bezier(.2,.8,.2,1); }
+        .bench-x { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.6em; text-align: right; }
+        .runbtn { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.56em; cursor: pointer;
+            background: rgba(108,99,255,0.18); color: #c7d2fe; border: 1px solid #6c63ff; border-radius: 999px;
+            padding: 7px 20px; transition: background 0.15s; }
+        .runbtn:hover { background: rgba(108,99,255,0.32); }
+        .runbtn:disabled { opacity: 0.6; cursor: default; }
+        .play { max-width: 900px; margin: 0 auto; }
+        .play-row { display: grid; grid-template-columns: 96px 1fr 66px; align-items: center; gap: 12px; margin: 8px 0; }
+        .play-row label { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.6em;
+            color: #c4b5fd; text-align: left; }
+        .play-row input[type=range] { width: 100%; accent-color: #6c63ff; }
+        .play-row .val { font-family: 'JetBrains Mono', monospace; font-size: 0.6em; color: #e2e8f0; text-align: right; }
+        .play-out { display: flex; gap: 30px; justify-content: center; align-items: center; }
+        .play-out .k { font-size: 0.5em; color: #94a3b8; display: block; }
+        .play-out .v { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 1.05em; }
+        .actbar-track { width: 250px; height: 20px; border-radius: 10px; background: rgba(255,255,255,0.06); overflow: hidden; }
+        .actbar-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #34d399); width: 50%; transition: width 0.1s; }
+        #w1quiz .quiz { margin-bottom: 4px; }
+        #w1quiz .quiz-q { font-size: 0.58em; margin-bottom: 5px; }
+        #w1quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.54em; }
+        #w1quiz .quiz-fb { font-size: 0.52em; min-height: 1.2em; margin-top: 4px; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere" style="width: 620px; height: 620px; top: -12%; left: -12%; background: #1e3a8a;"></div>
+                <div class="glow-sphere" style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #881337; animation-delay: -5s;"></div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">tensor</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">X @ W</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">∇f</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">reshape</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">‖x‖₂</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">broadcast</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">A·B</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">dy/dx</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">Yapay Sinir Ağları · Hafta 01</span>
+                    <div class="cover-icon mb-6"><i data-lucide="brain-circuit" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Yapay Sinir Ağlarının<br><span
+                            class="grad-text">Dili</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Tensör · Lineer Cebir ·
+                        Türev — Sıfırdan Kur, Anla, Hızlandır</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span><span style="color:#66d9ef;">Y</span>
+                        = <span style="color:#f92672;">X</span> @ <span style="color:#f92672;">W</span> &nbsp;<span
+                                style="color:#475569;"># her ağ, özünde bu</span></span></div>
+                </div>
+            </section>
+
+            <!-- 2. DÖNEM VİZYONU + KAPSAM -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="compass" style="width:14px;height:14px;"></i> Dönem Vizyonu</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Önce Dili Öğren</h2>
+                <p class="code-note mb-5">Ağ kurmadan önce onun <b>dilini</b> öğreniyoruz. Bu hafta üç temel:
+                    <b>tensör</b> (veri), <b>lineer cebir</b> (hesap), <b>türev</b> (değişim). Her birini <b>NumPy/PyTorch
+                    ile</b> uygulamalı.</p>
+                <div class="flex items-stretch justify-center gap-4 text-left">
+                    <div class="concept-card fragment fade-up" style="flex:1;"><h4>🧊 Tensör</h4><p>Oluştur,
+                        dilimle, işle, ön-işle.</p></div>
+                    <div class="concept-card fragment fade-up" style="flex:1;"><h4>➗ Lineer Cebir</h4><p>Çarpımlar,
+                        indirgeme, normlar.</p></div>
+                    <div class="concept-card fragment fade-up" style="flex:1;border-color:rgba(96,125,255,0.35);">
+                        <h4>📉 Türev</h4><p>Gradyan, zincir kuralı.</p></div>
+                </div>
+                <p class="code-note mt-5 fragment fade-in"><span style="color:#94a3b8;">Autograd'a (otomatik türev) öğrenme (geri
+                    yayılım) haftasında gireceğiz.</span></p>
+            </section>
+
+            <!-- 3. NEDEN BU 3 TEMEL? -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Neden Bunlar?</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Her Ağ, Aynı Üç Şey</h2>
+                <div class="grid grid-cols-3 gap-5 text-left">
+                    <div class="concept-card fragment fade-up"><h4>Veri → Tensör</h4><p>Görüntü, ses, metin — hepsi
+                        <b>sayı dizisi</b> olur.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>Hesap → Matris</h4><p>Katman = <b>matris çarpımı</b>;
+                        hızlı, paralel.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>Değişim →
+                        Türev</h4><p>Gradyan "hangi yöne"yi söyler.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Üçünü de <b>elle</b> anlayıp <b>koda</b> dökeceğiz. Dersin
+                    geri kalanı hep bu üç dilin cümleleri.</p>
+            </section>
+
+            <!-- 4. TENSÖR: OLUŞTURMA (2.1.1) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="box" style="width:14px;height:14px;"></i> Veri İşleme</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Tensör: <span
+                        class="code-note">Yapıtaşı & Oluşturma</span></h2>
+                <div class="flex items-center justify-center gap-5 mb-3">
+                    <div class="flex flex-col items-center gap-1"><span class="cell">3</span><span class="sec-tag">0B skaler</span></div>
+                    <div class="flex flex-col items-center gap-1"><div class="grid-mini" style="grid-template-columns:repeat(3,24px);">
+                        <span class="cell">3</span><span class="cell">1</span><span class="cell">4</span></div><span class="sec-tag">1B vektör</span></div>
+                    <div class="flex flex-col items-center gap-1"><div class="grid-mini" style="grid-template-columns:repeat(3,24px);">
+                        <span class="cell">1</span><span class="cell">2</span><span class="cell">3</span><span class="cell">4</span><span class="cell">5</span><span class="cell">6</span></div><span class="sec-tag">2B matris (2×3)</span></div>
+                    <div class="flex flex-col items-center gap-1"><div style="position:relative;width:78px;height:52px;">
+                        <div class="grid-mini" style="grid-template-columns:repeat(2,24px);position:absolute;top:0;left:14px;"><span class="cell">·</span><span class="cell">·</span><span class="cell">·</span><span class="cell">·</span></div>
+                        <div class="grid-mini" style="grid-template-columns:repeat(2,24px);position:absolute;top:8px;left:6px;opacity:.8;"><span class="cell">·</span><span class="cell">·</span><span class="cell">·</span><span class="cell">·</span></div></div><span class="sec-tag">3B+ tensör</span></div>
+                </div>
+                <pre style="max-width:820px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1-2|4|6-7" style="font-size:0.48em;">import torch
+x = torch.arange(12, dtype=torch.float32)   # [0., 1., ..., 11.]
+
+x.numel()          # 12   ·   x.shape → torch.Size([12])
+
+X = x.reshape(3, 4)                 # 3×4 matris
+torch.zeros((2,3)); torch.ones((2,3)); torch.randn(3, 4)   # hazır tensörler</code></pre>
+                <p class="code-note mt-2 fragment fade-in" style="font-size:0.58em;"><code>shape</code> = boyutlar,
+                    <code>numel</code> = eleman sayısı. NumPy'da birebir: <code>np.arange</code>, <code>reshape</code>.</p>
+            </section>
+
+            <!-- 5. İNDEKSLEME & DİLİMLEME (2.1.2) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="scissors" style="width:14px;height:14px;"></i> İndeksleme</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Eriş, Dilimle, <span
+                        class="code-note">Ata</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1.2;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1|3|4|6|7" style="font-size:0.52em;">X = torch.arange(12).reshape(3, 4)
+
+X[-1]          # son satır      → [8, 9, 10, 11]
+X[1:3]         # 1. ve 2. satır
+
+X[1, 2] = 17           # tek elemanı değiştir
+X[0:2, :] = 12         # ilk iki satırın tümü = 12</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;">Python gibi <b>0-tabanlı</b>; <code>a:b</code>
+                            aralığı b <b>hariç</b>. <code>:</code> "tüm o eksen" demek.</p>
+                        <p class="code-note mt-2" style="font-size:0.6em;color:#7dd3fc;">Dilime <b>atama</b> yapabilirsin
+                            — tek seferde bir bloğu güncelle.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Negatif indeks sondan sayar:
+                    <code>X[-1]</code> son satır, <code>X[:, -1]</code> son sütun.</p>
+            </section>
+
+            <!-- 6. İŞLEMLER (2.1.3) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="calculator" style="width:14px;height:14px;"></i> İşlemler</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Eleman-Eleman & <span
+                        class="code-note">Birleştirme</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1.3;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1-2|3|5|6|7" style="font-size:0.5em;">x = torch.tensor([1., 2, 4, 8])
+y = torch.tensor([2., 2, 2, 2])
+x + y,  x - y,  x * y,  x / y,  x ** y   # hepsi eleman-eleman
+
+torch.exp(x)                    # e^x  (eleman-eleman)
+torch.cat((X, Y), dim=0)        # alt alta birleştir (satır)
+X == Y                          # eleman-eleman karşılaştırma → bool</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;">Standart işlemler (<code>+ - * / **</code>) aynı
+                            şekilli tensörlerde <b>eleman-eleman</b> çalışır.</p>
+                        <p class="code-note mt-2" style="font-size:0.6em;color:#7dd3fc;"><code>cat</code> ile eksende
+                            birleştir; <code>==</code> ile maske üret; <code>X.sum()</code> ile topla.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Kural: döngü değil, <b>tüm tensör
+                    üstünde</b> tek işlem düşün — birazdan bunun <b>hız</b> demek olduğunu ölçeceğiz.</p>
+            </section>
+
+            <!-- 7. BROADCASTING (2.1.4) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="expand" style="width:14px;height:14px;"></i> Broadcasting</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Farklı Şekiller <span
+                        class="code-note">Nasıl Toplanır?</span></h2>
+                <div class="flex items-center justify-center gap-5 mb-3">
+                    <div class="grid-mini" style="grid-template-columns:repeat(1,24px);"><span class="cell">1</span><span class="cell">2</span><span class="cell">3</span></div>
+                    <span style="font-size:1.4em;color:#94a3b8;">+</span>
+                    <div class="grid-mini" style="grid-template-columns:repeat(2,24px);"><span class="cell" style="background:rgba(251,146,60,0.18);border-color:rgba(251,146,60,0.5);color:#fed7aa;">10</span><span class="cell" style="background:rgba(251,146,60,0.18);border-color:rgba(251,146,60,0.5);color:#fed7aa;">20</span></div>
+                    <span style="font-size:1.4em;color:#94a3b8;">=</span>
+                    <div class="grid-mini fragment fade-in" style="grid-template-columns:repeat(2,24px);">
+                        <span class="cell" style="background:rgba(52,211,153,0.18);border-color:rgba(52,211,153,0.5);color:#bbf7d0;">11</span><span class="cell" style="background:rgba(52,211,153,0.18);border-color:rgba(52,211,153,0.5);color:#bbf7d0;">21</span>
+                        <span class="cell" style="background:rgba(52,211,153,0.18);border-color:rgba(52,211,153,0.5);color:#bbf7d0;">12</span><span class="cell" style="background:rgba(52,211,153,0.18);border-color:rgba(52,211,153,0.5);color:#bbf7d0;">22</span>
+                        <span class="cell" style="background:rgba(52,211,153,0.18);border-color:rgba(52,211,153,0.5);color:#bbf7d0;">13</span><span class="cell" style="background:rgba(52,211,153,0.18);border-color:rgba(52,211,153,0.5);color:#bbf7d0;">23</span></div>
+                    <span class="sec-tag fragment fade-in">3×1 + 1×2 → 3×2</span>
+                </div>
+                <pre style="max-width:640px;margin:0 auto;"><code class="language-python" data-trim style="font-size:0.5em;">a = torch.arange(3).reshape(3, 1)   # 3×1
+b = torch.arange(2).reshape(1, 2)   # 1×2
+a + b        # eksikler "yayılır" → 3×2, döngüsüz!</code></pre>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Boyut 1 olan eksen <b>otomatik
+                    tekrarlanır</b>. Bias eklerken (<code>X @ W + b</code>) tam bunu kullanacağız.</p>
+            </section>
+
+            <!-- 8. BELLEK & DÖNÜŞÜM (2.1.5-6) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="recycle" style="width:14px;height:14px;"></i> Bellek &
+                    Dönüşüm</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Yerinde İşlem & <span
+                        class="code-note">NumPy ↔ Torch</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <div style="flex:1;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1-2|4|5" style="font-size:0.5em;">before = id(Y)
+Y = Y + X;   id(Y) == before   # False → yeni bellek!
+
+Z = torch.zeros_like(Y);  Z[:] = X + Y   # yerinde yaz
+X += Y                                    # yerinde (bellek dostu)</code></pre>
+                    </div>
+                    <div style="flex:1;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1-2|4" style="font-size:0.5em;">A = X.numpy()            # Torch → NumPy
+B = torch.from_numpy(A)  # NumPy → Torch
+
+a = torch.tensor([3.5])
+a.item(), float(a), int(a)   # 1-elemanlı → Python sayısı</code></pre>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Büyük tensörlerde <b>yerinde</b>
+                    işlem (<code>+=</code>, <code>[:]</code>) gereksiz kopya üretmez. NumPy ile dönüşüm <b>bedava</b>
+                    (bellek paylaşılır).</p>
+            </section>
+
+            <!-- 9. VERİ OKUMA & EKSİK VERİ (2.2.1-2) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="table" style="width:14px;height:14px;"></i> Ön İşleme ·
+                    pandas</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Ham Veri → <span
+                        class="code-note">Temiz Tablo</span></h2>
+                <div class="flex items-center justify-center gap-8">
+                    <table class="dtab">
+                        <tr><th>Oda</th><th>Çatı</th><th>Fiyat</th></tr>
+                        <tr><td class="na">NaN</td><td class="na">NaN</td><td>127500</td></tr>
+                        <tr><td>2</td><td class="na">NaN</td><td>106000</td></tr>
+                        <tr><td>4</td><td>Arduvaz</td><td>178100</td></tr>
+                    </table>
+                    <div class="fragment fade-left" style="flex:1;max-width:440px;">
+                        <pre><code class="language-python" data-trim style="font-size:0.48em;">import pandas as pd
+data = pd.read_csv('ev.csv')
+
+X = data.iloc[:, :2]     # girdi sütunları
+y = data.iloc[:, 2]      # hedef (fiyat)
+# eksik (NaN) değerler var → doldurmalı</code></pre>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Gerçek veri <b>dağınık</b>: eksik
+                    hücreler (<span class="na" style="color:#fca5a5;">NaN</span>), kategorik sütunlar. Modele vermeden
+                    önce <b>temizlemeliyiz</b>.</p>
+            </section>
+
+            <!-- 10. TENSÖRE ÇEVİRME (2.2.2-3) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="table" style="width:14px;height:14px;"></i> Hazırla &
+                    Çevir</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Eksiği Doldur, <span
+                        class="code-note">Tensöre Çevir</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1.3;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1|2|4-5" style="font-size:0.5em;">X = pd.get_dummies(X, dummy_na=True)   # kategorik → 0/1 sütun
+X = X.fillna(X.mean())                 # sayısal eksik → ortalama
+
+X = torch.tensor(X.values, dtype=torch.float32)   # tabloyu tensöre
+y = torch.tensor(y.values, dtype=torch.float32)</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;"><code>get_dummies</code>: "Arduvaz/NaN" gibi
+                            kategoriyi <b>ayrı 0/1 sütunlara</b> böler (one-hot).</p>
+                        <p class="code-note mt-2" style="font-size:0.6em;color:#7dd3fc;"><code>fillna(mean)</code>: sayısal
+                            boşlukları <b>ortalamayla</b> doldurur. Artık her şey sayı → tensör.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Kural: model yalnız <b>sayı</b>
+                    anlar. Ön işleme = veriyi <b>eksiksiz sayısal tensöre</b> çevirmek.</p>
+            </section>
+
+            <!-- 11. SKALER / VEKTÖR / MATRİS / TENSÖR (2.3.1-4) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="shapes" style="width:14px;height:14px;"></i> Lineer Cebir</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Skaler → Vektör → Matris</h2>
+                <div class="math-box mb-3" style="max-width:720px;">
+                    \[ x\in\mathbb{R}, \quad \mathbf{x}\in\mathbb{R}^{n}, \quad \mathbf{A}\in\mathbb{R}^{m\times n} \]
+                </div>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1.1;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1-3|5" style="font-size:0.5em;">x = torch.tensor(3.0)               # skaler
+v = torch.arange(4)                 # vektör  (uzunluk 4)
+A = torch.arange(6).reshape(3, 2)   # matris  (3×2)
+
+A.T                                 # devrik (transpose) → 2×3</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;">Vektör = <b>bir eksen</b>, matris = <b>iki eksen</b>,
+                            tensör = <b>n eksen</b>. Devrik satır↔sütun takas eder.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Bir örnek genelde bir <b>vektör</b>;
+                    bir veri kümesi (batch) bir <b>matris</b>; bir grup görüntü bir <b>4B tensör</b>.</p>
+            </section>
+
+            <!-- 12. ARİTMETİK & HADAMARD (2.3.5) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="asterisk" style="width:14px;height:14px;"></i> Aritmetik</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Hadamard Çarpımı <span
+                        class="code-note">(eleman-eleman)</span></h2>
+                <div class="math-box mb-4" style="max-width:700px;">
+                    \[ (\mathbf{A}\odot\mathbf{B})_{ij} = A_{ij}\,B_{ij} \]
+                    \[ \begin{bmatrix}1&2\\3&4\end{bmatrix}\odot\begin{bmatrix}2&0\\1&3\end{bmatrix}
+                    = \begin{bmatrix}2&0\\3&12\end{bmatrix} \]
+                </div>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1;">
+                        <pre><code class="language-python" data-trim style="font-size:0.52em;">A * B        # Hadamard: eleman-eleman çarpım
+A + 2        # her elemana skaler ekle
+A * 2        # her elemanı ölçekle</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;"><b>Dikkat:</b> <code>A * B</code> (Hadamard) ≠
+                            <code>A @ B</code> (matris çarpımı). İlki eleman-eleman, ikincisi satır×sütun.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 13. İNDİRGEME (2.3.6-7) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="chevrons-down-up" style="width:14px;height:14px;"></i>
+                    İndirgeme</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Topla, Ortala, <span
+                        class="code-note">Eksen Seç</span></h2>
+                <div class="math-box mb-3" style="max-width:520px;">
+                    \[ \sum_{i} x_i, \qquad \bar{x} = \frac{1}{n}\sum_{i} x_i \]
+                </div>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1.2;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1|3|4|6" style="font-size:0.5em;">A.sum(), A.mean()          # tüm elemanlar
+
+A.sum(axis=0)              # sütun toplamları (satırları yok et)
+A.sum(axis=1, keepdims=True)   # boyut korunur → broadcast'e hazır
+
+A.cumsum(axis=0)           # kümülatif toplam (indirgemez)</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;"><code>axis=0</code> satırlar boyunca toplar →
+                            <b>sütun</b> sonucu. <code>keepdims</code> ekseni 1 olarak <b>tutar</b>.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Normalizasyonda sık kalıp:
+                    <code>A / A.sum(axis=1, keepdims=True)</code> — keepdims sayesinde broadcast çalışır.</p>
+            </section>
+
+            <!-- 14. İNDİRGEME — SAYISAL ÖRNEK -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="hash" style="width:14px;height:14px;"></i> Sayısal Örnek</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">İndirgeme — <span
+                        class="code-note">Somut Sayılar</span></h2>
+                <div class="math-box mb-3" style="max-width:420px;">
+                    \[ A=\begin{bmatrix}1&2&3\\4&5&6\end{bmatrix} \]
+                </div>
+                <div class="flex items-stretch justify-center gap-6">
+                    <div class="math-box fragment fade-up" style="flex:1;">
+                        \[ \text{sum(axis=0)}=\begin{bmatrix}5&7&9\end{bmatrix} \]
+                        <span class="sec-tag">sütunları topla ↓ &nbsp; (1+4, 2+5, 3+6)</span>
+                    </div>
+                    <div class="math-box fragment fade-up" style="flex:1;">
+                        \[ \text{sum(axis=1)}=\begin{bmatrix}6\\15\end{bmatrix} \]
+                        <span class="sec-tag">satırları topla → &nbsp; (1+2+3, 4+5+6)</span>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.56em;">axis=0 → sütun toplamı, axis=1 →
+                    satır toplamı · ayrıca <code>sum()=21</code>, <code>mean()=3.5</code>.</p>
+            </section>
+
+            <!-- 15. NOKTA ÇARPIM (2.3.8) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="dot" style="width:14px;height:14px;"></i> Nokta Çarpım</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Nokta Çarpım: Bir Nöronun
+                    <span class="code-note">Çekirdeği</span></h2>
+                <div class="math-box mb-3" style="max-width:560px;">
+                    \[ \mathbf{x}^\top \mathbf{y} = \sum_{i} x_i y_i \]
+                </div>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1;">
+                        <pre><code class="language-python" data-trim style="font-size:0.52em;">x = torch.tensor([1., 2., 3.])
+w = torch.tensor([0.5, -1., 2.])
+
+torch.dot(w, x)          # 0.5 - 2 + 6 = 4.5
+torch.sum(w * x)         # aynı sonuç</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;">Ağırlıklı toplam = nokta çarpım. Nöronun
+                            <code>w·x + b</code> ifadesinin <b>ilk yarısı</b>.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">Tek nöron bir nokta çarpım; bir
+                    <b>katman</b> bunun yüzlercesi → matris çarpımı.</p>
+            </section>
+
+            <!-- 16. MATRİS-VEKTÖR & MATRİS-MATRİS (2.3.9-10) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="grid-3x3" style="width:14px;height:14px;"></i> Çarpımlar</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Katman = <span
+                        style="color:#93c5fd;">Matris Çarpımı</span></h2>
+                <div class="math-box mb-3" style="max-width:640px;">
+                    \[ (\mathbf{A}\mathbf{B})_{ij} = \sum_k A_{ik}B_{kj} \]
+                </div>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1.1;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1|2|4" style="font-size:0.5em;">torch.mv(A, x)      # matris-vektör  (A:3×2, x:2) → 3
+torch.mm(A, B)      # matris-matris  (A:3×2, B:2×5) → 3×5
+
+A @ B               # aynısının kısa yolu (NumPy'da da: A @ B)</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;">İç boyutlar <b>uyuşmalı</b>: (m×<b>k</b>)·(<b>k</b>×n)
+                            → m×n. Bir ağın tüm işi bu çarpımlara iner.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.58em;">İyi haber: matris çarpımı <b>utanç
+                    verecek kadar paralel</b> — sıradaki slaytta ölçüyoruz.</p>
+            </section>
+
+            <!-- 17. MATRİS ÇARPIMI — SAYISAL (adım adım) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="hash" style="width:14px;height:14px;"></i> Sayısal Örnek</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Matris Çarpımı — <span
+                        class="code-note">Adım Adım</span></h2>
+                <div class="math-box mb-3" style="max-width:820px;">
+                    \[ \begin{bmatrix}{\color{#f87171}1}&{\color{#f87171}2}&{\color{#f87171}3}\\4&5&6\end{bmatrix}
+                    \begin{bmatrix}{\color{#34d399}1}&0\\{\color{#34d399}0}&1\\{\color{#34d399}1}&1\end{bmatrix}
+                    = \begin{bmatrix}{\color{#fbbf24}4}&5\\10&11\end{bmatrix} \]
+                </div>
+                <div class="math-box mb-3 fragment fade-in" style="max-width:760px;">
+                    \[ {\color{#fbbf24}C_{11}} = {\color{#f87171}1}\!\cdot\!{\color{#34d399}1} +
+                    {\color{#f87171}2}\!\cdot\!{\color{#34d399}0} + {\color{#f87171}3}\!\cdot\!{\color{#34d399}1}
+                    = {\color{#fbbf24}4} \]
+                </div>
+                <p class="code-note fragment fade-in" style="font-size:0.6em;">Her hücre = <b style="color:#f87171;">soldaki
+                    satır</b> · <b style="color:#34d399;">sağdaki sütun</b> (nokta çarpım). Aynı mantık
+                    matris-vektörde de geçerli.</p>
+            </section>
+
+            <!-- 18. İNTERAKTİF BENCHMARK + GPU -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="timer" style="width:14px;height:14px;"></i> Etkileşimli · Gerçek
+                    Ölçüm</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Ne Kadar Hızlı? <span
+                        class="code-note">Çalıştır!</span></h2>
+                <p class="code-note mb-3" style="font-size:0.55em;">256×256 matris çarpımı · aynı sonuç, farklı süre
+                    (log ölçek)</p>
+                <div class="mb-3"><button type="button" id="bench-run" class="runbtn">▶ Ölçümü Çalıştır</button></div>
+                <div class="bench">
+                    <div class="bench-row"><span class="bench-label" style="color:#fca5a5;">Saf Python döngü</span>
+                        <div class="bench-track"><div class="bench-fill" id="bf-py" style="background:#ef4444;"></div></div>
+                        <span class="bench-x" id="bx-py" style="color:#fca5a5;"></span></div>
+                    <div class="bench-row"><span class="bench-label" style="color:#93c5fd;">NumPy (X @ W)</span>
+                        <div class="bench-track"><div class="bench-fill" id="bf-np" style="background:#60a5fa;"></div></div>
+                        <span class="bench-x" id="bx-np" style="color:#93c5fd;"></span></div>
+                    <div class="bench-row"><span class="bench-label" style="color:#6ee7b7;">PyTorch (CPU)</span>
+                        <div class="bench-track"><div class="bench-fill" id="bf-th" style="background:#34d399;"></div></div>
+                        <span class="bench-x" id="bx-th" style="color:#6ee7b7;"></span></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.58em;">Neden? <b>Vektörleştirme</b>
+                    (BLAS/SIMD, paralel C). Dahası <b>GPU</b>: 4096² çarpım CPU ~145 ms → <b>A4000 ~12 ms (~12×)</b>,
+                    tek satır <code>X.cuda()</code>.</p>
+            </section>
+
+            <!-- 19. NORMLAR (2.3.11) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="ruler" style="width:14px;height:14px;"></i> Normlar</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Bir Vektörün <span
+                        class="code-note">Büyüklüğü</span></h2>
+                <div class="math-box mb-3" style="max-width:680px;">
+                    \[ \|\mathbf{x}\|_2 = \sqrt{\sum_i x_i^2}, \qquad \|\mathbf{x}\|_1 = \sum_i |x_i| \]
+                </div>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1|2|3" style="font-size:0.5em;">torch.norm(u)               # L2  (Öklid uzunluğu)
+torch.abs(u).sum()          # L1  (mutlak değer toplamı)
+torch.norm(torch.ones(4, 9))   # Frobenius (matris için L2)</code></pre>
+                    </div>
+                    <div class="fragment fade-left math-box text-left" style="flex:1;">
+                        <p class="code-note" style="font-size:0.6em;">Örn: \( \|[3,4]\|_2=\sqrt{9+16}=5 \) (3-4-5
+                            üçgeni), \( \|[3,4]\|_1=7 \). Matris için <b>Frobenius</b> \( \|\mathbf{A}\|_F \).</p>
+                        <p class="code-note mt-2" style="font-size:0.6em;color:#7dd3fc;">Öğrenmede <b>hata</b> ve
+                            <b>regularization</b> normla ölçülür; L1 seyreklik sever.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 20. TÜREV + İNTERAKTİF GRADYAN (2.4.1-2) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="trending-down" style="width:14px;height:14px;"></i> Etkileşimli · Türev</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Türev = <span
+                        style="color:#93c5fd;">Anlık Değişim</span></h2>
+                <div class="flex items-center justify-center gap-8">
+                    <div style="flex:1.1;">
+                        <svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" role="img"
+                            aria-label="f(x)=x^2 eğrisi ve teğet">
+                            <line x1="40" y1="300" x2="470" y2="300" stroke="#475569" stroke-width="1.5" />
+                            <line x1="250" y1="20" x2="250" y2="312" stroke="#475569" stroke-width="1.5" />
+                            <text x="462" y="318" fill="#64748b" font-size="13" font-family="monospace">x</text>
+                            <polyline points="40,20 75,105.6 110,175.6 145,230 180,268.9 215,292.2 250,300 285,292.2 320,268.9 355,230 390,175.6 425,105.6 460,20"
+                                fill="none" stroke="#60a5fa" stroke-width="3" />
+                            <line id="g-tan" x1="0" y1="0" x2="0" y2="0" stroke="#fbbf24" stroke-width="2.5" />
+                            <circle id="g-dot" cx="0" cy="0" r="7" fill="#f43f5e" />
+                        </svg>
+                    </div>
+                    <div style="flex:1;">
+                        <div class="math-box mb-3">\( f'(x)=\lim_{h\to 0}\dfrac{f(x+h)-f(x)}{h} \)</div>
+                        <div class="math-box mb-3">\( f(x)=x^2 \Rightarrow f'(x)=2x \)</div>
+                        <div class="play-out mb-3">
+                            <div><span class="k">x</span><span class="v" id="g-xv" style="color:#f43f5e;">1.5</span></div>
+                            <div><span class="k">f(x)</span><span class="v" id="g-fx" style="color:#60a5fa;">2.25</span></div>
+                            <div><span class="k">eğim f'(x)</span><span class="v" id="g-fp" style="color:#fbbf24;">3.00</span></div>
+                        </div>
+                        <input type="range" id="grad-x" min="-3" max="3" step="0.1" value="1.5"
+                            style="width:100%;accent-color:#f43f5e;" aria-label="x değeri">
+                    </div>
+                </div>
+                <p class="code-note mt-2 fragment fade-in" style="font-size:0.58em;">Eğim = "x'i artırırsam f ne olur".
+                    Teğetin eğimi = türev. Kaydırıcıyı oynat!</p>
+            </section>
+
+            <!-- 21. KISMİ TÜREV & GRADYAN (2.4.3) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="move" style="width:14px;height:14px;"></i> Gradyan</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Çok Değişken: <span
+                        class="code-note">Kısmi Türev & Gradyan</span></h2>
+                <div class="math-box mb-4" style="max-width:720px;">
+                    \[ f(x_1,x_2)=x_1^2 + 2x_2^2 \;\Rightarrow\; \nabla f = \big[\,2x_1,\ 4x_2\,\big]^\top \]
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-left" style="max-width:900px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>Kısmi türev</h4><p>Diğer değişkenleri <b>sabit</b>
+                        tut, birine göre türet: \( \partial f/\partial x_i \).</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>Gradyan
+                        ∇f</h4><p>Tüm kısmi türevlerin <b>vektörü</b>; en dik çıkış yönü.</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in">Öğrenme, ∇f'in <b>tersine</b> küçük adım atar (gradyan inişi).
+                    Bir ağda milyonlarca kısmi türev → autograd (öğrenme haftası).</p>
+            </section>
+
+            <!-- 22. ZİNCİR KURALI (2.4.4) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="link" style="width:14px;height:14px;"></i> Zincir Kuralı</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">İç İçe Fonksiyonların <span
+                        class="code-note">Türevi</span></h2>
+                <div class="math-box mb-4" style="max-width:680px;">
+                    \[ y=f(g(x)) \;\Rightarrow\; \frac{dy}{dx} = \frac{dy}{du}\cdot\frac{du}{dx} \]
+                </div>
+                <div class="flex items-center justify-center gap-6">
+                    <div class="math-box" style="flex:1;">\( y=(3x+1)^2 \Rightarrow \frac{dy}{dx}=2(3x+1)\cdot 3 \)</div>
+                    <div class="fragment fade-left concept-card text-left" style="flex:1;"><p>Türevleri <b>çarparak</b>
+                        geriye taşırsın — zincir kuralı <b style="color:#6ee7b7;">geri yayılımın kalbi</b>. (Autograd:
+                        öğrenme haftası.)</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in">Tensör + lineer cebir + türev → YSA'nın <b>dili</b> artık
+                    elimizde. <b>Hafta 2</b>'de bu araçlarla ilk nöronu kuracağız.</p>
+            </section>
+
+            <!-- 23. KURGU ÖZETİ -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="list-checks" style="width:14px;height:14px;"></i> Toparlayalım</span>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">YSA'nın Dilini Öğrendik</h2>
+                <div class="grid grid-cols-2 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>🧊 Tensör</h4><p>Oluştur, dilimle, işle,
+                        broadcast, ön-işle → sayısal tensör.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>➗ Lineer cebir</h4><p>Nokta/matris çarpımı,
+                        indirgeme, normlar. Katman = \( \mathbf{XW}+\mathbf{b} \).</p></div>
+                    <div class="concept-card fragment fade-up"><h4>📉 Türev</h4><p>Gradyan ∇f, zincir kuralı —
+                        "hangi yöne".</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>⚡ Hız</h4>
+                        <p>Vektörleştirme + GPU: aynı kod, <b>anla → hızlandır</b> (NumPy→PyTorch).</p></div>
+                </div>
+                <p class="code-note mt-5 fragment fade-in"><b>Sonraki hafta:</b> bu araçlarla ilk <b>yapay nöronu</b>
+                    kurup aktivasyon fonksiyonlarına gireceğiz; öğrenme haftalarında <b>autograd + geri yayılım</b>.</p>
+            </section>
+
+            <!-- 24. MINI QUIZ -->
+            <section id="w1quiz">
+                <span class="chip mb-2" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · Haftayı Yokla</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Kendini Test Et</h2>
+                <div class="grid grid-cols-2 gap-x-8 gap-y-0 text-left" style="max-width:1000px;margin:0 auto;">
+                    <div class="quiz fragment" data-ok="Skaler/vektör/matrisin genel adı tensördür."
+                        data-no="Hepsinin ortak adı: tensör (n-boyutlu sayı dizisi).">
+                        <div class="quiz-q">1) Skaler, vektör, matris… ortak adı?</div>
+                        <button type="button" class="quiz-opt" data-correct="1">Tensör</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Liste</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Grafik</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="axis=0 satırlar boyunca toplar → sütun toplamları."
+                        data-no="axis=0, 0. ekseni yok eder → her sütunun toplamı kalır.">
+                        <div class="quiz-q">2) <code>A.sum(axis=0)</code> ne verir?</div>
+                        <button type="button" class="quiz-opt" data-correct="1">Sütun toplamları</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Tek bir skaler</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Satır ortalamaları</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="A * B eleman-eleman (Hadamard); A @ B matris çarpımı."
+                        data-no="* eleman-eleman (Hadamard); matris çarpımı için @ / mm.">
+                        <div class="quiz-q">3) <code>A * B</code> hangi işlem?</div>
+                        <button type="button" class="quiz-opt" data-correct="1">Eleman-eleman (Hadamard)</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Matris çarpımı</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Nokta çarpım</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="Gradyan = kısmi türevlerin vektörü."
+                        data-no="∇f, tüm kısmi türevleri içeren bir vektördür.">
+                        <div class="quiz-q">4) Gradyan ∇f nedir?</div>
+                        <button type="button" class="quiz-opt" data-correct="1">Kısmi türevlerin vektörü</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Tek bir skaler</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Bir matris çarpımı</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 25. DERS SONU UYGULAMA -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.4);color:#6ee7b7;">
+                    <i data-lucide="rocket" style="width:14px;height:14px;"></i> Uygulama · ~40 dk</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Dili Kendin Konuş</h2>
+                <div class="grid grid-cols-2 gap-3 text-left" style="max-width:1000px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p><b>1 · Tensör.</b> <code>arange(12).reshape(3,4)</code>;
+                        dilimle, <code>sum(axis=0)</code>, <code>mean</code>, broadcasting dene.</p></div>
+                    <div class="concept-card fragment fade-up"><p><b>2 · Ön işleme.</b> Küçük bir CSV oku;
+                        <code>get_dummies</code> + <code>fillna</code> ile temizle, tensöre çevir.</p></div>
+                    <div class="concept-card fragment fade-up"><p><b>3 · Lineer cebir.</b> <code>A @ B</code>,
+                        <code>mv</code>, <code>dot</code>; <code>torch.norm</code> ile L2/L1 hesapla.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><p><b>4 ·
+                        Türev.</b> \( f(x)=x^2 \) için farkla eğimi yaklaşık hesapla; \( \nabla f \)'i elle bul.</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.56em;color:#7dd3fc;">İpucu: her adımı önce <b>elle</b>
+                    hesapla, sonra kodda doğrula.</p>
+            </section>
+
+            <!-- 26. SONRAKİ HAFTA -->
+            <section>
+                <div class="flex flex-col items-center">
+                    <span class="chip mb-6"><i data-lucide="arrow-right-circle" style="width:14px;height:14px;"></i>
+                        Sonraki Hafta</span>
+                    <h2 class="text-4xl font-black mb-4 tracking-tighter text-white">Hafta 2 — <span
+                            class="grad-text">Yapay Nöron & Aktivasyon</span></h2>
+                    <p class="code-note mb-8" style="max-width:660px;">Dili öğrendik. Şimdi nöronu bir <b>sınıfa</b>
+                        koyup aktivasyon fonksiyonlarını ve <b>türevlerini</b> derinleştiriyoruz — öğrenmenin
+                        matematiğine ilk adım.</p>
+                    <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            transition: 'slide', backgroundTransition: 'fade', margin: 0.06, slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
+        });
+        function renderMath() {
+            if (typeof renderMathInElement === 'undefined') return;
+            renderMathInElement(document.querySelector('.reveal .slides'), {
+                delimiters: [{ left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }],
+                throwOnError: false
+            });
+        }
+        if (typeof Reveal !== 'undefined' && Reveal.on) { Reveal.on('ready', renderMath); }
+        else { window.addEventListener('load', renderMath); }
+    </script>
+    <script>
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+            // Benchmark çalıştır
+            (function () {
+                var btn = document.getElementById('bench-run');
+                if (!btn) return;
+                var steps = [
+                    { f: 'bf-py', x: 'bx-py', w: '100%', t: '606 ms', xv: '1×' },
+                    { f: 'bf-np', x: 'bx-np', w: '26%', t: '0.71 ms', xv: '~860×' },
+                    { f: 'bf-th', x: 'bx-th', w: '16%', t: '0.13 ms', xv: '~4600×' }
+                ];
+                btn.addEventListener('click', function (e) {
+                    stop(e); btn.disabled = true; btn.textContent = 'ölçülüyor…';
+                    steps.forEach(function (s, i) {
+                        setTimeout(function () {
+                            var f = document.getElementById(s.f);
+                            f.style.width = s.w; f.textContent = s.t;
+                            document.getElementById(s.x).textContent = s.xv;
+                        }, 450 * (i + 1));
+                    });
+                    setTimeout(function () { btn.textContent = '✓ bitti — tekrar için yenile'; }, 450 * 4);
+                });
+            })();
+            // Türev/gradyan kaydırıcısı
+            (function () {
+                var s = document.getElementById('grad-x');
+                if (!s) return;
+                var dot = document.getElementById('g-dot'), tan = document.getElementById('g-tan'),
+                    fx = document.getElementById('g-fx'), fp = document.getElementById('g-fp'), xv = document.getElementById('g-xv');
+                function X(x) { return 40 + (x + 3) / 6 * 420; }
+                function Y(y) { return 300 - y / 9 * 280; }
+                function upd() {
+                    var x = parseFloat(s.value), y = x * x, d = 2 * x;
+                    dot.setAttribute('cx', X(x)); dot.setAttribute('cy', Y(y));
+                    var x1 = x - 1.3, x2 = x + 1.3;
+                    tan.setAttribute('x1', X(x1)); tan.setAttribute('y1', Y(y + d * (x1 - x)));
+                    tan.setAttribute('x2', X(x2)); tan.setAttribute('y2', Y(y + d * (x2 - x)));
+                    xv.textContent = x.toFixed(1); fx.textContent = y.toFixed(2); fp.textContent = d.toFixed(2);
+                }
+                s.addEventListener('input', function (e) { stop(e); upd(); }); upd();
+            })();
+            // Nöron oyun alanı
+            (function () {
+                var xs = [1.0, 0.5, -1.0], ids = ['w1', 'w2', 'w3', 'bb'], els = {};
+                ids.forEach(function (i) { els[i] = document.getElementById(i); });
+                if (!els.w1) return;
+                var nz = document.getElementById('n-z'), ny = document.getElementById('n-y'), bar = document.getElementById('n-bar');
+                function upd() {
+                    var w = [+els.w1.value, +els.w2.value, +els.w3.value], b = +els.bb.value;
+                    ids.forEach(function (i) { document.getElementById(i + 'v').textContent = (+els[i].value).toFixed(1); });
+                    var z = w[0] * xs[0] + w[1] * xs[1] + w[2] * xs[2] + b, y = 1 / (1 + Math.exp(-z));
+                    nz.textContent = z.toFixed(2); ny.textContent = y.toFixed(2); bar.style.width = (y * 100).toFixed(0) + '%';
+                }
+                ids.forEach(function (i) { els[i].addEventListener('input', function (e) { stop(e); upd(); }); }); upd();
+            })();
+            // Mini quiz
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) { if (o.dataset.correct === '1') o.classList.add('correct'); });
+                        if (opt.dataset.correct === '1') { fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!'); fb.style.color = '#86efac'; }
+                        else { opt.classList.add('wrong'); fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil.'); fb.style.color = '#fca5a5'; }
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>

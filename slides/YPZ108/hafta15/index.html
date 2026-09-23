@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 15. Hafta - Dönem Sonu Değerlendirmesi</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 15 — Amber & Gold Theme */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-transform: none;
+        }
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .glass-card:hover {
+            border-color: rgba(234, 179, 8, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .status-badge {
+            background: rgba(234, 179, 8, 0.15);
+            color: #fbbf24;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        /* Animasyonlar */
+        @keyframes compass-spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .compass-spin { animation: compass-spin 30s infinite linear; }
+
+        @keyframes glow-pulse {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.3)); transform: scale(1); }
+            50%      { filter: drop-shadow(0 0 35px rgba(234, 179, 8, 0.7)); transform: scale(1.04); }
+        }
+        .glow-pulse { animation: glow-pulse 4s infinite ease-in-out; }
+
+        @keyframes slow-drift {
+            0%,100% { transform: translateY(0); }
+            50%     { transform: translateY(-6px); }
+        }
+        .slow-drift { animation: slow-drift 4s infinite ease-in-out; }
+
+        @keyframes question-pulse {
+            0%, 100% { text-shadow: 0 0 30px rgba(234, 179, 8, 0.4); transform: scale(1); }
+            50%      { text-shadow: 0 0 60px rgba(234, 179, 8, 0.9), 0 0 120px rgba(234, 179, 8, 0.5); transform: scale(1.02); }
+        }
+        .question-pulse { animation: question-pulse 3.5s infinite ease-in-out; }
+
+        @keyframes shimmer-gold {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer-gold {
+            background: linear-gradient(90deg, #fde68a 0%, #f59e0b 25%, #fef3c7 50%, #f59e0b 75%, #fde68a 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer-gold 5s linear infinite;
+        }
+
+        /* Hafta dot timeline */
+        .week-dot {
+            width: 10px; height: 10px; border-radius: 999px;
+            background: rgba(234, 179, 8, 0.25);
+            border: 1px solid rgba(234, 179, 8, 0.45);
+            display: inline-block;
+        }
+        .week-dot.active {
+            background: #fbbf24;
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 1: KAPAK                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 30% 50%, #422006 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-amber-600 top-0 right-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <div class="px-4 py-2 bg-amber-500/10 rounded-full text-xs font-bold tracking-widest mb-6 border border-amber-500/30">
+                        <span class="text-amber-400">HAFTA 15</span>
+                        <span class="text-slate-600 mx-2">•</span>
+                        <span class="text-slate-400">DÖNEM SONU</span>
+                    </div>
+
+                    <div class="relative mb-8 group">
+                        <div class="absolute inset-0 bg-amber-600 rounded-full blur-[60px] opacity-30 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+                        <div class="absolute inset-[-20px] rounded-full border border-amber-500/20 compass-spin"></div>
+                        <div class="absolute inset-[-40px] rounded-full border border-yellow-500/10 border-dashed" style="animation: compass-spin 45s infinite linear reverse;"></div>
+                        <div class="p-8 bg-amber-500/10 rounded-full border border-amber-500/20 relative z-10 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 glow-pulse">
+                            <i data-lucide="compass" style="width: 80px; height: 80px;" class="text-amber-400 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl mb-4 leading-tight">Dijital Dünyanın<br><span class="shimmer-gold">Pusulası</span></h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">15. Hafta: Dönem Sonu Genel Değerlendirme</p>
+                    <div class="mt-8 flex gap-6 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span class="flex items-center gap-2"><i data-lucide="map" size="12" class="text-amber-500"></i> YOLCULUK</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="award" size="12" class="text-amber-500"></i> MEZUNİYET</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="message-circle-question" size="12" class="text-amber-500"></i> SORULAR</span>
+                    </div>
+
+                    <!-- 14 hafta ilerleme noktaları -->
+                    <div class="mt-10 flex gap-2 items-center justify-center">
+                        <span class="text-[9px] text-slate-600 tracking-widest mr-2">HAFTA 1</span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="week-dot active"></span>
+                        <span class="text-[9px] text-amber-400 tracking-widest ml-2 font-bold">15 ✓</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 2: YOLCULUK ÖZETİ                    -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-amber-600 bottom-0 left-0"></div>
+                <div class="grid grid-cols-2 gap-10 items-center text-left">
+                    <div>
+                        <div class="status-badge mb-3">Özet</div>
+                        <h2 class="text-4xl mb-4">Nereden <span class="text-amber-400">Başladık?</span></h2>
+                        <p class="text-slate-300 text-xs leading-relaxed mb-5">
+                            14 hafta boyunca sadece <strong class="text-white">kod yazmayı</strong> değil, o kodun <strong class="text-white">dünyaya etkisini</strong> konuştuk.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="fragment flex items-center gap-2 p-2 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <i data-lucide="check-circle" class="text-amber-400 shrink-0" size="14"></i>
+                                <p class="text-slate-300 text-[10px] m-0">Etik kuramları ve ilkeler</p>
+                            </div>
+                            <div class="fragment flex items-center gap-2 p-2 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <i data-lucide="check-circle" class="text-amber-400 shrink-0" size="14"></i>
+                                <p class="text-slate-300 text-[10px] m-0">Mahremiyet & KVKK</p>
+                            </div>
+                            <div class="fragment flex items-center gap-2 p-2 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <i data-lucide="check-circle" class="text-amber-400 shrink-0" size="14"></i>
+                                <p class="text-slate-300 text-[10px] m-0">Fikri mülkiyet & hukuk</p>
+                            </div>
+                            <div class="fragment flex items-center gap-2 p-2 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <i data-lucide="check-circle" class="text-amber-400 shrink-0" size="14"></i>
+                                <p class="text-slate-300 text-[10px] m-0">Yapay zeka & algoritmalar</p>
+                            </div>
+                            <div class="fragment flex items-center gap-2 p-2 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <i data-lucide="check-circle" class="text-amber-400 shrink-0" size="14"></i>
+                                <p class="text-slate-300 text-[10px] m-0">Bilişim suçu & siber güvenlik</p>
+                            </div>
+                            <div class="fragment flex items-center gap-2 p-2 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <i data-lucide="check-circle" class="text-amber-400 shrink-0" size="14"></i>
+                                <p class="text-slate-300 text-[10px] m-0">Sosyal medya, veri, aktivizm</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SAĞ: Yolculuk görseli -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-amber-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                        <!-- GÖRSEL: Karanlık dijital arka plan üzerinde 14 küçük noktanın altın bir spiral / yol oluşturduğu izometrik bir kompozisyon, dönüşüm metaforu — images/journey_path.png -->
+                        <img src="images/journey_path.png" alt="14 haftalık yolculuk" class="w-full rounded-2xl border border-amber-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:420px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden glass-card p-12 border-amber-500/20 items-center justify-center flex-col" style="height:420px;">
+                            <i data-lucide="route" class="text-amber-400 mb-4 slow-drift" size="80"></i>
+                            <p class="text-slate-500 text-sm">images/journey_path.png</p>
+                            <p class="text-slate-600 text-[10px] italic mt-2">14 noktadan oluşan altın spiral yol</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 3: BU DERS NEDEN ÖNEMLİYDİ?         -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#0c0a09">
+                <div class="flex items-center gap-4 mb-8 justify-center">
+                    <div class="p-3 bg-amber-500/20 rounded-xl"><i data-lucide="quote" class="text-amber-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">"Sadece <span class="text-amber-400">Teknik Bilgi Yetmez</span>"</h2>
+                </div>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="fragment glass-card p-6 text-center border-amber-500/20 hover:border-amber-500/40 transition-all group">
+                        <div class="p-3 bg-amber-500/10 rounded-xl inline-block mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="zap" class="text-amber-400" size="36"></i>
+                        </div>
+                        <h4 class="text-white font-bold text-base m-0 mb-3">Güç ve Sorumluluk</h4>
+                        <p class="text-[11px] text-slate-400 m-0 leading-relaxed">Dünyayı değiştirecek algoritmalar <strong class="text-white">sizin ellerinizde</strong> yükselecek.</p>
+                    </div>
+                    <div class="fragment glass-card p-6 text-center border-yellow-500/20 hover:border-yellow-500/40 transition-all group">
+                        <div class="p-3 bg-yellow-500/10 rounded-xl inline-block mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="shield-check" class="text-yellow-400" size="36"></i>
+                        </div>
+                        <h4 class="text-white font-bold text-base m-0 mb-3">Güven İnşası</h4>
+                        <p class="text-[11px] text-slate-400 m-0 leading-relaxed">Geleceğin dünyasında en büyük sermaye teknik beceri değil; <strong class="text-white">etik duruştur.</strong></p>
+                    </div>
+                    <div class="fragment glass-card p-6 text-center border-orange-500/20 hover:border-orange-500/40 transition-all group">
+                        <div class="p-3 bg-orange-500/10 rounded-xl inline-block mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="heart" class="text-orange-400" size="36"></i>
+                        </div>
+                        <h4 class="text-white font-bold text-base m-0 mb-3">İnsan Odaklılık</h4>
+                        <p class="text-[11px] text-slate-400 m-0 leading-relaxed">Teknoloji <strong class="text-white">insan içindir;</strong> tersi değil.</p>
+                    </div>
+                </div>
+                <div class="mt-10 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 max-w-3xl mx-auto">
+                    <p class="text-[11px] text-slate-400 italic m-0 text-center"><i data-lucide="quote" size="12" class="text-amber-400 inline mr-1"></i> "Yapabileceğin her şey, <strong class="text-amber-400">yapman gereken</strong> her şey değildir."</p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 4: MEZUNİYET YOLUNDA BİR PUSULA      -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-amber-600 bottom-0 left-0"></div>
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="p-3 bg-amber-500/20 rounded-xl"><i data-lucide="compass" class="text-amber-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">Mezuniyet Yolunda <span class="text-amber-400">Bir Pusula</span></h2>
+                </div>
+                <div class="grid grid-cols-2 gap-8 text-left">
+                    <div class="fragment glass-card p-6 border-amber-500/20 hover:border-amber-500/40 transition-all">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-amber-500/20 rounded-lg"><i data-lucide="user-check" class="text-amber-400" size="24"></i></div>
+                            <h3 class="text-xl text-amber-400 font-bold m-0">Karakterin Testi</h3>
+                        </div>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-3">"Kodunuz hatasız olabilir — peki <strong class="text-white">kararlarınız adil mi?</strong>"</p>
+                        <div class="p-2.5 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                            <p class="text-[10px] text-slate-400 m-0 italic">Zorlandığınız her an etik kuramları (Faydacılık, Kant, Erdem etiği) yanınızda olacak.</p>
+                        </div>
+                    </div>
+                    <div class="fragment glass-card p-6 border-yellow-500/20 hover:border-yellow-500/40 transition-all">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-yellow-500/20 rounded-lg"><i data-lucide="trending-up" class="text-yellow-400" size="24"></i></div>
+                            <h3 class="text-xl text-yellow-400 font-bold m-0">Sürekli Gelişim</h3>
+                        </div>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-3">Teknoloji değişecek — yeni etik ikilemler doğacak.</p>
+                        <ul class="text-[11px] space-y-1.5 text-slate-400 m-0 pl-1">
+                            <li class="flex items-start gap-2"><i data-lucide="dot" class="text-yellow-400 shrink-0" size="14"></i> Merakınızı kaybetmeyin.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="dot" class="text-yellow-400 shrink-0" size="14"></i> Eleştirel düşünceden vazgeçmeyin.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="dot" class="text-yellow-400 shrink-0" size="14"></i> Her zaman "Neden?" sorusunu sorun.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 5: SİZİN İZİNİZ                      -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(180deg, #020617 0%, #422006 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <div class="status-badge mb-6">Mezuniyet Mesajı</div>
+                    <h2 class="text-white mb-10">Sizin <span class="shimmer-gold">İziniz</span></h2>
+                    <div class="glass-card max-w-3xl border-amber-500/30 p-8">
+                        <p class="text-xl text-slate-200 leading-relaxed font-light italic m-0">
+                            "Yazdığınız her kodun arkasında bir <strong class="text-amber-400">insan hayatı</strong> olduğunu unutmayın.<br><br>
+                            Bilişim etiği bir ders değil, <strong class="text-amber-400">ömür boyu sürecek bir duruştur.</strong>"
+                        </p>
+                    </div>
+                    <div class="mt-12 text-amber-500 slow-drift">
+                        <i data-lucide="award" size="56"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 6: SORULAR? — TEK SAYFA Q&A         -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 50%, #422006 0%, #020617 70%, #000 100%)">
+                <div class="bg-glow bg-amber-600 top-1/2 left-1/2" style="transform: translate(-50%, -50%); opacity: 0.25;"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h1 class="text-7xl md:text-9xl mb-10 font-black tracking-tighter shimmer-gold question-pulse">SORULAR?</h1>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="h-px w-16 bg-gradient-to-r from-transparent to-amber-400/60"></span>
+                        <h3 class="text-amber-400 text-xl font-light italic tracking-widest uppercase m-0">Tartışma & Geri Bildirim</h3>
+                        <span class="h-px w-16 bg-gradient-to-l from-transparent to-amber-400/60"></span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-6 mt-8 max-w-4xl">
+                        <div class="glass-card p-4 border-amber-500/20 text-center">
+                            <i data-lucide="hand" class="text-amber-400 mx-auto mb-2" size="28"></i>
+                            <p class="text-[11px] text-slate-300 font-bold m-0">Söz alın</p>
+                            <p class="text-[10px] text-slate-500 m-0 mt-1">Aklınıza takılan her şey</p>
+                        </div>
+                        <div class="glass-card p-4 border-yellow-500/20 text-center">
+                            <i data-lucide="message-square-quote" class="text-yellow-400 mx-auto mb-2" size="28"></i>
+                            <p class="text-[11px] text-slate-300 font-bold m-0">Tartışın</p>
+                            <p class="text-[10px] text-slate-500 m-0 mt-1">Karşıt görüş hoş geldi</p>
+                        </div>
+                        <div class="glass-card p-4 border-orange-500/20 text-center">
+                            <i data-lucide="lightbulb" class="text-orange-400 mx-auto mb-2" size="28"></i>
+                            <p class="text-[11px] text-slate-300 font-bold m-0">Önerin</p>
+                            <p class="text-[10px] text-slate-500 m-0 mt-1">Geri bildirim altın değerinde</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 7: KAPANIŞ                           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 100%, #422006 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-amber-600 bottom-0 right-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <div class="relative mb-8">
+                        <div class="absolute inset-0 bg-amber-600 rounded-full blur-[60px] opacity-30 animate-pulse"></div>
+                        <div class="p-6 bg-amber-500/10 rounded-full border border-amber-500/30 relative z-10 glow-pulse">
+                            <i data-lucide="graduation-cap" class="text-amber-400" size="64"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-5xl mb-6 font-bold text-white">Teşekkürler!</h2>
+                    <p class="text-xl text-slate-400 mb-10">Başarı ve etik dolu bir kariyer dilerim.</p>
+
+                    <div class="glass-card p-5 max-w-md border-amber-500/30">
+                        <p class="text-base italic text-amber-400 m-0 text-center">
+                            "Kodunuz <strong>hatasız</strong>, yolunuz <strong>etik</strong> olsun."
+                        </p>
+                    </div>
+
+                    <div class="mt-10 flex gap-4 items-center text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span>YPZ108</span>
+                        <span class="text-slate-700">•</span>
+                        <span>Bilişim Etiği</span>
+                        <span class="text-slate-700">•</span>
+                        <span>Trabzon Üniversitesi</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false,
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+</body>
+</html>

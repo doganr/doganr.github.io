@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --r-main-font: 'Plus Jakarta Sans', sans-serif;
+    --r-heading-font: 'Plus Jakarta Sans', sans-serif;
+    --r-heading-text-transform: none;
+    --r-background-color: #020617;
+    --tu-blue: #1e3a8a;
+    --tu-red: #881337;
+}
+
+.reveal .slides section {
+    text-align: center;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-family: var(--r-heading-font);
+    text-transform: none;
+}
+
+/* Heading sizes - Reveal.js canvas (1200x700) icinde okunabilir boyutlar */
+.reveal h1 {
+    font-size: 52px !important;
+    line-height: 1.2 !important;
+}
+
+.reveal h2 {
+    font-size: 40px !important;
+    color: #f8fafc;
+}
+
+.reveal h3 {
+    font-size: 32px !important;
+}
+
+.reveal h4 {
+    font-size: 26px !important;
+}
+
+.reveal h5 {
+    font-size: 20px !important;
+}
+
+/*
+ * Tailwind font siniflarini Reveal.js canvas boyutuna uygun px degerlerine cek.
+ * Reveal.js 1200x700 bir koordinat sistemi kullanir, rem degerleri cok kucuk kalir.
+ */
+.reveal .text-\[8px\] {
+    font-size: 13px !important;
+}
+
+.reveal .text-\[9px\] {
+    font-size: 14px !important;
+}
+
+.reveal .text-\[10px\] {
+    font-size: 15px !important;
+}
+
+.reveal .text-\[11px\] {
+    font-size: 16px !important;
+}
+
+.reveal .text-xs {
+    font-size: 17px !important;
+}
+
+.reveal .text-sm {
+    font-size: 20px !important;
+}
+
+.reveal .text-base {
+    font-size: 24px !important;
+}
+
+.reveal .text-lg {
+    font-size: 28px !important;
+}
+
+.reveal .text-xl {
+    font-size: 32px !important;
+}
+
+.reveal .text-2xl {
+    font-size: 38px !important;
+}
+
+.reveal .text-3xl {
+    font-size: 44px !important;
+}
+
+.reveal .text-4xl {
+    font-size: 52px !important;
+}
+
+.reveal .text-5xl {
+    font-size: 60px !important;
+}
+
+.reveal .text-6xl {
+    font-size: 72px !important;
+}
+
+/* Font-mono inherit ile parent'tan boyut alsin */
+.reveal .font-mono {
+    font-size: inherit;
+}
+
+/* Filigran (Watermark) */
+/* Filigran (Watermark) */
+.reveal .watermark {
+    position: absolute;
+    /* Default State: Small, Top-Right (for inner pages) */
+    top: 2rem;
+    right: 2rem;
+    left: auto;
+    bottom: auto;
+    width: 80px;
+    opacity: 0.7;
+    z-index: 20;
+    pointer-events: none;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: none;
+    filter: grayscale(1) brightness(1.5);
+}
+
+.reveal.first-slide .watermark {
+    /* First Slide State: Large, Centered */
+    top: 50%;
+    left: 50%;
+    right: auto;
+    width: 40%;
+    opacity: 0.1;
+    z-index: 10;
+    transform: translate(-50%, -50%);
+    filter: grayscale(1) brightness(2.5);
+}
+
+/* Kurumsal Cam Tasarım / Glassmorphism Cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    /* Unified radius */
+    padding: 1.5rem;
+    /* Unified padding */
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+    color: white !important;
+}
+
+.glass-card:hover {
+    border-color: rgba(136, 19, 55, 0.5);
+    background: rgba(136, 19, 55, 0.05);
+    transform: translateY(-5px);
+}
+
+/* Alternative Glass Card Styles (merged from weeks) */
+.glass-card.border-emerald-500\/20 {
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.glass-card.border-blue-500\/20 {
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.glass-card:hover.hover\:bg-purple-500\/10:hover {
+    background-color: rgba(168, 85, 247, 0.1);
+}
+
+.glass-card:hover.hover\:bg-emerald-500\/10:hover {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.glass-card:hover.hover\:bg-blue-500\/10:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.glass-card:hover.hover\:bg-orange-500\/10:hover {
+    background-color: rgba(249, 115, 22, 0.1);
+}
+
+
+/* Arka Plan Glow Efektleri */
+.glow-sphere,
+.bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.15;
+}
+
+.glow-sphere {
+    animation: drift 30s infinite alternate ease-in-out;
+}
+
+@keyframes drift {
+    from {
+        transform: translate(-10%, -10%);
+    }
+
+    to {
+        transform: translate(10%, 10%);
+    }
+}
+
+/* Typography Helpers */
+.week-number {
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 0.4rem;
+}
+
+.nav-link {
+    font-size: 0.6rem !important;
+    font-weight: 700;
+    margin-top: 0.6rem;
+    color: #881337 !important;
+    text-transform: uppercase;
+}
+
+/* Hoca Resmi - KARE Formu */
+.profile-image-container-square {
+    width: 120px;
+    height: 120px;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    border: 3px solid #881337;
+    box-shadow: 0 0 20px rgba(136, 19, 55, 0.3);
+    margin: 0 auto 0.8rem;
+    position: relative;
+    background: #000;
+}
+
+.profile-image-container-square img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.4);
+}
+
+.bio-title {
+    color: #881337;
+    font-size: 0.6rem !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem !important;
+    border-bottom: 1px solid rgba(136, 19, 55, 0.2);
+    display: inline-block;
+}
+
+.bio-text {
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
+    color: #cbd5e1;
+    text-align: justify;
+}
+
+/* Yayın Kartları Stili */
+.pub-item {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 0.5rem;
+    padding: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 0.4rem;
+}
+
+.pub-img-square {
+    width: 80px;
+    height: 80px;
+    border-radius: 0.2rem;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #000;
+}
+
+.pub-info-compact {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pub-title-mini {
+    font-size: 0.3em !important;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    margin: 0 !important;
+}
+
+.pub-authors {
+    font-size: 0.25em !important;
+    color: #94a3b8;
+    font-style: italic;
+    margin-top: 2px;
+    line-height: 1.2;
+}
+
+.badge-container {
+    display: flex;
+    gap: 5px;
+    margin-top: 2px;
+}
+
+.mini-badge {
+    font-size: 0.5rem;
+    padding: 1px 4px;
+    border: 1px solid #334155;
+    border-radius: 2px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* Components from Weekly Slides */
+.image-placeholder {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    color: #64748b;
+    font-style: italic;
+    font-size: 0.8rem;
+}
+
+.theory-badge {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.8rem;
+    border-radius: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
