@@ -89,3 +89,9 @@ Bu dersi başarıyla tamamlayan öğrenciler:
 * [Nesne Yönelimli Programlama Dersi — Damian Gordon](https://www.damiantgordon.com/Courses/OOP/)
 * [Object-Oriented Python — Avi Kak, Purdue Üniversitesi (PDF)](https://engineering.purdue.edu/DeepLearn/pdf-kak/PythonOO.pdf)
 * [BTK Akademi](https://www.btkakademi.gov.tr)
+
+## Ders Materyalleri
+
+İnteraktif ders slaytlarına aşağıdaki bağlantıdan erişebilirsiniz.
+
+[Ders Slaytlarını Görüntüle](/slides/YPZ209/index.html)
