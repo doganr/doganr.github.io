@@ -88,3 +88,9 @@ Bu dersi başarıyla tamamlayan öğrenciler:
 * Hagan, M. T., Demuth, H. B., & Beale, M. *Neural Network Design.*
 * Fausett, L. *Fundamentals of Neural Networks.*
 * Goodfellow, I., Bengio, Y., & Courville, A. *Deep Learning* (CNN bölümleri). MIT Press.
+
+## Ders Materyalleri
+
+İnteraktif ders slaytlarına aşağıdaki bağlantıdan erişebilirsiniz.
+
+[Ders Slaytlarını Görüntüle](/slides/YPZ312/index.html)
