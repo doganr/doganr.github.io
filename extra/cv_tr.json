@@ -1,0 +1,114 @@
+{
+  "basics": {
+    "name": "Ramazan Özgür Doğan",
+    "title": "Dr. Öğr. Üyesi",
+    "email": "dogan@trabzon.edu.tr",
+    "website": "https://doganr.com",
+    "summary": "Trabzon Üniversitesi öğretim üyesi. Araştırma alanları derin öğrenme, tıbbi görüntü ve sinyal işleme ile yapay zeka tabanlı farmakolojik uygulamalardır."
+  },
+  "work": [
+    {
+      "date": "2024.04 - Devam",
+      "logo": "tru.png",
+      "role": "Dr. Öğretim Üyesi",
+      "institution": "Trabzon Üniversitesi",
+      "url": "https://www.trabzon.edu.tr",
+      "description": "Yapay Zeka, Bilgisayarlı Görü ve Biyomedikal Veri Analizi alanlarında araştırma ve öğretim faaliyetleri."
+    },
+    {
+      "date": "2024.05 - 2025.05",
+      "logo": "osu.png",
+      "role": "Ziyaretçi Araştırmacı",
+      "institution": "The Ohio State University",
+      "url": "https://www.osu.edu",
+      "description": "Klinik ve farmakolojik veri analizi için çok modlu yapay zeka modelleri üzerine doktora sonrası araştırma."
+    },
+    {
+      "date": "2020.08 - 2024.04",
+      "logo": "ghu.png",
+      "role": "Dr. Öğretim Üyesi",
+      "institution": "Gümüşhane Üniversitesi",
+      "url": "https://www.gumushane.edu.tr",
+      "description": "Yapay Zeka, Bilgisayarlı Görü ve Biyomedikal Veri Analizi alanlarında araştırma ve öğretim faaliyetleri."
+    },
+    {
+      "date": "2019.09 - 2020.09",
+      "logo": "ysu.png",
+      "role": "Ziyaretçi Araştırmacı",
+      "institution": "Youngstown State University",
+      "url": "",
+      "description": "Mask R-CNN ve 3D U-Net kullanılarak BT görüntülerinde pankreasın yüksek doğruluklu otomatik segmentasyonu da dahil olmak üzere derin öğrenme tabanlı tıbbi görüntü segmentasyonu üzerine araştırma."
+    },
+    {
+      "date": "2011.07 - 2020.08",
+      "logo": "ghu.png",
+      "role": "Öğretim Görevlisi",
+      "institution": "Gümüşhane Üniversitesi",
+      "url": "https://www.gumushane.edu.tr",
+      "description": "Yapay Zeka, Bilgisayarlı Görü ve Biyomedikal Veri Analizi alanlarında araştırma ve öğretim faaliyetleri."
+    }
+  ],
+  "education": [
+    {
+      "date": "2015.02 - 2021.12",
+      "location": "Trabzon, Türkiye",
+      "logo": "ktu.png",
+      "degree": "Doktora",
+      "institution": "Karadeniz Teknik Üniversitesi",
+      "field": "Bilgisayar Mühendisliği",
+      "details": [
+        {"label": "Tez", "text": "Pankreas kanseri doku segmentasyonunda farklı derin öğrenme tekniklerinin araştırılması"},
+        {"label": "Danışman", "text": "Prof. Dr. Temel KAYIKÇIOĞLU"}
+      ]
+    },
+    {
+      "date": "2012.09 - 2015.01",
+      "location": "Trabzon, Türkiye",
+      "logo": "ktu.png",
+      "degree": "Yüksek Lisans",
+      "institution": "Karadeniz Teknik Üniversitesi",
+      "field": "Bilgisayar Mühendisliği",
+      "details": [
+        {"label": "Tez", "text": "El şekli, jest ve konum bilgileriyle sanal fare kontrolü"},
+        {"label": "Danışman", "text": "Prof. Dr. Cemal KÖSE"}
+      ]
+    },
+    {
+      "date": "2005.09 - 2010.07",
+      "location": "Trabzon, Türkiye",
+      "logo": "ktu.png",
+      "degree": "Lisans",
+      "institution": "Karadeniz Teknik Üniversitesi",
+      "field": "Bilgisayar Mühendisliği",
+      "details": []
+    }
+  ],
+  "skills": [
+    {
+      "category": "Yapay Zeka",
+      "icon": "fa-microchip",
+      "color": "var(--accent-1)",
+      "badge_bg": "rgba(108, 99, 255, 0.15)",
+      "tags": ["Derin Öğrenme", "Vision Transformers", "Çok Modlu Öğrenme", "Alan Genellemesi"]
+    },
+    {
+      "category": "Tıbbi Görüntüleme",
+      "icon": "fa-staff-snake",
+      "color": "var(--accent-2)",
+      "badge_bg": "rgba(0, 212, 255, 0.15)",
+      "tags": ["Ultrason", "Görüntü Füzyonu", "EDOF", "Meme Kanseri Sınıflandırma"]
+    }
+  ],
+  "languages": [
+    { "name": "Türkçe", "level": "Ana Dil" },
+    { "name": "İngilizce", "level": "Profesyonel Çalışma Yeterliliği" }
+  ],
+  "awards": [
+    {
+      "date": "2024.01.01",
+      "title": "TÜBİTAK 2219 Doktora Sonrası Araştırma Bursu",
+      "institution": "Türkiye Bilimsel ve Teknolojik Araştırma Kurumu",
+      "description": "The Ohio State University'de doktora sonrası araştırma için verilmiştir."
+    }
+  ]
+}

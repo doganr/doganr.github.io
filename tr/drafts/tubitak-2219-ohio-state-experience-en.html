@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Ramazan Ozgur Dogan" />
+  <meta name="description" content="In May 2024, I joined The Ohio State University as a Visiting Research Scholar, supported by a TÜBİTAK 2219 Postdoctoral Research Fellowship. Here&#39;s what I learned about multimodal AI for clinical data — and about international research culture." />
+
+  <link rel="icon" type="image/x-icon" href="https://doganr.com/favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+  <!-- Flag Icons (language switcher) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+
+  <!-- Highlight.js for code -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+  <!-- Custom Theme CSS -->
+  <link rel="stylesheet" type="text/css" href="https://doganr.com/theme/css/style.css">
+
+
+  <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+
+  <title>Doğan R. – From Ohio State to Trabzon: My TÜBİTAK 2219 Experience</title>
+
+<meta name="author" content="Ramazan Ozgur Dogan" />
+<meta name="keywords" content="tubitak, postdoc, research, ohio state, academic career">
+</head>
+
+<body>
+
+  <!-- Animated background particles -->
+  <div class="bg-particles" id="particles"></div>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav" id="mainNavbar">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand brand-logo" href="https://doganr.com/tr/">
+      <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="brand-img me-2">
+      <span class="brand-text">
+        <span class="brand-name">Doğan R.</span>
+        <small class="brand-subtitle d-none d-md-inline">Dr. Öğr. Üyesi • Trabzon Üniversitesi</small>
+      </span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/">
+            <i class="fa-solid fa-house me-1"></i>Ana Sayfa
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/about.html">
+            Hakkımda
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/publications.html">
+            Yayınlar
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/tr/pages/teaching.html">
+            Dersler
+          </a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-pill" href="#" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Social links menu">
+            <i class="fa-solid fa-share-nodes"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+            <li>
+              <a class="dropdown-item" href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-github"></i>Github
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-linkedin"></i>Linkedin
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-google-scholar"></i>Google scholar
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-solid fa-envelope"></i>E-posta
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Language switcher -->
+        <li class="nav-item">
+          <a class="btn btn-sm lang-switch-btn" href="https://doganr.com/" title="Switch to English" aria-label="Switch to English">
+            <span class="fi fi-gb"></span>
+          </a>
+        </li>
+
+        <!-- Theme toggle -->
+        <li class="nav-item">
+          <button class="btn btn-sm theme-toggle-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle light/dark theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Main content wrapper -->
+  <div class="page-wrapper">
+<!-- Article page -->
+<div class="article-page-wrapper">
+
+  <!-- Article Hero -->
+  <div class="article-hero">
+    <div class="article-hero-bg"></div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-down">
+            <ol class="breadcrumb justify-content-center glass-breadcrumb">
+              <li class="breadcrumb-item"><a href="https://doganr.com/tr/">Home</a></li>
+              <li class="breadcrumb-item"><a href="https://doganr.com/tr/category/academic-life.html">Academic Life</a></li>
+              <li class="breadcrumb-item active" aria-current="page">From Ohio State to...</li>
+            </ol>
+          </nav>
+
+          <!-- Category -->
+          <div class="mb-3" data-aos="fade-up">
+            <a href="https://doganr.com/tr/category/academic-life.html" class="tag-badge tag-category tag-lg">
+              <i class="fa-solid fa-folder me-2"></i>Academic Life
+            </a>
+          </div>
+
+          <!-- Title -->
+          <h1 class="article-hero-title" id="tubitak-2219-ohio-state-experience" data-aos="fade-up" data-aos-delay="50">
+            From Ohio State to Trabzon: My TÜBİTAK 2219 Experience
+          </h1>
+
+          <!-- Meta -->
+          <div class="article-hero-meta d-flex align-items-center justify-content-center gap-4 mt-4" data-aos="fade-up" data-aos-delay="100">
+            <span class="meta-item">
+              <i class="fa-solid fa-user-pen me-2"></i>Ramazan Ozgur Dogan
+            </span>
+            <span class="meta-separator">·</span>
+            <span class="meta-item">
+              <i class="fa-regular fa-calendar me-2"></i>Sun, 01 Jun 2025
+            </span>
+          </div>
+
+          <!-- Tags -->
+          <div class="article-hero-tags d-flex flex-wrap justify-content-center gap-2 mt-4" data-aos="fade-up" data-aos-delay="150">
+            <a href="https://doganr.com/tr/tag/tubitak.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>tubitak
+            </a>
+            <a href="https://doganr.com/tr/tag/postdoc.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>postdoc
+            </a>
+            <a href="https://doganr.com/tr/tag/research.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>research
+            </a>
+            <a href="https://doganr.com/tr/tag/ohio-state.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>ohio state
+            </a>
+            <a href="https://doganr.com/tr/tag/academic-career.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>academic career
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article Body -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <!-- Featured Image -->
+
+        <!-- Article Content -->
+        <div class="article-content glass-card p-4 p-md-5 rounded-3" data-aos="fade-up">
+          <h1>From Ohio State to Trabzon: My TÜBİTAK 2219 Experience</h1>
+<p>In May 2024, I packed my bags and flew to Columbus, Ohio to begin a year-long postdoctoral stay at
+<strong>The Ohio State University (OSU)</strong>, supported by a <strong>TÜBİTAK 2219 International Postdoctoral Research Fellowship</strong>.</p>
+<p>This was my second international research visit — I had previously spent a year at <strong>Youngstown State University</strong>
+(2019–2020), where I worked on pancreas segmentation. But OSU was a different scale entirely.</p>
+<h2>What Is TÜBİTAK 2219?</h2>
+<p>The <strong>TÜBİTAK 2219 Program</strong> funds postdoctoral research abroad for Turkish academics. It covers:
+- Monthly stipend (~2500 USD)
+- Round-trip airfare
+- Health insurance
+- Up to 12 months at a host institution</p>
+<p><strong>Application tip:</strong> The key is securing a strong <strong>host researcher</strong> who writes a compelling invitation letter.
+Your research overlap with the host lab matters more than your paper count.</p>
+<h2>My Research at OSU</h2>
+<p>At OSU, I joined a lab working on <strong>multimodal AI for clinical and pharmacological data</strong>. My focus:</p>
+<h3>1. Multimodal Fusion for Drug Response Prediction</h3>
+<p>Combining:
+- <strong>Genomic data</strong> (gene expression profiles)
+- <strong>Molecular structure</strong> (SMILES / graph representations)
+- <strong>Clinical notes</strong> (NLP features)</p>
+<p>to predict patient-specific drug responses — a step toward <strong>precision medicine</strong>.</p>
+<h3>2. Medical Foundation Models</h3>
+<p>I spent considerable time studying and fine-tuning <strong>SAM (Segment Anything Model)</strong> and <strong>MedSAM</strong> for
+medical image segmentation. The zero-shot generalization of these large models is remarkable — but
+they still need domain-specific fine-tuning for clinical accuracy.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># MedSAM fine-tuning snippet</span>
+<span class="kn">from</span> <span class="nn">segment_anything</span> <span class="kn">import</span> <span class="n">sam_model_registry</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">sam_model_registry</span><span class="p">[</span><span class="s2">&quot;vit_b&quot;</span><span class="p">](</span><span class="n">checkpoint</span><span class="o">=</span><span class="s2">&quot;medsam_vit_b.pth&quot;</span><span class="p">)</span>
+
+<span class="c1"># Only fine-tune the mask decoder</span>
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">image_encoder</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Freeze encoder</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">mask_decoder</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-4</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<h3>3. Interpretable AI in Healthcare</h3>
+<p>One lesson from OSU: <strong>clinicians don't trust black boxes</strong>. We explored:
+- <strong>Grad-CAM</strong> visualizations on CT/MRI scans
+- <strong>SHAP values</strong> for tabular clinical predictors
+- <strong>Concept-based explanations</strong> for deep classifiers</p>
+<h2>Cultural Takeaways</h2>
+<p>Beyond research, I gained a lot from observing how science is done at a top-10 US university:</p>
+<ol>
+<li><strong>Group meetings are sacred</strong> — weekly lab meetings with genuine critical discussion, not just presentations</li>
+<li><strong>Reproducibility culture</strong> — code, data, and model weights are shared by default</li>
+<li><strong>Reading culture</strong> — every PhD student reads 2-3 papers per week and presents them</li>
+<li><strong>Collaboration is easy</strong> — emailing another professor for collaboration is normal and usually welcomed</li>
+</ol>
+<h2>Advice for Turkish Academics Applying for 2219</h2>
+<ol>
+<li><strong>Start 18 months early</strong> — finding the host, preparing the application, and waiting for the result is slow</li>
+<li><strong>Target labs with shared interests</strong>, not just famous names</li>
+<li><strong>Learn the paperwork early</strong> — international travel and financial bureaucracy can be exhausting</li>
+<li><strong>Join Turkish academia networks abroad</strong> — there are active WhatsApp and email groups</li>
+</ol>
+<h2>What's Next?</h2>
+<p>I returned to <strong>Trabzon University</strong> in May 2025 with both new research directions and stronger collaborations.
+Current projects include:
+- A multimodal learning framework for drug-disease interaction prediction
+- Adapting medical foundation models for Turkish hospital datasets
+- Submitting the OSU collaboration results to high-impact journals</p>
+<p>If you're considering applying for TÜBİTAK 2219, feel free to message me — I'm happy to share my experience
+and help with the application process!</p>
+<p>📧 <strong>dogan@trabzon.edu.tr</strong></p>
+        </div>
+
+        <!-- Author Box -->
+        <div class="author-box glass-card p-4 rounded-3 mt-4 d-flex align-items-center gap-4" data-aos="fade-up">
+          <div class="author-avatar-placeholder">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div>
+            <p class="author-box-name mb-1">Ramazan Ozgur Dogan</p>
+            <p class="author-box-bio mb-0 text-muted">Dr. Öğr. Üyesi Ramazan Özgür Doğan'ın akademik blogu — Trabzon Üniversitesi'nde yapay zeka araştırmacısı. Derin öğrenme, tıbbi görüntüleme ve daha fazlası.</p>
+          </div>
+        </div>
+
+        <!-- Tags Cloud -->
+        <div class="tag-cloud-section glass-card p-4 rounded-3 mt-4" data-aos="fade-up">
+          <h5 class="tag-cloud-title mb-3">
+            <i class="fa-solid fa-tags me-2"></i>Tags
+          </h5>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="https://doganr.com/tr/tag/tubitak.html" class="tag-badge">tubitak</a>
+            <a href="https://doganr.com/tr/tag/postdoc.html" class="tag-badge">postdoc</a>
+            <a href="https://doganr.com/tr/tag/research.html" class="tag-badge">research</a>
+            <a href="https://doganr.com/tr/tag/ohio-state.html" class="tag-badge">ohio state</a>
+            <a href="https://doganr.com/tr/tag/academic-career.html" class="tag-badge">academic career</a>
+          </div>
+        </div>
+
+        <!-- Neighbors (prev/next) -->
+
+      </div>
+
+      <!-- Sidebar / Table of Contents placeholder -->
+      <div class="col-lg-3 offset-lg-1 d-none d-lg-block">
+        <div class="toc-sidebar sticky-lg-top" style="top: 90px;">
+          <div class="glass-card p-4 rounded-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-list-ul me-2"></i>Contents
+            </h6>
+            <div id="toc-content" class="toc-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <!-- Share box -->
+          <div class="glass-card p-4 rounded-3 mt-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-share-nodes me-2"></i>Share
+            </h6>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="https://twitter.com/intent/tweet?url=https://doganr.com/tr/drafts/tubitak-2219-ohio-state-experience-en.html&text=From%20Ohio%20State%20to%20Trabzon%3A%20My%20T%C3%9CB%C4%B0TAK%202219%20Experience" target="_blank" class="share-btn share-twitter" title="Twitter/X">
+                <i class="fa-brands fa-x-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/shareArticle?url=https://doganr.com/tr/drafts/tubitak-2219-ohio-state-experience-en.html&title=From%20Ohio%20State%20to%20Trabzon%3A%20My%20T%C3%9CB%C4%B0TAK%202219%20Experience" target="_blank" class="share-btn share-linkedin" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+              <button class="share-btn share-copy" title="Copy link" onclick="copyLink()">
+                <i class="fa-solid fa-link"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+  </div>
+
+  <!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-glow"></div>
+  <div class="container">
+    <div class="row gy-4 align-items-center">
+
+      <!-- Brand -->
+      <div class="col-md-4 text-center text-md-start">
+        <a href="https://doganr.com/tr/" class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none">
+          <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="footer-logo" loading="lazy" width="28" height="28">
+          <span class="footer-brand-name">Doğan R.</span>
+        </a>
+        <p class="footer-tagline mt-2 mb-0">Dr. Öğr. Üyesi • Trabzon Üniversitesi</p>
+      </div>
+
+      <!-- Social Links -->
+      <div class="col-md-4 text-center">
+        <div class="footer-social d-flex gap-3 justify-content-center">
+          <a href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Github" aria-label="Github">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Linkedin" aria-label="Linkedin">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Google scholar" aria-label="Google scholar">
+            <i class="fa-brands fa-google-scholar"></i>
+          </a>
+          <a href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="E-posta" aria-label="E-posta">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="col-md-4 text-center text-md-end">
+        <p class="footer-copy mb-0">
+          &copy; 2026 <strong>Ramazan Ozgur Dogan</strong>
+        </p>
+        <p class="footer-powered mt-1 mb-0">
+          Altyapı <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>
+          &amp; <a href="https://getbootstrap.com/" target="_blank" class="footer-link">Bootstrap 5</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom mt-4 pt-3 text-center">
+      <p class="footer-bottom-text mb-0">
+        Bol miktarda ☕ ve <i class="fa-solid fa-code" style="color: var(--accent-2);"></i> ile hazırlandı.
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Highlight.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- Custom JS -->
+  <script src="https://doganr.com/theme/js/theme.js"></script>
+
+<script>
+// Copy link
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector('.share-copy');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-link"></i>', 2000);
+  });
+}
+</script>
+</body>
+
+</html>

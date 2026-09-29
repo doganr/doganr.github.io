@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İleri Programlama 2. Hafta — Kalıtım I: Temel Kavramlar</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+    <style>
+        /* Sondaki tek quiz: 4 soru 2x2 sığsın, geri bildirim kırpılmasın */
+        #wk2quiz .quiz { margin-bottom: 4px; }
+        #wk2quiz .quiz-q { font-size: 0.6em; margin-bottom: 5px; }
+        #wk2quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.56em; }
+        #wk2quiz .quiz-fb { font-size: 0.54em; min-height: 1.2em; margin-top: 4px; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere"
+                    style="width: 620px; height: 620px; top: -12%; left: -12%; background: #1e3a8a;"></div>
+                <div class="glow-sphere"
+                    style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #881337; animation-delay: -5s;">
+                </div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">class</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">QPushButton</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">miras</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">is-a</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">devral</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">super</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">QWidget</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">__init__</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">İleri Programlama · Hafta 02</span>
+                    <div class="cover-icon mb-6"><i data-lucide="git-fork" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Sıfırdan mı Yazalım,<br><span
+                            class="grad-text">Kalıtımla mı Kuralım?</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Kalıtım I — Hazır
+                        Sınıflardan Kendi Widget'ımıza</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span><span
+                                style="color:#f92672;">class</span> <span style="color:#a78bfa;">Buton</span>(<span
+                                style="color:#66d9ef;">QPushButton</span>): &nbsp;<span
+                                style="color:#475569;"># hazırı devral, üstüne ekle</span></span></div>
+                </div>
+            </section>
+
+            <!-- 2. YOL HARİTASI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Hafta</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Aslında Kalıtımı Zaten
+                    Kullandın</h2>
+                <p class="code-note mb-6">Geçen hafta <code>class SayacPenceresi(<b style="color:#93c5fd;">QWidget</b>)</code>
+                    yazdık — yani QWidget'tan türedik, farkında olmadan kalıtım yaptık. Bu hafta onu bilinçli yapıyoruz.</p>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · Neden?</h4><p>Kod tekrarını önlemek, hazır
+                        sınıfları yeniden kullanmak.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · Nasıl?</h4><p><code>class Çocuk(Ata)</code> — devral,
+                        ekle, <code>super()</code> ile kur.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>3 · Qt'de</h4>
+                        <p><code>QPushButton</code>'dan <b>kendi widget'ımızı</b> türet.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Sonunda: küçük bir <b>tıklama paneli</b> uygulaması yapacağız.</p>
+            </section>
+
+            <!-- 3. PROBLEM: KOD TEKRARI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.4);color:#fda4af;">
+                    <i data-lucide="copy" style="width:14px;height:14px;"></i> Önce Problem</span>
+                <h2 class="text-2xl font-black mb-4 tracking-tighter text-white">İki Sınıf, <span
+                        style="color:#fb7185;">Neredeyse Aynı Kod</span></h2>
+                <div class="flex items-start justify-center gap-5">
+                    <pre style="flex:1;font-size:0.34em;"><code class="language-python" data-trim>class KirmiziButon(QPushButton):
+    def __init__(self):
+        super().__init__()
+        self.sayac = 0
+        self.clicked.connect(self.artir)
+        self.setStyleSheet("background:#ef4444")
+    def artir(self):
+        self.sayac += 1
+        self.setText(f"Tıkla ({self.sayac})")</code></pre>
+                    <pre style="flex:1;font-size:0.34em;"><code class="language-python" data-trim>class MaviButon(QPushButton):
+    def __init__(self):
+        super().__init__()
+        self.sayac = 0
+        self.clicked.connect(self.artir)
+        self.setStyleSheet("background:#3b82f6")
+    def artir(self):
+        self.sayac += 1
+        self.setText(f"Tıkla ({self.sayac})")</code></pre>
+                </div>
+                <p class="code-note mt-5 fragment fade-in">Tek fark: <b>renk</b>. Geri kalan her şey <b>kopyala-yapıştır</b>.
+                    Ya 5 renk daha istersek? Ya <code>artir()</code>'de bir hata bulursak — 7 yerde mi düzelteceğiz?</p>
+            </section>
+
+            <!-- 4. ÇÖZÜM: ORTAĞI YUKARI TAŞI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.4);color:#6ee7b7;">
+                    <i data-lucide="git-fork" style="width:14px;height:14px;"></i> Çözüm: Kalıtım</span>
+                <h2 class="text-2xl font-black mb-4 tracking-tighter text-white">Ortak Olanı <span
+                        style="color:#6ee7b7;">Bir Ataya</span> Taşı</h2>
+                <div class="flex items-start justify-center gap-5">
+                    <pre style="flex:1;font-size:0.36em;"><code class="language-python" data-trim
+                            data-line-numbers="1|2-8">class SayacButonu(QPushButton):    # ORTAK olan yukarıda
+    def __init__(self):
+        super().__init__()
+        self.sayac = 0
+        self.clicked.connect(self.artir)
+    def artir(self):
+        self.sayac += 1
+        self.setText(f"Tıkla ({self.sayac})")</code></pre>
+                    <pre style="flex:1;font-size:0.36em;"><code class="language-python" data-trim
+                            data-line-numbers="1|4">class KirmiziButon(SayacButonu):   # sadece FARK
+    def __init__(self):
+        super().__init__()
+        self.setStyleSheet("background:#ef4444")
+
+class MaviButon(SayacButonu):
+    def __init__(self):
+        super().__init__()
+        self.setStyleSheet("background:#3b82f6")</code></pre>
+                </div>
+                <p class="code-note mt-5 fragment fade-in">Sayma mantığı <b>tek yerde</b>. Yeni renk = 3 satır. Hata =
+                    tek düzeltme. <b style="color:#6ee7b7;">İşte kalıtım bunun için var.</b></p>
+            </section>
+
+            <!-- 5. KALITIM NEDİR -->
+            <section>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Kalıtım Nedir?</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up">
+                        <h4>👑 Ata (Base / Super)</h4>
+                        <p>Temel/üst sınıf. Kendisinden yeni sınıflar türetilir; ortak davranışı taşır.<br><code>SayacButonu</code></p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <h4>🧬 Çocuk (Derived / Sub)</h4>
+                        <p>Atadan türeyen sınıf. Her şeyi <b>devralır</b> + kendi farkını ekler.<br><code>KirmiziButon</code></p>
+                    </div>
+                    <div class="concept-card fragment fade-up" style="border-color: rgba(96,125,255,0.35);">
+                        <h4>🔗 "is-a" İlişkisi</h4>
+                        <p>KirmiziButon <b>bir</b> SayacButonu'dur; o da <b>bir</b> QPushButton'dur.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Ata için <b>base / super / üst sınıf / ata</b>; çocuk için
+                    <b>derived / sub / alt sınıf / çocuk</b> — hepsi aynı şey.</p>
+            </section>
+
+            <!-- 6. is-a ZİNCİRİ -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="git-branch" style="width:14px;height:14px;"></i> Günlük Hayat</span>
+                <h2 class="text-3xl font-black mb-8 tracking-tighter text-white">Kalıtım Bir <span
+                        style="color:#93c5fd;">"is-a" Zinciridir</span></h2>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="concept-card" style="width:auto;padding:9px 22px;border-color:rgba(147,197,253,0.5);">
+                        <p style="font-size:0.7em;"><code style="color:#93c5fd;">Canlı</code></p></div>
+                    <span style="color:#475569;">▲ bir</span>
+                    <div class="concept-card fragment fade-up" style="width:auto;padding:9px 22px;">
+                        <p style="font-size:0.7em;"><code>Hayvan</code></p></div>
+                    <span class="fragment fade-up" style="color:#475569;">▲ bir</span>
+                    <div class="concept-card fragment fade-up" style="width:auto;padding:9px 22px;border-color:rgba(96,125,255,0.5);">
+                        <p style="font-size:0.7em;"><code style="color:#7dd3fc;">Kedi</code></p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in"><b>Kedi bir Hayvan'dır, Hayvan bir Canlı'dır</b> → Kedi,
+                    Canlı'nın da tüm özelliklerini taşır. Kalıtım <b>geçişlidir</b>.</p>
+            </section>
+
+            <!-- 7. is-a vs has-a -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="split" style="width:14px;height:14px;"></i> Karıştırma</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">"is-a" mı, "has-a" mı?</h2>
+                <div class="grid grid-cols-2 gap-6 text-left">
+                    <div class="concept-card" style="border-color:rgba(96,125,255,0.35);">
+                        <h4 style="color:#93c5fd;">🔗 is-a → Kalıtım</h4>
+                        <p><b>Araba bir Taşıt'tır.</b><br><code>class Araba(Tasit)</code><br>Çocuk, atanın <i>bir türüdür</i>.</p>
+                    </div>
+                    <div class="concept-card" style="border-color:rgba(34,197,94,0.4);">
+                        <h4 style="color:#86efac;">🧩 has-a → İçerme (composition)</h4>
+                        <p><b>Araba'nın bir Motoru vardır.</b><br><code>self.motor = Motor()</code><br>Nesne, başka
+                            nesneyi <i>içinde tutar</i>.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Soru: "X bir Y midir?" → <b>evet</b>se kalıtım. "X'in bir Y'si
+                    var mı?" → <b>evet</b>se içerme. Yanlış seçim kötü tasarım demektir.</p>
+            </section>
+
+            <!-- 8. SÖZ DİZİMİ -->
+            <section>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Türetmenin Söz Dizimi</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="1|2|4|5">class Arac:                 # ATA
+    def calistir(self): ...
+
+class Araba(Arac):          # Arac'tan TÜRE
+    pass                    # hiçbir şey yazmasak bile...</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:340px;">
+                        <p><code>Araba</code>, <code>Arac</code>'ın <b>tüm</b> metotlarını hazır aldı —
+                            <code>Araba().calistir()</code> çalışır.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Parantez içine <b>atayı</b> yazmak = "bundan türe."</p>
+                    </div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Python'da <b>her sınıf</b> gizliden <code>object</code>'ten
+                    türer — <code>class Arac:</code> aslında <code>class Arac(object):</code> demektir.</p>
+            </section>
+
+            <!-- 9. NEYİ DEVRALIRIZ -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="package-check" style="width:14px;height:14px;"></i> Ne Gelir?</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Öznitelik <span
+                        style="color:#64748b;">ve</span> Metot — İkisi de Devralınır</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="2|4|8|9">class Arac:
+    def __init__(self, marka):
+        self.marka = marka       # ÖZNİTELİK
+    def calistir(self):          # METOT
+        print(self.marka, "çalıştı")
+
+class Araba(Arac):
+    pass
+
+a = Araba("Toyota")
+a.calistir()      # "Toyota çalıştı"</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p><code>Araba</code> ne <code>marka</code>'yı ne <code>calistir</code>'ı yazdı — ikisini de
+                            <b>Arac'tan devraldı</b>.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Öznitelik = veri (durum). Metot = davranış. Kalıtım her
+                            ikisini de taşır.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. ÇOCUKTA YENİ EKLEME -->
+            <section>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Çocuk Kendi Farkını Ekler</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="1|2-3|6-7">class Araba(Arac):
+    def klima_ac(self):          # YENİ metot (sadece Araba'da)
+        print("klima açıldı")
+
+a = Araba("Toyota")
+a.calistir()    # Arac'tan geldi
+a.klima_ac()    # Araba'nın kendi eklemesi
+
+b = Arac("kamyon")
+b.klima_ac()    # 💥 HATA: Arac'ta böyle bir metot yok</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p>Çocuk atadan gelenlere <b>ekler</b>; ama eklediği <b>ataya geri gitmez</b>.</p>
+                        <p class="mt-3" style="color:#fda4af;">Kalıtım <b>tek yönlüdür</b>: çocuk atayı görür, ata çocuğu
+                            görmez.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 11. KURUCU KALITIMI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="wrench" style="width:14px;height:14px;"></i> Kurucu · 1/2</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">
+                    <code style="color:#93c5fd;">__init__</code> Yazmazsan Ne Olur?</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="1-3|5-6|8-9">class Hayvan:
+    def __init__(self, ad):
+        self.ad = ad
+
+class Kedi(Hayvan):
+    pass                 # kendi __init__'i YOK
+
+k = Kedi("Tekir")        # Hayvan.__init__ çalışır
+print(k.ad)              # "Tekir"</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p>Çocukta <code>__init__</code> yoksa, Python <b>atanınkini</b> kullanır. Bedavaya kurucu!</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Bu yüzden basit türetmelerde <code>pass</code> yeter.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. super().__init__() -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="wrench" style="width:14px;height:14px;"></i> Kurucu · 2/2</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kendi
+                    <code style="color:#93c5fd;">__init__</code>'in Varsa: <code style="color:#93c5fd;">super()</code></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="2|3|4">class Kedi(Hayvan):
+    def __init__(self, ad, renk):
+        super().__init__(ad)     # 1) atanın kurucusu — ad'ı o kursun
+        self.renk = renk         # 2) sonra KENDİ eklemen
+
+k = Kedi("Tekir", "sarı")
+print(k.ad, k.renk)      # "Tekir sarı"</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p>Kendi <code>__init__</code>'ini yazınca atanınki <b>otomatik çalışmaz</b> — onu <b>sen</b>
+                            <code>super().__init__()</code> ile çağırırsın.</p>
+                        <p class="mt-3" style="color:#fda4af;">Unutursan <code>k.ad</code> hiç kurulmaz → hata.
+                            <span style="color:#64748b;">(Detay: Hafta 3)</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 13. QT HİYERARŞİSİ -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="network" style="width:14px;height:14px;"></i> Qt = Kalıtım</span>
+                <h2 class="text-3xl font-black mb-4 tracking-tighter text-white">Tüm Qt Bir <span
+                        style="color:#93c5fd;">Kalıtım Ağacı</span></h2>
+                <div class="flex flex-col items-center gap-1">
+                    <div class="concept-card" style="width:auto;padding:4px 18px;border-color:rgba(147,197,253,0.5);">
+                        <p style="font-size:0.6em;"><code style="color:#93c5fd;">QObject</code> <span
+                                style="color:#64748b;">— her Qt nesnesinin atası (sinyal/slot)</span></p></div>
+                    <span style="color:#475569;font-size:0.6em;">▼</span>
+                    <div class="concept-card fragment fade-up" style="width:auto;padding:4px 18px;border-color:rgba(147,197,253,0.5);">
+                        <p style="font-size:0.6em;"><code style="color:#93c5fd;">QWidget</code> <span
+                                style="color:#64748b;">— görünen her şey (QLabel, QAbstractButton… kardeşler)</span></p></div>
+                    <span class="fragment fade-up" style="color:#475569;font-size:0.6em;">▼</span>
+                    <div class="concept-card fragment fade-up" style="width:auto;padding:4px 18px;">
+                        <p style="font-size:0.6em;"><code>QPushButton</code> <span style="color:#64748b;">— hazır buton</span></p></div>
+                    <span class="fragment fade-up" style="color:#7dd3fc;font-size:0.6em;">▼ bir</span>
+                    <div class="concept-card fragment fade-up"
+                        style="width:auto;padding:4px 18px;border-color:rgba(96,125,255,0.5);background:rgba(96,125,255,0.06);">
+                        <p style="font-size:0.6em;"><code style="color:#93c5fd;">SayacButonu</code>
+                            <span style="color:#7dd3fc;">(bizim — QPushButton'dan türer)</span></p></div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in">SayacButonu, QPushButton üzerinden <b>tüm</b> Qt geçmişini
+                    (QWidget, QObject) devralır.</p>
+            </section>
+
+            <!-- 14. NEDEN QT WIDGET TÜRETİRİZ -->
+            <section>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Neden Kendi Widget'ımızı
+                    Yaparız?</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>♻️ Yeniden Kullan</h4><p>Bir kez yaz, uygulamanın her
+                        yerinde kullan. Kopyala-yapıştır yok.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>📦 Bir Arada Tut</h4><p>Görünüm + davranış + durum tek
+                        sınıfta paketlenir (kapsülleme).</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🔌 Uyumlu</h4>
+                        <p>Hâlâ bir QPushButton olduğu için Qt'nin her yerine takılır.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Profesyonel Qt uygulamaları düzinelerce özel widget'tan oluşur —
+                    hepsi kalıtımla.</p>
+            </section>
+
+            <!-- 15. SAYACBUTONU — KUR -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="wrench" style="width:14px;height:14px;"></i> Kendi Widget'ımız · 1/3</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kendi Sayaç Butonumuz</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim
+                            data-line-numbers="1|2|3|4|5|8-10|12-13">class SayacButonu(QPushButton):     # QPushButton'dan TÜRE
+    def __init__(self):
+        super().__init__()          # atanın kurucusu (şart!)
+        self.sayac = 0              # KENDİ eklediğimiz durum
+        self.clicked.connect(self.artir)  # devralınan sinyal
+        self.guncelle()
+
+    def artir(self):                # KENDİ davranışımız
+        self.sayac += 1
+        self.guncelle()
+
+    def guncelle(self):
+        self.setText(f"Tıkla ({self.sayac})")  # devralınan metot</code></pre>
+                    <div class="fragment fade-left flex flex-col items-center" style="padding-top:30px;">
+                        <span class="arrow-cta mb-2">Sonuç ↓</span>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">SayacButonu</span></div>
+                            <img src="images/gui_sayacbtn_0.png" alt="Sayaç butonu">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 16. DEVRALDIK + EKLEDİK -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="scan-search" style="width:14px;height:14px;"></i> Kendi Widget'ımız · 2/3</span>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Ne Devraldık, Ne Ekledik?</h2>
+                <div class="grid grid-cols-2 gap-6 text-left">
+                    <div class="concept-card" style="border-color:rgba(34,197,94,0.4);">
+                        <h4 style="color:#86efac;">✅ Bedavaya Devralındı</h4>
+                        <p>• Tıklanabilirlik ve <code>clicked</code> sinyali<br>• <code>setText()</code>, boyut, stil<br>•
+                            Pencereye eklenebilme — <b>QPushButton neyse hepsi.</b></p>
+                    </div>
+                    <div class="concept-card" style="border-color:rgba(147,197,253,0.5);">
+                        <h4 style="color:#93c5fd;">➕ Biz Ekledik</h4>
+                        <p>• <code>self.sayac</code> özniteliği (durum)<br>• <code>artir()</code> ve <code>guncelle()</code>
+                            metotları<br>• Kendi kendini güncelleme <b>davranışı.</b></p>
+                    </div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Kalıtımın gücü: <b>sıfırdan buton yazmadık</b> — hazır olanı
+                    alıp yalnızca farkı ekledik.</p>
+            </section>
+
+            <!-- 17. CANLI — KENDİ SAYAN BUTON -->
+            <section data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip"><i data-lucide="play" style="width:14px;height:14px;"></i> Kendi Widget'ımız · 3/3 · Canlı</span>
+                    <span class="live-badge"><span class="live-dot"></span> Buton kendi tıklamasını sayıyor</span>
+                </div>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Buton Artık <span
+                        style="color:#7dd3fc;">Akıllı</span></h2>
+                <div class="flex items-center justify-center gap-10">
+                    <div class="run-panel">
+                        <div class="run-title"># butonun KENDİ içinde:</div>
+                        <code class="runline" id="cb-l1">self.sayac += 1</code>
+                        <code class="runline" id="cb-l2">self.setText(f"Tıkla ({self.sayac})")</code>
+                        <div class="run-badge">Nesne kendi durumunu taşıyor.</div>
+                    </div>
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">SayacButonu — canlı</span></div>
+                        <div class="qt-body">
+                            <button type="button" class="qt-btn" id="cb-btn"
+                                style="border-radius:14px;padding:14px 30px;font-size:17px;">Tıkla (0)</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-6">Sayaç <code>QLabel</code>'de değil, <b>butonun kendisinde</b>. Çünkü
+                    <code>SayacButonu</code> hem QPushButton hem de kendi durumunu taşıyan bir nesne. <b>Tıkla!</b></p>
+            </section>
+
+            <!-- 18. DAHA ŞIK: property -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Daha Şık · Bonus</span>
+                <h2 class="text-2xl font-black mb-3 tracking-tighter text-white">Aynı Buton, <span
+                        style="color:#93c5fd;">Daha Zarif</span>: property</h2>
+                <p class="code-note mb-4">Yukarıdaki hâli de doğru. Ama Python'da <code>@property</code> ile daha şık
+                    olur: <b>atama, arayüzü kendiliğinden günceller.</b></p>
+                <div class="flex items-start justify-center gap-6">
+                    <pre style="flex:1;max-width:660px;font-size:0.36em;"><code class="language-python" data-trim
+                            data-line-numbers="4|7-9|11-14|17">class SayacButonu(QPushButton):
+    def __init__(self):
+        super().__init__()
+        self.sayac = 0                  # setter çağrılır → metni de kurar
+        self.clicked.connect(self.artir)
+
+    @property
+    def sayac(self):                    # GETTER (okuma)
+        return self._sayac
+
+    @sayac.setter
+    def sayac(self, deger):             # SETTER (yazma)
+        self._sayac = deger
+        self.setText(f"Tıkla ({deger})")  # arayüzü güncelle
+
+    def artir(self):
+        self.sayac += 1                 # setter halleder</code></pre>
+                    <div class="concept-card" style="max-width:330px;padding:16px 18px;">
+                        <p style="margin-bottom:10px;"><b style="color:#93c5fd;">Getter</b> <code>@property</code> →
+                            <code>btn.sayac</code> okunurken çalışır.</p>
+                        <p style="margin-bottom:10px;"><b style="color:#93c5fd;">Setter</b> <code>@sayac.setter</code> →
+                            atama, arayüzü <b>kendisi</b> günceller.</p>
+                        <p style="margin:0;color:#86efac;">✅ <code>guncelle()</code> gerekmez — daha temiz kapsülleme.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 19. is-a TESTİ -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="check-check" style="width:14px;height:14px;"></i> Kanıt</span>
+                <h2 class="text-3xl font-black mb-6 tracking-tighter text-white">Gerçekten <span
+                        style="color:#93c5fd;">bir QPushButton mu?</span></h2>
+                <pre style="max-width:740px;margin:0 auto 18px;"><code class="language-python" data-trim data-line-numbers="1|2|3|4">btn = SayacButonu()
+isinstance(btn, SayacButonu)   # True
+isinstance(btn, QPushButton)   # True   ← "is-a" !
+issubclass(SayacButonu, QPushButton)  # True</code></pre>
+                <div class="concept-card fragment fade-up" style="max-width:740px;margin:0 auto;text-align:left;">
+                    <p><code>isinstance(nesne, Sınıf)</code> → bu nesne o türden mi? &nbsp;<code>issubclass(A, B)</code> →
+                        A sınıfı B'den mi türedi? İkisi de <b>kalıtım zincirine</b> bakar. Bu yüzden
+                        <code>SayacButonu</code>'nu bir QPushButton beklenen <b>her yere</b> koyabilirsin.</p>
+                </div>
+            </section>
+
+            <!-- 20. İKİNCİ WIDGET: ÖZEL PENCERE -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="app-window" style="width:14px;height:14px;"></i> İkinci Widget</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Pencereyi de Türetelim</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim
+                            data-line-numbers="1|2-4|6-8">class Panel(QWidget):               # QWidget'tan TÜRE
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Tıklama Paneli")
+
+        duzen = QVBoxLayout(self)
+        duzen.addWidget(SayacButonu())  # kendi widget'ımızı kullan
+        duzen.addWidget(SayacButonu())  # ikinci, BAĞIMSIZ buton</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p><code>Panel</code> QWidget'tan türer (is-a); içinde <code>SayacButonu</code>'lar tutar (has-a).
+                            <b>Kalıtım + içerme birlikte.</b></p>
+                        <p class="mt-3" style="color:#7dd3fc;">İki buton ayrı nesne → sayaçları bağımsız.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. CANLI — PANEL -->
+            <section data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">
+                        <i data-lucide="layout-panel-left" style="width:14px;height:14px;"></i> Canlı Panel</span>
+                    <span class="live-badge"><span class="live-dot"></span> İki bağımsız buton</span>
+                </div>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Aynı Sınıf, İki Ayrı Nesne</h2>
+                <div class="flex items-center justify-center gap-8">
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">Tıklama Paneli — canlı</span></div>
+                        <div class="qt-body" style="gap:14px;">
+                            <button type="button" class="qt-btn" id="pb-a"
+                                style="border-radius:14px;padding:13px 28px;font-size:16px;">Tıkla (0)</button>
+                            <button type="button" class="qt-btn" id="pb-b"
+                                style="border-radius:14px;padding:13px 28px;font-size:16px;">Tıkla (0)</button>
+                        </div>
+                    </div>
+                    <div class="concept-card" style="max-width:340px;text-align:left;">
+                        <p>Aynı <code>SayacButonu</code> sınıfından iki nesne. Birini artır → diğeri değişmez.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Her nesnenin kendi <code>self.sayac</code>'ı var. Kalıtım
+                            nesne bağımsızlığını bozmaz.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Bir sınıf yazdık, iki (ya da yüz) bağımsız buton ürettik.
+                    <b>Yeniden kullanımın gücü.</b></p>
+            </section>
+
+            <!-- 22. SIK YAPILAN HATALAR -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="triangle-alert" style="width:14px;height:14px;"></i> Dikkat</span>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Sık Yapılan Hatalar</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>😱 super() unutmak</h4><p>Kendi <code>__init__</code>'inde <code>super().__init__()</code>
+                        çağırmamak → widget yarım kalır.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🔀 is-a / has-a karıştırmak</h4><p>"Sahip olma"yı kalıtımla çözmeye çalışmak → kötü tasarım.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>✏️ Atayı bozmak</h4><p>Çocuğa özel bir şeyi <b>ata sınıfa</b> yazmak → tüm kardeşleri
+                        etkiler.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Kural: <b>ortak</b> olan ataya, <b>farklı</b> olan çocuğa.</p>
+            </section>
+
+            <!-- 23. MINI QUIZ — HAFTAYI YOKLA (tek quiz, sonda) -->
+            <section id="wk2quiz">
+                <span class="chip mb-2" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · Haftayı Yokla</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Kendini Test Et</h2>
+                <div class="grid grid-cols-2 gap-x-8 gap-y-0 text-left" style="max-width:1000px;margin:0 auto;">
+                    <div class="quiz fragment" data-ok="Çocuk, atanın öznitelik ve metotlarını devralır."
+                        data-no="Kalıtımın özü: çocuk atanınkini hazır alır.">
+                        <div class="quiz-q">1) <code>Araba(Arac)</code> — <code>calistir()</code>'ı kullanabilir mi?</div>
+                        <button type="button" class="quiz-opt" data-correct="1">Evet, devraldı</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Hayır, kendi yazar</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Sadece kopyayla</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok='Doğru — "motoru var" has-a, yani içermedir.'
+                        data-no="is-a = kalıtım; has-a = içerme (composition).">
+                        <div class="quiz-q">2) "Araba'nın bir motoru vardır" hangi ilişki?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">is-a (kalıtım)</button>
+                        <button type="button" class="quiz-opt" data-correct="1">has-a (içerme)</button>
+                        <button type="button" class="quiz-opt" data-correct="0">İkisi de değil</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="Devralınan setText() doğrudan kullanılabilir."
+                        data-no="setText() QPushButton'dan gelir; SayacButonu onu devralır.">
+                        <div class="quiz-q">3) <code>SayacButonu(QPushButton)</code>, <code>setText()</code>'i kullanır mı?</div>
+                        <button type="button" class="quiz-opt" data-correct="1">Evet — devraldı</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Hayır — yazmadık</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Sadece <code>super()</code> ile</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="İlk iş: super().__init__() çağırmaktır."
+                        data-no="Ata kurulmadan çocuk yarım kalır — ilk iş super().__init__().">
+                        <div class="quiz-q">4) Kendi <code>__init__</code>'i olan çocuk <b>ilk</b> ne yapar?</div>
+                        <button type="button" class="quiz-opt" data-correct="1"><code>super().__init__()</code></button>
+                        <button type="button" class="quiz-opt" data-correct="0">Hiçbir şey; ata otomatik</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Metotları elle kopyala</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 24. ÖZET -->
+            <section data-background-color="#020617">
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-3 text-left" style="max-width:860px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ <b>Kalıtım</b> kod tekrarını önler (DRY)</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <b>is-a</b> (kalıtım) ≠ <b>has-a</b> (içerme)</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>class Çocuk(Ata)</code> — öznitelik + metot devralınır</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Kurucu: <code>__init__</code> yoksa atanınki; varsa <code>super()</code></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Tüm Qt bir ağaç: QObject→QWidget→QPushButton→<b>SayacButonu</b></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>isinstance</code>/<code>issubclass</code> + <code>@property</code></p></div>
+                </div>
+            </section>
+
+            <!-- 25. UYGULAMA — PROJE (I) -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="dumbbell" style="width:14px;height:14px;"></i> Ders Sonu Uygulama · Proje</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Proje: Renkli Tıklama Paneli</h2>
+                <p class="code-note mb-6">Kalıtımı kullanarak, farklı renklerde sayan butonlardan oluşan bir panel yap.
+                    Aşağıdaki sınıf iskeleti üzerine kur.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:600px;font-size:0.4em;"><code class="language-python" data-trim>class SayacButonu(QPushButton):   # ORTAK ata
+    def __init__(self):
+        super().__init__()
+        self.sayac = 0
+        self.clicked.connect(self.artir)
+    def artir(self):
+        self.sayac += 1
+        self.setText(f"Tıkla ({self.sayac})")
+
+# Görev: bundan renkli çocuklar türet, Panel'e diz</code></pre>
+                    <div class="concept-card" style="max-width:320px;text-align:left;">
+                        <h4>🎯 Hedef</h4>
+                        <p>3 farklı renkte buton içeren, her biri kendi tıklamasını sayan bir pencere.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Süre: ~40 dk. Takıldığın yerde slaytlara dön.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 26. UYGULAMA — ADIMLAR (II) -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="list-checks" style="width:14px;height:14px;"></i> Adım Adım</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Nasıl İlerleyeceksin?</h2>
+                <div class="grid grid-cols-2 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · Ata</h4><p><code>SayacButonu</code> sınıfını yaz
+                        (yukarıdaki iskelet). Test et: tek buton sayıyor mu?</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · Renkli Çocuklar</h4><p><code>KirmiziButon</code>,
+                        <code>YesilButon</code>, <code>MaviButon</code> türet — her biri <code>super().__init__()</code> +
+                        <code>setStyleSheet</code>.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · Panel</h4><p><code>Panel(QWidget)</code> yaz;
+                        <code>QVBoxLayout</code>'a üç butonu ekle.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>4 · Çalıştır</h4><p><code>if __name__ == "__main__":</code>
+                        içinde <code>app</code>, <code>Panel()</code>, <code>show()</code>, <code>exec()</code>.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">✅ Kontrol: Üç butona ayrı ayrı bas — sayaçlar birbirinden
+                    bağımsız artıyor mu? Öyleyse başardın.</p>
+            </section>
+
+            <!-- 27. UYGULAMA — İLERİ (III) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="rocket" style="width:14px;height:14px;"></i> İleri Görevler</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Erken Bitirdiysen</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>⭐ Toplam</h4><p>Panele bir <code>QLabel</code> ekle;
+                        <b>tüm</b> butonların toplam tıklamasını göstersin.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐ Etiketli Buton</h4><p>Kurucuya renk <b>parametresi</b>
+                        ver: <code>RenkliButon(QPushButton)</code> tek sınıf, renk dışarıdan gelsin.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐⭐ @property</h4><p>Sayacı <code>@property</code>
+                        getter/setter ile yeniden yaz; <code>guncelle()</code> olmadan.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Bu görevler önümüzdeki haftaların (polimorfizm, soyut sınıflar)
+                    zeminini hazırlıyor.</p>
+            </section>
+
+            <!-- 28. SONRAKİ HAFTA -->
+            <section data-background-color="#020617">
+                <div class="p-16 border border-white/5 rounded-[4rem] bg-gradient-to-br from-blue-950/20 to-rose-950/20">
+                    <span class="week-number text-base">Sonraki Hafta</span>
+                    <h2 class="text-5xl mb-6 font-black text-white">Kalıtım II — <code
+                            style="color:#93c5fd;">super()</code> & Metot Ezme</h2>
+                    <p class="text-lg text-slate-400 font-light">Devraldığımız metotları <b>ezerek (override)</b>
+                        değiştireceğiz; <code>super()</code> ile üst sınıfa erişip davranışı <b>genişleteceğiz</b>.</p>
+                    <div class="mt-10"><a href="../index.html" class="nav-link">← Ders Ana Sayfası</a></div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            margin: 0.06,
+            slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
+        });
+    </script>
+    <script>
+        // ===== CANLI ETKİLEŞİMLER (Hafta 2) =====
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+
+            // Kendi sayan buton (slayt 17)
+            (function () {
+                var btn = document.getElementById('cb-btn');
+                var l1 = document.getElementById('cb-l1'), l2 = document.getElementById('cb-l2');
+                if (!btn) return;
+                var sayac = 0;
+                btn.addEventListener('click', function (e) {
+                    stop(e);
+                    sayac += 1;
+                    btn.textContent = 'Tıkla (' + sayac + ')';
+                    [l1, l2].forEach(function (el, i) {
+                        if (!el) return;
+                        setTimeout(function () {
+                            el.classList.add('active');
+                            setTimeout(function () { el.classList.remove('active'); }, 430);
+                        }, i * 170);
+                    });
+                });
+            })();
+
+            // Panel: iki bağımsız buton (slayt 21)
+            ['pb-a', 'pb-b'].forEach(function (id) {
+                var btn = document.getElementById(id);
+                if (!btn) return;
+                var sayac = 0;
+                btn.addEventListener('click', function (e) {
+                    stop(e);
+                    sayac += 1;
+                    btn.textContent = 'Tıkla (' + sayac + ')';
+                });
+            });
+
+            // Mini quiz (slayt 23)
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) {
+                            if (o.dataset.correct === '1') o.classList.add('correct');
+                        });
+                        if (opt.dataset.correct === '1') {
+                            fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!');
+                            fb.style.color = '#86efac';
+                        } else {
+                            opt.classList.add('wrong');
+                            fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil işaretlendi.');
+                            fb.style.color = '#fca5a5';
+                        }
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>
