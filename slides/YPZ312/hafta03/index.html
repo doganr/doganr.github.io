@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapay Sinir Ağları 3. Hafta — Öğrenme Paradigmaları ve Öğrenme Kuralları</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+    <style>
+        .math-box { background: rgba(147, 197, 253, 0.06); border: 1px solid rgba(147, 197, 253, 0.22);
+            border-radius: 16px; padding: 12px 22px; margin: 0 auto; }
+        .katex { color: #e8eefc; }
+        .math-box { font-size: 0.6em; }
+        .math-box .katex-display { margin: 0.2em 0; }
+        .svg-wrap { max-width: 940px; margin: 0 auto; }
+        .svg-wrap svg { width: 100%; height: auto; }
+        .sec-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; font-weight: 700;
+            color: #64748b; letter-spacing: 0.04em; }
+        .dtab { border-collapse: collapse; margin: 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 0.5em; }
+        .dtab th, .dtab td { border: 1px solid rgba(255,255,255,0.12); padding: 5px 14px; color: #e2e8f0; text-align: left; }
+        .dtab th { color: #93c5fd; background: rgba(96,165,250,0.08); }
+        .dtab td.ok { color: #86efac; font-weight: 800; }
+        .dtab td.bad { color: #fca5a5; }
+        .reveal pre code .hljs-comment { color: #a8b3c7; font-style: normal; }
+        .runbtn { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.5em; cursor: pointer;
+            background: rgba(108,99,255,0.16); color: #c7d2fe; border: 1px solid #6c63ff; border-radius: 999px;
+            padding: 6px 16px; transition: background 0.15s; }
+        .runbtn:hover { background: rgba(108,99,255,0.32); }
+        .runbtn.on { background: #6c63ff; color: #fff; }
+        .play-row { display: grid; grid-template-columns: 74px 1fr 58px; align-items: center; gap: 10px; margin: 5px 0; }
+        .play-row label { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.52em;
+            color: #c4b5fd; text-align: left; }
+        .play-row input[type=range] { width: 100%; accent-color: #6c63ff; }
+        .play-row .val { font-family: 'JetBrains Mono', monospace; font-size: 0.52em; color: #e2e8f0; text-align: right; }
+        .play-out { display: flex; gap: 30px; justify-content: center; align-items: center; }
+        .play-out .k { font-size: 0.5em; color: #94a3b8; display: block; }
+        .play-out .v { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 1.05em; }
+        .readout { font-family: 'JetBrains Mono', monospace; font-size: 0.5em; color: #cbd5e1; line-height: 1.7; }
+        .readout b { color: #fff; }
+        .wk { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #0b1020;
+            background: #93c5fd; border-radius: 6px; padding: 0 6px; font-weight: 800; }
+        .cite { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; color: #64748b; line-height: 1.5; }
+        .cards-tight .concept-card { padding: 12px 16px; }
+        .cards-tight .concept-card h4 { font-size: 0.66em; margin-bottom: 3px; }
+        .cards-tight .concept-card p { font-size: 0.54em; line-height: 1.45; }
+        .cards-mini .concept-card { padding: 10px 14px; }
+        .cards-mini .concept-card h4 { font-size: 0.6em; }
+        .cards-mini .concept-card p { font-size: 0.48em; line-height: 1.45; }
+        #w3quiz .quiz { margin-bottom: 4px; }
+        #w3quiz .quiz-q { font-size: 0.58em; margin-bottom: 5px; }
+        #w3quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.54em; }
+        #w3quiz .quiz-fb { font-size: 0.5em; min-height: 1.2em; margin-top: 4px; }
+        #w3sum .concept-card { padding: 9px 16px; min-height: 0; }
+        #w3sum .concept-card p { font-size: 0.5em; line-height: 1.4; }
+        #dl-ctrl .runbtn { font-size: 0.42em; padding: 5px 12px; }
+        #dl-out { font-size: 0.42em; line-height: 1.55; min-height: 6.4em; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere" style="width: 620px; height: 620px; top: -12%; left: -12%; background: #1e3a8a;"></div>
+                <div class="glow-sphere" style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #881337; animation-delay: -5s;"></div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">Δw</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">Hebb 1949</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">∂E/∂w</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">ADALINE</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">η</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">epoch</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">δ</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">E = ½e²</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">Yapay Sinir Ağları · Hafta 03</span>
+                    <div class="cover-icon mb-6"><i data-lucide="graduation-cap" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Öğrenme <span
+                            class="grad-text">Kuralları</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Paradigmalar · Hebb · Delta ·
+                        Widrow–Hoff</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span><span style="color:#f92672;">w</span>
+                        ← <span style="color:#f92672;">w</span> + <span style="color:#fd971f;">η</span>·<span
+                            style="color:#a6e22e;">δ</span>·<span style="color:#66d9ef;">x</span> &nbsp;<span
+                            style="color:#475569;"># öğrenmek = ağırlığı güncellemek</span></span></div>
+                </div>
+            </section>
+
+
+            <!-- 2. GEÇEN HAFTA → BU HAFTA -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Hafta</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Ağırlığı Artık <span
+                        class="code-note">Kim Seçecek?</span></h2>
+                <p class="code-note mb-5">Hafta 2'de ağırlıkları <b>biz</b> seçtik: w = [0.5, −0.25, 0.75], b = 0.2.
+                    Bu hafta nöron onları <b>veriden kendisi</b> bulacak.</p>
+                <div class="grid grid-cols-4 gap-3 text-left cards-tight">
+                    <div class="concept-card fragment fade-up"><h4>🧭 1 · Öğrenme</h4><p>Öğrenmek ne demek?
+                        Öğretmenli, öğretmensiz, ödüllü.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🔗 2 · Hebb</h4><p>Biyolojiden gelen ilk kural:
+                        birlikte ateşle, birlikte bağlan.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>📉 3 · Hata & türev</h4><p>Ne kadar yanıldık? Hangi
+                        yöne düzeltelim?</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>⚙️ 4 ·
+                        Delta</h4><p>Hatayı türevle azaltan kural ve doğrusal hâli Widrow–Hoff.</p></div>
+                </div>
+            </section>
+
+
+            <!-- 3. ÖĞRENMEK = AĞIRLIĞI GÜNCELLEMEK -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Temel Fikir</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Öğrenmek = <span
+                        class="code-note">Ağırlığı Güncellemek</span></h2>
+                <div class="math-box mb-4" style="max-width:640px;">
+                    \[ \mathbf{w}(t+1) = \mathbf{w}(t) + \Delta\mathbf{w}(t) \]
+                </div>
+                <div class="grid grid-cols-3 gap-4 text-left cards-tight" style="max-width:1050px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>💾 Bilgi nerede?</h4><p>Ağırlıklarda. Eğitilmiş
+                        bir ağ, sonuçta bir <b>w listesidir</b>; model dosyası da tam olarak budur.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🧠 Biyolojide</h4><p>Sinapslar kullanıldıkça
+                        güçlenir ya da zayıflar. Uzun süreli güçlenme (LTP) 1973'te gösterildi.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>❓ Tek
+                        soru</h4><p><b>Δw nasıl hesaplanır?</b> Her öğrenme kuralı bu soruya verilmiş bir cevaptır.</p></div>
+                </div>
+                <p class="cite mt-4">Bliss, T. V. P. &amp; Lømo, T. (1973). Long-lasting potentiation of synaptic
+                    transmission in the dentate area of the anaesthetized rabbit. J. Physiol., 232, 331–356.</p>
+            </section>
+
+
+            <!-- 4. ÖĞRENME PARADİGMALARI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="users" style="width:14px;height:14px;"></i> Paradigmalar</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kim Öğretiyor? <span
+                        class="code-note">Üç Paradigma</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left cards-tight" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.4);"><h4>👩‍🏫
+                        Denetimli</h4><p>Her x için <b>doğru cevap d</b> verilir; ağ hatasından öğrenir (e = d − y).<br>
+                        <span style="color:#94a3b8;">Örnek: etiketli e-postalar (spam / değil).</span><br>Bu derste:
+                        Delta, perceptron, geri yayılım <span class="wk">H3–H8</span></p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.4);"><h4>🔍
+                        Denetimsiz</h4><p><b>d yok.</b> Ağ verideki yapıyı, benzerliği kendisi bulur.<br>
+                        <span style="color:#94a3b8;">Örnek: müşterileri davranışa göre gruplamak.</span><br>Bu derste:
+                        Hebb, Kohonen / SOM <span class="wk">H11–H12</span></p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,114,182,0.4);"><h4>🎮
+                        Pekiştirmeli</h4><p>Doğru cevap yok; yalnızca <b>ödül / ceza</b> var. Ajan denemeyle öğrenir.<br>
+                        <span style="color:#94a3b8;">Örnek: oyun oynayan ajan, robot kontrolü.</span><br>Bu dersin
+                        kapsamı dışında.</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;">Bu hafta ikisini göreceğiz:
+                    <b>Hebb</b> (denetimsiz) ve <b>Delta</b> (denetimli).</p>
+            </section>
+
+
+            <!-- 5. GENEL ÖĞRENME KURALI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="sigma" style="width:14px;height:14px;"></i> Çerçeve</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Tek Formül, <span
+                        class="code-note">Dört Kural</span></h2>
+                <div class="math-box mb-3" style="max-width:700px;">
+                    \[ \Delta\mathbf{w} = \eta \cdot \underbrace{r(\mathbf{w}, \mathbf{x}, d)}_{\text{öğrenme sinyali}} \cdot \mathbf{x} \]
+                </div>
+                <table class="dtab" style="font-size:0.5em;">
+                    <tr><th>Kural</th><th>Öğrenme sinyali r</th><th>Paradigma</th><th>Nerede?</th></tr>
+                    <tr class="fragment fade-in"><td>Hebb</td><td>y = f(wᵀx)</td><td>denetimsiz</td><td>bu hafta</td></tr>
+                    <tr class="fragment fade-in"><td>Widrow–Hoff (LMS)</td><td>d − wᵀx</td><td>denetimli</td><td>bu hafta</td></tr>
+                    <tr class="fragment fade-in"><td>Delta</td><td>(d − y) · f′(net)</td><td>denetimli</td><td>bu hafta</td></tr>
+                    <tr class="fragment fade-in"><td>Perceptron</td><td>d − y</td><td>denetimli</td><td><span class="wk">H4</span></td></tr>
+                </table>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.52em;">Yön hep <b>x</b>'ten gelir; kuralı
+                    kural yapan, <b>ne kadar</b> ve <b>hangi işaretle</b> gideceğini söyleyen <b>r</b>.</p>
+                <p class="cite mt-2">Zurada, J. M. (1992). Introduction to Artificial Neural Systems. West Publishing.</p>
+            </section>
+
+
+            <!-- 6. HEBB: KİM, NE DEDİ -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="book-open" style="width:14px;height:14px;"></i> Hebb · 1949</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Donald Hebb: <span
+                        class="code-note">İlk Öğrenme Kuralı</span></h2>
+                <div class="grid grid-cols-2 gap-5 text-left cards-tight" style="max-width:1040px;margin:0 auto;">
+                    <div class="concept-card"><h4>👤 Kim?</h4><p>Donald O. Hebb (1904–1985), Kanadalı nöropsikolog
+                        (McGill). 1949'da öğrenmenin <b>hücre düzeyinde</b> nasıl olabileceğine dair bir varsayım
+                        önerdi.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.4);"><h4>💡 Varsayım
+                        (özetle)</h4><p>A hücresi, B hücresini <b>tekrar tekrar</b> ateşlemeye katkıda bulunursa
+                        A→B bağlantısı <b>güçlenir</b>. Öğretmen yok: yalnızca birlikte etkinlik var.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🔥 Akılda kalan hâli</h4><p>"Cells that fire
+                        together wire together." <span style="color:#94a3b8;">(Shatz, 1992'deki özet)</span><br>Birlikte
+                        ateşleyen hücreler birbirine bağlanır.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🔬 Kanıt</h4><p>Varsayım 24 yıl sonra deneyle
+                        desteklendi: hipokampüste uzun süreli güçlenme (Bliss &amp; Lømo, 1973). Bugün Hopfield ağları
+                        ve SOM bu fikrin torunları <span class="wk">H11–H13</span></p></div>
+                </div>
+                <p class="cite mt-3">Hebb, D. O. (1949). The Organization of Behavior. Wiley. · Shatz, C. J. (1992).
+                    The developing brain. Scientific American, 267(3), 60–67.</p>
+            </section>
+
+
+            <!-- 7. HEBB KURALI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="link-2" style="width:14px;height:14px;"></i> Hebb Kuralı</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Birlikte Ateşle, <span
+                        class="code-note">Birlikte Bağlan</span></h2>
+                <div class="math-box mb-3" style="max-width:640px;">
+                    \[ \Delta\mathbf{w} = \eta\, y\, \mathbf{x}, \qquad y = f(\mathbf{w}^\top \mathbf{x}) \]
+                </div>
+                <table class="dtab fragment fade-in" style="font-size:0.52em;">
+                    <tr><th>xᵢ</th><th>y</th><th>Δwᵢ = η·y·xᵢ</th><th>Anlamı</th></tr>
+                    <tr><td>+</td><td>+</td><td class="ok">+</td><td>birlikte aktif → bağ güçlenir</td></tr>
+                    <tr><td>−</td><td>−</td><td class="ok">+</td><td>birlikte pasif → bağ güçlenir</td></tr>
+                    <tr><td>+</td><td>−</td><td class="bad">−</td><td>zıt davrandılar → bağ zayıflar</td></tr>
+                    <tr><td>−</td><td>+</td><td class="bad">−</td><td>zıt davrandılar → bağ zayıflar</td></tr>
+                </table>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;">Formülde <b>d yok</b> → denetimsiz.
+                    Nöron, girdisiyle kendi çıktısı arasındaki <b>uyumu</b> (korelasyonu) pekiştirir. Doğru mu yanlış mı,
+                    bilmez.</p>
+            </section>
+
+
+            <!-- 8. HEBB ELLE -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="hash" style="width:14px;height:14px;"></i> Sayısal Örnek</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Hebb'i <span
+                        class="code-note">Elle Çalıştır</span></h2>
+                <p class="code-note mb-3" style="font-size:0.54em;">f = sgn (çıktı ±1), η = 1, başlangıç
+                    <b>w = [1, −1, 0.5]</b>. Üç girdi sırayla geliyor:</p>
+                <table class="dtab" style="font-size:0.5em;">
+                    <tr><th>Adım</th><th>x</th><th>net = wᵀx</th><th>y = sgn(net)</th><th>yeni w = w + y·x</th><th>|w|</th></tr>
+                    <tr class="fragment fade-in"><td>1</td><td>[1, −2, 1.5]</td><td>1 + 2 + 0.75 = 3.75</td><td>+1</td><td class="ok">[2, −3, 2]</td><td>4.12</td></tr>
+                    <tr class="fragment fade-in"><td>2</td><td>[1, −0.5, −2]</td><td>2 + 1.5 − 4 = −0.5</td><td>−1</td><td class="ok">[1, −2.5, 4]</td><td>4.82</td></tr>
+                    <tr class="fragment fade-in"><td>3</td><td>[0, 1, −1]</td><td>0 − 2.5 − 4 = −6.5</td><td>−1</td><td class="ok">[1, −3.5, 5]</td><td>6.18</td></tr>
+                </table>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;">Hiçbir yerde d yok: nöron kendi
+                    cevabını pekiştiriyor. Bir de |w|'ye bakın: <b>1.5 → 4.12 → 4.82 → 6.18</b>. Hep büyüyor… →
+                    <span style="color:#64748b;">(PyTorch ile doğrulandı)</span></p>
+            </section>
+
+
+            <!-- 9. HEBB'İN SORUNU: PATLAMA → OJA -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="flame" style="width:14px;height:14px;"></i> Hebb'in Sorunu</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Ağırlık <span
+                        class="code-note">Patlar</span></h2>
+                <pre style="max-width:960px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1-5|7-11" style="font-size:0.8em;">x, w = torch.tensor([1., 1.]), torch.tensor([0.1, 0.1])
+for t in range(100):
+    y = w @ x
+    w = w + 0.1 * y * x               # Hebb
+# |w|:  10 adım 0.88 · 50 adım 1 287 · 100 adım 11 712 222  → patladı!
+
+w = torch.tensor([0.1, 0.1])
+for t in range(100):
+    y = w @ x
+    w = w + 0.1 * y * (x - y * w)     # Oja (1982): −y²w fren terimi
+# |w| → 1.0000,  w → [0.7071, 0.7071]  → dengelendi</code></pre>
+                <div class="grid grid-cols-2 gap-4 text-left cards-mini mt-3 fragment fade-up" style="max-width:960px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card"><h4>🔥 Neden patlıyor?</h4><p>Her adım w'yi x yönünde büyütür, y de
+                        büyür, bir sonraki adım daha da büyütür. Hiçbir şey <b>frenlemez</b>.</p></div>
+                    <div class="concept-card"><h4>🧯 Oja'nın çözümü</h4><p>Fren terimiyle |w| = 1'e oturur ve verinin
+                        <b>ana yönünü</b> bulur: bir nöronluk PCA <span class="wk">H11</span></p></div>
+                </div>
+                <p class="cite mt-2">Oja, E. (1982). Simplified neuron model as a principal component analyzer. J. Math.
+                    Biology, 15, 267–273. · Çıktılar PyTorch'ta çalıştırılarak alındı.</p>
+            </section>
+
+
+            <!-- 10. HATA: HEBB'İN KÖR NOKTASI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="crosshair" style="width:14px;height:14px;"></i> Hata</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Hebb'in Kör Noktası: <span
+                        class="code-note">Hata</span></h2>
+                <p class="code-note mb-3" style="font-size:0.54em;">Hebb yanıldığını bilmez. Denetimli öğrenmede öğretmen
+                    <b>d</b>'yi verir; artık ne kadar yanıldığımızı ölçebiliriz:</p>
+                <div class="math-box mb-3" style="max-width:600px;">
+                    \[ e = d - y, \qquad E = \tfrac{1}{2}\,(d - y)^2 \]
+                </div>
+                <div class="grid grid-cols-3 gap-4 text-left cards-tight" style="max-width:1050px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>² Neden kare?</h4><p>İşaret fark etmez (−0.6 ile +0.6
+                        aynı kötü), büyük hataya büyük ceza.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>½ Neden yarım?</h4><p>Türev alınca 2 ile sadeleşir:
+                        dE/dy = −(d − y). Sadece kolaylık.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.4);"><h4>🧮 Hafta 2'nin
+                        nöronu</h4><p>σ ile y = 0.3659, hedef d = 1 → e = 0.6341, <b>E = 0.2011</b></p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;">Hedef: <b>E'yi küçültmek</b>. Peki
+                    w'yi hangi yöne itmeliyiz? →</p>
+            </section>
+
+
+            <!-- 11. TÜREV = DUYARLILIK -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="compass" style="width:14px;height:14px;"></i> Hata → Yön</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Makine Ağırlığı <span
+                        class="code-note">Nasıl Seçecek?</span></h2>
+                <p class="code-note mb-2" style="font-size:0.54em;">Makinenin soracağı soru: <b>"w'yi biraz
+                    değiştirirsem y (ve E) ne kadar değişir?"</b> Bu sorunun adı <b>türev</b>.</p>
+                <div class="math-box mb-2" style="max-width:640px;">
+                    \[ \frac{\partial y}{\partial w_1} \approx \frac{y(w_1 + h) - y(w_1)}{h} \]
+                </div>
+                <div class="grid grid-cols-2 gap-5 text-left cards-tight" style="max-width:980px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(34,197,94,0.4);">
+                        <h4 style="color:#86efac;">Sigmoid nöron (Hafta 2)</h4>
+                        <p>w₁: 0.50 → 0.51 &nbsp;⇒&nbsp; y: 0.3659 → 0.3682<br>Δy = 0.00232 → duyarlılık ≈
+                            <b>0.232</b>.<br>Makine yönü <b>görür</b>: "w₁'i artırmak y'yi artırır."</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.4);">
+                        <h4 style="color:#fda4af;">Basamak nöron</h4>
+                        <p>w₁: 0.50 → 0.51 &nbsp;⇒&nbsp; y: 0 → 0<br>Δy = 0 → duyarlılık <b>0</b>.<br>Nöron <b>kör</b>:
+                            hangi yöne gideceğini bilemez.</p></div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.54em;">Türev = nöronun <b>duyarlılığı</b>.
+                    Öğrenme, bu duyarlılığa bakarak w'yi hatayı azaltan yöne itmektir. Önce türevi hatırlayalım →</p>
+            </section>
+
+
+            <!-- 12. TÜREV = ANLIK DEĞİŞİM -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="trending-down" style="width:14px;height:14px;"></i> Etkileşimli · Türev</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Türev = <span
+                        style="color:#93c5fd;">Anlık Değişim</span></h2>
+                <div class="flex items-center justify-center gap-8">
+                    <div style="flex:1.1;">
+                        <svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" role="img"
+                            aria-label="f(x)=x^2 eğrisi ve teğet">
+                            <line x1="40" y1="300" x2="470" y2="300" stroke="#475569" stroke-width="1.5" />
+                            <line x1="250" y1="20" x2="250" y2="312" stroke="#475569" stroke-width="1.5" />
+                            <text x="462" y="318" fill="#64748b" font-size="13" font-family="monospace">x</text>
+                            <polyline points="40,20 75,105.6 110,175.6 145,230 180,268.9 215,292.2 250,300 285,292.2 320,268.9 355,230 390,175.6 425,105.6 460,20"
+                                fill="none" stroke="#60a5fa" stroke-width="3" />
+                            <line id="g-tan" x1="0" y1="0" x2="0" y2="0" stroke="#fbbf24" stroke-width="2.5" />
+                            <circle id="g-dot" cx="0" cy="0" r="7" fill="#f43f5e" />
+                        </svg>
+                    </div>
+                    <div style="flex:1;">
+                        <div class="math-box mb-3" style="font-size:0.82em;">\[ f'(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h} \]</div>
+                        <div class="math-box mb-3">\( f(x)=x^2 \Rightarrow f'(x)=2x \)</div>
+                        <div class="play-out mb-3">
+                            <div><span class="k">x</span><span class="v" id="g-xv" style="color:#f43f5e;">1.5</span></div>
+                            <div><span class="k">f(x)</span><span class="v" id="g-fx" style="color:#60a5fa;">2.25</span></div>
+                            <div><span class="k">eğim f'(x)</span><span class="v" id="g-fp" style="color:#fbbf24;">3.00</span></div>
+                        </div>
+                        <input type="range" id="grad-x" min="-3" max="3" step="0.1" value="1.5"
+                            style="width:100%;accent-color:#f43f5e;" aria-label="x değeri">
+                    </div>
+                </div>
+                <p class="code-note mt-2 fragment fade-in" style="font-size:0.58em;">Eğim = "x'i artırırsam f ne olur".
+                    Pozitif eğim → artırınca büyür; negatif eğim → artırınca küçülür. Kaydırıcıyı oynat!</p>
+            </section>
+
+
+            <!-- 13. GRADYAN İNİŞİ -->
+            <section data-background-color="#020617" data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="target" style="width:14px;height:14px;"></i> Etkileşimli ·
+                    Gradyan İnişi</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Gradyan İnişi: <span
+                        class="code-note">Hatayı Yokuş Aşağı</span></h2>
+                <div class="flex items-center justify-center gap-8">
+                    <div style="flex:1.1;">
+                        <svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" role="img"
+                            aria-label="Gradyan inişi: E(w)=w^2 üzerinde yuvarlanan top">
+                            <line x1="40" y1="300" x2="470" y2="300" stroke="#475569" stroke-width="1.5" />
+                            <line x1="250" y1="20" x2="250" y2="312" stroke="#475569" stroke-width="1.5" />
+                            <text x="462" y="318" fill="#64748b" font-size="13" font-family="monospace">w</text>
+                            <polyline points="40,20 75,105.6 110,175.6 145,230 180,268.9 215,292.2 250,300 285,292.2 320,268.9 355,230 390,175.6 425,105.6 460,20"
+                                fill="none" stroke="#60a5fa" stroke-width="3" />
+                            <line id="gd-arrow" x1="0" y1="0" x2="0" y2="0" stroke="#fbbf24" stroke-width="3"
+                                stroke-dasharray="4 3" style="opacity:0;" />
+                            <circle id="gd-ball" cx="425" cy="105.6" r="10" fill="#f59e0b" stroke="#fff"
+                                stroke-width="1.5" />
+                            <text x="250" y="316" fill="#6ee7b7" font-size="13" text-anchor="middle"
+                                font-family="monospace">min E</text>
+                            <text id="gd-warn" x="250" y="42" fill="#f87171" font-size="17" font-weight="800"
+                                text-anchor="middle" font-family="monospace"></text>
+                        </svg>
+                    </div>
+                    <div style="flex:1;">
+                        <div class="math-box mb-3" style="font-size:0.85em;">\( w \leftarrow w - \eta\,E'(w) \)</div>
+                        <div class="play-out mb-3">
+                            <div><span class="k">w</span><span class="v" id="gd-x" style="color:#f59e0b;">2.50</span></div>
+                            <div><span class="k">E(w)</span><span class="v" id="gd-f" style="color:#60a5fa;">6.25</span></div>
+                            <div><span class="k">adım</span><span class="v" id="gd-n" style="color:#94a3b8;">0</span></div>
+                        </div>
+                        <div class="play-row"><label>η</label><input type="range" id="gd-eta" min="0.05" max="1.1"
+                                step="0.05" value="0.1"><span class="val" id="gd-etav">0.10</span></div>
+                        <div style="display:flex;gap:12px;justify-content:center;margin-top:14px;">
+                            <button type="button" id="gd-step" class="runbtn">▶ Adım at</button>
+                            <button type="button" id="gd-reset" class="runbtn">↺ Sıfırla</button>
+                        </div>
+                        <div class="math-box mt-3 fragment fade-in text-left" style="padding:8px 14px;">
+                            <p class="code-note" style="font-size:0.5em;margin:0;"><b>Çok ağırlıkta:</b> her ağırlık için
+                                bir <b>kısmi türev</b>:<br>\( \nabla E=\left[\tfrac{\partial E}{\partial w_1},\dots,\tfrac{\partial
+                                E}{\partial w_n}\right] \)<br>Tek nöronda → Delta kuralı (bu hafta); çok katmanda → geri
+                                yayılım <span class="wk">H7</span></p>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.54em;">Türev en dik <b>artış</b> yönünü
+                    gösterir; öğrenme onun <b>tersine</b> gider. Burada E(w) = w² → \( w_{k+1}=(1-2\eta)\,w_k \):
+                    <b>η &lt; 0,5</b> düzgün iner, <b>0,5 &lt; η &lt; 1</b> salınarak iner, <b>η &gt; 1 patlar</b>. Tahmin et, dene!</p>
+            </section>
+
+
+            <!-- 14. ZİNCİR KURALI -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="link" style="width:14px;height:14px;"></i> Zincir Kuralı</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">İç İçe Fonksiyonlar: <span
+                        class="code-note">Türevleri Çarp</span></h2>
+                <div class="svg-wrap" style="max-width:940px;">
+                    <svg viewBox="0 0 940 210" xmlns="http://www.w3.org/2000/svg" role="img"
+                        aria-label="Zincir kuralı boru hattı: x, g, u, f, y">
+                        <defs>
+                            <marker id="ca" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                                <path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8" /></marker>
+                        </defs>
+                        <g stroke="#94a3b8" stroke-width="2.5" marker-end="url(#ca)" fill="none">
+                            <line x1="126" y1="78" x2="192" y2="78" />
+                            <line x1="366" y1="78" x2="432" y2="78" />
+                            <line x1="500" y1="78" x2="566" y2="78" />
+                            <line x1="740" y1="78" x2="806" y2="78" />
+                        </g>
+                        <circle cx="90" cy="78" r="32" fill="rgba(96,165,250,0.16)" stroke="#60a5fa" stroke-width="2.5" />
+                        <text x="90" y="86" font-size="24" font-weight="800" fill="#dbeafe" text-anchor="middle" font-family="monospace">x</text>
+                        <rect x="194" y="50" width="172" height="56" rx="12" fill="rgba(52,211,153,0.14)" stroke="#34d399" stroke-width="2.5" />
+                        <text x="280" y="86" font-size="20" font-weight="700" fill="#6ee7b7" text-anchor="middle" font-family="monospace">g: 3x+1</text>
+                        <circle cx="466" cy="78" r="32" fill="rgba(96,165,250,0.16)" stroke="#60a5fa" stroke-width="2.5" />
+                        <text x="466" y="86" font-size="22" font-weight="800" fill="#dbeafe" text-anchor="middle" font-family="monospace">u</text>
+                        <rect x="568" y="50" width="172" height="56" rx="12" fill="rgba(251,191,36,0.14)" stroke="#fbbf24" stroke-width="2.5" />
+                        <text x="654" y="87" font-size="20" font-weight="700" fill="#fbbf24" text-anchor="middle" font-family="monospace">f: u²</text>
+                        <circle cx="840" cy="78" r="32" fill="rgba(255,255,255,0.10)" stroke="#e2e8f0" stroke-width="2.5" />
+                        <text x="840" y="86" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle" font-family="monospace" font-style="italic">y</text>
+                        <g font-family="monospace" font-size="15" font-weight="700" text-anchor="middle">
+                            <text x="280" y="150" fill="#6ee7b7">du/dx = 3</text>
+                            <text x="654" y="150" fill="#fbbf24">dy/du = 2u</text>
+                        </g>
+                        <text x="466" y="192" font-size="13" fill="#94a3b8" text-anchor="middle">yerel türevler ↑ &nbsp; (geriye çarpılır)</text>
+                    </svg>
+                </div>
+                <div class="math-box mb-2" style="max-width:640px;">
+                    \[ \frac{dy}{dx} = \frac{dy}{du}\cdot\frac{du}{dx} = 2u\cdot 3 = 6(3x+1) \]
+                </div>
+                <p class="code-note fragment fade-in" style="font-size:0.58em;">Yerel türevleri <b>çarparak</b> geriye
+                    taşırsın (kontrol: x=1 → u=4 → dy/dx = 2·4·3 = <b>24</b>). Nöron da tam böyle bir zincir:
+                    <b>w → net → y → E</b>. Sıradaki slaytta kuralı nörona uygulayacağız →</p>
+            </section>
+
+
+            <!-- 15. DUYARLILIĞIN FORMÜLÜ -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="link" style="width:14px;height:14px;"></i> Zincir Kuralı</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Duyarlılığın <span
+                        class="code-note">Formülü</span></h2>
+                <p class="code-note mb-3" style="font-size:0.54em;">Nöron iki adımlı bir zincir:
+                    \( \mathbf{w} \to \text{net} \to y \). Zincir kuralı: türevleri <b>çarp</b>.</p>
+                <div class="math-box mb-3" style="max-width:900px;">
+                    \[ \frac{\partial y}{\partial w_i} = \underbrace{f'(\text{net})}_{\text{aktivasyonun eğimi}} \cdot
+                    \underbrace{x_i}_{\text{girdi}}, \qquad \frac{\partial y}{\partial b} = f'(\text{net}) \]
+                </div>
+                <table class="dtab fragment fade-in" style="font-size:0.54em;">
+                    <tr><th>Hafta 2'deki nöron</th><th>f′(−0.55)</th><th>∂y/∂w = f′ · x, &nbsp;x = [1, 2, −1]</th></tr>
+                    <tr><td>sigmoid</td><td>σ(1−σ) = 0.232</td><td class="ok">[0.232, 0.464, −0.232]</td></tr>
+                    <tr><td>basamak</td><td>0</td><td class="bad">[0, 0, 0] → öğrenme sinyali yok</td></tr>
+                </table>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;"><b>f′</b> ne kadar büyükse nöron
+                    o kadar <b>öğrenmeye açık</b>. Şimdi zincire hatayı da ekleyip kuralı türetelim →</p>
+            </section>
+
+
+            <!-- 16. DELTA KURALININ TÜRETİLMESİ -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="calculator" style="width:14px;height:14px;"></i> Delta Kuralı</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Delta Kuralı: <span
+                        class="code-note">Üç Halkalı Zincir</span></h2>
+                <div class="math-box mb-2" style="max-width:820px;">
+                    \[ E = \tfrac{1}{2}(d-y)^2, \qquad y = f(\text{net}), \qquad \text{net} = \mathbf{w}^\top\mathbf{x} \]
+                </div>
+                <div class="math-box mb-2 fragment fade-in" style="max-width:820px;">
+                    \[ \frac{\partial E}{\partial w_i} = \underbrace{\frac{\partial E}{\partial y}}_{-(d-y)} \cdot
+                    \underbrace{\frac{\partial y}{\partial\, \text{net}}}_{f'(\text{net})} \cdot
+                    \underbrace{\frac{\partial\, \text{net}}{\partial w_i}}_{x_i} \]
+                </div>
+                <div class="math-box mb-2 fragment fade-in" style="max-width:820px;border-color:rgba(52,211,153,0.5);">
+                    \[ \Delta\mathbf{w} = -\eta\,\frac{\partial E}{\partial \mathbf{w}} = \eta\,
+                    \underbrace{(d-y)\,f'(\text{net})}_{\delta}\;\mathbf{x} \]
+                </div>
+                <p class="code-note mt-2 fragment fade-in" style="font-size:0.52em;"><b>δ = hata × eğim</b> — kuralın
+                    adı buradan. Bias için x₀ = 1: Δb = η·δ. Bu δ'yı katmanlar boyunca geriye taşımak =
+                    <b>genelleştirilmiş delta kuralı</b> = geri yayılım (Rumelhart, Hinton &amp; Williams, 1986)
+                    <span class="wk">H7</span></p>
+            </section>
+
+
+            <!-- 17. ELLE BİR DELTA ADIMI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="hash" style="width:14px;height:14px;"></i> Sayısal Örnek</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Hafta 2'nin Nöronu <span
+                        class="code-note">Bir Adım Öğreniyor</span></h2>
+                <p class="code-note mb-3" style="font-size:0.52em;">x = [1, 2, −1], w = [0.5, −0.25, 0.75], b = 0.2,
+                    f = σ, hedef <b>d = 1</b>, <b>η = 0.5</b></p>
+                <table class="dtab" style="font-size:0.5em;">
+                    <tr><th>Adım</th><th>Hesap</th><th>Sonuç</th></tr>
+                    <tr class="fragment fade-in"><td>1 · ileri</td><td>net = −0.55 → y = σ(−0.55)</td><td>y = 0.3659</td></tr>
+                    <tr class="fragment fade-in"><td>2 · hata</td><td>e = d − y · E = ½e²</td><td>e = 0.6341 · E = 0.2011</td></tr>
+                    <tr class="fragment fade-in"><td>3 · eğim</td><td>f′ = y(1 − y)</td><td>0.2320</td></tr>
+                    <tr class="fragment fade-in"><td>4 · δ</td><td>δ = e · f′ = 0.6341 · 0.2320</td><td>0.1471</td></tr>
+                    <tr class="fragment fade-in"><td>5 · güncelle</td><td>Δw = η·δ·x · Δb = η·δ</td><td>[0.0736, 0.1471, −0.0736] · 0.0736</td></tr>
+                    <tr class="fragment fade-in"><td>6 · tekrar</td><td>yeni net = −0.0351 → y</td><td class="ok">y = 0.4912 · E = 0.1294</td></tr>
+                </table>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.54em;">Tek adımda hata <b>%35.6</b> azaldı
+                    ve her ağırlık "doğru yöne" gitti: x₂ = 2 olan w₂ en çok, x₃ = −1 olan w₃ ters yönde değişti.
+                    <span style="color:#64748b;">(PyTorch autograd ile birebir doğrulandı.)</span></p>
+            </section>
+
+
+            <!-- 18. WIDROW–HOFF / ADALINE -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="radio" style="width:14px;height:14px;"></i> Widrow–Hoff · 1960</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">ADALINE ve <span
+                        class="code-note">LMS Kuralı</span></h2>
+                <div class="math-box mb-3" style="max-width:780px;">
+                    \[ f(\text{net}) = \text{net} \;\Rightarrow\; f' = 1 \;\Rightarrow\; \Delta\mathbf{w} = \eta\,(d - \mathbf{w}^\top\mathbf{x})\,\mathbf{x} \]
+                </div>
+                <div class="grid grid-cols-3 gap-4 text-left cards-tight" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>👥 Kim?</h4><p>Bernard Widrow ve öğrencisi
+                        Marcian "Ted" Hoff, Stanford, 1960. Hoff sonradan Intel'de ilk mikroişlemcinin (4004)
+                        mimarlarından biri oldu.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⚙️ ADALINE</h4><p><b>ADA</b>ptive <b>LI</b>near
+                        <b>NE</b>uron. Öğrenirken doğrusal çıktıyı (net) kullanır; karar verirken eşikler. Delta kuralının
+                        <b>f = doğrusal</b> özel hâli.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.4);"><h4>📡 Hâlâ
+                        yaşıyor</h4><p>Adı <b>LMS</b> (en küçük ortalama kareler). Telefon ve modemlerde yankı
+                        giderme, gürültü engelleme gibi adaptif filtrelerin temeli.</p></div>
+                </div>
+                <p class="cite mt-4">Widrow, B. &amp; Hoff, M. E. (1960). Adaptive switching circuits. IRE WESCON
+                    Convention Record, Part 4, 96–104.</p>
+            </section>
+
+
+            <!-- 19. η, EPOCH, ONLINE / TOPLU -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="gauge" style="width:14px;height:14px;"></i> Eğitim Ayarları</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">η, Epoch ve <span
+                        class="code-note">Ne Zaman Durmalı?</span></h2>
+                <div class="grid grid-cols-2 gap-4 text-left cards-tight" style="max-width:1040px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>🎚️ Öğrenme oranı η</h4><p>Küçük → yavaş ama emin.
+                        Büyük → salınır, hatta <b>ıraksar</b>. Widrow–Hoff, AND'de: η = 0.2 yakınsar, 0.5 salınır,
+                        η ≥ 1 patlar.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🔁 Epoch</h4><p>Eğitim setinin <b>tamamı</b> bir kez
+                        gösterildi = 1 epoch. Öğrenme genelde onlarca–binlerce epoch sürer.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🚶 Online ↔ 📦 Toplu</h4><p><b>Online:</b> her örnekten
+                        sonra güncelle (bugünkü kurallar). <b>Toplu (batch):</b> tüm örneklerin Δw'sini topla, sonra
+                        bir kez güncelle. Arası: mini-batch <span class="wk">H8</span></p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.4);"><h4>🛑 Durma
+                        kriteri</h4><p>E &lt; ε (yeterince küçük), tüm örnekler doğru ya da en fazla N epoch. Hangisi
+                        önce gelirse.</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;">Hepsini canlı deneyelim →</p>
+            </section>
+
+
+            <!-- 20. ETKİLEŞİMLİ: DELTA KURALI CANLI -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="play" style="width:14px;height:14px;"></i> Etkileşimli ·
+                    Delta Kuralı</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Nöron <span
+                        class="code-note">Öğreniyor</span></h2>
+                <div class="flex items-start justify-center gap-5">
+                    <canvas id="dl-cv" width="330" height="330"
+                        style="width:300px;height:300px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);"
+                        aria-label="Nöronun karar bölgeleri ve dört eğitim örneği"></canvas>
+                    <div style="flex:1;max-width:600px;text-align:left;" id="dl-ctrl">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <span id="dl-sets" style="display:flex;gap:6px;">
+                                <button type="button" class="runbtn on" data-s="AND">AND</button>
+                                <button type="button" class="runbtn" data-s="OR">OR</button>
+                                <button type="button" class="runbtn" data-s="XOR">XOR</button>
+                            </span>
+                            <span style="width:10px;"></span>
+                            <span id="dl-fs" style="display:flex;gap:6px;">
+                                <button type="button" class="runbtn" data-f="lin">doğrusal (W–H)</button>
+                                <button type="button" class="runbtn on" data-f="sig">sigmoid (delta)</button>
+                                <button type="button" class="runbtn" data-f="step">basamak</button>
+                            </span>
+                        </div>
+                        <div class="play-row mt-2"><label>η</label><input type="range" id="dl-eta" min="0.05" max="3"
+                                step="0.05" value="2"><span class="val" id="dl-etav"></span></div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+                            <button type="button" class="runbtn" id="dl-one">1 örnek</button>
+                            <button type="button" class="runbtn" id="dl-ep">1 epoch</button>
+                            <button type="button" class="runbtn" id="dl-play">▶ oynat</button>
+                            <button type="button" class="runbtn" id="dl-reset">↺ sıfırla</button>
+                        </div>
+                        <div class="readout mt-2" id="dl-out"></div>
+                        <svg id="dl-curve" viewBox="0 0 600 120" style="width:100%;height:auto;margin-top:4px;"
+                            aria-label="Epoch başına toplam hata E"></svg>
+                    </div>
+                </div>
+                <p class="code-note mt-1" style="font-size:0.46em;">Başlangıç: Hafta 2'deki nöronun ağırlıkları
+                    w = [0.5, −0.25], b = 0.2 · ● hedef 1 · ○ hedef 0 · <span style="color:#fbbf24;">sarı halka</span> =
+                    sıradaki örnek. Dene: XOR'da E nerede takılıyor? W–H'de η = 1? Basamakta neden hiçbir şey olmuyor?</p>
+            </section>
+
+
+            <!-- 21. ETKİLEŞİMLİ: AKTİVASYON GEZGİNİ (f′'NİN ROLÜ) -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="line-chart" style="width:14px;height:14px;"></i> Etkileşimli ·
+                    f′'nin Rolü</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Fonksiyon ve <span
+                        class="code-note">Türevi</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <div style="flex:1.3;">
+                        <svg id="ax-svg" viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" role="img"
+                            aria-label="Seçilen aktivasyon fonksiyonu (düz çizgi) ve türevi (kesikli çizgi)"
+                            style="width:100%;height:auto;"></svg>
+                    </div>
+                    <div style="flex:1;max-width:360px;text-align:left;">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;" id="ax-acts">
+                            <button type="button" class="runbtn" data-f="step">basamak</button>
+                            <button type="button" class="runbtn" data-f="lin">doğrusal</button>
+                            <button type="button" class="runbtn on" data-f="sig">sigmoid</button>
+                            <button type="button" class="runbtn" data-f="tanh">tanh</button>
+                            <button type="button" class="runbtn" data-f="relu">ReLU</button>
+                        </div>
+                        <div class="play-row mt-3"><label>z</label><input type="range" id="ax-z" min="-6" max="6" step="0.1" value="2"><span class="val" id="ax-zv"></span></div>
+                        <div class="readout mt-2" id="ax-out"></div>
+                        <p class="readout mt-2" style="color:#94a3b8;"><span style="color:#60a5fa;">━</span> f(z)
+                            &nbsp; <span style="color:#fbbf24;">┅</span> f′(z) &nbsp; <span style="color:#fca5a5;">■</span>
+                            f′ &lt; 0.05: doyma (nöron duyarsız)</p>
+                    </div>
+                </div>
+                <p class="code-note mt-2" style="font-size:0.5em;">Sigmoid ve tanh'ı z = ±5'e götür: f′ ≈ 0 →
+                    δ = (d − y)·f′ ≈ 0 → Δw ≈ 0. Hata büyük olsa bile nöron öğrenemez: <b>doyma</b>. Basamakta f′ her yerde 0.</p>
+            </section>
+
+
+            <!-- 22. σ′ FORMÜLÜ -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="sigma" style="width:14px;height:14px;"></i> Türevler</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Sigmoid'in Türevi <span
+                        class="code-note">Kendisinden Gelir</span></h2>
+                <div class="math-box mb-3" style="max-width:860px;">
+                    \[ \sigma(z) = \frac{1}{1+e^{-z}} \;\Rightarrow\; \sigma'(z) = \frac{e^{-z}}{(1+e^{-z})^2} = \sigma(z)\,\bigl(1-\sigma(z)\bigr) \]
+                    \[ \tanh'(z) = 1 - \tanh^2(z) \]
+                </div>
+                <div class="flex items-start justify-center gap-6">
+                    <table class="dtab fragment fade-in" style="font-size:0.54em;">
+                        <tr><th>z</th><th>σ(z)</th><th>σ′(z)</th><th>tanh′(z)</th></tr>
+                        <tr><td>0</td><td>0.5000</td><td>0.2500</td><td>1.0000</td></tr>
+                        <tr><td>2</td><td>0.8808</td><td>0.1050</td><td>0.0707</td></tr>
+                        <tr><td>4</td><td>0.9820</td><td>0.0177</td><td>0.0013</td></tr>
+                    </table>
+                    <pre class="fragment fade-in" style="flex:1;max-width:520px;margin:0;"><code class="language-python" data-trim style="font-size:0.95em;">import math
+sig = lambda z: 1 / (1 + math.exp(-z))
+z, h = 2.0, 1e-4
+(sig(z + h) - sig(z)) / h     # 0.10499 (sayısal)
+sig(z) * (1 - sig(z))         # 0.10499 (formül)</code></pre>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.54em;">İleri geçişte hesapladığın y'yi
+                    <b>yeniden kullanırsın</b>: δ = (d − y)·y·(1 − y). Türev neredeyse bedava. Hafta 7'de autograd bunu
+                    otomatik yapacak <span class="wk">H7</span></p>
+            </section>
+
+
+            <!-- 23. GİZLİ KATMANDA KİM? (türev gözüyle) -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="layers" style="width:14px;height:14px;"></i> Hafta 2'nin Sözü</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Gizli Katmanda <span
+                        class="code-note">Neden ReLU?</span></h2>
+                <p class="code-note mb-3" style="font-size:0.52em;">Hafta 2'de "nedeni H3'te" demiştik. İşte: Delta'da
+                    <b>f′ bir çarpan</b>. Çok katmanda f′'ler zincirle <b>çarpılır</b> <span class="wk">H7</span>, sinyal
+                    sönmemeli.</p>
+                <table class="dtab" style="font-size:0.46em;">
+                    <tr><th>f</th><th>① Büker mi?</th><th>② f′ ne diyor?</th><th>Gizli katmanda</th></tr>
+                    <tr class="fragment fade-in"><td>basamak</td><td>✓</td><td>0 → öğrenme sinyali yok</td><td class="bad">✗ öğrenemez</td></tr>
+                    <tr class="fragment fade-in"><td>doğrusal</td><td class="bad">✗ katmanlar çöker</td><td>1</td><td class="bad">✗ derinlik boşa</td></tr>
+                    <tr class="fragment fade-in"><td>sigmoid</td><td>✓</td><td>≤ 0.25 → 10 katmanda ≤ 0.25¹⁰ ≈ 10⁻⁶; uçlarda doyar</td><td style="color:#fbbf24;">△ eskiden standart</td></tr>
+                    <tr class="fragment fade-in"><td>tanh</td><td>✓</td><td>≤ 1, sıfır merkezli; yine de uçlarda doyar</td><td style="color:#93c5fd;">○ RNN/LSTM'de yaygın</td></tr>
+                    <tr class="fragment fade-in"><td>ReLU</td><td>✓ menteşe</td><td>z &gt; 0'da tam 1 → sönmez; hesabı ucuz</td><td class="ok">✓ bugünün varsayılanı</td></tr>
+                </table>
+                <div class="grid grid-cols-2 gap-4 text-left cards-mini mt-3 fragment fade-up" style="max-width:980px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card"><h4>⚠️ ReLU'nun zaafı</h4><p>z &lt; 0'da f′ = 0 → hep negatif kalan nöron
+                        "ölür". Çözüm: Leaky ReLU, GELU (Transformer'lar) <span class="wk">H14</span></p></div>
+                    <div class="concept-card"><h4>♻️ Sigmoid bitmedi</h4><p>Gizlide nadir ama <b>çıktıda</b> olasılık
+                        verir; LSTM'de 0–1 arası <b>kapı</b> (vana) olarak çalışır.</p></div>
+                </div>
+            </section>
+
+
+            <!-- 24. KOD: DELTA KURALI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="code-2" style="width:14px;height:14px;"></i> Koda Dök</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Delta Kuralı, <span
+                        class="code-note">Sıfırdan</span></h2>
+                <pre style="max-width:960px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1-4|6-11|12-16|17-18" style="font-size:0.82em;">import torch
+X = torch.tensor([[0., 0.], [0., 1.], [1., 0.], [1., 1.]])
+d = torch.tensor([0., 0., 0., 1.])                 # AND
+w, b, eta = torch.tensor([0.5, -0.25]), torch.tensor(0.2), 2.0
+
+for epoch in range(1, 51):
+    for x, t in zip(X, d):                         # örnek örnek (online)
+        y = torch.sigmoid(w @ x + b)
+        delta = (t - y) * y * (1 - y)              # (d − y)·f′(net)
+        w = w + eta * delta * x                    # Δw = η·δ·x
+        b = b + eta * delta
+    if epoch in (1, 10, 50):
+        E = 0.5 * ((d - torch.sigmoid(X @ w + b)) ** 2).sum()
+        print(epoch, round(E.item(), 4))
+# 1 0.4466
+# 10 0.2101
+# 50 0.0563
+(torch.sigmoid(X @ w + b) >= 0.5).int()            # tensor([0, 0, 0, 1]) ✓</code></pre>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.52em;">Döngünün kalbi 3 satır: ileri
+                    hesap, δ, güncelleme. Canlı demodaki "sigmoid, η = 2, AND" ile <b>aynı</b> sayılar.
+                    <span style="color:#64748b;">(Çıktılar PyTorch'ta çalıştırılarak alındı.)</span></p>
+            </section>
+
+
+            <!-- 25. KARŞILAŞTIRMA -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="table" style="width:14px;height:14px;"></i> Yan Yana</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Hebb · Widrow–Hoff · <span
+                        class="code-note">Delta</span></h2>
+                <table class="dtab" style="font-size:0.46em;">
+                    <tr><th></th><th>Hebb</th><th>Widrow–Hoff (LMS)</th><th>Delta</th></tr>
+                    <tr><td>Paradigma</td><td>denetimsiz</td><td>denetimli</td><td>denetimli</td></tr>
+                    <tr><td>Δw</td><td>η · y · x</td><td>η · (d − net) · x</td><td>η · (d − y) · f′(net) · x</td></tr>
+                    <tr><td>f</td><td>herhangi</td><td>doğrusal</td><td>türevlenebilir (σ, tanh)</td></tr>
+                    <tr><td>Hatayı bilir mi?</td><td class="bad">✗</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+                    <tr><td>Zaafı</td><td>ağırlık patlar → Oja</td><td>η sınırlı; 0/1'i tam yakalayamaz</td><td>doyma (f′ ≈ 0)</td></tr>
+                    <tr><td>Torunları</td><td>Hopfield, SOM <span class="wk">H11–H13</span></td><td>adaptif filtreler</td><td>geri yayılım <span class="wk">H7</span></td></tr>
+                </table>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.52em;">Basamak f ile Delta öğrenemez
+                    (f′ = 0). Rosenblatt bunu türevi hiç kullanmayan bir kuralla çözdü: <b style="white-space:nowrap;">r = d − y</b> → perceptron
+                    <span class="wk">H4</span></p>
+            </section>
+
+
+            <!-- 26. MİNİ QUIZ -->
+            <section id="w3quiz">
+                <span class="chip mb-2" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · Haftayı Yokla</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Kendini Test Et</h2>
+                <div class="grid grid-cols-2 gap-x-8 gap-y-0 text-left" style="max-width:1000px;margin:0 auto;">
+                    <div class="quiz fragment" data-ok="Hebb'de d yok: denetimsiz."
+                        data-no="Formülde hedef d yok → denetimsiz.">
+                        <div class="quiz-q">1) Hebb kuralı hangi paradigmadır?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">denetimli</button>
+                        <button type="button" class="quiz-opt" data-correct="1">denetimsiz</button>
+                        <button type="button" class="quiz-opt" data-correct="0">pekiştirmeli</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="f′ = 0 → δ = 0 → Δw = 0."
+                        data-no="Basamakta f′ = 0, dolayısıyla δ ve Δw hep 0.">
+                        <div class="quiz-q">2) Delta kuralına basamak f verirsek?</div>
+                        <button type="button" class="quiz-opt" data-correct="1">Δw hep 0, öğrenmez</button>
+                        <button type="button" class="quiz-opt" data-correct="0">çok hızlı öğrenir</button>
+                        <button type="button" class="quiz-opt" data-correct="0">ağırlık patlar</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="f(net) = net → f′ = 1."
+                        data-no="ADALINE doğrusal: f′ = 1, bu yüzden Δw = η(d − net)x.">
+                        <div class="quiz-q">3) Widrow–Hoff'ta f′(net) kaçtır?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">y(1 − y)</button>
+                        <button type="button" class="quiz-opt" data-correct="0">0</button>
+                        <button type="button" class="quiz-opt" data-correct="1">1</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="Büyük adım minimumun üstünden atlar: salınım ya da ıraksama."
+                        data-no="η büyükse adım minimumun üstünden atlar → salınır / ıraksar.">
+                        <div class="quiz-q">4) η çok büyük seçilirse?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">hep daha hızlı ve iyi öğrenir</button>
+                        <button type="button" class="quiz-opt" data-correct="1">salınır ya da ıraksar</button>
+                        <button type="button" class="quiz-opt" data-correct="0">ağırlıklar hiç değişmez</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 27. ÖZET -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="list-checks" style="width:14px;height:14px;"></i> Toparlayalım</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-3 text-left cards-tight" id="w3sum" style="max-width:1040px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ Öğrenmek = ağırlığı güncellemek:
+                        <code>w ← w + Δw</code></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Paradigmalar: denetimli (d var), denetimsiz (d yok),
+                        pekiştirmeli (ödül)</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Genel kural: <code>Δw = η·r·x</code>; kuralları ayıran
+                        öğrenme sinyali r</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Hebb: <code>Δw = η·y·x</code>, denetimsiz; ağırlık
+                        patlar → Oja</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Hata: <code>E = ½(d − y)²</code>; gradyanın tersine
+                        git</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Delta: <code>Δw = η·(d − y)·f′(net)·x</code>,
+                        δ = hata × eğim</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Widrow–Hoff (ADALINE, LMS): f doğrusal, f′ = 1</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ f′ öğrenmeyi yönetir: basamak 0 (kör), doyma ≈ 0,
+                        ReLU 1</p></div>
+                </div>
+            </section>
+
+
+            <!-- 28. UYGULAMA -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.4);color:#6ee7b7;">
+                    <i data-lucide="rocket" style="width:14px;height:14px;"></i> Uygulama · ~40 dk</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Kuralları Kendin Kodla</h2>
+                <div class="grid grid-cols-2 gap-3 text-left cards-tight" style="max-width:1050px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p><b>1 · Hebb'i doğrula.</b> Slayt 8'deki üç adımı
+                        PyTorch ile tekrarla. Sonunda w = [1, −3.5, 5] çıkmalı.</p></div>
+                    <div class="concept-card fragment fade-up"><p><b>2 · Patlamayı çiz.</b> Hebb ve Oja'yı 100 adım
+                        çalıştır; |w|'yi adım adım aynı grafikte çiz (y ekseni log ölçek).</p></div>
+                    <div class="concept-card fragment fade-up"><p><b>3 · Delta ile OR.</b> Slayt 24'teki kodu OR'a
+                        uyarla. η = 0.5, 2, 5 için E–epoch eğrilerini aynı grafikte çiz. Hangisi en hızlı?</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><p><b>4 · LMS'in
+                        sınırı.</b> Widrow–Hoff'u AND'de η = 0.2, 0.5, 1 ile çalıştır. Hangisi yakınsıyor, hangisi
+                        patlıyor? Slayt 13 ile açıkla.</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;color:#7dd3fc;">İpucu: Delta'yı
+                    doğrusal f'ye çevirmek için tek satırı değiştirmek yeter: f′ = 1.</p>
+            </section>
+
+
+            <!-- 29. SONRAKİ HAFTA -->
+            <section data-background-color="#020617">
+                <div class="flex flex-col items-center">
+                    <span class="chip mb-6"><i data-lucide="arrow-right-circle" style="width:14px;height:14px;"></i>
+                        Sonraki Hafta</span>
+                    <h2 class="text-4xl font-black mb-4 tracking-tighter text-white">Hafta 4 — <span
+                            class="grad-text">Ayrık Perceptron</span></h2>
+                    <p class="code-note mb-6" style="max-width:720px;">Basamaklı nöron Delta ile öğrenemedi. Rosenblatt
+                        (1958) f′'yü hiç kullanmayan bir kural buldu. Hangi problemleri garanti öğrenir: <b>doğrusal
+                        ayrılabilirlik</b> ve perceptron yakınsama teoremi.</p>
+                    <div class="math-box mb-8" style="max-width:520px;">\[ \Delta \mathbf{w} = \eta\,(d - y)\,\mathbf{x} \]</div>
+                    <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            transition: 'slide', backgroundTransition: 'fade', margin: 0.06, slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
+        });
+        function renderMath() {
+            if (typeof renderMathInElement === 'undefined') return;
+            renderMathInElement(document.querySelector('.reveal .slides'), {
+                delimiters: [{ left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }],
+                throwOnError: false
+            });
+        }
+        if (typeof Reveal !== 'undefined' && Reveal.on) { Reveal.on('ready', renderMath); }
+        else { window.addEventListener('load', renderMath); }
+    </script>
+    <script>
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+            function $(id) { return document.getElementById(id); }
+            var ACT = {
+                step: { ad: 'basamak', f: function (z) { return z >= 0 ? 1 : 0; }, d: function () { return 0; } },
+                lin: { ad: 'doğrusal', f: function (z) { return z; }, d: function () { return 1; } },
+                sig: { ad: 'sigmoid', f: function (z) { return 1 / (1 + Math.exp(-z)); },
+                    d: function (z) { var s = 1 / (1 + Math.exp(-z)); return s * (1 - s); } },
+                tanh: { ad: 'tanh', f: Math.tanh, d: function (z) { var t = Math.tanh(z); return 1 - t * t; } },
+                relu: { ad: 'ReLU', f: function (z) { return Math.max(0, z); }, d: function (z) { return z > 0 ? 1 : 0; } }
+            };
+            function fmt(v, n) { var s = v.toFixed(n === undefined ? 2 : n); return /^-0\.?0*$/.test(s) ? s.slice(1) : s; }
+            function pickButtons(boxId, attr, onPick) {
+                var box = $(boxId); if (!box) return;
+                box.querySelectorAll('button').forEach(function (b) {
+                    b.addEventListener('click', function (e) {
+                        stop(e); b.blur();
+                        box.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
+                        onPick(b.getAttribute(attr));
+                    });
+                });
+            }
+
+            // Slayt 12: Türev kaydırıcısı
+            (function () {
+                var s = $('grad-x'); if (!s) return;
+                var dot = $('g-dot'), tan = $('g-tan'), fx = $('g-fx'), fp = $('g-fp'), xv = $('g-xv');
+                function X(x) { return 40 + (x + 3) / 6 * 420; }
+                function Y(y) { return 300 - y / 9 * 280; }
+                function upd() {
+                    var x = parseFloat(s.value), y = x * x, d = 2 * x;
+                    dot.setAttribute('cx', X(x)); dot.setAttribute('cy', Y(y));
+                    var x1 = x - 1.3, x2 = x + 1.3;
+                    tan.setAttribute('x1', X(x1)); tan.setAttribute('y1', Y(y + d * (x1 - x)));
+                    tan.setAttribute('x2', X(x2)); tan.setAttribute('y2', Y(y + d * (x2 - x)));
+                    xv.textContent = x.toFixed(1); fx.textContent = y.toFixed(2); fp.textContent = d.toFixed(2);
+                }
+                s.addEventListener('input', function (e) { stop(e); upd(); }); upd();
+            })();
+
+            // Slayt 13: Gradyan inişi — E(w) = w², w ← w − η·2w
+            (function () {
+                var stepB = $('gd-step'); if (!stepB) return;
+                var resetB = $('gd-reset'), ball = $('gd-ball'), arrow = $('gd-arrow'), eta = $('gd-eta'),
+                    etav = $('gd-etav'), xv = $('gd-x'), fv = $('gd-f'), nv = $('gd-n'), warn = $('gd-warn');
+                function X(x) { return 40 + (x + 3) / 6 * 420; }
+                function Y(y) { return 300 - y / 9 * 280; }
+                var x0 = 2.5, x = x0, n = 0;
+                function num(v) { return Math.abs(v) >= 1e4 ? v.toExponential(1) : v.toFixed(2); }
+                function draw(prev) {
+                    // Durum kırpılmaz; yalnız top grafiğin içinde kalsın diye çizim kırpılır.
+                    var cx = Math.max(-3, Math.min(3, x)), out = Math.abs(x) > 3;
+                    ball.setAttribute('cx', X(cx)); ball.setAttribute('cy', Y(cx * cx));
+                    ball.setAttribute('fill', out ? '#ef4444' : '#f59e0b');
+                    if (prev !== undefined) {
+                        var p = Math.max(-3, Math.min(3, prev));
+                        arrow.setAttribute('x1', X(p)); arrow.setAttribute('y1', Y(p * p));
+                        arrow.setAttribute('x2', X(cx)); arrow.setAttribute('y2', Y(cx * cx));
+                        arrow.style.opacity = '1';
+                    }
+                    warn.textContent = out ? '↗ IRAKSIYOR! |w| = ' + num(Math.abs(x)) + ' (grafik dışı)' : '';
+                    xv.textContent = num(x); fv.textContent = num(x * x); nv.textContent = n;
+                }
+                stepB.addEventListener('click', function (e) {
+                    stop(e); stepB.blur(); var prev = x; x = x - (+eta.value) * (2 * x); n++;
+                    if (!isFinite(x) || Math.abs(x) > 1e12) x = (x < 0 ? -1 : 1) * 1e12;
+                    draw(prev);
+                });
+                resetB.addEventListener('click', function (e) {
+                    stop(e); resetB.blur(); x = x0; n = 0; arrow.style.opacity = '0'; draw();
+                });
+                eta.addEventListener('input', function (e) { stop(e); etav.textContent = (+eta.value).toFixed(2); });
+                draw();
+            })();
+
+            // Slayt 20: Delta kuralı canlı — online güncelleme, karar doğrusu ve E–epoch eğrisi
+            (function () {
+                var cv = $('dl-cv'); if (!cv) return;
+                var ctx = cv.getContext('2d'), N = cv.width, svg = $('dl-curve');
+                var P = [[0, 0], [0, 1], [1, 0], [1, 1]], T = { AND: [0, 0, 0, 1], OR: [0, 1, 1, 1], XOR: [0, 1, 1, 0] };
+                var F = {
+                    lin: { f: ACT.lin.f, d: ACT.lin.d, eta: 0.2, ad: 'Widrow–Hoff' },
+                    sig: { f: ACT.sig.f, d: ACT.sig.d, eta: 2, ad: 'delta (σ)' },
+                    step: { f: ACT.step.f, d: ACT.step.d, eta: 0.5, ad: 'basamak' }
+                };
+                var set = 'AND', fk = 'sig', w, b, k, ep, hist, last, dead, timer = null;
+                function out(x) { return F[fk].f(w[0] * x[0] + w[1] * x[1] + b); }
+                function totalE() { var s = 0; P.forEach(function (x, i) { var e = T[set][i] - out(x); s += 0.5 * e * e; }); return s; }
+                function acc() { var a = 0; P.forEach(function (x, i) { if ((out(x) >= 0.5 ? 1 : 0) === T[set][i]) a++; }); return a; }
+                function reset() { w = [0.5, -0.25]; b = 0.2; k = 0; ep = 0; dead = false; hist = [totalE()]; last = 'Henüz güncelleme yok. "1 örnek" ile adım adım izle.'; }
+                function v(a) { return '[' + a.map(function (q) { return fmt(q, 3); }).join(', ') + ']'; }
+                function one() {
+                    if (dead) return;
+                    var x = P[k], t = T[set][k], net = w[0] * x[0] + w[1] * x[1] + b, y = F[fk].f(net), fp = F[fk].d(net);
+                    var dl = (t - y) * fp, eta = +$('dl-eta').value, dw = [eta * dl * x[0], eta * dl * x[1]];
+                    w = [w[0] + dw[0], w[1] + dw[1]]; b += eta * dl;
+                    last = 'örnek (' + x + '): d = ' + t + ', y = ' + fmt(y, 3) + ' → δ = (' + fmt(t - y, 3) + ')·' + fmt(fp, 3) +
+                        ' = <b>' + fmt(dl, 4) + '</b> → Δw = ' + v(dw) + ', Δb = ' + fmt(eta * dl, 3);
+                    if (fk === 'step') last += '<br><span style="color:#fca5a5;">f′ = 0 → δ = 0 → Δw = 0: nöron kör. Rosenblatt\'ın çözümü → H4</span>';
+                    k = (k + 1) % 4;
+                    if (k === 0) { ep++; hist.push(totalE()); }
+                    if (!isFinite(w[0] + w[1] + b) || Math.abs(w[0]) + Math.abs(w[1]) + Math.abs(b) > 1e6) {
+                        dead = true; pause();
+                        last = '<span style="color:#fca5a5;"><b>Iraksadı!</b> η = ' + fmt(eta, 2) + ' bu nöron için çok büyük: ağırlıklar patladı.</span>';
+                    }
+                }
+                function epoch() { do { one(); } while (k !== 0 && !dead); }
+                function draw() {
+                    var c = fk === 'lin' ? 0.5 : 0, S = 6;
+                    function px(q) { return (q + 0.5) / 2 * N; }
+                    function py(q) { return N - (q + 0.5) / 2 * N; }
+                    for (var i = 0; i < N; i += S) for (var j = 0; j < N; j += S) {
+                        var x = (i + S / 2) / N * 2 - 0.5, y = (N - j - S / 2) / N * 2 - 0.5;
+                        ctx.fillStyle = dead ? '#1f2937' : (w[0] * x + w[1] * y + b >= c ? '#1e3a5f' : '#3b1a24');
+                        ctx.fillRect(i, j, S, S);
+                    }
+                    ctx.strokeStyle = 'rgba(148,163,184,0.35)'; ctx.lineWidth = 1; ctx.beginPath();
+                    ctx.moveTo(px(0), 0); ctx.lineTo(px(0), N); ctx.moveTo(0, py(0)); ctx.lineTo(N, py(0)); ctx.stroke();
+                    if (!dead && (Math.abs(w[0]) > 1e-9 || Math.abs(w[1]) > 1e-9)) {
+                        ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 3; ctx.beginPath();
+                        if (Math.abs(w[1]) > 1e-9) { ctx.moveTo(px(-0.5), py((c - b - w[0] * -0.5) / w[1])); ctx.lineTo(px(1.5), py((c - b - w[0] * 1.5) / w[1])); }
+                        else { ctx.moveTo(px((c - b) / w[0]), 0); ctx.lineTo(px((c - b) / w[0]), N); }
+                        ctx.stroke();
+                    }
+                    P.forEach(function (p, i) {
+                        var good = !dead && (out(p) >= 0.5 ? 1 : 0) === T[set][i];
+                        ctx.beginPath(); ctx.arc(px(p[0]), py(p[1]), 13, 0, 2 * Math.PI);
+                        if (T[set][i]) { ctx.fillStyle = '#34d399'; ctx.fill(); } else { ctx.fillStyle = '#0b1020'; ctx.fill(); ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 3; ctx.stroke(); }
+                        if (!good) { ctx.beginPath(); ctx.arc(px(p[0]), py(p[1]), 20, 0, 2 * Math.PI); ctx.strokeStyle = '#f87171'; ctx.lineWidth = 3.5; ctx.stroke(); }
+                        if (i === k && !dead) { ctx.beginPath(); ctx.arc(px(p[0]), py(p[1]), 26, 0, 2 * Math.PI); ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2.5; ctx.stroke(); }
+                    });
+                    // E–epoch eğrisi
+                    var Wd = 600, Hd = 120, L = 34, R = 8, Tp = 8, B = 20, h = hist.filter(isFinite);
+                    var n = Math.max(h.length - 1, 10), ymax = Math.max.apply(null, h.concat([1e-3])) * 1.08;
+                    function cx(i) { return L + i / n * (Wd - L - R); }
+                    function cy(q) { return Tp + (1 - Math.min(q, ymax) / ymax) * (Hd - Tp - B); }
+                    var g = '<line x1="' + L + '" y1="' + (Hd - B) + '" x2="' + (Wd - R) + '" y2="' + (Hd - B) + '" stroke="#475569"/>' +
+                        '<line x1="' + L + '" y1="' + Tp + '" x2="' + L + '" y2="' + (Hd - B) + '" stroke="#475569"/>' +
+                        '<text x="' + (L - 4) + '" y="' + (Tp + 10) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="end">' + fmt(ymax, 2) + '</text>' +
+                        '<text x="' + (L - 4) + '" y="' + (Hd - B) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="end">0</text>' +
+                        '<text x="' + (Wd - R) + '" y="' + (Hd - 5) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="end">epoch ' + n + '</text>' +
+                        '<text x="' + (L + 6) + '" y="' + (Hd - 5) + '" fill="#94a3b8" font-size="11" font-family="monospace">E (toplam hata, epoch başına)</text>';
+                    if (h.length > 1) g += '<polyline fill="none" stroke="#f472b6" stroke-width="2.5" points="' +
+                        h.map(function (q, i) { return cx(i).toFixed(1) + ',' + cy(q).toFixed(1); }).join(' ') + '"/>';
+                    svg.innerHTML = g;
+                    var a = dead ? 0 : acc(), Enow = dead ? Infinity : totalE();
+                    var grow = !dead && ep > 3 && Enow > 10 * hist[0];
+                    $('dl-out').innerHTML = '<b>' + F[fk].ad + '</b> · epoch <b>' + ep + '</b> · w = ' + v(w) + ', b = ' + fmt(b, 3) +
+                        ' · E = <b>' + (dead ? '∞' : fmt(Enow, 4)) + '</b> · doğru: <b style="color:' + (a === 4 ? '#86efac' : '#fca5a5') + ';">' +
+                        a + ' / 4</b>' + (grow ? ' <b style="color:#fca5a5;">↗ hata büyüyor: η çok büyük!</b>' : '') + '<br>' + last;
+                    $('dl-etav').textContent = fmt(+$('dl-eta').value, 2);
+                }
+                function pause() { if (timer) { clearInterval(timer); timer = null; } $('dl-play').textContent = '▶ oynat'; }
+                function play() {
+                    if (timer) { pause(); return; }
+                    $('dl-play').textContent = '⏸ durdur';
+                    timer = setInterval(function () {
+                        for (var i = 0; i < 2 && !dead; i++) epoch();
+                        draw(); if (dead || ep >= 2000) pause();
+                    }, 60);
+                }
+                function btn(id, fn) { $(id).addEventListener('click', function (e) { stop(e); this.blur(); fn(); draw(); }); }
+                btn('dl-one', function () { pause(); one(); });
+                btn('dl-ep', function () { pause(); epoch(); });
+                btn('dl-play', play);
+                btn('dl-reset', function () { pause(); reset(); });
+                $('dl-eta').addEventListener('input', function (e) { stop(e); draw(); });
+                pickButtons('dl-sets', 'data-s', function (s) { pause(); set = s; reset(); draw(); });
+                pickButtons('dl-fs', 'data-f', function (f) { pause(); fk = f; $('dl-eta').value = F[f].eta; reset(); draw(); });
+                if (typeof Reveal !== 'undefined' && Reveal.on) Reveal.on('slidechanged', pause);
+                reset(); draw();
+            })();
+
+            // Slayt 21: Aktivasyon gezgini — f ve f′ gerçekten hesaplanıp çizilir
+            (function () {
+                var svg = $('ax-svg'); if (!svg) return;
+                var fk = 'sig', W = 560, H = 300, L = 46, R = 14, T = 14, B = 34;
+                var YR = { step: [-0.25, 1.25], lin: [-6.5, 6.5], sig: [-0.25, 1.25], tanh: [-1.25, 1.25], relu: [-0.5, 6.5] };
+                function sx(x) { return L + (x + 6) / 12 * (W - L - R); }
+                function draw() {
+                    var A = ACT[fk], yr = YR[fk], z = parseFloat($('ax-z').value);
+                    function sy(y) { return T + (yr[1] - Math.max(yr[0], Math.min(yr[1], y))) / (yr[1] - yr[0]) * (H - T - B); }
+                    var p = [], q = [], sat = '', run = null, s = '';
+                    for (var i = 0; i <= 480; i++) {
+                        var x = -6 + i * 12 / 480, f = A.f(x), d = A.d(x);
+                        if (fk === 'step' && Math.abs(x) < 1e-9) d = NaN;
+                        p.push((i ? 'L' : 'M') + sx(x).toFixed(1) + ' ' + sy(f).toFixed(1));
+                        if (!isNaN(d)) q.push((q.length ? 'L' : 'M') + sx(x).toFixed(1) + ' ' + sy(d).toFixed(1));
+                        var low = (fk === 'sig' || fk === 'tanh') && d < 0.05;
+                        if (low && run === null) run = x;
+                        if ((!low || i === 480) && run !== null) {
+                            sat += '<rect x="' + sx(run).toFixed(1) + '" y="' + T + '" width="' + (sx(x) - sx(run)).toFixed(1) +
+                                '" height="' + (H - T - B) + '" fill="rgba(244,63,94,0.10)"/>'; run = null;
+                        }
+                    }
+                    s += sat;
+                    s += '<line x1="' + L + '" y1="' + sy(0) + '" x2="' + (W - R) + '" y2="' + sy(0) + '" stroke="#475569" stroke-width="1.2"/>';
+                    s += '<line x1="' + sx(0) + '" y1="' + T + '" x2="' + sx(0) + '" y2="' + (H - B) + '" stroke="#475569" stroke-width="1.2"/>';
+                    [-6, -4, -2, 2, 4, 6].forEach(function (t) {
+                        s += '<text x="' + sx(t) + '" y="' + (H - 12) + '" fill="#64748b" font-size="12" font-family="monospace" text-anchor="middle">' + t + '</text>';
+                    });
+                    [yr[0] + (yr[1] - yr[0]) * 0.2, yr[1] - (yr[1] - yr[0]) * 0.2].forEach(function (t) {
+                        var tv = Math.round(t * 2) / 2;
+                        s += '<text x="' + (L - 6) + '" y="' + (sy(tv) + 4) + '" fill="#64748b" font-size="12" font-family="monospace" text-anchor="end">' + tv + '</text>';
+                    });
+                    s += '<path d="' + q.join(' ') + '" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="7 5"/>';
+                    s += '<path d="' + p.join(' ') + '" fill="none" stroke="#60a5fa" stroke-width="3.2"/>';
+                    var fz = A.f(z), dz = (fk === 'step' && Math.abs(z) < 1e-9) ? NaN : A.d(z);
+                    s += '<line x1="' + sx(z) + '" y1="' + T + '" x2="' + sx(z) + '" y2="' + (H - B) + '" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="3 4"/>';
+                    s += '<circle cx="' + sx(z) + '" cy="' + sy(fz) + '" r="6.5" fill="#60a5fa" stroke="#fff" stroke-width="1.5"/>';
+                    if (!isNaN(dz)) s += '<circle cx="' + sx(z) + '" cy="' + sy(dz) + '" r="5.5" fill="#fbbf24" stroke="#fff" stroke-width="1.5"/>';
+                    svg.innerHTML = s;
+                    $('ax-zv').textContent = fmt(z, 1);
+                    $('ax-out').innerHTML = A.ad + '(' + fmt(z, 1) + ') = <b>' + fmt(fz, 4) + '</b><br>' + A.ad + '′(' + fmt(z, 1) + ') = <b>' +
+                        (isNaN(dz) ? 'tanımsız' : fmt(dz, 4)) + '</b>' + (((fk === 'sig' || fk === 'tanh') && dz < 0.05) ?
+                        ' <span style="color:#fca5a5;">← doydu (f′ ≈ 0)</span>' : '');
+                }
+                $('ax-z').addEventListener('input', function (e) { stop(e); draw(); });
+                pickButtons('ax-acts', 'data-f', function (f) { fk = f; draw(); });
+                draw();
+            })();
+
+            // Kaydırıcılar: sunum kumandası (PageDown/PageUp) slaytı değiştirsin; bırakınca odak Reveal'e dönsün
+            document.querySelectorAll('.reveal input[type=range]').forEach(function (r) {
+                r.addEventListener('keydown', function (e) {
+                    if (e.key === 'PageDown' || e.key === 'PageUp') {
+                        e.preventDefault(); r.blur();
+                        if (typeof Reveal !== 'undefined') { if (e.key === 'PageDown') Reveal.next(); else Reveal.prev(); }
+                    }
+                });
+                r.addEventListener('change', function () { r.blur(); });
+            });
+
+            // Mini quiz
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) { if (o.dataset.correct === '1') o.classList.add('correct'); });
+                        if (opt.dataset.correct === '1') { fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!'); fb.style.color = '#86efac'; }
+                        else { opt.classList.add('wrong'); fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil.'); fb.style.color = '#fca5a5'; }
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 8. Hafta - Kişisel Veriler ve Mahremiyet</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 8 — Cyan & Blue & Indigo Theme */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Inter', sans-serif;
+            text-transform: none;
+        }
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .data-badge {
+            background: rgba(6, 182, 212, 0.15);
+            color: #22d3ee;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+        @keyframes pulse-ring { 0%{transform:scale(1);opacity:0.5} 100%{transform:scale(1.5);opacity:0} }
+        @keyframes data-flow { 0%{opacity:0;transform:translateY(10px)} 50%{opacity:1} 100%{opacity:0;transform:translateY(-10px)} }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #22d3ee 0%, #818cf8 50%, #22d3ee 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .fingerprint-pulse::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        /* Cookie banner mock */
+        @keyframes slide-up { 0%{transform:translateY(100%);opacity:0} 100%{transform:translateY(0);opacity:1} }
+        .cookie-banner-mock { animation: slide-up 0.5s ease-out forwards; }
+
+        /* Phone mockup */
+        .phone-mockup {
+            background: #111827;
+            border: 3px solid #374151;
+            border-radius: 1.5rem;
+            padding: 0.75rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        .phone-notch {
+            width: 60px;
+            height: 6px;
+            background: #374151;
+            border-radius: 999px;
+            margin: 0 auto 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 1: KAPAK                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 70% 40%, #083344 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-cyan-600 top-0 left-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <!-- Badge -->
+                    <div class="px-4 py-2 bg-cyan-500/10 rounded-full text-xs font-bold tracking-widest mb-6 border border-cyan-500/30">
+                        <span class="text-cyan-400">HAFTA 08</span>
+                        <span class="text-slate-600 mx-2">•</span>
+                        <span class="text-slate-400">BİLİŞİM ETİĞİ</span>
+                    </div>
+
+                    <!-- İkon -->
+                    <div class="relative mb-8 group">
+                        <div class="absolute inset-0 bg-cyan-600 rounded-full blur-[60px] opacity-30 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+                        <div class="absolute inset-[-20px] rounded-full border border-cyan-500/20 animate-[spin_15s_linear_infinite]"></div>
+                        <div class="absolute inset-[-40px] rounded-full border border-blue-500/10 border-dashed animate-[spin_25s_linear_infinite_reverse]"></div>
+                        <div class="p-8 bg-cyan-500/10 rounded-full border border-cyan-500/20 relative z-10 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 fingerprint-pulse">
+                            <i data-lucide="fingerprint" style="width: 80px; height: 80px;" class="text-cyan-400 drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl mb-4 leading-tight">Kişisel Veriler ve<br>
+                        <span class="shimmer-text">Mahremiyet</span>
+                    </h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">8. Hafta: Dijital Dünyada İzimiz</p>
+                    <div class="mt-8 flex gap-6 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span class="flex items-center gap-2"><i data-lucide="database" size="12" class="text-cyan-500"></i> VERİ</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="shield" size="12" class="text-cyan-500"></i> KVKK</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="lock" size="12" class="text-cyan-500"></i> MAHREMİYET</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 2: MAHREMİYET NEDİR?                 -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-cyan-600 bottom-0 left-0"></div>
+                    <div class="grid grid-cols-2 gap-10 items-center text-left">
+                        <div>
+                            <div class="data-badge mb-6">Samuel Warren & Louis Brandeis • 1890</div>
+                            <h2 class="text-4xl mb-4">Yalnız Kalma<br><span class="text-cyan-400">Hakkı</span></h2>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-5">
+                                Mahremiyet sadece bir şeyi gizlemek değildir; <strong class="text-white">bilginin kiminle, ne zaman ve ne kadar paylaşılacağına karar verme</strong> yetisidir.
+                            </p>
+                            <div class="space-y-3">
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-cyan-500/5 rounded-xl border border-cyan-500/10 hover:bg-cyan-500/10 transition-all">
+                                    <div class="p-1.5 bg-cyan-500/20 rounded-lg"><i data-lucide="home" class="text-cyan-400" size="18"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Fiziksel Mahremiyet</h4>
+                                        <p class="text-slate-500 text-[9px] m-0">Bedensel alan, konut dokunulmazlığı</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-cyan-500/5 rounded-xl border border-cyan-500/10 hover:bg-cyan-500/10 transition-all">
+                                    <div class="p-1.5 bg-cyan-500/20 rounded-lg"><i data-lucide="brain" class="text-cyan-400" size="18"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Karar Mahremiyeti</h4>
+                                        <p class="text-slate-500 text-[9px] m-0">Kişisel seçim ve inanç özgürlüğü</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-cyan-500/5 rounded-xl border border-cyan-500/10 hover:bg-cyan-500/10 transition-all">
+                                    <div class="p-1.5 bg-cyan-500/20 rounded-lg"><i data-lucide="database" class="text-cyan-400" size="18"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Bilgi Mahremiyeti</h4>
+                                        <p class="text-slate-500 text-[9px] m-0">Kişisel verilerin kontrolü ve korunması</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Görsel -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-cyan-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <!-- GÖRSEL: Mahremiyet temalı -> images/privacy.png -->
+                            <img src="images/privacy.png" alt="Mahremiyet" class="w-full rounded-2xl border border-cyan-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:460px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-cyan-500/20 items-center justify-center flex-col" style="height:400px;">
+                                <i data-lucide="lock" class="text-cyan-400 mb-4" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/privacy.png</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.1: "Saklayacak Bir Şeyim Yok" Yanılgısı -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-3xl mb-6">"Saklayacak Bir Şeyim <span class="text-red-400">Yok ki!</span>"</h2>
+                    <p class="text-[11px] text-slate-400 mb-6 max-w-2xl mx-auto">Bu argüman dünyada en çok kullanılan ve en tehlikeli yanılgıdır. Edward Snowden'ın yanıtı:</p>
+
+                    <div class="grid grid-cols-3 gap-5 mb-6">
+                        <div class="fragment glass-card p-5 text-center border-red-500/10 hover:border-red-500/30 transition-all group">
+                            <div class="p-3 bg-red-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-red-500/20">
+                                <i data-lucide="unlock" class="text-red-400" size="28"></i>
+                            </div>
+                            <h4 class="text-red-400 font-bold text-sm m-0 mb-2">Güç Dengesi</h4>
+                            <p class="text-[10px] text-slate-400 m-0">Bilgi güçtür. Verileriniz kararlarınızı <strong class="text-white">manipüle etmek</strong> için kullanılabilir.</p>
+                        </div>
+                        <div class="fragment glass-card p-5 text-center border-amber-500/10 hover:border-amber-500/30 transition-all group">
+                            <div class="p-3 bg-amber-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-amber-500/20">
+                                <i data-lucide="user-minus" class="text-amber-400" size="28"></i>
+                            </div>
+                            <h4 class="text-amber-400 font-bold text-sm m-0 mb-2">Profilleme</h4>
+                            <p class="text-[10px] text-slate-400 m-0">Masum veriler birleşince hakkınızda <strong class="text-white">yanlış bir profil</strong> oluşturabilir.</p>
+                        </div>
+                        <div class="fragment glass-card p-5 text-center border-orange-500/10 hover:border-orange-500/30 transition-all group">
+                            <div class="p-3 bg-orange-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-orange-500/20">
+                                <i data-lucide="shield-off" class="text-orange-400" size="28"></i>
+                            </div>
+                            <h4 class="text-orange-400 font-bold text-sm m-0 mb-2">Gelecek Riski</h4>
+                            <p class="text-[10px] text-slate-400 m-0">Bugün masum olan veri, yarın değişen iklimde <strong class="text-white">aleyhinize</strong> olabilir.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-cyan-500/5 rounded-xl border border-cyan-500/10 max-w-3xl mx-auto">
+                        <p class="text-[10px] text-slate-400 italic m-0"><i data-lucide="quote" size="12" class="text-cyan-400 inline mr-1"></i> "Mahremiyet hakkına ihtiyacım yok çünkü saklayacak bir şeyim yok demek, ifade özgürlüğüne ihtiyacım yok çünkü söyleyecek bir şeyim yok demek gibidir." — <strong class="text-cyan-400">Edward Snowden</strong></p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 3: KİŞİSEL VERİ NEDİR?               -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-blue-600 bottom-0 right-0"></div>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-cyan-500/20 rounded-xl"><i data-lucide="database" class="text-cyan-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Kişisel Veri <span class="text-cyan-400">Nedir?</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8">
+                        <!-- Kişisel Veri -->
+                        <div class="fragment glass-card p-5 text-left border-cyan-500/20 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)] transition-all">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-cyan-500/20 rounded-lg"><i data-lucide="user" class="text-cyan-400" size="24"></i></div>
+                                <div>
+                                    <h3 class="text-lg text-cyan-400 font-bold m-0">Kişisel Veri</h3>
+                                    <span class="text-[9px] text-slate-500">KVKK Md. 3/1-d</span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-3 m-0 leading-relaxed">Kimliği belirli veya belirlenebilir kılan <strong class="text-white">her türlü bilgi.</strong></p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-[9px] bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-full border border-cyan-500/20">Ad-Soyad</span>
+                                <span class="text-[9px] bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-full border border-cyan-500/20">T.C. Kimlik No</span>
+                                <span class="text-[9px] bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-full border border-cyan-500/20">IP Adresi</span>
+                                <span class="text-[9px] bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-full border border-cyan-500/20">E-posta</span>
+                                <span class="text-[9px] bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-full border border-cyan-500/20">Konum</span>
+                                <span class="text-[9px] bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-full border border-cyan-500/20">Telefon No</span>
+                            </div>
+                            <div class="p-2 bg-cyan-500/5 rounded-lg border border-cyan-500/10">
+                                <p class="text-[9px] text-cyan-400 m-0">✦ Açık rıza veya kanuni istisnalar olmadan işlenemez.</p>
+                            </div>
+                        </div>
+
+                        <!-- Özel Nitelikli Veri -->
+                        <div class="fragment glass-card p-5 text-left border-red-500/20 hover:border-red-500/40 hover:shadow-[0_0_30px_rgba(239,68,68,0.1)] transition-all">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-red-500/20 rounded-lg"><i data-lucide="alert-triangle" class="text-red-400" size="24"></i></div>
+                                <div>
+                                    <h3 class="text-lg text-red-400 font-bold m-0">Özel Nitelikli Veri</h3>
+                                    <span class="text-[9px] text-slate-500">KVKK Md. 6</span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-3 m-0 leading-relaxed">Öğrenilmesi halinde <strong class="text-white">ayrımcılığa</strong> yol açabilecek hassas veriler.</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-[9px] bg-red-500/10 text-red-400 px-2 py-1 rounded-full border border-red-500/20">Sağlık Bilgileri</span>
+                                <span class="text-[9px] bg-red-500/10 text-red-400 px-2 py-1 rounded-full border border-red-500/20">Biyometrik Veri</span>
+                                <span class="text-[9px] bg-red-500/10 text-red-400 px-2 py-1 rounded-full border border-red-500/20">Siyasi Görüş</span>
+                                <span class="text-[9px] bg-red-500/10 text-red-400 px-2 py-1 rounded-full border border-red-500/20">Dini İnanç</span>
+                                <span class="text-[9px] bg-red-500/10 text-red-400 px-2 py-1 rounded-full border border-red-500/20">Ceza Mahkumiyeti</span>
+                                <span class="text-[9px] bg-red-500/10 text-red-400 px-2 py-1 rounded-full border border-red-500/20">Genetik Veri</span>
+                            </div>
+                            <div class="p-2 bg-red-500/5 rounded-lg border border-red-500/10">
+                                <p class="text-[9px] text-red-400 m-0">⚠ Kural olarak açık rıza olmadan işlenemez — sağlık ve güvenlik istisnaları hariç.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3.1: Dijital Ayak İzi -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-5"><i data-lucide="footprints" class="text-cyan-400 inline mr-2" size="24"></i>Dijital <span class="text-cyan-400">Ayak İziniz</span></h2>
+                    <p class="text-[11px] text-slate-400 mb-5 max-w-2xl mx-auto">Bir günde ortalama bir internet kullanıcısı ne kadar veri bırakır?</p>
+
+                    <div class="grid grid-cols-5 gap-4 mb-5">
+                        <div class="fragment glass-card p-3 text-center border-cyan-500/10 hover:border-cyan-500/30 transition-all group">
+                            <div class="text-2xl font-black text-white mb-1 group-hover:scale-110 transition-transform">2,617</div>
+                            <div class="text-cyan-400 text-[9px] font-bold">E-posta</div>
+                            <p class="text-[8px] text-slate-500 m-0">Her gün gönderilen ortalama</p>
+                        </div>
+                        <div class="fragment glass-card p-3 text-center border-blue-500/10 hover:border-blue-500/30 transition-all group">
+                            <div class="text-2xl font-black text-white mb-1 group-hover:scale-110 transition-transform">5.3<span class="text-sm text-blue-400">saat</span></div>
+                            <div class="text-blue-400 text-[9px] font-bold">Ekran Süresi</div>
+                            <p class="text-[8px] text-slate-500 m-0">Günlük ortalama mobil kullanım</p>
+                        </div>
+                        <div class="fragment glass-card p-3 text-center border-purple-500/10 hover:border-purple-500/30 transition-all group">
+                            <div class="text-2xl font-black text-white mb-1 group-hover:scale-110 transition-transform">340<span class="text-sm text-purple-400">x</span></div>
+                            <div class="text-purple-400 text-[9px] font-bold">Telefon Bakışı</div>
+                            <p class="text-[8px] text-slate-500 m-0">Günde telefona bakma ortalaması</p>
+                        </div>
+                        <div class="fragment glass-card p-3 text-center border-pink-500/10 hover:border-pink-500/30 transition-all group">
+                            <div class="text-2xl font-black text-white mb-1 group-hover:scale-110 transition-transform">1,500<span class="text-sm text-pink-400">+</span></div>
+                            <div class="text-pink-400 text-[9px] font-bold">Cookie</div>
+                            <p class="text-[8px] text-slate-500 m-0">Ayda biriken takip çerezleri</p>
+                        </div>
+                        <div class="fragment glass-card p-3 text-center border-rose-500/10 hover:border-rose-500/30 transition-all group">
+                            <div class="text-2xl font-black text-white mb-1 group-hover:scale-110 transition-transform">∞</div>
+                            <div class="text-rose-400 text-[9px] font-bold">Süre</div>
+                            <p class="text-[8px] text-slate-500 m-0">Dijital veriniz sonsuz saklanır</p>
+                        </div>
+                    </div>
+
+                    <!-- Telefon İzin Mockup -->
+                    <div class="flex justify-center gap-6 items-start">
+                        <div class="phone-mockup w-48">
+                            <div class="phone-notch"></div>
+                            <div class="bg-slate-900 rounded-xl p-3 text-center">
+                                <div class="w-10 h-10 bg-cyan-500/20 rounded-xl mx-auto mb-2 flex items-center justify-center">
+                                    <i data-lucide="flashlight" class="text-cyan-400" size="20"></i>
+                                </div>
+                                <p class="text-[9px] text-white font-bold m-0 mb-1">Fener Uygulaması</p>
+                                <p class="text-[7px] text-slate-500 m-0 mb-2">izin istiyor:</p>
+                                <div class="space-y-1.5 text-left">
+                                    <div class="flex items-center gap-1.5 p-1.5 bg-red-500/10 rounded-lg border border-red-500/20">
+                                        <i data-lucide="map-pin" class="text-red-400" size="10"></i>
+                                        <span class="text-[7px] text-red-400">📍 Konumunuz</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 p-1.5 bg-red-500/10 rounded-lg border border-red-500/20">
+                                        <i data-lucide="contact" class="text-red-400" size="10"></i>
+                                        <span class="text-[7px] text-red-400">👥 Rehberiniz</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 p-1.5 bg-red-500/10 rounded-lg border border-red-500/20">
+                                        <i data-lucide="camera" class="text-red-400" size="10"></i>
+                                        <span class="text-[7px] text-red-400">📷 Kameranız</span>
+                                    </div>
+                                </div>
+                                <p class="text-[7px] text-red-400 mt-2 m-0 italic">⚠ Neden bir fener bu verilere erişsin?</p>
+                            </div>
+                        </div>
+                        <div class="max-w-xs text-left mt-4">
+                            <h4 class="text-white text-sm font-bold mb-2">🔦 "Fener" Tuzağı</h4>
+                            <p class="text-[10px] text-slate-400 mb-2 m-0">2013'te 50 milyon kez indirilen bir "ücretsiz fener" uygulaması, kullanıcıların konum, rehber ve tarama geçmişini reklam şirketlerine sattı.</p>
+                            <p class="text-[10px] text-slate-400 m-0">FTC (ABD) şirketi cezalandırdı: <strong class="text-cyan-400">"Aldatıcı ticaret uygulaması"</strong></p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 4: KVKK & GDPR                       -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #020617 0%, #083344 100%)">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-cyan-500/20 rounded-xl"><i data-lucide="scale" class="text-cyan-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Veri Koruma <span class="text-cyan-400">Hukuku</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8 mb-6">
+                        <!-- KVKK -->
+                        <div class="fragment glass-card p-5 text-left border-cyan-500/20 hover:border-cyan-500/40 transition-all">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center text-xl font-black">🇹🇷</div>
+                                <div>
+                                    <h3 class="text-lg text-cyan-400 font-bold m-0">KVKK</h3>
+                                    <span class="text-[9px] text-slate-500">Kişisel Verilerin Korunması Kanunu • 2016</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="check" class="text-cyan-400 shrink-0 mt-0.5" size="12"></i> Açık rıza olmadan kişisel veri işlenemez</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="check" class="text-cyan-400 shrink-0 mt-0.5" size="12"></i> Veri Sorumluları Sicili (VERBİS) kaydı zorunlu</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="check" class="text-cyan-400 shrink-0 mt-0.5" size="12"></i> İlgili kişinin silme/düzeltme hakkı</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="check" class="text-cyan-400 shrink-0 mt-0.5" size="12"></i> İhlal halinde 1.8M TL'ye kadar para cezası</div>
+                            </div>
+                        </div>
+
+                        <!-- GDPR -->
+                        <div class="fragment glass-card p-5 text-left border-blue-500/20 hover:border-blue-500/40 transition-all">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center text-xl font-black">🇪🇺</div>
+                                <div>
+                                    <h3 class="text-lg text-blue-400 font-bold m-0">GDPR</h3>
+                                    <span class="text-[9px] text-slate-500">General Data Protection Regulation • 2018</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="check" class="text-blue-400 shrink-0 mt-0.5" size="12"></i> Veri taşınabilirlik hakkı (portabilite)</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="check" class="text-blue-400 shrink-0 mt-0.5" size="12"></i> "Unutulma hakkı" — verilerin silinmesini istemek</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="check" class="text-blue-400 shrink-0 mt-0.5" size="12"></i> Privacy by Design — mahremiyet varsayılan</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="check" class="text-blue-400 shrink-0 mt-0.5" size="12"></i> İhlal cezası: yıllık cironun %4'ü veya 20M €</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7 Temel İlke -->
+                    <div class="grid grid-cols-4 gap-3">
+                        <div class="fragment glass-card p-3 text-center border-cyan-500/10 hover:border-cyan-500/30 transition-all">
+                            <i data-lucide="check-square" class="text-cyan-400 mx-auto mb-1.5" size="20"></i>
+                            <h4 class="text-[9px] text-white font-bold m-0">Hukuka Uygunluk</h4>
+                        </div>
+                        <div class="fragment glass-card p-3 text-center border-cyan-500/10 hover:border-cyan-500/30 transition-all">
+                            <i data-lucide="target" class="text-cyan-400 mx-auto mb-1.5" size="20"></i>
+                            <h4 class="text-[9px] text-white font-bold m-0">Belirli Amaç</h4>
+                        </div>
+                        <div class="fragment glass-card p-3 text-center border-cyan-500/10 hover:border-cyan-500/30 transition-all">
+                            <i data-lucide="scissors" class="text-cyan-400 mx-auto mb-1.5" size="20"></i>
+                            <h4 class="text-[9px] text-white font-bold m-0">Veri Minimizasyonu</h4>
+                        </div>
+                        <div class="fragment glass-card p-3 text-center border-cyan-500/10 hover:border-cyan-500/30 transition-all">
+                            <i data-lucide="clock" class="text-cyan-400 mx-auto mb-1.5" size="20"></i>
+                            <h4 class="text-[9px] text-white font-bold m-0">Sınırlı Saklama</h4>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4.1: Gerçek Vaka — Meta/Facebook Cezası -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-5"><i data-lucide="landmark" class="text-cyan-400 inline mr-2" size="24"></i>Vaka: <span class="text-cyan-400">GDPR Cezaları</span></h2>
+                    <div class="grid grid-cols-3 gap-5">
+                        <div class="fragment glass-card p-5 text-center border-blue-500/10 hover:border-blue-500/30 transition-all group">
+                            <div class="w-14 h-14 bg-blue-500/20 rounded-xl mx-auto mb-3 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">📘</div>
+                            <h4 class="text-blue-400 font-bold text-sm m-0 mb-1">Meta / Facebook</h4>
+                            <div class="text-2xl font-black text-white mb-1">1.2<span class="text-sm text-blue-400">B €</span></div>
+                            <p class="text-[9px] text-slate-400 m-0 mb-2">2023 — Tarihın en büyük GDPR cezası</p>
+                            <div class="p-1.5 bg-blue-500/5 rounded-lg border border-blue-500/10">
+                                <p class="text-[8px] text-blue-400 italic m-0">AB kullanıcı verilerini ABD'ye aktardığı için</p>
+                            </div>
+                        </div>
+                        <div class="fragment glass-card p-5 text-center border-emerald-500/10 hover:border-emerald-500/30 transition-all group">
+                            <div class="w-14 h-14 bg-emerald-500/20 rounded-xl mx-auto mb-3 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">💬</div>
+                            <h4 class="text-emerald-400 font-bold text-sm m-0 mb-1">WhatsApp</h4>
+                            <div class="text-2xl font-black text-white mb-1">225<span class="text-sm text-emerald-400">M €</span></div>
+                            <p class="text-[9px] text-slate-400 m-0 mb-2">2021 — Şeffaflık ihlali</p>
+                            <div class="p-1.5 bg-emerald-500/5 rounded-lg border border-emerald-500/10">
+                                <p class="text-[8px] text-emerald-400 italic m-0">Kullanıcıları veri işleme hakkında yeterince bilgilendirmediği için</p>
+                            </div>
+                        </div>
+                        <div class="fragment glass-card p-5 text-center border-amber-500/10 hover:border-amber-500/30 transition-all group">
+                            <div class="w-14 h-14 bg-amber-500/20 rounded-xl mx-auto mb-3 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🛒</div>
+                            <h4 class="text-amber-400 font-bold text-sm m-0 mb-1">Amazon</h4>
+                            <div class="text-2xl font-black text-white mb-1">746<span class="text-sm text-amber-400">M €</span></div>
+                            <p class="text-[9px] text-slate-400 m-0 mb-2">2021 — Hedefli reklam ihlali</p>
+                            <div class="p-1.5 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                                <p class="text-[8px] text-amber-400 italic m-0">Kullanıcı rızası olmadan reklam profilleme yaptığı için</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 5: VERİ TOPLAMA YÖNTEMLERİ           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-purple-600 top-0 right-0"></div>
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="p-3 bg-purple-500/20 rounded-xl"><i data-lucide="scan" class="text-purple-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">Veri Toplama <span class="text-purple-400">Yöntemleri</span></h2>
+                </div>
+
+                <div class="grid grid-cols-3 gap-5">
+                    <div class="fragment glass-card p-5 text-center border-cyan-500/10 hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all group">
+                        <div class="p-3 bg-cyan-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-cyan-500/20">
+                            <i data-lucide="cookie" class="text-cyan-400" size="32"></i>
+                        </div>
+                        <h4 class="text-cyan-400 font-bold text-sm m-0 mb-2">Çerezler (Cookies)</h4>
+                        <p class="text-[10px] text-slate-400 m-0 mb-2">Web sitelerinde gezinirken otomatik olarak toplanan takip dosyaları.</p>
+                        <div class="p-1.5 bg-cyan-500/5 rounded-lg border border-cyan-500/10">
+                            <p class="text-[8px] text-cyan-400 m-0 italic">3. taraf çerezler: farklı sitelerdeki hareketlerinizi izler</p>
+                        </div>
+                    </div>
+                    <div class="fragment glass-card p-5 text-center border-purple-500/10 hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] transition-all group">
+                        <div class="p-3 bg-purple-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-purple-500/20">
+                            <i data-lucide="fingerprint" class="text-purple-400" size="32"></i>
+                        </div>
+                        <h4 class="text-purple-400 font-bold text-sm m-0 mb-2">Cihaz Parmak İzi</h4>
+                        <p class="text-[10px] text-slate-400 m-0 mb-2">Tarayıcı, ekran çözünürlüğü, fontlar… birleşerek sizi tanımlar.</p>
+                        <div class="p-1.5 bg-purple-500/5 rounded-lg border border-purple-500/10">
+                            <p class="text-[8px] text-purple-400 m-0 italic">Çerezleri silseniz bile sizi takip edebilir!</p>
+                        </div>
+                    </div>
+                    <div class="fragment glass-card p-5 text-center border-pink-500/10 hover:border-pink-500/40 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all group">
+                        <div class="p-3 bg-pink-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-pink-500/20">
+                            <i data-lucide="share-2" class="text-pink-400" size="32"></i>
+                        </div>
+                        <h4 class="text-pink-400 font-bold text-sm m-0 mb-2">Sosyal Medya Pikselleri</h4>
+                        <p class="text-[10px] text-slate-400 m-0 mb-2">Facebook Pixel, Google Analytics: satın alma, tıklama, gezinme verisi.</p>
+                        <div class="p-1.5 bg-pink-500/5 rounded-lg border border-pink-500/10">
+                            <p class="text-[8px] text-pink-400 m-0 italic">"Like" butonu bile veri toplar (oturum açmasanız da)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 6: İNTERAKTİF SENARYO                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-cyan-600 top-0 right-0"></div>
+                <div class="grid grid-cols-2 gap-8 items-center">
+                    <!-- SOL: Görsel -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-cyan-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                        <!-- GÖRSEL: Veri gizliliği / mobil uygulama -> images/data_privacy.png -->
+                        <img src="images/data_privacy.png" alt="Veri Gizliliği" class="w-full rounded-2xl border border-cyan-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:480px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden glass-card p-12 border-cyan-500/20 items-center justify-center flex-col" style="height:400px;">
+                            <i data-lucide="smartphone" class="text-cyan-400 mb-4" size="80"></i>
+                            <p class="text-slate-500 text-sm">images/data_privacy.png</p>
+                        </div>
+                    </div>
+
+                    <!-- SAĞ: İçerik -->
+                    <div class="text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="p-1.5 bg-cyan-500/20 rounded-lg animate-pulse"><i data-lucide="mouse-pointer-click" class="text-cyan-400" size="16"></i></div>
+                            <span class="data-badge" style="margin-bottom:0;">ETİK İKİLEM</span>
+                        </div>
+
+                        <h2 class="text-2xl mb-4 m-0"><span class="text-cyan-400">Senaryo:</span> Sağlık Uygulaması</h2>
+
+                        <div class="glass-card p-4 border-cyan-400/30 mb-4">
+                            <p class="text-[11px] text-slate-200 mb-2 m-0 leading-relaxed">
+                                Bir sağlık uygulaması geliştirdiniz. Kullanıcıların <span class="bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded border border-red-500/30 font-bold text-[10px]">sağlık verilerini</span> sigorta şirketlerine satarsanız ciddi gelir elde edebilirsiniz. Kullanıcılar küçük harflerle yazılmış gizlilik sözleşmesini zaten <strong class="text-cyan-400">"kabul et"</strong> tuşuyla onayladı.
+                            </p>
+                            <div class="bg-black/60 p-2.5 rounded-lg border border-slate-700">
+                                <p class="text-[10px] text-slate-400 italic m-0 pl-2">Sigorta şirketi: <strong class="text-white">"Yüksek riskli hastaları belirleyelim, primlerini artıralım."</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-red-500 hover:bg-red-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(220,38,38,0.2)]">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-red-900/50 transition-colors"><i data-lucide="dollar-sign" class="text-slate-400 group-hover:text-red-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-red-400 m-0">Veri Sat</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Onay verdiler. Hukuki olarak sorun yok."</p>
+                            </div>
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-emerald-500 hover:bg-emerald-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-emerald-900/50 transition-colors"><i data-lucide="heart" class="text-slate-400 group-hover:text-emerald-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-emerald-400 m-0">Koru</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Sağlık verisi özel nitelikli. Etik sorumluluk var."</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 p-2 bg-red-500/5 rounded-lg border border-red-500/10">
+                            <p class="text-[9px] text-red-400/80 m-0"><i data-lucide="alert-triangle" size="10" class="inline mr-1"></i> KVKK Md. 6: Sağlık verisi "özel nitelikli" — açık rıza olsa bile amaç dışı kullanım yasaktır!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 7: KAPANIŞ                           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 100%, #083344 0%, #000 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2 class="text-4xl mb-4">Modül Sonu</h2>
+                    <p class="text-xl text-slate-400 mb-8">Sıradaki: <span class="text-cyan-400 border-b border-cyan-400">Arasınav Hazırlığı</span></p>
+
+                    <div class="glass-card p-6 max-w-3xl mb-6 border-cyan-500/30">
+                        <h4 class="text-white text-sm font-bold mb-5 text-center tracking-widest">BU HAFTA NE ÖĞRENDİK?</h4>
+                        <div class="grid grid-cols-4 gap-6 text-center">
+                            <div>
+                                <i data-lucide="lock" class="text-cyan-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-cyan-400 text-xs font-bold m-0">Mahremiyet</p>
+                                <p class="text-slate-500 text-[10px] m-0">Yalnız Kalma Hakkı</p>
+                            </div>
+                            <div>
+                                <i data-lucide="database" class="text-blue-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-blue-400 text-xs font-bold m-0">Kişisel Veri</p>
+                                <p class="text-slate-500 text-[10px] m-0">KVKK & GDPR</p>
+                            </div>
+                            <div>
+                                <i data-lucide="fingerprint" class="text-purple-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-purple-400 text-xs font-bold m-0">Dijital İz</p>
+                                <p class="text-slate-500 text-[10px] m-0">Cookie & Profilleme</p>
+                            </div>
+                            <div>
+                                <i data-lucide="scale" class="text-emerald-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-emerald-400 text-xs font-bold m-0">Hukuk</p>
+                                <p class="text-slate-500 text-[10px] m-0">Cezalar & Haklar</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-4 max-w-2xl border-cyan-500/20">
+                        <p class="text-sm italic text-slate-300 m-0">
+                            <i data-lucide="quote" class="inline text-cyan-400" size="14"></i>
+                            "Dijital dünyada en değerli para birimi artık dolar ya da euro değil — <strong class="text-cyan-400">kişisel verilerinizdir</strong>."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false,
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+</html>
