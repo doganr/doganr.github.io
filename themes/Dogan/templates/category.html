@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %} – {{ category }}{% endblock %}
+
+{% block content %}
+<div class="subpage-wrapper">
+  <div class="subpage-hero">
+    <div class="container text-center">
+      <h1 class="subpage-title" data-aos="fade-up">
+        <i class="fa-solid fa-folder-open me-3"></i>{{ category }}
+      </h1>
+      <p class="subpage-subtitle" data-aos="fade-up" data-aos-delay="100">
+        {{ articles|list|length }} article{% if articles|list|length != 1 %}s{% endif %}
+      </p>
+    </div>
+  </div>
+  <div class="container py-5">
+    <div class="row g-4">
+      {% for article in articles_page.object_list %}
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+        <article class="card-article glass-card h-100">
+          <div class="card-article-placeholder">
+            <div class="placeholder-pattern">
+              <i class="fa-solid fa-file-lines placeholder-icon"></i>
+            </div>
+          </div>
+          <div class="card-article-body">
+            <h3 class="card-article-title">
+              <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+            </h3>
+            {% if article.summary %}
+            <p class="card-article-summary">{{ article.summary|striptags|truncate(100) }}</p>
+            {% endif %}
+            <div class="card-article-meta mt-auto">
+              <span class="meta-date"><i class="fa-regular fa-calendar me-1"></i>{{ article.locale_date }}</span>
+            </div>
+            <div class="mt-3">
+              <a href="{{ SITEURL }}/{{ article.url }}" class="btn-read-more">
+                Read More <i class="fa-solid fa-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+      {% endfor %}
+    </div>
+    {% include "partial/pagination.html" %}
+  </div>
+</div>
+{% endblock %}

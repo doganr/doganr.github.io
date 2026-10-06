@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %} – Categories{% endblock %}
+
+{% block content %}
+<div class="subpage-wrapper">
+  <div class="subpage-hero">
+    <div class="container text-center">
+      <h1 class="subpage-title" data-aos="fade-up">
+        <i class="fa-solid fa-folder-open me-3"></i>Categories
+      </h1>
+      <p class="subpage-subtitle" data-aos="fade-up" data-aos-delay="100">Browse by category</p>
+    </div>
+  </div>
+  <div class="container py-5">
+    <div class="row g-4 justify-content-center">
+      {% for cat, articles in categories %}
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+        <a href="{{ SITEURL }}/{{ cat.url }}" class="category-card glass-card p-4 rounded-3 d-flex flex-column align-items-center text-center text-decoration-none h-100">
+          <div class="category-icon mb-3">
+            <i class="fa-solid fa-folder-open"></i>
+          </div>
+          <h3 class="category-name">{{ cat }}</h3>
+          <p class="category-count mb-0">{{ articles|list|length }} post{% if articles|list|length != 1 %}s{% endif %}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
