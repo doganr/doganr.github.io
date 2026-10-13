@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapay Sinir Ağları 15. Hafta - Reveal.js</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+            <section data-background-color="#020617">
+                <div class="glow-sphere" style="width: 600px; height: 600px; top: -10%; left: -10%; background: #1e3a8a;"></div>
+                <div class="glow-sphere" style="width: 500px; height: 500px; bottom: -10%; right: -10%; background: #881337; animation-delay: -5s;"></div>
+                <div class="flex flex-col items-center">
+                    <span class="week-number text-lg mb-4">Hafta 15</span>
+                    <h1 class="text-5xl md:text-6xl mb-6 leading-tight font-extrabold tracking-tighter text-white">CNN Mimarileri ve Proje Sunumları</h1>
+                    <div class="h-1 w-20 bg-gradient-to-r from-blue-700 to-rose-900 rounded-full mb-8"></div>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Yapay Sinir Ağları · YPZ312</p>
+                </div>
+            </section>
+            <section data-background-color="#020617">
+                <div class="glass-card items-center text-center mx-auto p-10" style="max-width: 640px;">
+                    <i data-lucide="hammer" class="text-rose-500 mb-4" style="width: 48px; height: 48px;"></i>
+                    <h2 class="text-3xl font-black text-white mb-4">İçerik Yakında</h2>
+                    <p class="bio-text mb-6">Bu haftanın slayt içeriği hazırlanmaktadır ve dönem boyunca güncellenecektir.</p>
+                    <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+        Reveal.initialize({ hash: false, history: false, center: true, transition: 'convex', backgroundTransition: 'fade', width: 1200, height: 700, margin: 0.1 });
+    </script>
+</body>
+</html>

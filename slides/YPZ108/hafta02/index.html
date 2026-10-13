@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 2. Hafta - Etik Kuramları</title>
+    
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 2 Specific Styles */
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+        
+        /* === KAPAK: Beyin Parçacık Animasyonu === */
+        .brain-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #10b981 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float-particle linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        
+        /* === TYPING ANIMATION === */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            0%, 50% { border-color: #10b981; }
+            51%, 100% { border-color: transparent; }
+        }
+        .typing-effect {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #10b981;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        /* === SCALE BALANCE ANIMATION === */
+        @keyframes balance-tilt {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        .balance-animation {
+            animation: balance-tilt 3s ease-in-out infinite;
+            transform-origin: center top;
+        }
+        
+        /* === PULSE GLOW === */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
+        }
+        .pulse-card {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        /* === GOLDEN MEAN SLIDER === */
+        @keyframes slide-golden {
+            0%, 100% { left: 50%; }
+            25% { left: 20%; }
+            75% { left: 80%; }
+        }
+        .golden-slider {
+            animation: slide-golden 4s ease-in-out infinite;
+        }
+        
+        /* === THEORY CARD HOVER === */
+        .theory-card {
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .theory-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+        
+        /* === VS BATTLE GLOW === */
+        @keyframes vs-pulse {
+            0%, 100% { transform: scale(1); text-shadow: 0 0 20px #fff; }
+            50% { transform: scale(1.2); text-shadow: 0 0 40px #fff, 0 0 60px #fff; }
+        }
+        .vs-badge {
+            animation: vs-pulse 1.5s ease-in-out infinite;
+        }
+        
+        /* === DECISION REVEAL === */
+        .decision-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .decision-option:hover {
+            transform: scale(1.05);
+        }
+        .decision-option.selected {
+            border-width: 3px;
+        }
+        
+        /* === PHILOSOPHER CARD === */
+        .philosopher-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .philosopher-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        /* === COMPASS ROTATION === */
+        @keyframes compass-rotate {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(45deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-45deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .compass-needle {
+            animation: compass-rotate 4s ease-in-out infinite;
+            transform-origin: center center;
+        }
+        
+        /* === EQUATION ANIMATION === */
+        @keyframes equation-appear {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .equation-part {
+            animation: equation-appear 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        .equation-part:nth-child(1) { animation-delay: 0.2s; }
+        .equation-part:nth-child(2) { animation-delay: 0.5s; }
+        .equation-part:nth-child(3) { animation-delay: 0.8s; }
+        .equation-part:nth-child(4) { animation-delay: 1.1s; }
+        .equation-part:nth-child(5) { animation-delay: 1.4s; }
+    </style>
+</head>
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ============================================== -->
+            <!-- SLAYT 1: KAPAK - Beyin Nöron Animasyonu -->
+            <!-- ============================================== -->
+            <section data-background-gradient="radial-gradient(circle, #0a1628 0%, #020617 100%)">
+                <!-- Beyin Parçacık Animasyonu -->
+                <div class="brain-particles">
+                    <div class="particle" style="left: 10%; animation-duration: 8s; animation-delay: 0s;"></div>
+                    <div class="particle" style="left: 20%; animation-duration: 12s; animation-delay: -2s;"></div>
+                    <div class="particle" style="left: 30%; animation-duration: 9s; animation-delay: -4s;"></div>
+                    <div class="particle" style="left: 40%; animation-duration: 11s; animation-delay: -1s;"></div>
+                    <div class="particle" style="left: 50%; animation-duration: 7s; animation-delay: -3s;"></div>
+                    <div class="particle" style="left: 60%; animation-duration: 10s; animation-delay: -5s;"></div>
+                    <div class="particle" style="left: 70%; animation-duration: 8s; animation-delay: -2s;"></div>
+                    <div class="particle" style="left: 80%; animation-duration: 13s; animation-delay: -4s;"></div>
+                    <div class="particle" style="left: 90%; animation-duration: 9s; animation-delay: -1s;"></div>
+                    <div class="particle" style="left: 15%; animation-duration: 10s; animation-delay: -6s;"></div>
+                    <div class="particle" style="left: 35%; animation-duration: 11s; animation-delay: -3s;"></div>
+                    <div class="particle" style="left: 55%; animation-duration: 8s; animation-delay: -7s;"></div>
+                    <div class="particle" style="left: 75%; animation-duration: 12s; animation-delay: -2s;"></div>
+                    <div class="particle" style="left: 85%; animation-duration: 9s; animation-delay: -5s;"></div>
+                    <div class="particle" style="left: 95%; animation-duration: 10s; animation-delay: -8s;"></div>
+                </div>
+                
+                <!-- Ana İçerik -->
+                <div class="relative z-10 flex flex-col items-center">
+                    <div class="p-6 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-full mb-6 border border-emerald-500/30" style="box-shadow: 0 0 60px rgba(16, 185, 129, 0.3);">
+                        <i data-lucide="brain-circuit" style="width: 80px; height: 80px;" class="text-emerald-400"></i>
+                    </div>
+                    
+                    <h1 class="text-5xl mb-4 leading-tight">
+                        Etik Kuramları:<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">Karar Verme Algoritmaları</span>
+                    </h1>
+                    
+                    <p class="text-lg text-slate-400 font-light tracking-widest uppercase mb-6">
+                        2. Hafta: Faydacılık, Deontoloji ve Erdem Etiği
+                    </p>
+                    
+                    <!-- Kod Satırı Animasyonu -->
+                    <div class="mt-4 p-4 bg-black/50 rounded-xl border border-slate-700 font-mono text-sm">
+                        <span class="text-purple-400">function</span> <span class="text-emerald-400">makeDecision</span><span class="text-white">(</span><span class="text-orange-400">situation</span><span class="text-white">) {</span>
+                        <div class="ml-4 mt-1">
+                            <span class="text-slate-500">// Hangi algoritmayı kullanacağız?</span>
+                        </div>
+                        <div class="ml-4">
+                            <span class="text-purple-400">return</span> <span class="text-cyan-400">ethicalFramework</span><span class="text-white">.</span><span class="text-yellow-400">analyze</span><span class="text-white">(</span><span class="text-orange-400">situation</span><span class="text-white">);</span>
+                        </div>
+                        <span class="text-white">}</span>
+                    </div>
+                    
+                    <div class="mt-6 flex items-center gap-2 text-emerald-500/60 text-sm font-mono">
+                        <span class="animate-pulse">▌</span>
+                        <span>ethics.framework.loading()</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- SLAYT 2: VİCDANIN İŞLETİM SİSTEMİ -->
+            <!-- ============================================== -->
+            <section data-background-color="#020617">
+                <div class="flex flex-col items-center">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i data-lucide="cpu" class="text-emerald-400" style="width: 24px; height: 24px;"></i>
+                        <p class="text-emerald-400/60 text-xs font-mono tracking-widest m-0">SİSTEM BAŞLATILIYOR</p>
+                    </div>
+                    
+                    <h2 class="text-3xl mb-6">Vicdanın <span class="text-emerald-400">İşletim Sistemi</span></h2>
+                    
+                    <!-- Konsol Benzeri Görsel -->
+                    <div class="w-full max-w-4xl">
+                        <div class="glass-card p-6 text-left mb-6">
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <span class="text-slate-500 text-xs font-mono ml-2">conscience.js</span>
+                            </div>
+                            
+                            <div class="font-mono text-sm space-y-2">
+                                <div>
+                                    <span class="text-slate-500">// Hayatın "gri" alanlarında...</span>
+                                </div>
+                                <div>
+                                    <span class="text-purple-400">if</span> <span class="text-white">(</span><span class="text-orange-400">situation</span> <span class="text-cyan-400">===</span> <span class="text-green-400">"belirsiz"</span><span class="text-white">) {</span>
+                                </div>
+                                <div class="ml-4">
+                                    <span class="text-slate-500">// Hangi algoritmaya göre karar veriyoruz?</span>
+                                </div>
+                                <div class="ml-4">
+                                    <span class="text-cyan-400">console</span><span class="text-white">.</span><span class="text-yellow-400">log</span><span class="text-white">(</span><span class="text-red-400">"???"</span><span class="text-white">);</span>
+                                </div>
+                                <div>
+                                    <span class="text-white">}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 3 Soru Kartı -->
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="fragment glass-card p-4 border-emerald-500/20 hover:border-emerald-500/50 transition-all">
+                                <i data-lucide="target" class="text-emerald-400 mx-auto mb-2" style="width: 32px; height: 32px;"></i>
+                                <p class="text-emerald-300 text-sm font-bold m-0">Sonuç mu önemli?</p>
+                                <p class="text-slate-500 text-xs m-0 mt-1">maximize(happiness)</p>
+                            </div>
+                            <div class="fragment glass-card p-4 border-blue-500/20 hover:border-blue-500/50 transition-all">
+                                <i data-lucide="scroll-text" class="text-blue-400 mx-auto mb-2" style="width: 32px; height: 32px;"></i>
+                                <p class="text-blue-300 text-sm font-bold m-0">Kural mı önemli?</p>
+                                <p class="text-slate-500 text-xs m-0 mt-1">follow(duty)</p>
+                            </div>
+                            <div class="fragment glass-card p-4 border-purple-500/20 hover:border-purple-500/50 transition-all">
+                                <i data-lucide="heart" class="text-purple-400 mx-auto mb-2" style="width: 32px; height: 32px;"></i>
+                                <p class="text-purple-300 text-sm font-bold m-0">Karakter mi önemli?</p>
+                                <p class="text-slate-500 text-xs m-0 mt-1">become(virtuous)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- SLAYT 3: FAYDACILIK - Terazi Animasyonu -->
+            <!-- ============================================== -->
+            <section>
+                <!-- 3.0: Faydacılık Kapak -->
+                <section data-background-gradient="linear-gradient(135deg, #064e3b 0%, #022c22 100%)">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <div class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold tracking-widest mb-4 border border-emerald-500/30">
+                            01 • UTILITARIANISM
+                        </div>
+                        
+                        <h2 class="text-4xl mb-4">
+                            <span class="text-emerald-400">Faydacılık</span>
+                        </h2>
+                        
+                        <p class="text-emerald-200/60 text-lg italic mb-8">"The Outcome Matters"</p>
+                        
+                        <!-- Terazi SVG Animasyonu -->
+                        <div class="relative mb-8" style="width: 300px; height: 200px;">
+                            <svg viewBox="0 0 300 200" class="w-full h-full">
+                                <!-- Terazi Direği -->
+                                <rect x="145" y="50" width="10" height="120" fill="#10b981" opacity="0.3"/>
+                                <circle cx="150" cy="50" r="8" fill="#10b981"/>
+                                
+                                <!-- Terazi Kolu (Animasyonlu) -->
+                                <g class="balance-animation">
+                                    <line x1="50" y1="80" x2="250" y2="80" stroke="#10b981" stroke-width="4"/>
+                                    
+                                    <!-- Sol Kefe - 5 Kişi -->
+                                    <line x1="50" y1="80" x2="50" y2="130" stroke="#10b981" stroke-width="2"/>
+                                    <ellipse cx="50" cy="140" rx="40" ry="10" fill="#10b981" opacity="0.3"/>
+                                    <text x="50" y="160" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="bold">5 Kişi</text>
+                                    
+                                    <!-- Sağ Kefe - 1 Kişi -->
+                                    <line x1="250" y1="80" x2="250" y2="130" stroke="#10b981" stroke-width="2"/>
+                                    <ellipse cx="250" cy="140" rx="40" ry="10" fill="#10b981" opacity="0.3"/>
+                                    <text x="250" y="160" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="bold">1 Kişi</text>
+                                </g>
+                            </svg>
+                        </div>
+                        
+                        <div class="p-4 bg-black/40 rounded-xl border border-emerald-500/30 max-w-lg">
+                            <p class="text-emerald-200 text-sm italic m-0">
+                                "Sayılar yalan söylemez. <span class="text-emerald-400 font-bold">En çok kişi için en büyük fayda</span> matematiksel olarak doğrudur."
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 3.1: Faydacılık Detay -->
+                <section data-background-gradient="linear-gradient(135deg, #064e3b 0%, #022c22 100%)">
+                    <div class="flex items-center justify-center gap-8 h-full px-4">
+                        <!-- Sol: Filozof Portreleri -->
+                        <div class="flex flex-col gap-4" style="width: 220px;">
+                            <div class="glass-card p-3 border-emerald-500/30 text-center">
+                                <div class="w-32 h-36 rounded-xl overflow-hidden mx-auto mb-2 border-2 border-emerald-400/50 flex justify-center items-center bg-emerald-900/20" style="box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);">
+                                    <img src="images/bentham-jeremy.jpg" alt="Jeremy Bentham" class="w-full h-full object-cover" style="object-position: top center;">
+                                </div>
+                                <p class="text-emerald-400 font-bold text-sm m-0">Jeremy Bentham</p>
+                                <p class="text-emerald-300/50 text-xs font-mono m-0">1748-1832</p>
+                            </div>
+                            <div class="glass-card p-3 border-emerald-500/30 text-center">
+                                <div class="w-32 h-36 rounded-xl overflow-hidden mx-auto mb-2 border-2 border-emerald-400/50 flex justify-center items-center bg-emerald-900/20" style="box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);">
+                                    <img src="images/mill-john.jpg" alt="John Stuart Mill" class="w-full h-full object-cover" style="object-position: top center;">
+                                </div>
+                                <p class="text-emerald-400 font-bold text-sm m-0">J.S. Mill</p>
+                                <p class="text-emerald-300/50 text-xs font-mono m-0">1806-1873</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Orta: Bilgi Kartı -->
+                        <div class="glass-card p-6 text-left border-emerald-500/30" style="width: 380px;">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-3 bg-emerald-500/20 rounded-xl">
+                                    <i data-lucide="scale" class="text-emerald-400" style="width: 28px; height: 28px;"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-emerald-400 text-xl font-bold m-0">En Büyük Mutluluk</h3>
+                                    <p class="text-emerald-300/50 text-xs font-mono m-0">Greatest Happiness Principle</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                                Bir eylem, etkilenen en fazla sayıda insan için en büyük faydayı sağlıyorsa "etik"tir.
+                            </p>
+                            
+                            <!-- Formül -->
+                            <div class="p-3 bg-black/40 rounded-lg border border-emerald-500/20 font-mono text-sm">
+                                <span class="text-emerald-400">Σ</span> <span class="text-white">(</span>
+                                <span class="text-cyan-400">happiness</span> <span class="text-white">-</span> 
+                                <span class="text-red-400">suffering</span>
+                                <span class="text-white">) →</span> <span class="text-emerald-400 font-bold">MAX</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ: Özellikler -->
+                        <div class="flex flex-col gap-4" style="width: 280px;">
+                            <div class="fragment glass-card p-4 border-emerald-500/20 pulse-card">
+                                <div class="flex items-center gap-3">
+                                    <i data-lucide="calculator" class="text-emerald-400" style="width: 24px; height: 24px;"></i>
+                                    <div class="text-left">
+                                        <p class="text-emerald-300 font-bold text-sm m-0">Sonuç Odaklı</p>
+                                        <p class="text-slate-500 text-xs m-0">Consequentialism</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="fragment glass-card p-4 border-emerald-500/20">
+                                <div class="flex items-center gap-3">
+                                    <i data-lucide="users" class="text-emerald-400" style="width: 24px; height: 24px;"></i>
+                                    <div class="text-left">
+                                        <p class="text-emerald-300 font-bold text-sm m-0">Çoğunluk İlkesi</p>
+                                        <p class="text-slate-500 text-xs m-0">Greatest Number</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="fragment glass-card p-4 border-emerald-500/20">
+                                <div class="flex items-center gap-3">
+                                    <i data-lucide="bar-chart-3" class="text-emerald-400" style="width: 24px; height: 24px;"></i>
+                                    <div class="text-left">
+                                        <p class="text-emerald-300 font-bold text-sm m-0">Maliyet/Fayda</p>
+                                        <p class="text-slate-500 text-xs m-0">Cost-Benefit Analysis</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- SLAYT 4: DEONTOLOJİ - Kural Kitabı -->
+            <!-- ============================================== -->
+            <section>
+                <!-- 4.0: Deontoloji Kapak -->
+                <section data-background-gradient="linear-gradient(135deg, #1e3a8a 0%, #0c1e4a 100%)">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <div class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-full text-xs font-bold tracking-widest mb-4 border border-blue-500/30">
+                            02 • DEONTOLOGY
+                        </div>
+                        
+                        <h2 class="text-4xl mb-4">
+                            <span class="text-blue-400">Deontoloji</span>
+                        </h2>
+                        
+                        <p class="text-blue-200/60 text-lg italic mb-8">"The Duty Matters"</p>
+                        
+                        <!-- Kural Tabletleri SVG -->
+                        <div class="relative mb-8 flex items-center justify-center gap-8">
+                            <!-- Sol Tablet -->
+                            <div class="philosopher-card p-6 bg-gradient-to-br from-blue-900/80 to-blue-950 border-2 border-blue-500/50 rounded-2xl" style="width: 180px; box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);">
+                                <i data-lucide="scroll-text" class="text-blue-400 mx-auto mb-3" style="width: 40px; height: 40px;"></i>
+                                <p class="text-blue-300 text-xs font-bold uppercase tracking-wider m-0">Kesin Buyruk</p>
+                                <p class="text-blue-200/50 text-[10px] font-mono m-0 mt-1">Categorical Imperative</p>
+                            </div>
+                            
+                            <!-- VS -->
+                            <div class="text-slate-600 text-3xl font-black">≠</div>
+                            
+                            <!-- Sağ Tablet (Çarpı) -->
+                            <div class="p-6 bg-gradient-to-br from-red-900/30 to-red-950/50 border-2 border-red-500/30 rounded-2xl opacity-60" style="width: 180px;">
+                                <i data-lucide="ban" class="text-red-400/60 mx-auto mb-3" style="width: 40px; height: 40px;"></i>
+                                <p class="text-red-300/60 text-xs font-bold uppercase tracking-wider m-0 line-through">Sonuç Hesabı</p>
+                                <p class="text-red-200/30 text-[10px] font-mono m-0 mt-1">ends ≠ means</p>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-black/40 rounded-xl border border-blue-500/30 max-w-lg">
+                            <p class="text-blue-200 text-sm italic m-0">
+                                "Sonuç ne olursa olsun, <span class="text-blue-400 font-bold">bazı kurallar evrenseldir</span>. Yalan söylemek her zaman yanlıştır!"
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 4.1: Kant Detay -->
+                <section data-background-gradient="linear-gradient(135deg, #1e3a8a 0%, #0c1e4a 100%)">
+                    <div class="flex items-center justify-center gap-8 h-full px-4">
+                        <!-- Sol: Kant Kartı -->
+                        <div class="glass-card p-6 text-left border-blue-500/30" style="width: 400px;">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-24 h-28 rounded-xl overflow-hidden border-2 border-blue-400/50 flex justify-center items-center bg-blue-900/20" style="box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);">
+                                    <img src="images/kant-immanuel.jpg" alt="Immanuel Kant" class="w-full h-full object-cover" style="object-position: top center;">
+                                </div>
+                                <div>
+                                    <h3 class="text-blue-400 text-xl font-bold m-0">Immanuel Kant</h3>
+                                    <p class="text-blue-300/50 text-xs font-mono m-0">1724-1804 • Königsberg</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="p-3 bg-blue-500/10 border-l-4 border-blue-500 rounded-r">
+                                    <p class="text-blue-200 text-xs m-0">
+                                        <i data-lucide="quote" class="inline-block mr-1 text-blue-400" style="width: 12px; height: 12px;"></i>
+                                        "Öyle davran ki, davranışının ilkesi evrensel bir yasa olabilsin."
+                                    </p>
+                                </div>
+                                
+                                <ul class="text-xs space-y-2 text-slate-300">
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check" class="text-blue-400 mt-0.5" style="width: 14px; height: 14px;"></i>
+                                        <span>İnsanı asla <span class="text-blue-400 font-bold">araç</span> olarak kullanma</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check" class="text-blue-400 mt-0.5" style="width: 14px; height: 14px;"></i>
+                                        <span><span class="text-blue-400 font-bold">Ödev</span> her şeyden önce gelir</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check" class="text-blue-400 mt-0.5" style="width: 14px; height: 14px;"></i>
+                                        <span><span class="text-blue-400 font-bold">Niyet</span> sonuçtan önemlidir</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ: Kural Listesi -->
+                        <div class="flex flex-col gap-3" style="width: 320px;">
+                            <div class="fragment p-4 bg-blue-900/30 border border-blue-500/30 rounded-xl">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                                        <span class="text-blue-400 font-bold">1</span>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-blue-300 font-bold text-sm m-0">Evrenselleştirilebilirlik</p>
+                                        <p class="text-slate-400 text-xs m-0">Herkes yapsa dünya nasıl olur?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="fragment p-4 bg-blue-900/30 border border-blue-500/30 rounded-xl">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                                        <span class="text-blue-400 font-bold">2</span>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-blue-300 font-bold text-sm m-0">İnsan Onuru</p>
+                                        <p class="text-slate-400 text-xs m-0">İnsan bir amaçtır, araç değil</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="fragment p-4 bg-blue-900/30 border border-blue-500/30 rounded-xl">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                                        <span class="text-blue-400 font-bold">3</span>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-blue-300 font-bold text-sm m-0">Özerk İrade</p>
+                                        <p class="text-slate-400 text-xs m-0">Kendi aklınla karar ver</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- SLAYT 5: ERDEM ETİĞİ - Pusula Animasyonu -->
+            <!-- ============================================== -->
+            <section>
+                <!-- 5.0: Erdem Etiği Kapak -->
+                <section data-background-gradient="linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <div class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-full text-xs font-bold tracking-widest mb-4 border border-purple-500/30">
+                            03 • VIRTUE ETHICS
+                        </div>
+                        
+                        <h2 class="text-4xl mb-4">
+                            <span class="text-purple-400">Erdem Etiği</span>
+                        </h2>
+                        
+                        <p class="text-purple-200/60 text-lg italic mb-8">"The Character Matters"</p>
+                        
+                        <!-- Aristoteles + Pusula yan yana -->
+                        <div class="flex items-center justify-center gap-8 mb-8">
+                            <!-- Aristoteles Portresi -->
+                            <div class="glass-card p-4 border-purple-500/30 text-center">
+                                <div class="w-32 h-36 rounded-xl overflow-hidden mx-auto mb-3 border-2 border-purple-400/50 flex justify-center items-center bg-purple-900/20" style="box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);">
+                                    <img src="images/aristotle.jpg" alt="Aristoteles" class="w-full h-full object-cover" style="object-position: top center;">
+                                </div>
+                                <p class="text-purple-400 font-bold text-sm m-0">Aristoteles</p>
+                                <p class="text-purple-300/50 text-xs font-mono m-0">MÖ 384-322</p>
+                            </div>
+                            
+                            <!-- Pusula SVG Animasyonu -->
+                            <div class="relative" style="width: 180px; height: 180px;">
+                                <svg viewBox="0 0 200 200" class="w-full h-full">
+                                <!-- Dış Çember -->
+                                <circle cx="100" cy="100" r="90" fill="none" stroke="#a855f7" stroke-width="2" opacity="0.3"/>
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="#a855f7" stroke-width="1" opacity="0.2"/>
+                                
+                                <!-- İç Dolgu -->
+                                <circle cx="100" cy="100" r="70" fill="url(#purpleGradient)" opacity="0.2"/>
+                                
+                                <!-- Yön İşaretleri -->
+                                <text x="100" y="25" text-anchor="middle" fill="#a855f7" font-size="12" font-weight="bold">ERDEM</text>
+                                <text x="100" y="185" text-anchor="middle" fill="#6b21a8" font-size="10">aşırılık</text>
+                                <text x="15" y="105" text-anchor="middle" fill="#6b21a8" font-size="10">eksik</text>
+                                <text x="185" y="105" text-anchor="middle" fill="#6b21a8" font-size="10">fazla</text>
+                                
+                                <!-- Pusula İğnesi (Animasyonlu) -->
+                                <g class="compass-needle">
+                                    <polygon points="100,40 95,100 100,110 105,100" fill="#a855f7"/>
+                                    <polygon points="100,160 95,100 100,90 105,100" fill="#6b21a8" opacity="0.5"/>
+                                    <circle cx="100" cy="100" r="8" fill="#c084fc"/>
+                                </g>
+                                
+                                <!-- Gradient Tanımı -->
+                                <defs>
+                                    <radialGradient id="purpleGradient">
+                                        <stop offset="0%" stop-color="#a855f7"/>
+                                        <stop offset="100%" stop-color="#4c1d95"/>
+                                    </radialGradient>
+                                </defs>
+                            </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-black/40 rounded-xl border border-purple-500/30 max-w-lg">
+                            <p class="text-purple-200 text-sm italic m-0">
+                                "<span class="text-purple-400 font-bold">Ne yapmalıyım?</span>" yerine "<span class="text-purple-400 font-bold">Nasıl biri olmalıyım?</span>" diye sorar.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 5.1: Altın Orta Detay -->
+                <section data-background-gradient="linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)">
+                    <div class="flex flex-col items-center h-full px-4">
+                        <h3 class="text-purple-400 text-2xl font-bold mb-6">Aristoteles'in "Altın Orta"sı</h3>
+                        
+                        <!-- Altın Orta Slider Görselleştirmesi -->
+                        <div class="w-full max-w-3xl mb-8">
+                            <div class="glass-card p-6 border-purple-500/30">
+                                <!-- Slider Bar -->
+                                <div class="relative h-16 mb-4">
+                                    <div class="absolute top-1/2 left-0 right-0 h-2 bg-gradient-to-r from-red-500/30 via-purple-500 to-red-500/30 rounded-full -translate-y-1/2"></div>
+                                    
+                                    <!-- Etiketler -->
+                                    <div class="absolute top-0 left-4 text-center">
+                                        <p class="text-red-400/70 text-xs font-bold m-0">EKSİKLİK</p>
+                                        <p class="text-slate-500 text-[10px] m-0">Korkaklık</p>
+                                    </div>
+                                    <div class="absolute top-0 left-1/2 -translate-x-1/2 text-center">
+                                        <div class="w-4 h-4 bg-purple-500 rounded-full mx-auto mb-1 animate-pulse" style="box-shadow: 0 0 20px #a855f7;"></div>
+                                        <p class="text-purple-400 text-xs font-bold m-0">ERDEM</p>
+                                        <p class="text-purple-300 text-[10px] m-0">Cesaret</p>
+                                    </div>
+                                    <div class="absolute top-0 right-4 text-center">
+                                        <p class="text-red-400/70 text-xs font-bold m-0">AŞIRILIK</p>
+                                        <p class="text-slate-500 text-[10px] m-0">Atılganlık</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Örnek Erdemler Grid -->
+                                <div class="grid grid-cols-3 gap-3 text-center text-xs mt-6">
+                                    <div class="p-2 bg-red-500/10 rounded-lg border border-red-500/20">
+                                        <p class="text-red-300/60 m-0">Cimrilik</p>
+                                    </div>
+                                    <div class="p-2 bg-purple-500/30 rounded-lg border border-purple-500/50">
+                                        <p class="text-purple-300 font-bold m-0">Cömertlik</p>
+                                    </div>
+                                    <div class="p-2 bg-red-500/10 rounded-lg border border-red-500/20">
+                                        <p class="text-red-300/60 m-0">Savurganlık</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Erdemli Yazılımcı -->
+                        <div class="fragment glass-card p-4 border-purple-500/30 max-w-lg">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-purple-500/20 rounded-lg">
+                                    <i data-lucide="code-2" class="text-purple-400" style="width: 24px; height: 24px;"></i>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-purple-300 font-bold text-sm m-0">Erdemli Yazılımcı</p>
+                                    <p class="text-slate-400 text-xs m-0">Dürüst, Adil, Basiretli ve Öğrenmeye Açık</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- SLAYT 6: BATTLE ARENA - 3 Teori Karşılaştırma -->
+            <!-- ============================================== -->
+            <!-- ============================================== -->
+            <!-- SLAYT 6: BATTLE ARENA & VAKA ANALİZİ -->
+            <!-- ============================================== -->
+            <section>
+                <!-- 6.0: Algoritma Seçimi Giriş (Özet) -->
+                <section data-background-color="#020617">
+                    <h2 class="text-2xl mb-6">Hangi <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400">Algoritmayı</span> Seçeceksin?</h2>
+                    
+                    <div class="flex items-stretch justify-center gap-4 h-[450px]">
+                        <!-- FAYDACILIK -->
+                        <div class="fragment theory-card glass-card p-5 border-2 border-emerald-500/30 flex flex-col justify-between hover:border-emerald-500" style="width: 280px; box-shadow: 0 0 30px rgba(16, 185, 129, 0.1);">
+                            <div>
+                                <div class="w-16 h-16 bg-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="calculator" class="text-emerald-400" style="width: 32px; height: 32px;"></i>
+                                </div>
+                                <h3 class="text-emerald-400 font-bold text-lg m-0">FAYDACILIK</h3>
+                                <p class="text-emerald-300/50 text-xs font-mono m-0 mb-4">(Sonuç)</p>
+                                <p class="text-slate-400 text-xs leading-relaxed">"En çok insanı mutlu eden seçenek doğrudur."</p>
+                            </div>
+                            <div class="p-3 bg-emerald-500/10 rounded-lg">
+                                <p class="text-emerald-300 text-[10px] font-mono m-0">maximize(totalHappiness)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- DEONTOLOJİ -->
+                        <div class="fragment theory-card glass-card p-5 border-2 border-blue-500/30 flex flex-col justify-between hover:border-blue-500" style="width: 280px; box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);">
+                            <div>
+                                <div class="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="scroll-text" class="text-blue-400" style="width: 32px; height: 32px;"></i>
+                                </div>
+                                <h3 class="text-blue-400 font-bold text-lg m-0">DEONTOLOJİ</h3>
+                                <p class="text-blue-300/50 text-xs font-mono m-0 mb-4">(Kural)</p>
+                                <p class="text-slate-400 text-xs leading-relaxed">"Kural neyse o! Niyet saf olmalı."</p>
+                            </div>
+                            <div class="p-3 bg-blue-500/10 rounded-lg">
+                                <p class="text-blue-300 text-[10px] font-mono m-0">follow(universalLaw)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- ERDEM ETİĞİ -->
+                        <div class="fragment theory-card glass-card p-5 border-2 border-purple-500/30 flex flex-col justify-between hover:border-purple-500" style="width: 280px; box-shadow: 0 0 30px rgba(168, 85, 247, 0.1);">
+                            <div>
+                                <div class="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="gem" class="text-purple-400" style="width: 32px; height: 32px;"></i>
+                                </div>
+                                <h3 class="text-purple-400 font-bold text-lg m-0">ERDEM ETİĞİ</h3>
+                                <p class="text-purple-300/50 text-xs font-mono m-0 mb-4">(Karakter)</p>
+                                <p class="text-slate-400 text-xs leading-relaxed">"Dürüst ve adil bir profesyonel ol."</p>
+                            </div>
+                            <div class="p-3 bg-purple-500/10 rounded-lg">
+                                <p class="text-purple-300 text-[10px] font-mono m-0">become(virtuousPerson)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6.1: Vaka: Otopilot İkilemi -->
+                <section data-background-image="images/karar_ani_2.png" data-background-size="cover">
+                    <!-- Dark Overlay for Readability -->
+                    <div class="absolute inset-0 bg-black/60 z-0"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="bg-glow bg-red-600 top-0 left-0"></div>
+                        <div class="theory-badge bg-red-500/20 text-red-400 border border-red-500/30">VAKA ANALİZİ</div>
+                        <h2 class="text-4xl mb-8 text-white drop-shadow-lg">Otonom Araç İkilemi (Trolley Problem)</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <div class="glass-card p-8 border-red-500/30 relative overflow-hidden backdrop-blur-md">
+                                <div class="absolute top-0 right-0 p-4 opacity-10">
+                                    <i data-lucide="car" size="120"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-4">Senaryo:</h3>
+                                <p class="text-slate-300 text-lg leading-relaxed mb-6">
+                                    Otonom aracınızın frenleri patladı. Hızla ilerliyor.
+                                </p>
+                                <ul class="text-sm text-slate-300 space-y-4">
+                                    <li class="flex items-center gap-3">
+                                        <span class="p-2 bg-red-500/40 rounded text-red-200 font-bold border border-red-500/50">A Yolu</span>
+                                        <span class="drop-shadow-md">Yaya geçidinde <strong class="text-white">5 kişi</strong> var. (Kesin ölüm)</span>
+                                    </li>
+                                    <li class="flex items-center gap-3">
+                                        <span class="p-2 bg-blue-500/40 rounded text-blue-200 font-bold border border-blue-500/50">B Yolu</span>
+                                        <span class="drop-shadow-md">Duvara çarpıp <strong class="text-white">tek yolcuyu (sizi)</strong> öldürecek.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="flex flex-col gap-4">
+                                <div class="p-6 bg-black/60 rounded-xl border border-white/20 text-center backdrop-blur-sm">
+                                    <i data-lucide="help-circle" class="text-yellow-400 mx-auto mb-2" size="48"></i>
+                                    <h4 class="text-xl font-bold text-white">Yazılım Ne Yapmalı?</h4>
+                                    <p class="text-sm text-slate-300">Algoritma kimi feda etmeli?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6.2: Faydacı Çözüm -->
+                <section data-background-image="images/karar_ani_4.png" data-background-size="cover">
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-900/80 to-transparent z-0"></div>
+
+                    <div class="relative z-10 flex items-center justify-start h-full px-4 text-left">
+                        <div class="flex flex-col gap-6">
+                            <div class="glass-card p-8 border-emerald-500/50 bg-black/40 backdrop-blur-md" style="width: 500px;">
+                                <div class="flex items-center gap-4 mb-6">
+                                    <div class="p-4 bg-emerald-500/30 rounded-2xl border border-emerald-400/30"><i data-lucide="calculator" class="text-emerald-400" size="32"></i></div>
+                                    <div>
+                                        <h3 class="text-emerald-400 text-3xl font-black m-0">FAYDACILIK</h3>
+                                        <p class="text-emerald-200/50 text-sm font-mono m-0">Sonuç Odaklı</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-5xl font-black text-white mb-4">5 > 1</div>
+                                <p class="text-slate-100 text-xl font-medium leading-relaxed">
+                                    "Matematik duygusuzdur. 5 kişiyi kurtarmak için 1 kişiyi feda etmek, mantıksal zorunluluktur."
+                                </p>
+                                
+                                <div class="mt-6 p-4 bg-black/50 rounded-lg border-l-4 border-emerald-500 font-mono text-xs text-emerald-300">
+                                    if (livesSaved > livesLost) {<br>
+                                    &nbsp;&nbsp;return SACRIFICE_PASSENGER;<br>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6.3: Deontolojik Çözüm -->
+                <section data-background-image="images/karar_ani_5.png" data-background-size="cover">
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-950/90 via-blue-900/80 to-transparent z-0"></div>
+
+                    <div class="relative z-10 flex items-center justify-start h-full px-4 text-left">
+                        <div class="flex flex-col gap-6">
+                            <div class="glass-card p-8 border-blue-500/50 bg-black/40 backdrop-blur-md" style="width: 500px;">
+                                <div class="flex items-center gap-4 mb-6">
+                                    <div class="p-4 bg-blue-500/30 rounded-2xl border border-blue-400/30"><i data-lucide="shield-check" class="text-blue-400" size="32"></i></div>
+                                    <div>
+                                        <h3 class="text-blue-400 text-3xl font-black m-0">DEONTOLOJİ</h3>
+                                        <p class="text-blue-200/50 text-sm font-mono m-0">Ödev ve Sadakat</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-4xl font-black text-white mb-4">GÖREV: KORUMAK</div>
+                                <p class="text-slate-100 text-xl font-medium leading-relaxed">
+                                    "Aracın birincil ödevi, içindeki yolcuyu güvenle taşımaktır. Yazılım, sahibine ihanet edip onu feda edemez."
+                                </p>
+                                
+                                <div class="mt-6 p-4 bg-black/50 rounded-lg border-l-4 border-blue-500 font-mono text-xs text-blue-300">
+                                    if (contract == PROTECT_OWNER) {<br>
+                                    &nbsp;&nbsp;// Sadakat Ödevi<br>
+                                    &nbsp;&nbsp;return STAY_COURSE;<br>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6.4: Erdemli Çözüm -->
+                <section data-background-image="images/karar_ani_5.png" data-background-size="cover">
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-950/90 via-purple-900/80 to-transparent z-0"></div>
+
+                    <div class="relative z-10 flex items-center justify-start h-full px-4 text-left">
+                        <div class="flex flex-col gap-6">
+                            <div class="glass-card p-8 border-purple-500/50 bg-black/40 backdrop-blur-md" style="width: 500px;">
+                                <div class="flex items-center gap-4 mb-6">
+                                    <div class="p-4 bg-purple-500/30 rounded-2xl border border-purple-400/30"><i data-lucide="heart-handshake" class="text-purple-400" size="32"></i></div>
+                                    <div>
+                                        <h3 class="text-purple-400 text-3xl font-black m-0">ERDEM ETİĞİ</h3>
+                                        <p class="text-purple-200/50 text-sm font-mono m-0">Karakter Odaklı</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-4xl font-black text-white mb-4">FEDAKARLIK</div>
+                                <p class="text-slate-100 text-xl font-medium leading-relaxed">
+                                    "Gerçek bir kahraman, başkaları yaşasın diye kendini feda eder. Bu bir matematik hesabı değil, erdemli bir duruştur."
+                                </p>
+                                
+                                <div class="mt-6 p-4 bg-black/50 rounded-lg border-l-4 border-purple-500 font-mono text-xs text-purple-300">
+                                    class VirtuousPerson {<br>
+                                    &nbsp;&nbsp;act() => SELF_SACRIFICE;<br>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- SLAYT 7: İNTERAKTİF VAKA - Veri Güvenliği -->
+            <!-- ============================================== -->
+            <section data-background-gradient="linear-gradient(135deg, #450a0a 0%, #020617 100%)">
+                <div class="flex flex-col items-center justify-center h-full px-4 pt-2">
+                    
+                    <!-- Başlık -->
+                    <div class="relative w-full text-center mb-2">
+                         <div class="inline-flex items-center gap-2 mb-1 px-3 py-1 bg-red-500/10 rounded-full border border-red-500/20">
+                            <i data-lucide="alert-triangle" class="text-red-400 animate-pulse" size="14"></i>
+                            <span class="text-red-400/80 text-[10px] font-mono tracking-widest font-bold">ETİK İKİLEM SİMÜLASYONU</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white drop-shadow-lg m-0">Veri Güvenliği vs. Şirket Kârı</h2>
+                    </div>
+
+                    <!-- Orta Alan: Karikatür (Hero) - Optimize Edildi -->
+                    <div class="relative mt-2 mb-4 group w-full max-w-5xl flex justify-center items-center">
+                        
+                        <!-- Sol Bilgi: İFLAS (Risk) -->
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-48 text-right transform -translate-x-4 transition-all duration-500 group-hover:translate-x-0">
+                            <div class="p-3 bg-black/60 border-r-4 border-red-500 rounded-l-xl backdrop-blur-sm">
+                                <h4 class="text-red-400 font-bold text-xs mb-1">İFLAS RİSKİ!</h4>
+                                <div class="text-white font-bold text-sm flex items-center justify-end gap-1">
+                                    <span>1000 Kişi</span>
+                                    <i data-lucide="users" class="text-slate-400" size="12"></i>
+                                </div>
+                                <p class="text-red-300/50 text-[9px]">İşsiz kalacak</p>
+                            </div>
+                        </div>
+
+                        <!-- Merkez: Karikatür (Boyut: 550px) -->
+                        <div class="relative z-10 glass-card p-2 border-red-500/30 bg-black/40 shadow-2xl transform transition-transform hover:scale-105 duration-500" style="width: 550px;">
+                             <img src="images/sirket_problemi.png" alt="Veri Güvenliği Karikatürü" class="w-full h-auto object-cover rounded-lg">
+                             <div class="absolute inset-0 rounded-lg ring-1 ring-white/10 pointer-events-none"></div>
+                        </div>
+
+                        <!-- Sağ Bilgi: FIRSAT (Teklif) -->
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-48 text-left transform translate-x-4 transition-all duration-500 group-hover:translate-x-0">
+                            <div class="p-3 bg-black/60 border-l-4 border-emerald-500 rounded-r-xl backdrop-blur-sm">
+                                <h4 class="text-emerald-400 font-bold text-xs mb-1">TEKLİF VAR!</h4>
+                                <div class="text-white font-bold text-lg flex items-center gap-1">
+                                    <i data-lucide="dollar-sign" class="text-emerald-400" size="16"></i>
+                                    <span>10 Milyon</span>
+                                </div>
+                                <p class="text-emerald-300/50 text-[9px]">kurtulursun</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Alt: Karar Butonları (Kompakt) -->
+                    <div class="grid grid-cols-3 gap-4 w-full max-w-3xl px-4">
+                        <!-- Faydacı -->
+                        <div class="group p-2 bg-slate-900/60 border border-emerald-500/30 rounded-xl hover:bg-emerald-900/40 cursor-pointer transition-all text-center">
+                            <div class="flex items-center justify-center gap-2 mb-1">
+                                <i data-lucide="calculator" class="text-emerald-400" size="14"></i>
+                                <span class="text-emerald-400 font-bold text-xs">SATARIM</span>
+                            </div>
+                            <p class="text-[9px] text-slate-400 group-hover:text-emerald-200/70">"1000 ailenin refahı > Gizlilik"</p>
+                        </div>
+
+                        <!-- Deontolog -->
+                        <div class="group p-2 bg-slate-900/60 border border-blue-500/30 rounded-xl hover:bg-blue-900/40 cursor-pointer transition-all text-center">
+                            <div class="flex items-center justify-center gap-2 mb-1">
+                                <i data-lucide="shield-off" class="text-blue-400" size="14"></i>
+                                <span class="text-blue-400 font-bold text-xs">SATMAM</span>
+                            </div>
+                            <p class="text-[9px] text-slate-400 group-hover:text-blue-200/70">"Hırsızlık (veri çalmak) yanlıştır"</p>
+                        </div>
+
+                        <!-- Erdem -->
+                        <div class="group p-2 bg-slate-900/60 border border-purple-500/30 rounded-xl hover:bg-purple-900/40 cursor-pointer transition-all text-center">
+                            <div class="flex items-center justify-center gap-2 mb-1">
+                                <i data-lucide="gem" class="text-purple-400" size="14"></i>
+                                <span class="text-purple-400 font-bold text-xs">DÜRÜSTÜM</span>
+                            </div>
+                            <p class="text-[9px] text-slate-400 group-hover:text-purple-200/70">"Kullanıcıya sorarım, şeffaf olurum"</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- SLAYT 8: KAPANIŞ -->
+            <!-- ============================================== -->
+            <section data-background-gradient="radial-gradient(circle, #0a1628 0%, #000000 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2 class="text-3xl mb-6">Haftaya: <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Profesyonel Etik</span></h2>
+                    
+                    <p class="text-slate-400 text-lg mb-8">Siber Teknoloji ve Mesleki Sorumluluk</p>
+                    
+                    <!-- Özet Kutusu -->
+                    <div class="glass-card p-6 max-w-2xl mb-8">
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                    <i data-lucide="calculator" class="text-emerald-400" style="width: 24px; height: 24px;"></i>
+                                </div>
+                                <p class="text-emerald-400 text-xs font-bold m-0">Faydacılık</p>
+                                <p class="text-slate-500 text-[10px] m-0">Sonuç</p>
+                            </div>
+                            <div>
+                                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                    <i data-lucide="scroll-text" class="text-blue-400" style="width: 24px; height: 24px;"></i>
+                                </div>
+                                <p class="text-blue-400 text-xs font-bold m-0">Deontoloji</p>
+                                <p class="text-slate-500 text-[10px] m-0">Kural</p>
+                            </div>
+                            <div>
+                                <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                    <i data-lucide="gem" class="text-purple-400" style="width: 24px; height: 24px;"></i>
+                                </div>
+                                <p class="text-purple-400 text-xs font-bold m-0">Erdem Etiği</p>
+                                <p class="text-slate-500 text-[10px] m-0">Karakter</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Kapanış Alıntısı -->
+                    <div class="glass-card p-4 max-w-lg bg-gradient-to-r from-emerald-500/5 via-blue-500/5 to-purple-500/5">
+                        <i data-lucide="code-2" class="text-slate-500 mx-auto mb-3" style="width: 28px; height: 28px;"></i>
+                        <p class="text-slate-300 text-sm italic m-0">
+                            "Yazdığın kodun <span class="text-emerald-400">ahlaki bir ağırlığı</span> olduğunu hiç düşündün mü?"
+                        </p>
+                    </div>
+                    
+                    <div class="mt-8 text-slate-600 text-xs font-mono">
+                        ethics.session.end() • Hafta 2/15
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // Reveal.js initialization
+        initReveal({
+            hash: false, 
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'zoom',
+            width: 1200, 
+            height: 700, 
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+</html>
