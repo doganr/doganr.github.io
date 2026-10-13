@@ -66,6 +66,7 @@ function addCopyButtons() {
 function initReveal(customOptions = {}) {
     const defaultOptions = {
         hash: true,
+        hashOneBasedIndex: true,   // URL'deki numara = ekrandaki slayt numarası
         history: true,
         center: true,
         transition: 'convex', // default transition

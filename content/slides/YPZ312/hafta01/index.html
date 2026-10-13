@@ -62,10 +62,15 @@
         .guess-quiz .quiz-opt { display: inline-block; width: auto; margin: 0 4px 0 0; padding: 5px 16px;
             font-size: 0.5em; }
         .guess-quiz .quiz-fb { font-size: 0.48em; min-height: 1.2em; margin-top: 4px; }
-        #w1quiz .quiz { margin-bottom: 4px; }
-        #w1quiz .quiz-q { font-size: 0.58em; margin-bottom: 5px; }
-        #w1quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.54em; }
-        #w1quiz .quiz-fb { font-size: 0.52em; min-height: 1.2em; margin-top: 4px; }
+        .w1quiz .quiz { margin-bottom: 4px; }
+        .w1quiz .quiz-q { font-size: 0.58em; margin-bottom: 5px; }
+        .w1quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.54em; }
+        .w1quiz .quiz-fb { font-size: 0.52em; min-height: 1.2em; margin-top: 4px; }
+        /* okunuş notu: özel karakteri ilk gördükleri yerde */
+        .say { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; color: #94a3b8; margin: -4px auto 10px; }
+        .say b { color: #fde047; font-size: 1.2em; font-weight: 700; } .say i { color: #e2e8f0; font-style: normal; }
+        .say .sp { color: #475569; margin: 0 6px; }
+        i.rd { font-style: normal; color: #fde047; }
     </style>
 </head>
 
@@ -367,6 +372,7 @@ X = torch.tensor(X.values, dtype=torch.float32)  # X.shape → (5, 5)</code></pr
                 <div class="math-box mb-3" style="max-width:720px;">
                     \[ x\in\mathbb{R}, \quad \mathbf{x}\in\mathbb{R}^{n}, \quad \mathbf{A}\in\mathbb{R}^{m\times n} \]
                 </div>
+                <p class="say">🔈 okunuş: <b>∈</b> “<i>elemanıdır</i>”: x ∈ ℝ → x bir reel sayıdır<span class="sp">·</span><b>ℝ</b> “<i>reel sayılar</i>”: ℝⁿ: n elemanlı reel vektör</p>
                 <div class="flex items-start justify-center gap-8">
                     <div style="flex:1.1;">
                         <pre><code class="language-python" data-trim data-line-numbers="1-3|5" style="font-size:0.5em;">x = torch.tensor(3.0)               # skaler
@@ -394,6 +400,7 @@ A.T                                 # [[0,2,4],[1,3,5]]  (2×3)</code></pre>
                     \[ \begin{bmatrix}1&2\\3&4\end{bmatrix}\odot\begin{bmatrix}2&0\\1&3\end{bmatrix}
                     = \begin{bmatrix}2&0\\3&12\end{bmatrix} \]
                 </div>
+                <p class="say">🔈 okunuş: <b>⊙</b> “<i>hadamard</i>”: eleman-eleman çarpım<span class="sp">·</span><b>A<sub>ij</sub></b> “<i>A i j</i>”: i. satır, j. sütun</p>
                 <div class="flex items-start justify-center gap-8">
                     <div style="flex:1;">
                         <pre><code class="language-python" data-trim style="font-size:0.52em;">A = torch.tensor([[1., 2], [3, 4]])
@@ -418,6 +425,7 @@ A * 2        # her elemanı ölçekle</code></pre>
                 <div class="math-box mb-3" style="max-width:520px;">
                     \[ \sum_{i} x_i, \qquad \bar{x} = \frac{1}{n}\sum_{i} x_i \]
                 </div>
+                <p class="say">🔈 okunuş: <b>Σ</b> “<i>sigma (büyük)</i>”: hepsini topla<span class="sp">·</span><b>x̄</b> “<i>x bar</i>”: ortalama</p>
                 <div class="flex items-start justify-center gap-8">
                     <div style="flex:1.2;">
                         <pre><code class="language-python" data-trim data-line-numbers="1|2|3|4|5" style="font-size:0.5em;">A = torch.arange(1., 7).reshape(2, 3)  # [[1,2,3],[4,5,6]]  (float!)
@@ -465,6 +473,7 @@ A.sum(axis=1, keepdims=True)   # [[6],[15]]  boyut korunur</code></pre>
                 <div class="math-box mb-3" style="max-width:560px;">
                     \[ \mathbf{x}^\top \mathbf{y} = \sum_{i} x_i y_i \]
                 </div>
+                <p class="say">🔈 okunuş: <b>xᵀ</b> “<i>x transpoz</i>”: sütun vektörü satıra çevir</p>
                 <div class="flex items-start justify-center gap-8">
                     <div style="flex:1;">
                         <pre><code class="language-python" data-trim style="font-size:0.52em;">x = torch.tensor([1., 2., 3.])
@@ -670,7 +679,7 @@ torch.linalg.norm(torch.ones(4, 9))   # 6.  Frobenius</code></pre>
             </section>
 
             <!-- 24. MINI QUIZ -->
-            <section id="w1quiz">
+            <section class="w1quiz">
                 <span class="chip mb-2" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
                     <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · Haftayı Yokla</span>
                 <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Kendini Test Et</h2>

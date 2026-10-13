@@ -51,10 +51,10 @@
             padding: 1px 9px; border-radius: 8px; background: rgba(255,255,255,0.06); }
         .wk { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #0b1020;
             background: #93c5fd; border-radius: 6px; padding: 0 6px; font-weight: 800; }
-        #w2quiz .quiz { margin-bottom: 4px; }
-        #w2quiz .quiz-q { font-size: 0.58em; margin-bottom: 5px; }
-        #w2quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.54em; }
-        #w2quiz .quiz-fb { font-size: 0.5em; min-height: 1.2em; margin-top: 4px; }
+        .w2quiz .quiz { margin-bottom: 4px; }
+        .w2quiz .quiz-q { font-size: 0.58em; margin-bottom: 5px; }
+        .w2quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.54em; }
+        .w2quiz .quiz-fb { font-size: 0.5em; min-height: 1.2em; margin-top: 4px; }
         .cards-tight .concept-card { padding: 12px 16px; }
         .cards-tight .concept-card h4 { font-size: 0.66em; margin-bottom: 3px; }
         .cards-tight .concept-card p { font-size: 0.54em; line-height: 1.45; }
@@ -74,6 +74,11 @@
         .cards-mini .concept-card { padding: 10px 14px; }
         .cards-mini .concept-card h4 { font-size: 0.6em; }
         .cards-mini .concept-card p { font-size: 0.48em; line-height: 1.45; }
+        /* okunuş notu: özel karakteri ilk gördükleri yerde */
+        .say { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; color: #94a3b8; margin: -4px auto 10px; }
+        .say b { color: #fde047; font-size: 1.2em; font-weight: 700; } .say i { color: #e2e8f0; font-style: normal; }
+        .say .sp { color: #475569; margin: 0 6px; }
+        i.rd { font-style: normal; color: #fde047; }
     </style>
 </head>
 
@@ -236,7 +241,7 @@
                     <table class="dtab" style="font-size:0.5em;flex:1.4;">
                         <tr><th>#</th><th>Varsayım (1943)</th><th>Modelde ne demek?</th></tr>
                         <tr class="fragment fade-in"><td>1</td><td>Etkinlik <b>hep-ya-hiç</b></td><td>girdi ve çıktı ikili: 0 / 1</td></tr>
-                        <tr class="fragment fade-in"><td>2</td><td>Ateşlemek için belirli sayıda uyarıcı sinaps gerekir</td><td><b>eşik θ</b>: Σ xᵢ ≥ θ</td></tr>
+                        <tr class="fragment fade-in"><td>2</td><td>Ateşlemek için belirli sayıda uyarıcı sinaps gerekir</td><td><b>eşik θ</b> (<i class="rd">teta</i>): Σ xᵢ ≥ θ</td></tr>
                         <tr class="fragment fade-in"><td>3</td><td>Tek önemli gecikme <b>sinaptik</b> gecikmedir</td><td><b>ayrık zaman</b>: t → t+1</td></tr>
                         <tr class="fragment fade-in"><td>4</td><td>Tek bir baskılayıcı sinaps ateşlemeyi <b>tamamen</b> engeller</td><td><b>mutlak baskılama</b> (veto) → NOT</td></tr>
                         <tr class="fragment fade-in"><td>5</td><td>Ağın yapısı zamanla <b>değişmez</b></td><td>ağırlıklar sabit → <b>öğrenme yok</b></td></tr>
@@ -492,6 +497,7 @@ wt @ xt                                  # tensor(-0.5500) → aynı net!</code>
                             <button type="button" class="runbtn" data-f="tanh">tanh</button>
                             <button type="button" class="runbtn" data-f="relu">ReLU</button>
                         </div>
+                        <p class="say" style="margin:10px 0 0;text-align:left;font-size:0.4em;">🔈 okunuş:<br><b>σ</b> “<i>sigma</i>” = sigmoid<br><b>tanh</b> “<i>tanh</i>” = hiperbolik tanjant</p>
                     </div>
                 </div>
                 <p class="code-note mt-2" style="font-size:0.5em;">Çizgi kalınlığı = |w|, <span style="color:#60a5fa;">mavi</span>
@@ -855,8 +861,7 @@ step(step(X @ W1.T + b1) @ W2.T + b2)    # f var → [0, 1, 1, 0]  XOR ✓</code
                     <tr class="fragment fade-in"><td>ReLU</td><td>0</td><td>"Sessiz." Negatif net'i tamamen keser.</td></tr>
                 </table>
                 <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;">Aktivasyon, nöronun <b>"karakterini"</b>
-                    belirler. Peki neden bu kadar çok aktivasyon var — hangisi <b>nerede</b> işe yarar? →
-                    <span style="color:#64748b;">(Değerler PyTorch ile doğrulandı.)</span></p>
+                    belirler. Peki neden bu kadar çok aktivasyon var — hangisi <b>nerede</b> işe yarar? →</p>
             </section>
 
 
@@ -1016,7 +1021,7 @@ torch.allclose(katman(X), X @ katman.weight.T + katman.bias)  # True</code></pre
 
 
             <!-- 20. MİNİ QUIZ -->
-            <section id="w2quiz">
+            <section class="w2quiz">
                 <span class="chip mb-2" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
                     <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · Haftayı Yokla</span>
                 <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Kendini Test Et</h2>
@@ -1114,6 +1119,7 @@ torch.allclose(katman(X), X @ katman.weight.T + katman.bias)  # True</code></pre
                         nöron onları <b>veriden kendisi</b> bulacak: Hebb kuralı ve Delta (Widrow–Hoff) kuralı. Bunun için
                         yeni bir araç gerekecek: <b>türev</b> — "w'yi biraz değiştirirsem y ne kadar değişir?"</p>
                     <div class="math-box mb-8" style="max-width:520px;">\[ \Delta \mathbf{w} = \eta\,(d - y)\,\mathbf{x} \]</div>
+                <p class="say">🔈 okunuş: <b>Δ</b> “<i>delta</i>”: değişim miktarı<span class="sp">·</span><b>η</b> “<i>eta</i>”: öğrenme oranı</p>
                     <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
                 </div>
             </section>
