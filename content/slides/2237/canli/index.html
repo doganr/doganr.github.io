@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Canlı Modellerden Koda · TÜBİTAK 2237</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700;800&display=swap">
+    <link rel="stylesheet" href="../assets/vendor/reset.min.css">
+    <link rel="stylesheet" href="../assets/vendor/reveal.min.css">
+    <link rel="stylesheet" href="../assets/ilafar.css">
+    <style>
+        #cover-cv { width: 520px; height: 520px; filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.5)); }
+        .bridge { display: grid; grid-template-columns: 1fr 70px 1fr 70px 1fr; align-items: stretch; gap: 0; }
+        .bridge .ar { display: grid; place-items: center; font-size: 40px; color: var(--red); font-weight: 900; }
+        .bridge .card { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+        .bridge .card .em { font-size: 64px; margin: 0; }
+        .bridge .card p { font-size: 17.5px; }
+        .meter { width: 100%; display: grid; grid-template-columns: 96px 1fr; gap: 6px 10px; align-items: center; font-size: 14px; color: var(--gray); text-align: left; margin-top: 4px; }
+        .meter i { display: block; height: 10px; border-radius: 6px; background: linear-gradient(90deg, var(--navy), var(--red)); }
+        .skin-wrap { position: relative; width: 640px; height: 400px; flex: none; }
+        .skin-wrap svg { position: absolute; inset: 0; }
+        #skin-ps { opacity: 0; transition: opacity 1.1s ease; }
+        .skin-wrap.ps #skin-ps { opacity: 1; }
+        .skin-wrap.ps #skin-n { opacity: 0.0; }
+        #skin-n { transition: opacity 1.1s ease; }
+        .flake { animation: flake 3.5s ease-in infinite; }
+        @keyframes flake { 0% { transform: translateY(0) rotate(0); opacity: 0.95; } 100% { transform: translateY(-46px) rotate(40deg); opacity: 0; } }
+        .sign { display: flex; gap: 12px; align-items: center; background: #fff; border-radius: 14px; padding: 10px 14px; box-shadow: var(--shadow); }
+        .sign .ic { width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; font-family: var(--head); font-weight: 900; font-size: 26px; color: #fff; flex: none; }
+        .sign b { font-size: 20px; color: var(--navy); display: block; }
+        .sign span { font-size: 15.5px; color: var(--ink-2); line-height: 1.35; }
+        .body-svg .rg { cursor: pointer; transition: fill 0.3s, stroke-width 0.2s; stroke: #00426a; stroke-width: 2; }
+        .body-svg .rg.sel { stroke: #cd061e; stroke-width: 5; }
+        .pasi-g { height: 26px; border-radius: 13px; background: #e3e9ef; overflow: hidden; position: relative; }
+        .pasi-g div { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #f59e0b, #cd061e); transition: width 0.4s; }
+        .egrid { display: grid; grid-template-columns: 120px repeat(3, 1fr); gap: 8px 10px; align-items: center; }
+        .egrid .hd { font-family: var(--mono); font-weight: 800; font-size: 15px; color: var(--gray); text-align: center; }
+        .egrid .rl { font-family: var(--head); font-weight: 800; font-size: 20px; }
+        .egrid figure { margin: 0; position: relative; }
+        .egrid img { width: 100%; height: 118px; object-fit: cover; border-radius: 10px; display: block; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.5); }
+        .egrid figcaption { position: absolute; left: 6px; top: 6px; font-family: var(--mono); font-size: 12px; font-weight: 800; background: rgba(0, 26, 44, 0.8); color: #fff; padding: 1px 6px; border-radius: 6px; }
+        #sg-img { width: 600px; height: 430px; object-fit: cover; border-radius: 16px; box-shadow: var(--shadow); display: block; transition: transform 0.5s, opacity 0.3s; }
+        .sg-row { display: grid; grid-template-columns: 130px repeat(3, 1fr); gap: 8px; align-items: center; }
+        .sg-row .lb { font-family: var(--head); font-weight: 800; font-size: 20px; color: var(--navy); }
+        .sg-row .btn { padding: 8px 6px; font-size: 15px; }
+        .sg-row .btn.exp { box-shadow: 0 0 0 4px #0f9d58; }
+        .sg-row .btn.wrong { background: #fdecee; border-color: var(--red); color: var(--red); }
+        .sg-row .btn.on.right { background: #0f9d58; border-color: #0f9d58; color: #fff; }
+        .tl { position: relative; height: 70px; margin: 0 20px; }
+        .tl .ln { position: absolute; left: 0; right: 0; top: 30px; height: 6px; background: #d5dee7; border-radius: 6px; }
+        .tl .pg { position: absolute; left: 0; top: 30px; height: 6px; background: linear-gradient(90deg, var(--navy), var(--red)); border-radius: 6px; }
+        .tl .dt { position: absolute; top: 22px; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: #fff; border: 4px solid #d5dee7; box-sizing: border-box; }
+        .tl .dt.on { border-color: var(--red); }
+        .tl .dl { position: absolute; top: 50px; transform: translateX(-50%); font-family: var(--mono); font-size: 12.5px; color: var(--gray); white-space: nowrap; }
+        .tok { position: absolute; width: 30px; height: 30px; transition: transform 1.1s cubic-bezier(.2, .8, .2, 1), opacity 0.6s; }
+        .tok::before, .tok::after { content: ''; position: absolute; top: -3px; width: 12px; height: 12px; border-radius: 50%; background: inherit; filter: brightness(0.9); }
+        .tok::before { left: -2px; } .tok::after { right: -2px; }
+        .tok { border-radius: 50%; }
+        .tok i { position: absolute; inset: 0; border-radius: 50%; background: inherit; z-index: 1; }
+        .tok b { position: absolute; z-index: 2; left: 50%; top: 52%; transform: translate(-50%, -50%); font-family: var(--mono); font-size: 9.5px; color: #fff; font-weight: 800; }
+        .gcol { position: absolute; top: 0; text-align: center; }
+        .gcol h4 { font-size: 19px; }
+        .gcol p { font-size: 13.5px; color: var(--ink-2); line-height: 1.3; margin-top: 2px; }
+        .camc { display: flex; flex-direction: column; align-items: center; gap: 6px; opacity: 0; transform: scale(0.85) translateY(20px); transition: all 0.55s cubic-bezier(.3, 1.4, .5, 1); }
+        .camc.on { opacity: 1; transform: none; }
+        .camc canvas { width: 156px; border-radius: 10px; box-shadow: var(--shadow); border: 4px solid; display: block; }
+        .camc b { font-family: var(--mono); font-size: 13px; text-align: center; line-height: 1.3; }
+        .leak { position: relative; height: 420px; }
+        .leak .zone { position: absolute; top: 70px; bottom: 0; border-radius: 18px; border: 3px dashed #b9c6d2; }
+        .leak .zone h4 { position: absolute; top: -34px; left: 6px; font-size: 22px; }
+        .leak .card2 { position: absolute; width: 50px; height: 40px; border-radius: 9px; display: grid; place-items: center; font-size: 21px; box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.4);
+            transition: transform 0.9s cubic-bezier(.2, .8, .2, 1), box-shadow 0.3s; left: 0; top: 0; }
+        .leak .card2.twin { box-shadow: 0 0 0 4px #cd061e, 0 0 18px rgba(205, 6, 30, 0.7); animation: glow 1s ease-in-out infinite; }
+        @keyframes glow { 50% { box-shadow: 0 0 0 7px #cd061e, 0 0 30px rgba(205, 6, 30, 0.95); } }
+        .leak .card2.clean { box-shadow: 0 0 0 4px #0f9d58; }
+        .vec { display: flex; gap: 2px; align-items: flex-end; height: 120px; width: 196px; }
+        .vec i { width: 7px; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, var(--red), var(--navy)); transition: height 0.6s; }
+        .head { display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; align-items: center; background: #fff; border-radius: 14px; padding: 10px 14px; box-shadow: var(--shadow); }
+        .head b { font-family: var(--head); font-size: 19px; color: var(--navy); }
+        .pb { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .pb div { height: 54px; background: #edf1f5; border-radius: 8px; position: relative; overflow: hidden; }
+        .pb div i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--navy); transition: height 0.5s; }
+        .pb div.t i { background: var(--red); }
+        .pb div span { position: absolute; top: 3px; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: 12px; font-weight: 800; color: var(--ink-2); z-index: 1; }
+        .ring { width: 170px; height: 170px; position: relative; }
+        .ring svg { transform: rotate(-90deg); }
+        .ring .v { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--head); font-weight: 900; font-size: 38px; color: var(--navy); }
+        .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+        .chk label { display: flex; gap: 14px; align-items: center; background: #fff; border-radius: 12px; padding: 13px 16px; box-shadow: 0 4px 14px -8px rgba(0, 43, 70, 0.45);
+            cursor: pointer; font-size: 19px; line-height: 1.3; transition: background 0.2s, transform 0.12s; }
+        .chk label:hover { transform: translateY(-2px); }
+        .chk label i { width: 28px; height: 28px; border-radius: 8px; border: 3px solid var(--navy); flex: none; display: grid; place-items: center; font-style: normal; font-weight: 900; color: #fff; }
+        .chk label.on { background: #e9f7ef; }
+        .chk label.on i { background: var(--green); border-color: var(--green); }
+        .chk label.on i::after { content: '✓'; }
+        .pipe { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; position: relative; }
+        .pipe .ps { background: #fff; border-radius: 14px; padding: 12px 10px; box-shadow: var(--shadow); text-align: center; border-top: 5px solid var(--navy); position: relative; }
+        .pipe .ps .em { font-size: 36px; display: block; }
+        .pipe .ps b { display: block; font-size: 17.5px; color: var(--navy); margin: 4px 0; line-height: 1.2; }
+        .pipe .ps span { font-size: 15px; color: var(--ink-2); line-height: 1.3; display: block; }
+        .pipe .ps.lit { border-top-color: var(--red); transform: translateY(-6px); transition: transform 0.3s; }
+        .json { font-family: var(--mono); font-size: 18px; line-height: 1.5; background: #0b1b2a; color: #dbe7f3; border-radius: 14px; padding: 14px 18px; white-space: pre; min-height: 330px; box-sizing: border-box; }
+        .map { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .map .mp { background: #fff; border-radius: 14px; padding: 14px 18px; box-shadow: var(--shadow); cursor: pointer; border-top: 5px solid var(--navy); transition: transform 0.15s, background 0.2s; position: relative; }
+        .map .mp:hover { transform: translateY(-3px); }
+        .map .mp .no { font-family: var(--head); font-weight: 900; font-size: 36px; color: var(--red); line-height: 1; }
+        .map .mp b { display: block; font-size: 20px; color: var(--navy); margin: 6px 0 3px; }
+        .map .mp span { font-size: 15.5px; color: var(--gray); line-height: 1.35; display: block; }
+        .map .mp.done { background: #e9f7ef; border-top-color: var(--green); }
+        .map .mp.done::after { content: '✓'; position: absolute; top: 8px; right: 14px; font-size: 26px; color: var(--green); font-weight: 900; }
+        #veri-in { width: 100%; font-family: var(--mono); font-size: 16px; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--navy); box-sizing: border-box; }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ============ KAPAK ============ -->
+            <section data-id="cover" class="dark nofoot" data-sound="chime"
+                data-background-gradient="radial-gradient(circle at 12% 90%, rgba(205,6,30,0.45) 0%, rgba(205,6,30,0) 40%), radial-gradient(circle at 78% 22%, #0d6fa8 0%, #00426a 36%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:36px">
+                        <div class="f1 st slow">
+                            <div class="kick">TÜBİTAK-BİDEB 2237 · KTÜ İLAFAR</div>
+                            <h1 style="font-size:92px; margin-top:18px">Canlı Modellerden<br><span class="red">Koda</span></h1>
+                            <h3 style="color:#c9d8e4; font-weight:600; margin-top:8px">Veri Seti Anlatımı ve Python Uygulaması II</h3>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px">
+                                <span class="chip w">🕓 16:00 Teori</span><span class="chip w">💻 17:00 Uygulama</span><span class="chip w">📅 24 Ekim 2026</span>
+                            </div>
+                            <p style="margin-top:26px; font-size:23px">Dr. Öğr. Üyesi <b>Ramazan Özgür Doğan</b><br>
+                                <span class="muted" style="font-size:18px">Trabzon Üniversitesi · Yapay Zekâ Mühendisliği · PharmAI KTÜ</span></p>
+                        </div>
+                        <canvas id="cover-cv" width="1040" height="1040"></canvas>
+                    </div>
+                    <p class="tiny muted" style="margin-top:6px">Uygulamalı Eğitimle Sağlık Araştırmalarında Yapay Zekâ ve Hukuki Çerçevesi</p>
+                </div>
+                <aside class="notes">Hücreden canlıya geçiyoruz. Sağdaki fare temsili: 11 gün boyunca sırt derisi kızarıyor, kalınlaşıyor, pullanıyor; her gün 3 kamerayla çekiliyor. Bugünün veri seti: PCL-PASI.</aside>
+            </section>
+
+            <!-- ============ KÖPRÜ ============ -->
+            <section data-id="bridge">
+                <div class="sl mid">
+                    <div class="kick">14:00'ten devam</div>
+                    <h2>Hücreden canlıya, canlıdan insana</h2>
+                    <div class="bridge st" style="margin-top:16px">
+                        <div class="card a"><span class="em">🧫</span><h3>Hücre</h3><span class="chip a">in vitro</span>
+                            <p>HaCaT deri hücresi kültürü<br><b>14:00 dersindeki</b> veri setimiz</p>
+                            <div class="meter"><span>kontrol</span><i style="width:95%"></i><span>karmaşıklık</span><i style="width:25%"></i></div></div>
+                        <div class="ar">→</div>
+                        <div class="card r"><span class="em">🐭</span><h3>Canlı model</h3><span class="chip r">in vivo</span>
+                            <p>İmikimod ile sedef benzeri fare modeli<br><b>bugünün veri seti: PCL-PASI</b></p>
+                            <div class="meter"><span>kontrol</span><i style="width:65%"></i><span>karmaşıklık</span><i style="width:65%"></i></div></div>
+                        <div class="ar">→</div>
+                        <div class="card"><span class="em">🧑‍⚕️</span><h3>İnsan</h3><span class="chip">klinik</span>
+                            <p>Hastada PASI skoru<br>tedavi kararı, klinik çalışma</p>
+                            <div class="meter"><span>kontrol</span><i style="width:30%"></i><span>karmaşıklık</span><i style="width:95%"></i></div></div>
+                    </div>
+                    <div class="lesson fragment rise" style="margin-top:22px; font-size:22px">Ortak dil: <b>görüntü + skor</b>. Hücrede piksel saydık; canlıda uzmanın gözüyle verdiği <b>şiddet skorunu</b> bilgisayara öğreteceğiz.</div>
+                </div>
+                <aside class="notes">Çeviri araştırması zinciri. Her basamakta kontrol azalır, gerçekçilik artar. Canlı model, hücre ile insan arasındaki köprü.</aside>
+            </section>
+
+            <!-- ============ SEDEF ============ -->
+            <section data-id="psor">
+                <div class="sl">
+                    <div class="kick">Hastalığı tanıyalım</div>
+                    <h2>Sedef hastalığı (psoriasis) derinin içinde ne yapar?</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <div class="col" style="gap:10px; align-items:center">
+                            <div class="skin-wrap" id="skin"></div>
+                            <div class="seg"><button class="btn on" id="skin-nb">🙂 Normal deri</button><button class="btn r" id="skin-pb">🔥 Sedef plağı</button></div>
+                        </div>
+                        <div class="col f1" style="gap:12px">
+                            <div class="sign"><div class="ic" style="background:#cd061e">E</div><div><b>Eritem · kızarıklık</b><span>Genişleyen kılcal damarlar plağı kırmızı gösterir.</span></div></div>
+                            <div class="sign"><div class="ic" style="background:#f59e0b">T</div><div><b>Kalınlaşma · endürasyon</b><span>Deri hücreleri hızlı çoğalır: normalde ~4 hafta süren yenilenme birkaç güne iner.</span></div></div>
+                            <div class="sign"><div class="ic" style="background:#00426a">S</div><div><b>Pullanma · deskuamasyon</b><span>Olgunlaşamayan hücreler yüzeyde gümüşi pullar halinde birikir.</span></div></div>
+                            <p class="small muted">Kronik, bağışıklık aracılı, bulaşıcı olmayan bir hastalık. Dünyada en az <b>100 milyon</b> kişiyi etkiler (DSÖ, 2016).</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Düğmeyle normal ↔ sedef geçişi. Üç belirti bugün boyunca karşımıza çıkacak: E, T, S. Veri setimizdeki üç skor tam olarak bunlar.</aside>
+            </section>
+
+            <!-- ============ PASI ============ -->
+            <section data-id="pasi">
+                <div class="sl">
+                    <div class="kick">Klinikte nasıl ölçülür?</div>
+                    <h2>PASI: dört bölge × üç belirti × alan</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <svg class="body-svg" id="body" width="250" height="470" viewBox="0 0 250 470"></svg>
+                        <div class="col f1" style="gap:12px">
+                            <div class="row ac" style="justify-content:space-between"><h3 id="pasi-rg">Gövde</h3><span class="chip" id="pasi-w">ağırlık 0,3</span></div>
+                            <div class="ctl"><span style="color:#cd061e">E · Eritem</span><input type="range" class="rng" data-k="e" min="0" max="4" value="0"><span class="v" data-v="e">0</span></div>
+                            <div class="ctl"><span style="color:#d97706">T · Kalınlık</span><input type="range" class="rng" data-k="t" min="0" max="4" value="0"><span class="v" data-v="t">0</span></div>
+                            <div class="ctl"><span style="color:#00426a">S · Pullanma</span><input type="range" class="rng" data-k="s" min="0" max="4" value="0"><span class="v" data-v="s">0</span></div>
+                            <div class="ctl"><span>Alan</span><input type="range" class="rng" data-k="a" min="0" max="6" value="0"><span class="v" data-v="a">%0</span></div>
+                            <div class="seg"><button class="btn" data-pr="0">Temizle</button><button class="btn" data-pr="1">Hafif</button><button class="btn" data-pr="2">Orta</button><button class="btn r" data-pr="3">Şiddetli</button></div>
+                            <div class="row ac" style="gap:18px">
+                                <div class="stat"><div class="big r" id="pasi-v">0</div><div class="lbl">PASI (0–72)</div></div>
+                                <div class="f1"><div class="pasi-g"><div id="pasi-bar" style="width:0"></div></div>
+                                    <p class="small" style="margin-top:6px" id="pasi-msg">Bir vücut bölgesi seçin ve kaydırın.</p></div>
+                            </div>
+                            <div class="readout small" id="pasi-f">PASI = 0,1·Baş + 0,2·Kol + 0,3·Gövde + 0,4·Bacak</div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Vücut bölgesine tıkla, kaydırıcılarla puan ver. Her bölge: (E+T+S) × alan puanı × bölge ağırlığı. Klinik çalışmalarda "PASI 75" = başlangıca göre %75 iyileşme. Bu skor uzman gözüne dayanıyor: yapay zekânın yardım edebileceği yer burası.</aside>
+            </section>
+
+            <!-- ============ FAREDE SKOR ============ -->
+            <section data-id="mpasi">
+                <div class="sl">
+                    <div class="kick">Farede skor</div>
+                    <h2>PCL-PASI: her fotoğrafa üç ayrı skor, üç seviye</h2>
+                    <div class="egrid st" style="margin-top:8px">
+                        <div></div><div class="hd">0 · YOK</div><div class="hd">1 · HAFİF</div><div class="hd">2 · ŞİDDETLİ</div>
+                        <div class="rl" style="color:#cd061e">E · Eritem</div>
+                        <figure><img src="../assets/img/pasi_r1c3.jpg" alt=""><figcaption>E0</figcaption></figure>
+                        <figure><img src="../assets/img/pasi_r2c3.jpg" alt=""><figcaption>E1</figcaption></figure>
+                        <figure><img src="../assets/img/pasi_r2c1.jpg" alt=""><figcaption>E2</figcaption></figure>
+                        <div class="rl" style="color:#d97706">T · Kalınlık</div>
+                        <figure><img src="../assets/img/pasi_r1c5.jpg" alt=""><figcaption>T0</figcaption></figure>
+                        <figure><img src="../assets/img/pasi_r3c2.jpg" alt=""><figcaption>T1</figcaption></figure>
+                        <figure><img src="../assets/img/pasi_r2c2.jpg" alt=""><figcaption>T2</figcaption></figure>
+                        <div class="rl" style="color:#00426a">S · Pullanma</div>
+                        <figure><img src="../assets/img/pasi_r1c4.jpg" alt=""><figcaption>S0</figcaption></figure>
+                        <figure><img src="../assets/img/pasi_r3c3.jpg" alt=""><figcaption>S1</figcaption></figure>
+                        <figure><img src="../assets/img/pasi_r3c4.jpg" alt=""><figcaption>S2</figcaption></figure>
+                    </div>
+                    <p class="small muted" style="margin-top:4px">Literatürde farede her belirti genellikle 0–4 ölçeğiyle puanlanır (van der Fits ve ark., 2009). PCL-PASI, görüntüden öğrenmeyi kolaylaştırmak için <b>3 seviyeli</b> sade bir ölçek kullanır.</p>
+                    <div class="src">Görseller: huggingface.co/datasets/pharmaiktu/pcl-pasi-assets (örnek ızgara)</div>
+                </div>
+                <aside class="notes">Üç belirti birbirinden bağımsız puanlanıyor: bir fotoğraf E2 T2 S1 olabilir. Bu yüzden model "çok görevli": tek fotoğraftan üç cevap.</aside>
+            </section>
+
+            <!-- ============ OYUN ============ -->
+            <section data-id="game">
+                <div class="sl">
+                    <div class="kick">Sıra sizde · uzman olmak kolay mı?</div>
+                    <h2>Skoru sen ver! <span id="sg-round" class="chip r" style="font-size:18px; vertical-align:middle">1 / 6</span></h2>
+                    <div class="row grow" style="gap:28px">
+                        <img id="sg-img" src="../assets/img/pasi_r1c2.jpg" alt="fare sırt derisi">
+                        <div class="col f1" style="gap:14px">
+                            <p style="font-size:19px">Salonla birlikte karar verin, sonra uzmanın skoruyla karşılaştırın.</p>
+                            <div class="sg-row" data-s="0"><span class="lb" style="color:#cd061e">Eritem</span><button class="btn">0 · yok</button><button class="btn">1 · hafif</button><button class="btn">2 · şiddetli</button></div>
+                            <div class="sg-row" data-s="1"><span class="lb" style="color:#d97706">Kalınlık</span><button class="btn">0 · yok</button><button class="btn">1 · hafif</button><button class="btn">2 · şiddetli</button></div>
+                            <div class="sg-row" data-s="2"><span class="lb">Pullanma</span><button class="btn">0 · yok</button><button class="btn">1 · hafif</button><button class="btn">2 · şiddetli</button></div>
+                            <div class="seg"><button class="btn r go" id="sg-show">👩‍🔬 Uzman ne dedi?</button><button class="btn" id="sg-next">Sonraki ▶</button></div>
+                            <div class="row ac" style="gap:22px">
+                                <div class="stat"><div class="big" id="sg-score">0</div><div class="lbl">uzmanla aynı skor</div></div>
+                                <div class="box f1" id="sg-msg"><p>Yeşil çerçeve = uzmanın skoru.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="src">Görseller: pcl-pasi-assets örnek ızgarası · uzman etiketleriyle</div>
+                </div>
+                <aside class="notes">6 tur. Salon oylasın, sonra "Uzman ne dedi?". Mesaj: insanlar arasında da tam uyum yok; bu yüzden skorlama rehberi, kör skorlama ve iki skorlayıcı önemli. Model de bu "gürültülü" etiketten öğreniyor.</aside>
+            </section>
+
+            <!-- ============ İMİKİMOD MODELİ ============ -->
+            <section data-id="model">
+                <div class="sl">
+                    <div class="kick">Deney tasarımı</div>
+                    <h2>11 gün, her gün fotoğraf ve skor</h2>
+                    <div class="row" style="gap:20px; justify-content:center; align-items:center">
+                        <div class="col" style="align-items:center; gap:4px"><canvas id="tl-a" width="560" height="440" style="width:340px; height:267px"></canvas><span class="chip g">sağlıklı kontrol</span></div>
+                        <div class="col" style="align-items:center; gap:4px"><canvas id="tl-b" width="560" height="440" style="width:340px; height:267px"></canvas><span class="chip r">sedef modeli (tedavisiz)</span></div>
+                        <div class="col" style="gap:10px; width:330px">
+                            <div class="big r" id="tl-day" style="font-size:60px">Gün 1</div>
+                            <div class="readout" id="tl-date">13.05.2025</div>
+                            <div class="readout" id="tl-ets">E0 · T0 · S0</div>
+                            <div class="seg"><button class="btn r go" id="tl-play">▶ Oynat</button></div>
+                            <p class="tiny muted">Temsili animasyon</p>
+                        </div>
+                    </div>
+                    <div class="tl" id="tl"></div>
+                    <div class="g3" style="gap:14px">
+                        <div class="box"><p>🧴 <b>Model:</b> tıraşlı sırt derisine imikimod kremi → sedef benzeri lezyon (van der Fits ve ark., 2009)</p></div>
+                        <div class="box r"><p>📸 <b>Her gün:</b> 3 farklı cihazla seri çekim, aynı ortamda</p></div>
+                        <div class="box a"><p>📝 <b>Her gün:</b> uzman E / T / S skorları · etik onay 2024/33</p></div>
+                    </div>
+                </div>
+                <aside class="notes">Oynat: 13–23 Mayıs 2025. Soldaki kontrol değişmiyor, sağdaki model grubunda belirtiler artıyor. Tedavi gruplarının sonuçlarını burada göstermiyoruz; makale süreci devam ediyor.</aside>
+            </section>
+
+            <!-- ============ GRUPLAR ============ -->
+            <section data-id="groups">
+                <div class="sl">
+                    <div class="kick">43 fare · 7 grup</div>
+                    <h2>Her grup bir soruya cevap verir</h2>
+                    <div id="grp" style="position:relative; height:470px; margin-top:6px"></div>
+                    <div class="lesson" style="font-size:18px">Neden <b>“sağlıklı + test bileşiği”</b> grubu var? Bileşiğin <b>tek başına</b> deriye ne yaptığını görmek için. İyi tasarlanmış kontroller = güvenilir veri seti.</div>
+                </div>
+                <aside class="notes">Fareler gruplarına yerleşir. Alt çubuklar her grubun görüntü sayısı. Test bileşiğinin adı ve sonuçları makale sürecinde olduğu için verilmiyor.</aside>
+            </section>
+
+            <!-- ============ KAMERALAR ============ -->
+            <section data-id="cams">
+                <div class="sl">
+                    <div class="kick">Çoklu cihaz</div>
+                    <h2>Aynı fare, aynı an, üç farklı “göz”</h2>
+                    <div class="row grow" style="gap:30px; align-items:center">
+                        <div id="frames" class="row" style="gap:14px; align-items:flex-end; width:500px; flex:none"></div>
+                        <div class="col f1" style="gap:12px">
+                            <svg id="cam-bars" width="620" height="250" viewBox="0 0 620 250"></svg>
+                            <div class="lesson">Hazır (önceden eğitilmiş) modellerde fotoğraflar önce <b>kameraya göre</b> kümelenir. Gerçek hayatta hangi telefonla çekileceğini bilemeyiz → model <b>cihazdan bağımsız</b> olmalı.</div>
+                        </div>
+                    </div>
+                    <p class="small muted">Tüm görüntüler genişliği 1024 piksele indirildi; her cihazın kendi en-boy oranı korundu.</p>
+                </div>
+                <aside class="notes">Sony α6500 fotoğraf makinesi, Xiaomi 12 Lite ve iPhone 15 Pro. Çerçeveler gerçek en-boy oranlarında. README uyarısı: kameraya göre değil, birey düzeyinde böl.</aside>
+            </section>
+
+            <!-- ============ SAYILARLA ============ -->
+            <section data-id="numbers" class="dark" data-sound="chime"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="kick">PCL-PASI sayılarla</div>
+                    <h2 style="font-size:56px; margin-top:8px">Çok görevli, çok cihazlı sedef veri seti</h2>
+                    <div class="g3 st" style="margin-top:30px; gap:22px">
+                        <div class="card stat"><div class="big count" data-to="24766">0</div><div class="lbl">görüntü</div></div>
+                        <div class="card stat"><div class="big r count" data-to="43">0</div><div class="lbl">fare (S01–S43)</div></div>
+                        <div class="card stat"><div class="big count" data-to="11">0</div><div class="lbl">gün · 13–23 Mayıs 2025</div></div>
+                        <div class="card stat"><div class="big count" data-to="3">0</div><div class="lbl">kamera</div></div>
+                        <div class="card stat"><div class="big r count" data-to="7">0</div><div class="lbl">deney grubu</div></div>
+                        <div class="card stat"><div class="big count" data-to="3">0</div><div class="lbl">skor: E · T · S (her biri 0/1/2)</div></div>
+                    </div>
+                </div>
+                <aside class="notes">Kısa ve etkileyici. Sayılar sayarak yükselir.</aside>
+            </section>
+
+            <!-- ============ KAYIT ============ -->
+            <section data-id="record">
+                <div class="sl">
+                    <div class="kick">Veri setinin anatomisi</div>
+                    <h2>Bir fotoğraf → bir kayıt</h2>
+                    <div class="row grow" style="gap:22px; align-items:center">
+                        <div class="col" style="gap:8px; align-items:center; width:360px">
+                            <canvas id="rec-cv" width="560" height="440" style="width:320px; height:251px; border-radius:14px; box-shadow:var(--shadow); background:#efe8e2"></canvas>
+                            <span class="chip">S01_13.05.2025_CAM1_0001</span>
+                            <div class="readout small" style="text-align:center">fare · tarih · kamera · sıra no<br>adın kendisi bile veri!</div>
+                        </div>
+                        <div class="pulse" style="font-size:52px; color:var(--red); font-weight:900">→</div>
+                        <div class="json f1 tw">{
+  "image_id":   "S01_13.05.2025_CAM1_0001",
+  "subject_id": "S01",
+  "group_id":   "HC-N",
+  "group_description": "Healthy Control (Negative)",
+  "date":       "13.05.2025",
+  "camera_id":  "CAM1",
+  "scores": { "erythema": 0, "thickness": 0, "scaling": 0 },
+  "split":      "train"
+}</div>
+                    </div>
+                    <div class="g3" style="gap:14px">
+                        <div class="box"><p>📁 <b>data/</b>: parquet parçaları (görüntü + kayıt birlikte)</p></div>
+                        <div class="box a"><p>🏷️ <b>metadata.parquet</b>: yalnız etiketler (~340 KB)</p></div>
+                        <div class="box r"><p>✂️ <b>splits.json</b>: resmi birey düzeyinde bölme</p></div>
+                    </div>
+                </div>
+                <aside class="notes">README'deki şema. Dosya adı kuralı baştan konunca her şey kolaylaşıyor: kim, ne zaman, hangi cihaz.</aside>
+            </section>
+
+            <!-- ============ DAĞILIM ============ -->
+            <section data-id="dist">
+                <div class="sl">
+                    <div class="kick">Etiketlere bakalım</div>
+                    <h2>Skorlar nasıl dağılıyor?</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <svg id="dist-svg" width="760" height="420" viewBox="0 0 760 420"></svg>
+                        <div class="col f1" style="gap:14px">
+                            <div class="box"><p>Üç skorda da çoğunluk <b>“hafif”</b>.</p></div>
+                            <div class="box r"><p><b>“Şiddetli”</b> sınıf azınlıkta: görüntülerin yalnız <b>%14–19</b>'u.</p></div>
+                            <div class="lesson">Dengesiz sınıflar: doğruluğun yanında <b>makro F1</b>'e de bakacağız (14:00'teki doğruluk tuzağını hatırlayın!).</div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Sayılar README'deki herkese açık dağılım grafiğinden.</aside>
+            </section>
+
+            <!-- ============ NASIL KURDUK ============ -->
+            <section data-id="pipeline">
+                <div class="sl mid">
+                    <div class="kick">Laboratuvardan Hugging Face'e</div>
+                    <h2>Veri setini nasıl kurduk?</h2>
+                    <div class="pipe" id="pipe" style="margin-top:26px">
+                        <div class="ps"><span class="em">⚖️</span><b>Etik onay</b><span>KTÜ HADYEK 2024/33</span></div>
+                        <div class="ps"><span class="em">🧪</span><b>Deney tasarımı</b><span>7 grup, 43 fare, 11 gün</span></div>
+                        <div class="ps"><span class="em">📸</span><b>Çekim protokolü</b><span>3 cihaz, her gün, aynı ortam</span></div>
+                        <div class="ps"><span class="em">🗂️</span><b>Adlandırma</b><span>fare_tarih_kamera_no</span></div>
+                        <div class="ps"><span class="em">📝</span><b>Uzman skoru</b><span>E / T / S, 3 seviye</span></div>
+                        <div class="ps"><span class="em">🧹</span><b>Kalite kontrol</b><span>geçerli görüntüler, 1024 px</span></div>
+                        <div class="ps"><span class="em">✂️</span><b>Birey düzeyinde bölme</b><span>29 / 7 / 7 fare</span></div>
+                        <div class="ps"><span class="em">🤗</span><b>Yayın</b><span>Hugging Face, kapılı erişim</span></div>
+                    </div>
+                    <div class="g2" style="margin-top:28px">
+                        <div class="lesson">En uzun süren adım çoğu zaman <b>model eğitmek değil</b>: düzenli çekim, adlandırma ve skorlama.</div>
+                        <div class="box"><p>📄 Veri setleri artık <b>makale gibi</b> yayımlanıyor ve atıf alıyor. Laboratuvar emeğiniz bilimsel çıktıya dönüşür.</p></div>
+                    </div>
+                </div>
+                <aside class="notes">Adımlar sırayla yanar. Sağlıkçılara mesaj: bu adımların çoğu zaten sizin laboratuvar rutininiz; sadece düzenli kaydetmek gerekiyor.</aside>
+            </section>
+
+            <!-- ============ BÖLÜM: SIZINTI ============ -->
+            <section data-id="s-leak" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac st slow" style="gap:48px">
+                        <div class="sec-num">!</div>
+                        <div class="col"><span class="sec-tag">Bugünün en önemli dersi</span>
+                            <h2 style="font-size:66px">Sızıntı</h2>
+                            <p class="lead">Model hastalığı mı öğreniyor, yoksa fareyi mi tanıyor?</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ SIZINTI ANİMASYONU ============ -->
+            <section data-id="leak">
+                <div class="sl">
+                    <div class="kick">İki farklı sınav</div>
+                    <h2>Fotoğrafları eğitim ve test diye nasıl ayıralım?</h2>
+                    <div class="row ac" style="gap:12px">
+                        <button class="btn r" id="lk-rand">🎲 Rastgele böl</button>
+                        <button class="btn" id="lk-subj">🐭 Fare düzeyinde böl</button>
+                        <button class="btn" id="lk-reset">↺ Karıştır</button>
+                        <div class="readout f1" id="lk-read" style="text-align:right">Her renk bir fare · her fareden 4 ardışık kare (neredeyse aynı)</div>
+                    </div>
+                    <div class="leak" id="leak">
+                        <div class="zone" id="lk-tr" style="left:0; width:64%"><h4 class="navy">📘 Eğitim</h4></div>
+                        <div class="zone" id="lk-te" style="right:0; width:33%"><h4 class="red">📕 Test</h4></div>
+                    </div>
+                </div>
+                <aside class="notes">Önce "Rastgele böl": testteki kartların ikizleri eğitimde → kırmızı yanıp söner. Sonra "Fare düzeyinde böl": test fareleri hiç görülmemiş → yeşil. Gerçek hayat ikincisi: yeni hayvan, yeni hasta.</aside>
+            </section>
+
+            <!-- ============ SIZINTI SONUCU ============ -->
+            <section data-id="leakres">
+                <div class="sl">
+                    <div class="kick">Aynı model, iki sınav · demo alt kümesinde</div>
+                    <h2>%83'ten %63'e: “başarı” nereye gitti?</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <div class="col" style="gap:12px; width:470px">
+                            <div class="g2">
+                                <div class="card r stat"><div class="big r"><span class="count" data-to="83.2" data-dec="1">0</span></div><div class="lbl">% · rastgele bölme ❌</div></div>
+                                <div class="card g stat"><div class="big" style="color:#0f9d58"><span class="count" data-to="62.7" data-dec="1">0</span></div><div class="lbl">% · fare düzeyinde ✅</div></div>
+                            </div>
+                            <img class="fig" src="../assets/img/nb_sizinti.jpg" alt="sızıntı kutu grafiği" style="width:100%">
+                        </div>
+                        <div class="col f1" style="gap:12px">
+                            <div class="box fragment rise"><p>🕵️ Aynı yöntemle bu kez <b>farenin kimliğini</b> tahmin ettirdik: <b class="red">%49</b> doğru. Şansla tutturma: yalnız <b>%2,3</b> (43 fare).</p></div>
+                            <div class="lesson fragment rise" style="font-size:22px">Model hastalığı değil, <b>bireyi</b> ezberleyebiliyor. Rastgele bölme bu ezberi ödüllendirir.</div>
+                            <div class="box a fragment rise"><p>🏥 <b>Klinikte de aynı tuzak:</b> aynı hastanın sağ-sol gözü, aynı lezyonun farklı açıları, aynı biyopsinin kesitleri… <b>ya hepsi eğitimde ya hepsi testte.</b></p></div>
+                        </div>
+                    </div>
+                    <div class="src">Basit 1-en yakın komşu + ResNet-18 öznitelikleri · 565 görüntü · 10 tekrar</div>
+                </div>
+                <aside class="notes">Uygulamada bu deneyi kendileri çalıştıracak. Kutu grafiği defterden. Kimlik testi en çarpıcı kısım: model fareyi tanıyor.</aside>
+            </section>
+
+            <!-- ============ MODEL ============ -->
+            <section data-id="cnn">
+                <div class="sl">
+                    <div class="kick">Modelin içi</div>
+                    <h2>Tek fotoğraf, üç cevap: çok görevli model</h2>
+                    <div class="row grow" style="gap:16px; align-items:center">
+                        <div class="col" style="align-items:center; gap:6px; width:230px">
+                            <img id="cnn-img" src="../assets/img/pasi_r2c1.jpg" alt="" style="width:220px; height:170px; object-fit:cover; border-radius:14px; box-shadow:var(--shadow)">
+                            <button class="btn" id="cnn-next">🔄 Başka fotoğraf</button>
+                        </div>
+                        <div class="pulse" style="font-size:36px; color:var(--red); font-weight:900">→</div>
+                        <div class="col" style="align-items:center; gap:6px; width:200px">
+                            <svg width="200" height="180" viewBox="0 0 220 190" id="cnn-stack"></svg>
+                            <b class="navy" style="font-family:var(--head)">ResNet-18</b><span class="tiny muted" style="text-align:center">ImageNet'te ~1,2 milyon fotoğrafla önceden eğitilmiş</span>
+                        </div>
+                        <div class="pulse" style="font-size:36px; color:var(--red); font-weight:900">→</div>
+                        <div class="col" style="align-items:center; gap:6px">
+                            <div class="vec" id="cnn-vec"></div>
+                            <b class="navy" style="font-family:var(--head)">512 sayılık “parmak izi”</b>
+                        </div>
+                        <div class="pulse" style="font-size:36px; color:var(--red); font-weight:900">→</div>
+                        <div class="col" style="gap:8px; width:300px; flex:none" id="cnn-heads"></div>
+                    </div>
+                    <div class="g2">
+                        <div class="box"><p>🎓 <b>Transfer öğrenme:</b> model önce milyonlarca günlük fotoğrafla “görmeyi” öğrenir, sonra az sayıda deri fotoğrafıyla uzmanlaşır.</p></div>
+                        <div class="box r"><p>🔁 Eğitimde her turda (epoch) tahminler <b>uzman etiketine</b> yaklaştırılır. <span class="muted">(Sağdaki çubuklar temsili eğitim animasyonu.)</span></p></div>
+                    </div>
+                </div>
+                <aside class="notes">Mimari: hazır bir omurga + üç küçük "kafa". Eğitim animasyonu temsili: çubuklar uzman etiketine yakınsar. Uygulamada omurgayı dondurup üstüne basit bir model kuracağız.</aside>
+            </section>
+
+            <!-- ============ SONUÇ ============ -->
+            <section data-id="results">
+                <div class="sl">
+                    <div class="kick">Dürüst sonuç · hiç görülmemiş 14 fare</div>
+                    <h2>Basit bir model bile bir yere varıyor</h2>
+                    <div class="row grow" style="gap:30px; align-items:center">
+                        <div class="g3" style="gap:18px">
+                            <div class="col" style="align-items:center; gap:6px"><div class="ring" data-v="74.7" data-c="#cd061e"></div><b style="color:#cd061e; font-size:20px">Eritem</b><span class="readout small">makro F1 <b>0,56</b></span></div>
+                            <div class="col" style="align-items:center; gap:6px"><div class="ring" data-v="76.8" data-c="#d97706"></div><b style="color:#d97706; font-size:20px">Kalınlık</b><span class="readout small">makro F1 <b>0,63</b></span></div>
+                            <div class="col" style="align-items:center; gap:6px"><div class="ring" data-v="67.5" data-c="#00426a"></div><b style="color:#00426a; font-size:20px">Pullanma</b><span class="readout small">makro F1 <b>0,66</b></span></div>
+                        </div>
+                        <div class="col f1" style="gap:12px; align-items:center">
+                            <img class="fig" src="../assets/img/nb_karisiklik.jpg" alt="karışıklık matrisi" style="width:300px">
+                        </div>
+                    </div>
+                    <div class="g2">
+                        <div class="box a"><p>⚠️ Bunlar <b>565 görüntülük demo</b> ve <b>en basit model</b> (dondurulmuş ResNet-18 + lojistik regresyon) sonuçları; makaledeki sonuçlar değil.</p></div>
+                        <div class="lesson">Doğruluk ile makro F1 arasındaki fark: modelin <b>azınlık sınıfta</b> (şiddetli) zorlandığını gösterir.</div>
+                    </div>
+                </div>
+                <aside class="notes">Uygulamada aynı tabloyu kendileri üretecek. Halkalar doğruluk. Karışıklık matrisi eritem için.</aside>
+            </section>
+
+            <!-- ============ ETİK ============ -->
+            <section data-id="ethics">
+                <div class="sl mid">
+                    <div class="kick">Bilim + sorumluluk</div>
+                    <h2>Etik, erişim ve lisans</h2>
+                    <div class="g4 st" style="margin-top:10px">
+                        <div class="card"><span class="em">⚖️</span><h4>Etik onay</h4><p>KTÜ Hayvan Deneyleri Yerel Etik Kurulu, <b>2024/33</b>. Fotoğraf çekimi rutin tutuş dışında ek müdahale içermez.</p></div>
+                        <div class="card g"><span class="em">♻️</span><h4>3R ilkesi</h4><p><b>Azaltma</b> (Reduction): paylaşılan bir veri seti, aynı soru için yeni hayvan deneyi ihtiyacını azaltır.</p></div>
+                        <div class="card a"><span class="em">🔒</span><h4>Kapılı erişim</h4><p>Başvuru ile, elle onay. Hakem sürecinde erişim verilmiyor; kabul sonrası değerlendirilecek.</p></div>
+                        <div class="card r"><span class="em">🚫</span><h4>Klinik kullanım değil</h4><p>Fare modeli insana doğrudan aktarılamaz. Lisans: <b>CC BY-NC 4.0</b> (ticari olmayan).</p></div>
+                    </div>
+                    <div class="lesson fragment rise" style="margin-top:20px">İnsan verisinde ek katman: <b>KVKK</b>, aydınlatılmış onam, kimliksizleştirme. Bu konular programın hukuki çerçeve oturumlarında ayrıntılı ele alınıyor.</div>
+                </div>
+                <aside class="notes">Bugün kullanacağımız demo alt kümesi yalnız bu eğitim için; paylaşılmamalı. 3R: Replacement, Reduction, Refinement.</aside>
+            </section>
+
+            <!-- ============ PHARMAI ============ -->
+            <section data-id="pharmai">
+                <div class="sl">
+                    <div class="kick">PharmAI KTÜ</div>
+                    <h2>Canlı deneyden açık bilime</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <div class="g2 f1" style="gap:18px">
+                            <div class="card r"><span class="em">🐭</span><h4>pcl-pasi</h4><p>Sedef fare modelinde çok görevli, çok cihazlı görüntü veri seti. 24.766 görüntü, E/T/S skorları.</p><span class="chip r" style="margin-top:8px">kapılı · CC BY-NC 4.0</span></div>
+                            <div class="card"><span class="em">📈</span><h4>contractility-signals</h4><p>Düz kas kasılabilirlik sinyalleri → farmakolojik ajanların <b>etki mekanizmasını</b> tahmin (ICCTA 2026).</p><span class="chip" style="margin-top:8px">kapılı</span></div>
+                            <div class="card a"><span class="em">🖼️</span><h4>pcl-pasi-assets</h4><p>Herkese açık örnek görseller ve dağılım grafikleri (bu sunumdaki örnek fotoğraflar).</p><span class="chip g" style="margin-top:8px">açık</span></div>
+                            <div class="card g"><span class="em">🤝</span><h4>Birlikte çalışalım</h4><p>Laboratuvarınızdaki görüntü, sinyal ya da skor verisi bir sonraki veri seti olabilir.</p></div>
+                        </div>
+                        <div class="col" style="align-items:center; gap:12px">
+                            <div class="qr" data-url="https://huggingface.co/datasets/pharmaiktu/pcl-pasi" data-size="210"></div>
+                            <span class="url" style="font-size:17px">huggingface.co/datasets/pharmaiktu/pcl-pasi</span>
+                            <span class="url" style="font-size:17px">pharmaiktu.github.io</span>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Grubun diğer veri setleri. QR veri seti sayfasını açar (erişim başvurusu oradan).</aside>
+            </section>
+
+            <!-- ============ BÖLÜM: HAYAL ============ -->
+            <section data-id="s-dream" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac st slow" style="gap:48px">
+                        <div class="sec-num">✦</div>
+                        <div class="col"><span class="sec-tag">Sizin projeniz</span>
+                            <h2 style="font-size:64px">Hayalden veri setine</h2>
+                            <p class="lead">Laboratuvarınızdaki deney yarın bir yapay zekâ projesi olabilir mi?</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ KONTROL LİSTESİ ============ -->
+            <section data-id="check">
+                <div class="sl">
+                    <div class="row ac" style="justify-content:space-between">
+                        <div><div class="kick">Kendinizi test edin</div><h2 style="margin-top:6px">Deneyiniz veri setine hazır mı?</h2></div>
+                        <div class="ring" id="chk-ring" style="width:130px; height:130px"></div>
+                    </div>
+                    <div class="chk" id="chk">
+                        <label><i></i><span>Sorum net ve <b>ölçülebilir</b> (ör. E/T/S skoru, alan, sayı)</span></label>
+                        <label><i></i><span><b>Etik onay</b> ve 3R planı hazır</span></label>
+                        <label><i></i><span>Gruplar ve <b>kontroller</b> tanımlı (sağlıklı, model, tedavi, referans)</span></label>
+                        <label><i></i><span><b>Çekim protokolü</b> yazılı: ışık, mesafe, açı, cihaz</span></label>
+                        <label><i></i><span>Her dosya <b>birey + tarih + cihaz</b> ile adlandırılıyor</span></label>
+                        <label><i></i><span><b>Skorlama rehberi</b> ve en az iki skorlayıcı</span></label>
+                        <label><i></i><span><b>Kör skorlama:</b> skorlayıcı grubu bilmiyor</span></label>
+                        <label><i></i><span><b>Birey düzeyinde</b> eğitim / test bölmesi planlandı</span></label>
+                        <label><i></i><span>Ham veri <b>yedekli ve sürümlü</b></span></label>
+                        <label><i></i><span><b>Paylaşım ve lisans</b> kararı verildi (açık / kapılı)</span></label>
+                    </div>
+                </div>
+                <aside class="notes">Salondaki sağlıkçılardan biri kendi deneyini düşünsün, birlikte işaretleyelim. 10/10'da konfeti!</aside>
+            </section>
+
+            <!-- ============ FİKİRLER ============ -->
+            <section data-id="ideas">
+                <div class="sl">
+                    <div class="kick">Kartları çevirin</div>
+                    <h2>Aynı yaklaşım başka nerede işe yarar?</h2>
+                    <div class="g3 grow" style="gap:16px; grid-auto-rows:1fr">
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">🩹</span><h4>Yara iyileşmesi</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Günlük fotoğraf → yara alanı</h4><span><b>Görev:</b> bölütleme + zaman serisi</span><span><b>Etiket:</b> yara sınırı</span><span><b>Dikkat:</b> cetvel / renk kartı ile ölçek</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">🎯</span><h4>Tümör büyümesi</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Fotoğraf / kumpas → hacim</h4><span><b>Görev:</b> regresyon</span><span><b>Etiket:</b> ölçülen hacim</span><span><b>Dikkat:</b> hayvan düzeyinde bölme</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">🐁</span><h4>Davranış videoları</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Video → hareket, kaşıma</h4><span><b>Görev:</b> poz tahmini, olay sayımı</span><span><b>Araç:</b> ör. DeepLabCut</span><span><b>Bonus:</b> kaşıma, sedefte de ölçüt!</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">🔬</span><h4>Histopatoloji</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Deri kesiti → epidermis kalınlığı</h4><span><b>Görev:</b> bölütleme + ölçüm</span><span><b>Bağ:</b> 14:00'teki hücre yöntemleri</span><span><b>Dikkat:</b> boya farklılıkları</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">📷</span><h4>Klinik dermatoloji</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Hasta fotoğrafı → PASI desteği</h4><span><b>Görev:</b> çok görevli sınıflama</span><span><b>Dikkat:</b> KVKK, onam, cilt tonu çeşitliliği</span><span><b>Bölme:</b> hasta düzeyinde</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">💊</span><h4>Farmakolojik sinyaller</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Kasılma eğrisi → etki mekanizması</h4><span><b>Görev:</b> zaman serisi sınıflama</span><span><b>Bizden:</b> contractility-signals</span><span><b>Fikir:</b> ilaç taramasını hızlandırma</span></div></div></div>
+                    </div>
+                </div>
+                <aside class="notes">Kartları salondan gelen fikirlere göre çevir.</aside>
+            </section>
+
+            <!-- ============ QUIZ ============ -->
+            <section data-id="quiz">
+                <div class="sl mid">
+                    <div class="kick">Hızlı tekrar</div>
+                    <h2>Üç soru 🎯</h2>
+                    <div class="col" style="gap:18px; margin-top:8px">
+                        <div class="quiz">
+                            <div class="q">1 · Aynı farenin kareleri hem eğitimde hem testte. Sonuç?</div>
+                            <div class="opts"><div class="opt" data-fb="Tam tersi: gerçekte o kadar iyi değil.">Gerçekçi başarı</div><div class="opt" data-ok data-fb="✓ Model fareyi tanır; başarı şişer.">Olduğundan iyi görünen başarı</div><div class="opt" data-fb="Etkiler: %83 ↔ %63!">Hiçbir etkisi yok</div></div>
+                            <div class="fb"></div>
+                        </div>
+                        <div class="quiz">
+                            <div class="q">2 · CC BY-NC 4.0 lisanslı veriyle hangisi yapılamaz?</div>
+                            <div class="opts"><div class="opt" data-fb="Akademik kullanım serbest (atıfla).">Akademik makale</div><div class="opt" data-ok data-fb="✓ NC = ticari olmayan.">Ticari ürün</div><div class="opt" data-fb="Eğitim amaçlı kullanım serbest.">Ders / eğitim</div></div>
+                            <div class="fb"></div>
+                        </div>
+                        <div class="quiz">
+                            <div class="q">3 · PCL-PASI'de her fotoğrafın kaç ayrı skoru var?</div>
+                            <div class="opts"><div class="opt" data-fb="Tek skor değil.">1</div><div class="opt" data-ok data-fb="✓ Eritem, kalınlık, pullanma.">3</div><div class="opt" data-fb="Klinik PASI'deki bölgelerle karıştırmayın.">4</div></div>
+                            <div class="fb"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ ARA ============ -->
+            <section data-id="break" class="dark" data-sound="chime"
+                data-background-gradient="radial-gradient(circle at 80% 80%, rgba(205,6,30,0.45) 0%, rgba(205,6,30,0) 40%), radial-gradient(circle at 20% 20%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:56px">
+                        <div class="f1 st">
+                            <div class="kick">16:45 – 17:00</div>
+                            <h1 style="font-size:92px">☕ Ara</h1>
+                            <p class="lead" style="margin-top:12px">17:00'de ikinci Colab defterinde buluşuyoruz:</p>
+                            <ul class="ul" style="margin-top:16px; font-size:21px">
+                                <li>Defteri açın (QR / kısa adres)</li>
+                                <li>Eğitim verisi bağlantısını eğitmenden alın</li>
+                                <li>Hızlanmak için: <b>Çalışma zamanı → Tümünü çalıştır</b></li>
+                            </ul>
+                        </div>
+                        <div class="col" style="align-items:center; gap:14px">
+                            <div class="qr pop-in" data-url="https://doganr.com/slides/2237/u2/" data-size="250"></div>
+                            <span class="url">doganr.com/slides/2237/u2</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== UYGULAMA ==================== -->
+            <section data-id="u-intro" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:50px">
+                        <div class="f1 st slow">
+                            <span class="sec-tag">Uygulama · 17:00</span>
+                            <h1 style="font-size:78px; margin-top:16px">Canlı Modelden <span class="red">Koda</span></h1>
+                            <h3 style="color:#c9d8e4; margin-top:6px">Fotoğraftan sedef şiddet skoruna</h3>
+                            <div class="col" style="gap:10px; margin-top:22px; font-size:21px">
+                                <div>① Defteri açın, <b>Drive'a kopya kaydedin</b></div>
+                                <div>② Hücre 1'deki <b>VERI_LINKI</b> kutusuna bağlantıyı yapıştırın</div>
+                                <div>③ Ya da zip dosyasını <b>yükle</b> düğmesiyle verin</div>
+                                <div>④ Hücreleri sırayla ▶</div>
+                            </div>
+                        </div>
+                        <div class="col" style="align-items:center; gap:14px">
+                            <div class="qr" data-url="https://doganr.com/slides/2237/u2/" data-size="260"></div>
+                            <span class="url">doganr.com/slides/2237/u2</span>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Bu defterde GPU gerekmez; ResNet-18 öznitelik çıkarımı CPU'da birkaç dakika sürer. Hızlandırmak isteyen: Çalışma zamanı → Çalışma zamanı türünü değiştir → GPU.</aside>
+            </section>
+
+            <section data-id="u-data">
+                <div class="sl">
+                    <div class="kick">Eğitim verisi</div>
+                    <h2>PCL-PASI demo alt kümesi</h2>
+                    <div class="row grow" style="gap:28px; align-items:center">
+                        <div class="col f1" style="gap:12px">
+                            <div class="g2" style="gap:12px">
+                                <div class="card r stat"><div class="big r count" data-to="565">0</div><div class="lbl">fotoğraf · 43 farenin hepsi</div></div>
+                                <div class="card stat"><div class="big count" data-to="24766">0</div><div class="lbl">satırlık etiket tablosu (görüntüsüz)</div></div>
+                            </div>
+                            <div class="box"><p>📦 <b>pcl_pasi_demo.zip</b> (~12 MB): <code>images/</code> · <code>demo_metadata.csv</code> · <code>full_labels.csv</code> · <code>OKU_BENI.txt</code></p></div>
+                            <div class="box"><p>🗓️ 6 gün (1, 3, 5, 7, 9, 11) · her oturumdan 3 kare (ikisi ardışık!) · çoğunlukla iPhone · genişlik 384 px</p></div>
+                            <div class="lesson">🔒 <b>Yalnız bu eğitim için.</b> Lütfen paylaşmayın; tam veri seti için Hugging Face sayfasından başvuru yapılır.</div>
+                        </div>
+                        <div class="col" style="width:360px; gap:10px; align-items:center">
+                            <input id="veri-in" placeholder="(eğitmen) bağlantıyı buraya yapıştırın">
+                            <div id="veri-qr" class="qr" style="min-width:220px; min-height:220px; display:grid; place-items:center"><span class="small muted" style="line-height:1.3">Bağlantı girilince<br>QR burada belirir</span></div>
+                            <span class="small muted" style="text-align:center">Bağlantıyı defterdeki <b>VERI_LINKI</b> kutusuna yapıştırın</span>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Drive bağlantısını sağdaki kutuya yapıştır: QR üretilir ve tarayıcıda hatırlanır. Ayrıca mesaj grubundan da paylaş. Bağlantısı olmayanlar zip'i "yükle" ile verebilir.</aside>
+            </section>
+
+            <section data-id="u-map">
+                <div class="sl">
+                    <div class="kick">Defterin haritası</div>
+                    <h2>9 adımda fotoğraftan skora</h2>
+                    <div class="map" style="margin-top:8px">
+                        <div class="mp"><div class="no">0–1</div><b>Hazırlık + veri</b><span>kütüphaneler, zip'i aç</span></div>
+                        <div class="mp"><div class="no">2</div><b>Önce tablo</b><span>görüntüsüz keşif: gruplar, günler, skorlar</span></div>
+                        <div class="mp"><div class="no">3</div><b>Görüntülerle tanışma</b><span>aynı fare 11 gün · sağlıklı vs model · 3 kamera</span></div>
+                        <div class="mp"><div class="no">4</div><b>Kızarıklığı ölçmek</b><span>basit bir sayı: kırmızı − yeşil</span></div>
+                        <div class="mp"><div class="no">5</div><b>Transfer öğrenme</b><span>ResNet-18 ile 512 sayılık parmak izi</span></div>
+                        <div class="mp"><div class="no">6</div><b>Sızıntı deneyi</b><span>rastgele vs fare düzeyinde bölme</span></div>
+                        <div class="mp"><div class="no">6b</div><b>Dürüst model</b><span>resmi bölme + karışıklık matrisi</span></div>
+                        <div class="mp"><div class="no">7</div><b>Üç skor birden</b><span>E · T · S doğruluk ve makro F1</span></div>
+                        <div class="mp"><div class="no">8</div><b>Modelin gözünden</b><span>doğru ve yanlış tahminler</span></div>
+                    </div>
+                </div>
+                <aside class="notes">İlerledikçe kartları yeşile çevir.</aside>
+            </section>
+
+            <section data-id="u-s2">
+                <div class="sl">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 2</span><div class="kick">Önce tablo, sonra görüntü</div></div>
+                    <h2>Tek satır kodla 24.766 etiketi özetlemek</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <div class="col f1" style="gap:12px">
+                            <div class="code" style="font-size:15px">tum.camera_id.value_counts()                  <span class="c"># kamera başına görüntü</span>
+tum.groupby(<span class="s">"group_id"</span>).subject_id.nunique()  <span class="c"># grup başına fare</span>
+tum.groupby(<span class="s">"day"</span>).size()                     <span class="c"># gün başına görüntü</span></div>
+                            <div class="tryit"><b>Deneyin:</b> yeni bir hücreye <code>tum.groupby("camera_id").erythema.mean()</code> yazın. Kameralar arasında skor farkı var mı?</div>
+                            <div class="lesson">Görüntüye dokunmadan bile çok şey öğreniriz: dengesizlik, eksik günler, cihaz dağılımı. <b>Her projede ilk adım bu olmalı.</b></div>
+                        </div>
+                        <svg id="grp-bars" width="470" height="390" viewBox="0 0 540 400" style="flex:none"></svg>
+                    </div>
+                </div>
+                <aside class="notes">Defterde ayrıca skorların günlere göre seyrini görecekler. Bu eğrileri yalnız eğitim içinde tartışıyoruz.</aside>
+            </section>
+
+            <section data-id="u-s3">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 3</span><div class="kick">Görüntülerle tanışma</div></div>
+                    <h2>Defterde göreceğiniz üç tablo</h2>
+                    <div class="g3 st" style="margin-top:14px">
+                        <div class="card r"><span class="em">⏳</span><h4>Aynı fare, 11 gün</h4><p>Model grubundan bir farenin sırt derisi gün gün nasıl değişiyor?</p></div>
+                        <div class="card"><span class="em">⚖️</span><h4>Sağlıklı ↔ model</h4><p>7. günde iki grup yan yana: fark çıplak gözle bile belli mi?</p></div>
+                        <div class="card a"><span class="em">📷</span><h4>Aynı an, üç kamera</h4><p>Aynı fare aynı anda: renk, ışık ve keskinlik ne kadar değişiyor?</p></div>
+                    </div>
+                    <div class="box" style="margin-top:20px"><p>🔒 Veri seti kapılı olduğu için bu fotoğraflar sunumda değil, <b>yalnız eğitim defterinizde</b>. Yorumlarınızı salonla paylaşın!</p></div>
+                    <div class="tryit" style="margin-top:12px"><b>Deneyin:</b> <code>fare</code> değişkenine başka bir model faresi verin (<code>"S13"</code>–<code>"S18"</code>) ya da 7. gün yerine başka bir gün seçin.</div>
+                </div>
+            </section>
+
+            <section data-id="u-s4">
+                <div class="sl">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 4</span><div class="kick">Kızarıklığı tek sayıyla ölçmek</div></div>
+                    <h2>Kırmızılık indeksi = ortalama (R − G)</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <canvas id="red-cv" width="640" height="420" style="width:640px; height:420px; background:#fff; border-radius:14px; box-shadow:var(--shadow)"></canvas>
+                        <div class="col f1" style="gap:12px">
+                            <p style="font-size:19px">Sunumdaki 15 örnek fotoğrafta <b>canlı hesap</b>: fotoğrafın ortasından bir parça alıp kırmızı ile yeşil kanal farkının ortalaması.</p>
+                            <div class="readout" id="red-read">hesaplanıyor…</div>
+                            <div class="box"><p>Seçilmiş 15 “vitrin” örneğinde ilişki güçlü görünüyor. Defterdeki <b>565 gerçek görüntüde</b> ise Spearman yalnız <b>0,29</b>: ışık, kamera, kürk, arka plan karışıyor. <b>Küçük ve seçilmiş örnekler yanıltır!</b></p></div>
+                            <div class="lesson">Elle tasarlanmış tek bir ölçü yerine, binlerce özelliği <b>veriden öğrenen</b> modellere geçiyoruz → Adım 5.</div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Grafik canlı hesaplanıyor (herkese açık örnek görseller). Uzman skoru arttıkça indeks artma eğiliminde ama gruplar çakışıyor.</aside>
+            </section>
+
+            <section data-id="u-s6">
+                <div class="sl">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 5–6</span><div class="kick">Parmak izi + sızıntı deneyi</div></div>
+                    <h2>Kendi elinizle sızıntıyı yakalayın</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <img class="fig" src="../assets/img/nb_sizinti.jpg" alt="sızıntı" style="width:470px">
+                        <div class="col f1" style="gap:12px">
+                            <div class="code" style="font-size:16.5px">❌ Rastgele bölme    : ortalama doğruluk %83.2
+✅ Fare düzeyinde    : ortalama doğruluk %62.7
+Fare kimliği doğruluğu: %49.4   (şans: %2.3)</div>
+                            <div class="tryit"><b>Deneyin:</b> <code>n_neighbors=1</code> → 5 yapın. Fark kapanıyor mu?</div>
+                            <div class="tryit"><b>Deneyin:</b> <code>test_size=0.3</code> → 0.5. Eğitimde daha az fare kalınca ne oluyor?</div>
+                            <div class="lesson">Makale okurken sorun: <b>“Veri hasta / birey düzeyinde mi bölündü?”</b></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Adım 5 ResNet-18 özniteliklerini çıkarır (CPU'da birkaç dakika). Adım 6 sızıntı deneyi. Sonuçlar küçük farklarla değişebilir.</aside>
+            </section>
+
+            <section data-id="u-s7">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 6b–7</span><div class="kick">Dürüst model, üç skor</div></div>
+                    <h2>Resmi bölme: 29 fareyle eğit, 14 yeni farede sına</h2>
+                    <div class="row" style="gap:28px; align-items:center; margin-top:10px">
+                        <img class="fig" src="../assets/img/nb_karisiklik.jpg" alt="karışıklık" style="width:330px">
+                        <div class="col f1" style="gap:12px">
+                            <table class="tbl" style="background:#fff; border-radius:12px; box-shadow:var(--shadow); font-size:21px">
+                                <tr><th>skor</th><th>doğruluk</th><th>makro F1</th></tr>
+                                <tr><td><b style="color:#cd061e">Eritem</b></td><td class="n">0,747</td><td class="n">0,564</td></tr>
+                                <tr><td><b style="color:#d97706">Kalınlık</b></td><td class="n">0,768</td><td class="n">0,626</td></tr>
+                                <tr><td><b class="navy">Pullanma</b></td><td class="n">0,675</td><td class="n">0,663</td></tr>
+                            </table>
+                            <div class="tryit"><b>Deneyin:</b> <code>C=0.05</code> → 1.0 yapın (daha az düzenlileştirme). Test başarısı artıyor mu, azalıyor mu?</div>
+                            <div class="tryit"><b>İleri düzey:</b> yalnız <code>camera_id == "CAM3"</code> satırlarıyla eğitip sınayın.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section data-id="u-s8">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 8</span><div class="kick">Modelin gözünden</div></div>
+                    <h2>Model nerede yanılıyor? Bir uzman gibi inceleyin</h2>
+                    <div class="g3 st" style="margin-top:14px">
+                        <div class="card g"><span class="em">✅</span><h4>Doğru bildikleri</h4><p>Belirgin kızarıklık, temiz arka plan, iyi ışık.</p></div>
+                        <div class="card r"><span class="em">❌</span><h4>Yanıldıkları</h4><p>Sınırdaki vakalar (1 mi 2 mi?), gölge, kürkle örtülü bölge.</p></div>
+                        <div class="card a"><span class="em">🤔</span><h4>Uzman ne der?</h4><p>Bazı “hatalar” aslında etiketin tartışmalı olduğu örnekler olabilir.</p></div>
+                    </div>
+                    <div class="lesson" style="margin-top:20px; font-size:22px">Sonraki adım (araştırmada): modeli uçtan uca ince ayar, renk normalizasyonu, cihaz uyarlaması ve <b>uzman + model</b> birlikte karar.</div>
+                </div>
+            </section>
+
+            <section data-id="end" class="dark" data-sound="fanfare"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="kick">Bugünü toparlarsak</div>
+                    <h2 style="font-size:54px; margin-top:8px">Hücreden canlıya, canlıdan koda</h2>
+                    <div class="g5 st" style="margin-top:24px">
+                        <div class="card"><span class="em">🧫</span><p>Her veri seti bir <b>laboratuvar sorusuyla</b> başlar.</p></div>
+                        <div class="card"><span class="em">📝</span><p>Etiket = uzman emeği; <b>rehber + uyum</b> şart.</p></div>
+                        <div class="card"><span class="em">✂️</span><p>Her zaman <b>birey / hasta düzeyinde</b> bölün.</p></div>
+                        <div class="card"><span class="em">📷</span><p>Cihaz, ışık, protokol: <b>kaydedin</b>.</p></div>
+                        <div class="card"><span class="em">🤝</span><p>Sağlıkçı + bilgisayarcı = <b>güçlü proje</b>.</p></div>
+                    </div>
+                    <div class="row ac" style="gap:30px; margin-top:30px">
+                        <div class="qr" data-url="https://pharmaiktu.github.io" data-size="120"></div>
+                        <div>
+                            <p class="lead" style="font-size:24px">Sorular, işbirliği fikirleri, hayalinizdeki veri seti…</p>
+                            <p style="font-size:21px; margin-top:6px"><b>pharmaiktu.github.io</b> · <b>doganr.com</b></p>
+                            <p class="muted" style="margin-top:10px">Teşekkürler! 🙏</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="../assets/vendor/reveal.min.js"></script>
+    <script src="../assets/vendor/notes.min.js"></script>
+    <script src="../assets/vendor/qrcode.min.js"></script>
+    <script src="../assets/ilafar.js"></script>
+    <script src="canli.js"></script>
+</body>
+
+</html>
