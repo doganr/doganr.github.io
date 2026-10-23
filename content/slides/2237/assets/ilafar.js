@@ -151,6 +151,66 @@
         })(0);
     }
 
+    // ---------- geri sayım: <div class="timer" data-sec="480"></div> (T tuşu başlat/durdur) ----------
+    IL.timer = el => {
+        const S = IL.sfx, total = +el.dataset.sec * 1000, R = 52, L = 2 * Math.PI * R;
+        el.innerHTML = `<div class="tw-ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="${R}" fill="none" stroke="#e3e9ef" stroke-width="10"/>` +
+            `<circle class="fg" cx="60" cy="60" r="${R}" fill="none" stroke="#0f9d58" stroke-width="10" stroke-linecap="round" stroke-dasharray="${L}" transform="rotate(-90 60 60)"/></svg>` +
+            `<div class="tv"></div></div><div class="tbtn"><button class="btn go" title="Başlat / durdur (T)">▶</button><button class="btn" title="Sıfırla">↺</button></div>`;
+        const fg = el.querySelector('.fg'), tv = el.querySelector('.tv'), [bp, br] = el.querySelectorAll('button');
+        let left = total, run = false, t0 = 0, iv = 0, lastSec = -1;
+        const fmt = ms => { const s = Math.ceil(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+        const paint = () => {
+            const f = left / total; fg.style.strokeDashoffset = L * (1 - f);
+            fg.style.stroke = f > 0.3 ? '#0f9d58' : f > 0.1 ? '#f59e0b' : '#cd061e'; tv.textContent = fmt(left); el.classList.toggle('done', left <= 0);
+        };
+        const stop = () => { run = false; clearInterval(iv); bp.textContent = '▶'; };
+        const tick = () => {
+            const now = performance.now(); left = Math.max(0, left - (now - t0)); t0 = now;
+            const s = Math.ceil(left / 1000); if (s !== lastSec) { lastSec = s; if (s <= 10 && s > 0) S.beep(s <= 3 ? 990 : 660); }
+            if (left <= 0) { stop(); S.chime(); S.ding(); }
+            paint();
+        };
+        const start = () => { if (left <= 0) left = total; run = true; t0 = performance.now(); clearInterval(iv); iv = setInterval(tick, 200); bp.textContent = '⏸'; S.click(); };
+        el._toggle = () => { if (run) { stop(); S.click(); } else start(); };
+        el._reset = () => { stop(); left = total; lastSec = -1; paint(); };
+        bp.onclick = e => { e.stopPropagation(); el._toggle(); };
+        br.onclick = e => { e.stopPropagation(); el._reset(); S.click(); };
+        paint();
+    };
+
+    // ---------- form / bağlantı QR'ı: <div class="linkqr" data-key="on"></div> (window.FORMLAR ya da kutuya yapıştırılan) ----------
+    IL.linkqr = el => {
+        const key = el.dataset.key, cfg = (window.FORMLAR || {})[key] || '', size = +(el.dataset.size || 230);
+        let v = ''; try { v = localStorage.getItem('il-link-' + key) || ''; } catch (e) { /* yok say */ }
+        el.innerHTML = '<div class="qr lq"></div><div class="url lu"></div><input class="lin" placeholder="(eğitmen) form bağlantısını yapıştırın">';
+        const q = el.querySelector('.lq'), u = el.querySelector('.lu'), inp = el.querySelector('.lin');
+        inp.value = cfg || v; if (cfg) inp.style.display = 'none';
+        const draw = () => {
+            const x = inp.value.trim(); q.innerHTML = ''; u.textContent = x.replace(/^https?:\/\//, '');
+            q.style.display = u.style.display = x ? '' : 'none';
+            if (x && window.QRCode) new QRCode(q, { text: x, width: size, height: size, colorDark: '#00263d', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+        };
+        inp.addEventListener('change', () => { try { localStorage.setItem('il-link-' + key, inp.value.trim()); } catch (e) { /* yok say */ } draw(); IL.sfx.ding(); });
+        inp.addEventListener('keydown', e => e.stopPropagation());
+        draw();
+    };
+
+    // ---------- el kaldırma sayacı: .tally içindeki button[data-c]; tık +1, sağ tık −1 ----------
+    IL.tally = el => {
+        const bs = [...el.querySelectorAll('button[data-c]')];
+        const upd = () => {
+            const n = bs.map(b => +b.dataset.n || 0), tot = n.reduce((a, b) => a + b, 0) || 1;
+            bs.forEach((b, i) => { b.querySelector('b').textContent = n[i]; const bar = b.querySelector('i'); if (bar) bar.style.width = (100 * n[i] / tot) + '%'; });
+        };
+        bs.forEach(b => {
+            b.innerHTML = `<i style="background:${b.dataset.c}"></i><span>${b.innerHTML}</span><b>0</b>`;
+            b.addEventListener('click', e => { e.stopPropagation(); b.dataset.n = (+b.dataset.n || 0) + 1; IL.sfx.blip(500 + 40 * b.dataset.n); upd(); });
+            b.addEventListener('contextmenu', e => { e.preventDefault(); b.dataset.n = Math.max(0, (+b.dataset.n || 0) - 1); IL.sfx.click(); upd(); });
+        });
+        upd();
+    };
+
     // ---------- başlat ----------
     IL.start = (opts) => {
         opts = opts || {};
@@ -178,11 +238,14 @@
             if (window.QRCode) new QRCode(el, { text: el.dataset.url, width: s, height: s, colorDark: '#00263d', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
         });
         bgCells();
+        document.querySelectorAll('.timer[data-sec]').forEach(IL.timer);
+        document.querySelectorAll('.linkqr[data-key]').forEach(IL.linkqr);
+        document.querySelectorAll('.tally').forEach(IL.tally);
 
         Reveal.initialize(Object.assign({
             width: 1280, height: 720, margin: 0.03, minScale: 0.2, maxScale: 3, center: false, hash: true, hashOneBasedIndex: true,
             slideNumber: 'c/t', controls: true, controlsTutorial: false, progress: true, transition: 'slide', backgroundTransition: 'fade',
-            navigationMode: 'linear', plugins: window.RevealNotes ? [RevealNotes] : [], keyboard: { 77: () => IL.toggleSound() },
+            navigationMode: 'linear', plugins: window.RevealNotes ? [RevealNotes] : [], keyboard: { 77: () => IL.toggleSound(), 84: () => { const t = Reveal.getCurrentSlide().querySelector('.timer'); if (t && t._toggle) t._toggle(); } },
         }, opts.reveal || {}));
 
         const onSlide = (cur, prev, sound) => {

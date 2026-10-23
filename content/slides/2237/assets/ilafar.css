@@ -228,3 +228,40 @@ body.il-dark #il-bg { opacity: 1; }
 .pub .y { font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--red); }
 .pub .t { font-size: 14.5px; font-weight: 600; line-height: 1.3; color: var(--ink); }
 .pub .ds { font-family: var(--mono); font-size: 11px; font-weight: 800; color: #fff; background: var(--red); border-radius: 6px; padding: 1px 6px; margin-left: 4px; }
+
+/* geri sayım */
+.timer { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.timer .tw-ring { position: relative; width: var(--tsz, 170px); height: var(--tsz, 170px); }
+.timer svg { width: 100%; height: 100%; display: block; }
+.timer .fg { transition: stroke-dashoffset 0.25s linear, stroke 0.4s; }
+.timer .tv { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--head); font-weight: 900; font-size: calc(var(--tsz, 170px) * 0.26); color: var(--navy); }
+.dark .timer .tv { color: #fff; }
+.timer.done .tv { color: var(--red); animation: pulse 0.8s ease-in-out 3; }
+.timer .tbtn { display: flex; gap: 6px; }
+.timer .tbtn .btn { padding: 4px 14px; font-size: 16px; }
+
+/* bağlantı QR'ı */
+.linkqr { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.linkqr .lin { width: 100%; max-width: 380px; font-family: var(--mono); font-size: 14px; padding: 8px 12px; border-radius: 10px; border: 2px dashed #9fb3c4; background: rgba(255, 255, 255, 0.85); box-sizing: border-box; }
+.linkqr .lu { font-size: 22px; }
+
+/* el kaldırma sayacı */
+.tally { display: flex; flex-direction: column; gap: 8px; }
+.tally button { position: relative; overflow: hidden; display: flex; justify-content: space-between; align-items: center; gap: 10px; cursor: pointer;
+    border: 2px solid #d3dde6; border-radius: 12px; background: #fff; padding: 9px 14px; font-family: var(--sans); font-size: 18px; font-weight: 700; color: var(--ink); }
+.tally button i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; opacity: 0.2; transition: width 0.5s cubic-bezier(.2, .8, .2, 1); }
+.tally button span, .tally button b { position: relative; }
+.tally button b { font-family: var(--mono); font-size: 22px; color: var(--navy); }
+
+/* alıntı, kaynak etiketleri (örnek dosya / rehber) */
+.qt { font-size: 18px; line-height: 1.45; color: var(--ink); font-style: italic; }
+.qt::before { content: '“'; color: var(--red); font-weight: 900; font-style: normal; }
+.qt::after { content: '”'; color: var(--red); font-weight: 900; font-style: normal; }
+.chip.t { background: rgba(13, 148, 136, 0.13); color: #0b7a70; }
+.card.src-o { border-top-color: var(--teal); }
+.card.src-r { border-top-color: var(--amber); }
+.tbl.big td, .tbl.big th { padding: 9px 14px; }
+.tbl tr.fragment.visible td { animation: fadein 0.5s ease both; }
+.ava { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-family: var(--head); font-weight: 900; font-size: 17px; color: #fff; flex: none; }
+.logo-tb { background: #fff; border-radius: 18px; padding: 10px 12px; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5); display: inline-block; line-height: 0; }
+.logo-tb img { height: 96px; display: block; }
