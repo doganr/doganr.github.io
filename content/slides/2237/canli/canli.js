@@ -428,6 +428,9 @@
         const draw = () => {
             const u = inp.value.trim(); try { localStorage.setItem('il-veri', u); } catch (e) { /* yok say */ }
             box.innerHTML = '';
+            // kısa bağlantı ekrandan okunup yazılabilsin diye QR'ın altında metin olarak da göster
+            const tx = $('veri-txt'); tx.style.display = u ? '' : 'none'; tx.textContent = u.replace(/^https?:\/\//, '');
+            tx.style.fontSize = u.length <= 40 ? '24px' : '13px';
             if (!u) { box.innerHTML = '<span class="small muted" style="line-height:1.3">Bağlantı girilince<br>QR burada belirir</span>'; return; }
             if (window.QRCode) new QRCode(box, { text: u, width: 220, height: 220, colorDark: '#00263d', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
         };
