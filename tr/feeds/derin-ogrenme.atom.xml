@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Doğan R. - Derin Öğrenme</title><link href="https://doganr.com/tr/" rel="alternate"/><link href="https://doganr.com/feeds/derin-ogrenme.atom.xml" rel="self"/><id>https://doganr.com/tr/</id><updated>2025-01-15T10:00:00+03:00</updated><subtitle>Dr. Öğr. Üyesi • Trabzon Üniversitesi</subtitle><entry><title>Derin Öğrenme ile Tıbbi Görüntü Segmentasyonu: Pratik Bir Giriş</title><link href="https://doganr.com/tr/derin-ogrenme-tibbi-goruntu-segmentasyonu.html" rel="alternate"/><published>2025-01-15T10:00:00+03:00</published><updated>2025-01-15T10:00:00+03:00</updated><author><name>Ramazan Ozgur Dogan</name></author><id>tag:doganr.com,2025-01-15:/tr/derin-ogrenme-tibbi-goruntu-segmentasyonu.html</id><summary type="html">&lt;p&gt;Derin öğrenme teknikleri, tıbbi görüntü segmentasyonunda devrim yaratıyor. Bu yazıda, BT görüntülerinde pankreas segmentasyonu üzerine yürüttüğüm araştırmadan edindiğim pratik içgörüleri paylaşıyorum.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Derin Öğrenme ile Tıbbi Görüntü Segmentasyonu&lt;/h1&gt;
+&lt;p&gt;Tıbbi görüntü segmentasyonu, derin öğrenmenin sağlık alanındaki en etkili uygulamalarından biridir. Pankreas gibi
+anatomik yapıların otomatik segmentasyonu, klinisyenlerin tümörleri daha erken tespit etmesini, ameliyatları daha
+hassas planlamasını ve tedavi sürecini otomatik olarak izlemesini sağlar.&lt;/p&gt;
+&lt;p&gt;Bu yazıda, &lt;em&gt;Computer Methods and Programs in Biomedicine&lt;/em&gt; (2021) dergisinde yayımlanan &lt;strong&gt;iki aşamalı Mask R-CNN
+ve 3D U-Net&lt;/strong&gt; yaklaşımıma ilişkin temel öngörülerimi paylaşacağım.&lt;/p&gt;
+&lt;h2&gt;Pankreas Segmentasyonu Neden Bu Kadar Zor?&lt;/h2&gt;
+&lt;p&gt;Pankreas, otomatik segmentasyon açısından son derece zorlu bir organdır:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Küçük ve düzensiz şekil&lt;/strong&gt; — Karaciğer veya kalpten farklı olarak pankreasın tutarlı bir geometrisi yoktur&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Düşük kontrast&lt;/strong&gt; — BT taramalarında çevre yağ dokusu ile iç içe geçer&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Yüksek hasta-arası varyasyon&lt;/strong&gt; — Boyut ve konum bireyler arasında büyük farklılıklar gösterir&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Bu zorluklar, klasik algoritmaları (eşikleme, bölge büyütme) büyük ölçüde işlevsiz kılar. Derin öğrenme,
+bu alanda tek gerçekçi yaklaşımdır.&lt;/p&gt;
+&lt;h2&gt;İki Aşamalı Yaklaşım&lt;/h2&gt;
+&lt;p&gt;Çözümümüz problemi iki aşamaya ayırır:&lt;/p&gt;
+&lt;h3&gt;Aşama 1 — Kaba Lokalizasyon (Mask R-CNN)&lt;/h3&gt;
+&lt;p&gt;İlk olarak &lt;strong&gt;Mask R-CNN&lt;/strong&gt;, her BT diliminde pankreas bölgesini kabaca tespit eder. Bu adım, arama uzayını
+dramatik biçimde daraltır ve ilgisiz arka plan anatomisini elenmiş olur.&lt;/p&gt;
+&lt;h3&gt;Aşama 2 — İnce Segmentasyon (3D U-Net)&lt;/h3&gt;
+&lt;p&gt;Kırpılmış bölge, hacimsel yamalar üzerinde çalışan ve 3D uzaysal bağlamı yakalayan bir &lt;strong&gt;3D U-Net&lt;/strong&gt;'e beslenir.
+Bu özellik, pankreas gibi ince ve düzensiz yapılar için kritik öneme sahiptir.&lt;/p&gt;
+&lt;h2&gt;Temel Sonuçlar&lt;/h2&gt;
+&lt;p&gt;NIH Pancreas-CT veri setinde &lt;strong&gt;~%85 Dice Benzerlik Katsayısı (DSC)&lt;/strong&gt; elde ettik — tek aşamalı yaklaşımlarla
+kıyaslandığında önemli ölçüde daha az yanlış pozitif oranıyla birlikte dönemin son teknoloji yöntemleriyle
+rekabet edebilir bir performans.&lt;/p&gt;
+&lt;h2&gt;Deneyimlerden Çıkan Dersler&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Kaba-ince yaklaşım her zaman işe yarar&lt;/strong&gt; — Küçük yapılar için doğrudan tam hacimden segmentasyon yapmaya çalışmayın&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;3D bağlam önemlidir&lt;/strong&gt; — 2D dilim-dilim yaklaşımlar dilimler arası bilgiyi kaçırır&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Veri artırma şarttır&lt;/strong&gt; — Rastgele döndürme, elastik deformasyon ve yoğunluk kaydırmaları uyguladık&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Son-işlem gürültüyü temizler&lt;/strong&gt; — Bağlı bileşen analizi ve morfolojik işlemler tahminleri düzenler&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;📄 &lt;strong&gt;Tam makale:&lt;/strong&gt; &lt;a href="https://doi.org/10.1016/j.cmpb.2021.106141"&gt;DOI: 10.1016/j.cmpb.2021.106141&lt;/a&gt;&lt;/p&gt;</content><category term="Derin Öğrenme"/><category term="derin öğrenme"/><category term="tıbbi görüntüleme"/><category term="segmentasyon"/><category term="U-Net"/><category term="pankreas"/></entry></feed>

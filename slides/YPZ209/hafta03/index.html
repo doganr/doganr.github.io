@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İleri Programlama 3. Hafta — Kalıtım II: super() & Metot Ezme</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere"
+                    style="width: 620px; height: 620px; top: -12%; left: -12%; background: #1e3a8a;"></div>
+                <div class="glow-sphere"
+                    style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #881337; animation-delay: -5s;">
+                </div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">super()</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">override</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">__init__</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">MRO</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">Ata</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">ez</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">genişlet</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">Çocuk</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">İleri Programlama · Hafta 03</span>
+                    <div class="cover-icon mb-6"><i data-lucide="layers" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Metodu Ezelim mi,<br><span
+                            class="grad-text">Genişletelim mi?</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Kalıtım II — super() & Metot
+                        Ezme (override)</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span><span
+                                style="color:#66d9ef;">super</span>().<span style="color:#a6e22e;">__init__</span>()
+                            &nbsp;<span style="color:#475569;"># atanın gücünü çağır</span></span></div>
+                </div>
+            </section>
+
+            <!-- 2. YOL HARİTASI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Hafta</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Butonu Türettik — Şimdi Onu
+                    Değiştirelim</h2>
+                <p class="code-note mb-6">Geçen hafta <code>SayacButonu(QPushButton)</code> türettik: devraldık + <b>yeni</b>
+                    metotlar ekledik. Bu hafta var olan metotları <b>ezip</b> davranışını değiştireceğiz.</p>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · super()</h4><p>Atanın gücüne eriş; kurucusunu ve
+                        metotlarını çağır.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · Ezme (override)</h4><p>Devralınan metodu yeniden
+                        tanımla; <b>ez</b> ya da <b>genişlet</b>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>3 · MRO</h4>
+                        <p>Python metodu hangi sırayla bulur? Çoklu kalıtım.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Sonunda: <code>SayacButonu</code>'nu ezerek <b>akıllı buton
+                    ailesi</b> yapacağız.</p>
+            </section>
+
+            <!-- 3. super() NEDİR -->
+            <section data-background-color="#020617">
+                <h2 class="text-4xl font-black mb-8 tracking-tighter text-white"><code
+                        style="color:#93c5fd;">super()</code> nedir?</h2>
+                <div class="glass-card mx-auto p-8" style="max-width:780px; text-align:left;">
+                    <p class="bio-text mb-4"><code class="kw">super()</code>, bir sınıfın <b>atasına</b> (üst sınıfına)
+                        erişmenin yoludur. "Bu işi atam nasıl yapıyordu, ona sor" demektir.</p>
+                    <pre><code class="language-python" data-trim data-line-numbers="3|4">class SayacButonu(QPushButton):
+    def __init__(self):
+        super().__init__()      # QPushButton kurucusu
+        self.sayac = 0          # sonra kendi işini yap</code></pre>
+                    <p class="code-note mt-4 fragment fade-in">Bunu <b>Hafta 1'den beri</b> yazıyorduk — artık ne
+                        yaptığını tam biliyoruz.</p>
+                </div>
+            </section>
+
+            <!-- 4. super() NASIL ÇALIŞIR -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="arrow-up-circle" style="width:14px;height:14px;"></i> Altında Ne Var?</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">
+                    <code style="color:#93c5fd;">super()</code> Aynı Nesne, Üst Sınıf Gözüyle</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>🎯 Aynı <code>self</code></h4><p>super() yeni bir nesne
+                        oluşturmaz; <b>aynı nesnenin</b> ata sürümüne bakar.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⛓️ Zincirde bir sonraki</h4><p>Atanın metodunu bulup
+                        çalıştırır — <b>MRO</b> zincirinde bir üst durak.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🚫 İsim yazmaz</h4>
+                        <p><code>QPushButton.__init__(self)</code> yerine <code>super()</code> — ata değişse bile çalışır.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in"><code>super().artir()</code> = "aynı ben, ama atamın
+                    <code>artir</code>'ını çalıştır."</p>
+            </section>
+
+            <!-- 5. super().__init__() NEDEN ŞART -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="wrench" style="width:14px;height:14px;"></i> Kurucu · 1/2</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Neden
+                    <code style="color:#93c5fd;">super().__init__()</code> Şart?</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="1|2|3|4">class SayacButonu(QPushButton):
+    def __init__(self):
+        self.sayac = 0        # 💥 super() UNUTULDU
+        self.setText("Tıkla") # RuntimeError: base __init__ çağrılmadı</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:340px;">
+                        <p>Kendi <code>__init__</code>'ini yazan çocuk, <b>ilk iş</b> <code>super().__init__()</code>
+                        çağırmalı — yoksa QPushButton'ın altyapısı hiç kurulmaz.</p>
+                        <p class="mt-3" style="color:#fda4af;">Sonuç: <code>RuntimeError</code> ya da yarım/garip
+                        davranan bir widget.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. super() İLE ARGÜMAN GEÇİRME -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="wrench" style="width:14px;height:14px;"></i> Kurucu · 2/2</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Ataya
+                    <span style="color:#93c5fd;">Argüman</span> Geçirmek</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="2|3|6|7">class Hayvan:
+    def __init__(self, ad):
+        self.ad = ad
+
+class Kedi(Hayvan):
+    def __init__(self, ad, renk):
+        super().__init__(ad)     # ad'ı ataya GEÇİR (o kursun)
+        self.renk = renk         # kalanı kendin
+
+k = Kedi("Tekir", "sarı")        # k.ad="Tekir", k.renk="sarı"</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p>Ata bir argüman bekliyorsa (<code>ad</code>), onu <code>super().__init__(ad)</code> ile
+                        <b>iletirsin</b>.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">İş bölümü: ortak kısmı ata kurar, farkı çocuk ekler.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. METOT EZME KAVRAMI -->
+            <section>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Metot Ezme (Override)</h2>
+                <div class="grid grid-cols-2 gap-6 text-left">
+                    <div class="concept-card fragment fade-up">
+                        <h4>🧬 Devralma</h4>
+                        <p>Çocuk, atanın metodunu <b>olduğu gibi</b> kullanır.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up" style="border-color: rgba(96,125,255,0.35);">
+                        <h4>✍️ Ezme (Override)</h4>
+                        <p>Çocuk, <b>aynı isimli</b> metodu yeniden tanımlar → kendi sürümü çalışır, atanınki gölgelenir.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Aynı isim, farklı gövde. Çocuğun sürümü atanınkinin
+                    <b>yerini alır</b> (o nesne için).</p>
+            </section>
+
+            <!-- 8. OVERRIDE NASIL ÇALIŞIR -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="search" style="width:14px;height:14px;"></i> Python Nasıl Seçer</span>
+                <h2 class="text-2xl font-black mb-4 tracking-tighter text-white">Önce Çocuğa Bakar</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="1-2|3-4|6|7">class Ata:
+    def selam(self): print("Ata selamı")
+class Cocuk(Ata):
+    def selam(self): print("Çocuk selamı")   # aynı isim → EZME
+
+Cocuk().selam()   # "Çocuk selamı"  (önce çocuğa bakar)
+Ata().selam()     # "Ata selamı"    (ata değişmedi)</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p>Python metodu <b>nesnenin sınıfından</b> başlayıp yukarı doğru arar. İlk bulduğunu çalıştırır.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Çocukta varsa → çocuğunki. Ezme budur.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. OVERRIDE ÖRNEĞİ -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="paintbrush" style="width:14px;height:14px;"></i> Örnek · 1/2</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Butona Renk Davranışı Ekle</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim
+                            data-line-numbers="1|2|3|4-5">class RenkliButon(SayacButonu):     # SayacButonu'ndan türe
+    def artir(self):                # aynı isim → EZME (override)
+        super().artir()             # önce atanın işi: say + güncelle
+        if self.sayac >= 5:         # sonra KENDİ eklememiz:
+            self.setStyleSheet("background:#ef4444")  # kırmızıya dön</code></pre>
+                    <div class="fragment fade-left flex flex-col items-center" style="padding-top:40px;">
+                        <span class="arrow-cta mb-2">5'ten sonra ↓</span>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">RenkliButon</span></div>
+                            <img src="images/gui_renkli_5.png" alt="Kırmızı buton">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. CANLI — OVERRIDE RENK -->
+            <section data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip"><i data-lucide="play" style="width:14px;height:14px;"></i> Örnek · 2/2 · Canlı</span>
+                    <span class="live-badge"><span class="live-dot"></span> 5'e gelince rengi değişir</span>
+                </div>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Ezilmiş Davranışı <span
+                        style="color:#7dd3fc;">Çalıştır</span></h2>
+                <div class="flex items-center justify-center gap-10">
+                    <div class="run-panel">
+                        <div class="run-title"># RenkliButon.artir():</div>
+                        <code class="runline" id="ov-l1">super().artir()          # ata: say</code>
+                        <code class="runline" id="ov-l2">if self.sayac >= 5: kırmızı</code>
+                        <div class="run-badge">Sayı: <b id="ov-count">0</b> · Eşik: 5</div>
+                    </div>
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">RenkliButon — canlı</span></div>
+                        <div class="qt-body">
+                            <button type="button" class="qt-btn" id="ov-btn"
+                                style="border-radius:14px;padding:14px 30px;font-size:17px;">Tıkla (0)</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-6">Tıkla: <code>super().artir()</code> saymayı sürdürür (ata), <b>5'ten sonra</b>
+                    bizim eklediğimiz satır butonu kırmızıya çevirir. <b>Ezme + super() = genişletme.</b></p>
+            </section>
+
+            <!-- 11. EZME Mİ, GENİŞLETME Mİ -->
+            <section>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Ezme mi, Genişletme mi?</h2>
+                <div class="grid grid-cols-2 gap-6 text-left">
+                    <div class="concept-card" style="border-color:rgba(244,63,94,0.4);">
+                        <h4 style="color:#fda4af;">🔁 Tamamen Değiştir</h4>
+                        <pre style="margin-top:8px;font-size:0.32em;"><code class="language-python" data-trim>def artir(self):
+    self.setText("değişti")   # atanınki YOK sayıldı</code></pre>
+                        <p>super() çağırmazsan atanın davranışı <b>kaybolur</b>.</p>
+                    </div>
+                    <div class="concept-card" style="border-color:rgba(34,197,94,0.4);">
+                        <h4 style="color:#86efac;">➕ Koru + Ekle (genişlet)</h4>
+                        <pre style="margin-top:8px;font-size:0.32em;"><code class="language-python" data-trim>def artir(self):
+    super().artir()    # atanınki +
+    self.renklendir()  # kendi eklemen</code></pre>
+                        <p><code>super()</code> ile atanın işini <b>korur</b>, üstüne eklersin.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">En sık kalıp: <b>metodu ez, içinde super() çağır</b>, sonra
+                    kendi farkını ekle.</p>
+            </section>
+
+            <!-- 12. CANLI — GENİŞLETME vs DEĞİŞTİRME -->
+            <section data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip"><i data-lucide="git-compare" style="width:14px;height:14px;"></i> super() İle mi, Olmadan mı? · Canlı</span>
+                    <span class="live-badge"><span class="live-dot"></span> İki butona da bas — farkı gör</span>
+                </div>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Atanın İşi Korunur mu,
+                    <span style="color:#7dd3fc;">Kaybolur mu?</span></h2>
+                <div class="flex items-start justify-center gap-5" style="margin-top:2px;">
+                    <div class="flex flex-col items-center gap-2" style="flex:1;max-width:420px;">
+                        <pre style="width:100%;margin:0;font-size:0.34em;"><code class="language-python" data-trim>def artir(self):
+    super().artir()      # ata: say
+    if self.sayac >= 5:
+        self.kirmizi()</code></pre>
+                        <div class="qt-app">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">super() ile</span></div>
+                            <div class="qt-body" style="padding:14px 28px 18px;">
+                                <button type="button" class="qt-btn" id="ext-btn"
+                                    style="border-radius:14px;padding:12px 26px;">Tıkla (0)</button>
+                            </div>
+                        </div>
+                        <div class="concept-card" style="border-color:rgba(34,197,94,0.4);width:100%;padding:11px 15px;">
+                            <p>✅ <b>Genişletme</b> — sayar <b>ve</b> renklenir. <span id="ext-note"
+                                    style="color:#7dd3fc;">(0 tık)</span></p></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-2" style="flex:1;max-width:420px;">
+                        <pre style="width:100%;margin:0;font-size:0.34em;"><code class="language-python" data-trim>def artir(self):
+    # super() YOK!
+    self.setText("değişti")</code></pre>
+                        <div class="qt-app">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">super()'siz</span></div>
+                            <div class="qt-body" style="padding:14px 28px 18px;">
+                                <button type="button" class="qt-btn" id="rep-btn"
+                                    style="border-radius:14px;padding:12px 26px;">Tıkla (0)</button>
+                            </div>
+                        </div>
+                        <div class="concept-card" style="border-color:rgba(251,191,36,0.4);width:100%;padding:11px 15px;">
+                            <p>⚠️ <b>Değiştirme</b> — sayma <b>kayboldu</b>. <span id="rep-note"
+                                    style="color:#fbbf24;">(hep "değişti")</span></p></div>
+                    </div>
+                </div>
+                <p class="code-note mt-3">Sol biriktirir, sağ atanın saymasını yok sayar. Fark: <code>super().artir()</code>
+                    çağrısı.</p>
+            </section>
+
+            <!-- 13. GENİŞLETME KALIBI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="check-check" style="width:14px;height:14px;"></i> Altın Kalıp</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Genişletmenin Üç Adımı</h2>
+                <pre style="max-width:640px;margin:0 auto 18px;font-size:0.36em;"><code class="language-python" data-trim data-line-numbers="2|3|4">    def artir(self):
+        super().artir()          # 1) atanın işini yaptır
+        if self.sayac >= 5:      # 2) kendi koşulun
+            self.setStyleSheet("background:#ef4444")  # 3) kendi eklemen</code></pre>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · Devral & Ez</h4><p>Aynı isimli metodu yeniden yaz.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · super() Çağır</h4><p>Atanın işini silmeden yaptır.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(34,197,94,0.4);"><h4>3 · Ekle</h4>
+                        <p>Kendi farkını üstüne koy.</p></div>
+                </div>
+            </section>
+
+            <!-- 14. MINI QUIZ 1 -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 1/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">super() & Override</h2>
+
+                <div class="quiz fragment" data-ok="Çocuktaki aynı isimli metot atanınkini gölgeler → ezme."
+                    data-no="Çocuktaki aynı isimli metot atanınkini gölgeler → ezme.">
+                    <div class="quiz-q">1) Atanın <code>artir()</code>'ıyla aynı isimli metot yazarsan?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">İkisi de çalışır</button>
+                    <button type="button" class="quiz-opt" data-correct="1">Çocuğunki çalışır (ezme/override)</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Hata verir</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+
+                <div class="quiz fragment" data-ok="super().artir() atanın işini korur, üstüne eklersin."
+                    data-no="super() olmadan atanın işi kaybolur.">
+                    <div class="quiz-q">2) Override'da atanınkini <b>korumak</b> için ne yazarsın?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">Hiçbir şey; otomatik korunur</button>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>super().artir()</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>self.artir()</code></button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 15. MRO -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="search" style="width:14px;height:14px;"></i> Python Nasıl Bulur</span>
+                <h2 class="text-3xl font-black mb-6 tracking-tighter text-white">Metot Çözümleme Sırası <span
+                        style="color:#64748b;">(MRO)</span></h2>
+                <p class="code-note mb-6"><code>btn.artir()</code> çağrılınca Python metodu <b>şu sırayla</b> arar:</p>
+                <div class="flex items-center justify-center gap-4">
+                    <div class="concept-card" style="padding:12px 20px;border-color:rgba(96,125,255,0.5);">
+                        <p style="font-size:0.66em;"><code style="color:#93c5fd;">RenkliButon</code><br><span
+                                style="color:#64748b;font-size:0.85em;">1. çocuk</span></p></div>
+                    <span style="color:#7dd3fc;font-family:'JetBrains Mono',monospace;">➜</span>
+                    <div class="concept-card fragment fade-up" style="padding:12px 20px;">
+                        <p style="font-size:0.66em;"><code>SayacButonu</code><br><span
+                                style="color:#64748b;font-size:0.85em;">2. ata</span></p></div>
+                    <span style="color:#7dd3fc;font-family:'JetBrains Mono',monospace;">➜</span>
+                    <div class="concept-card fragment fade-up" style="padding:12px 20px;">
+                        <p style="font-size:0.66em;"><code>QPushButton</code><br><span
+                                style="color:#64748b;font-size:0.85em;">3. dede</span></p></div>
+                    <span style="color:#7dd3fc;font-family:'JetBrains Mono',monospace;">➜</span>
+                    <div class="concept-card fragment fade-up" style="padding:12px 20px;">
+                        <p style="font-size:0.66em;"><code>QWidget…</code><br><span
+                                style="color:#64748b;font-size:0.85em;">yukarı</span></p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">İlk bulduğu metodu çalıştırır. <code>super()</code> tam da bu
+                    zincirde "bir sonrakine" gitmektir.</p>
+            </section>
+
+            <!-- 16. MRO'yu GÖRME -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="list-tree" style="width:14px;height:14px;"></i> Kanıt</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">MRO'yu Kendi Gözünle Gör</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:640px;"><code class="language-python" data-trim data-line-numbers="1|2-3">RenkliButon.mro()
+# [RenkliButon, SayacButonu, QPushButton,
+#  QAbstractButton, QWidget, QObject, …, object]</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p><code>Sınıf.mro()</code> (ya da <code>Sınıf.__mro__</code>) o sınıfın arama sırasını <b>liste
+                        olarak</b> verir.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">En sonda hep <code>object</code> vardır. <span style="color:#64748b;">(Araya bazı Qt iç sınıfları da girer; kısalttık.)</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 17. ÇOKLU KALITIM -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="git-merge" style="width:14px;height:14px;"></i> İki Ata</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Çoklu Kalıtım</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:600px;"><code class="language-python" data-trim data-line-numbers="1-2|4-5|7-8|10">class Ucan:
+    def hareket(self): print("uçar")
+
+class Yuzen:
+    def hareket(self): print("yüzer")
+
+class DenizUcagi(Ucan, Yuzen):   # iki atadan
+    pass
+
+DenizUcagi().hareket()   # uçar (soldan sağa)</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p>Bir sınıf <b>birden çok</b> atadan türeyebilir. Çakışma olursa MRO karar verir —
+                            <b>soldaki</b> önce gelir.</p>
+                        <p class="mt-3" style="color:#7dd3fc;"><code>class C(A, B)</code>: önce A'ya bakılır.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 18. MIXIN DESENİ -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="blocks" style="width:14px;height:14px;"></i> Pratik Kullanım</span>
+                <h2 class="text-2xl font-black mb-4 tracking-tighter text-white">Mixin: Yetenek Ekleme Sınıfı</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:580px;font-size:0.36em;"><code class="language-python" data-trim
+                            data-line-numbers="1-3|5|6-8">class LoglamaMixin:              # yalnız yetenek katar
+    def logla(self):
+        print(self.text(), "tıklandı")
+
+class LoglayanButon(LoglamaMixin, SayacButonu):
+    def artir(self):
+        super().artir()         # atanın işi
+        self.logla()            # mixin yeteneği</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:320px;">
+                        <p><b>Mixin</b> = tek başına anlamlı olmayan, başka sınıflara <b>yetenek katan</b> küçük sınıf.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Qt uygulamalarında sık kullanılır (loglama, kaydetme…).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 19. QT'NİN METOTLARINI EZMEK -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="mouse-pointer-2" style="width:14px;height:14px;"></i> Gerçek Güç</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Qt'nin
+                    <span style="color:#93c5fd;">Kendi</span> Metotlarını Ez</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:600px;font-size:0.36em;"><code class="language-python" data-trim
+                            data-line-numbers="2|3|4">class SayacButonu(QPushButton):
+    def mousePressEvent(self, olay):    # Qt metodunu EZ
+        print("basıldı!")               # kendi eklemen
+        super().mousePressEvent(olay)   # Qt'nin işini de yap</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <p>Override'ın asıl gücü: Qt'nin <b>hazır olay metotlarını</b> (fare, tuş, çizim) ezip kendi
+                        davranışını eklemek.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Yine kural: <code>super()</code> çağır ki Qt'nin normal
+                        işleyişi bozulmasın.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 20. MINI QUIZ 2 -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 2/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">MRO & Çoklu Kalıtım</h2>
+
+                <div class="quiz fragment" data-ok="MRO soldan sağa; C(A, B) önce A'ya bakar."
+                    data-no="Çoklu kalıtımda çakışmayı MRO çözer: soldaki önce.">
+                    <div class="quiz-q">1) <code>class C(A, B)</code> — çakışan <code>calis()</code> hangisi çalışır?</div>
+                    <button type="button" class="quiz-opt" data-correct="1">A'nınki (MRO: soldan sağa)</button>
+                    <button type="button" class="quiz-opt" data-correct="0">B'ninki</button>
+                    <button type="button" class="quiz-opt" data-correct="0">İkisi de</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+
+                <div class="quiz fragment" data-ok="mro() arama sırasını liste verir; sonda object var."
+                    data-no="Sınıf.mro() metot arama sırasını gösterir.">
+                    <div class="quiz-q">2) Bir sınıfın metot arama sırasını nasıl görürsün?</div>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>Sınıf.mro()</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>Sınıf.super()</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0">Görülemez</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 21. SIK YAPILAN HATALAR -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="triangle-alert" style="width:14px;height:14px;"></i> Dikkat</span>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Sık Yapılan Hatalar</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>😱 super() unutmak</h4><p>Override'da atanın işini istemeden silmek — sayma/çizim kaybolur.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>♾️ self.metot() çağırmak</h4><p>Override içinde <code>super()</code> yerine <code>self.artir()</code>
+                        → <b>sonsuz döngü</b> (kendini çağırır).</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🔤 İsim tutmaması</h4><p>Ezmek istediğin metodun adını yanlış yazmak → ezme olmaz, yeni bir
+                        metot doğar.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Kural: ataya erişmek için <b>her zaman</b> <code>super()</code>,
+                    asla <code>self</code>.</p>
+            </section>
+
+            <!-- 22. ÖZET -->
+            <section data-background-color="#020617">
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-3 text-left" style="max-width:860px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ <code>super()</code> = aynı nesne, atanın gözüyle</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>super().__init__(arg)</code> — ataya argüman geçir</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <b>Ezme (override)</b>: aynı isim → çocuk kazanır</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <b>Genişletme</b> = override + <code>super()</code> + ekle</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <b>MRO</b> zinciri, <code>Sınıf.mro()</code>, çoklu kalıtım</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Mixin + Qt olay metotlarını ezme</p></div>
+                </div>
+            </section>
+
+            <!-- 23. UYGULAMA — PROJE (I) -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="dumbbell" style="width:14px;height:14px;"></i> Ders Sonu Uygulama · Proje</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Proje: Akıllı Buton Ailesi</h2>
+                <p class="code-note mb-6">Geçen haftaki <code>SayacButonu</code>'nu <b>ezerek</b> farklı davranan üç buton
+                    türet ve bir panele diz.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:560px;"><code class="language-python" data-trim>class SayacButonu(QPushButton):   # geçen hafta
+    def __init__(self):
+        super().__init__()
+        self.sayac = 0
+        self.clicked.connect(self.artir)
+        self.setText("Tıkla (0)")
+    def artir(self):
+        self.sayac += 1
+        self.setText(f"Tıkla ({self.sayac})")
+
+# Görev: artir()'ı ezerek 3 farklı buton yap.</code></pre>
+                    <div class="concept-card" style="max-width:320px;text-align:left;">
+                        <h4>🎯 Hedef</h4>
+                        <p>Üç ezilmiş buton: <b>RenkliButon</b> (5'te kırmızı), <b>CiftButon</b> (2'şer artar),
+                        <b>LimitliButon</b> (10'da durur).</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Süre: ~40 dk.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 24. UYGULAMA — ADIMLAR (II) -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="list-checks" style="width:14px;height:14px;"></i> Adım Adım</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Nasıl İlerleyeceksin?</h2>
+                <div class="grid grid-cols-2 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · RenkliButon</h4><p><code>artir()</code>'ı ez:
+                        <code>super().artir()</code> + 5'te <code>setStyleSheet</code>.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · CiftButon</h4><p><code>artir()</code>'ı ez:
+                        <code>super().artir()</code>'ı <b>iki kez</b> çağır (2'şer say).</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · LimitliButon</h4><p><code>artir()</code>'ı ez:
+                        yalnızca <code>sayac &lt; 10</code> ise <code>super().artir()</code>.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>4 · Panel</h4><p>Üçünü bir <code>QVBoxLayout</code>'a
+                        diz, <code>if __name__</code> ile çalıştır.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">✅ Kontrol: Üçü de <code>super()</code> kullanıyor mu? Sayma
+                    mantığını hiçbiri sıfırdan yazmamalı.</p>
+            </section>
+
+            <!-- 25. UYGULAMA — İLERİ (III) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="rocket" style="width:14px;height:14px;"></i> İleri Görevler</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Erken Bitirdiysen</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>⭐ mousePressEvent</h4><p>Bir butonda
+                        <code>mousePressEvent</code>'i ez; sağ tık ile sayacı sıfırlasın (super() unutma).</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐ Mixin</h4><p><code>LoglamaMixin</code> yaz; her
+                        tıklamayı konsola yazan bir <code>LoglayanButon</code> üret.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐⭐ mro()</h4><p>Butonlarından birinin
+                        <code>.mro()</code>'sunu yazdır; zinciri incele.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Bu görevler <b>polimorfizmin</b> (gelecek hafta) zeminini
+                    hazırlıyor: aynı <code>artir()</code>, farklı davranışlar.</p>
+            </section>
+
+            <!-- 26. SONRAKİ HAFTA -->
+            <section data-background-color="#020617">
+                <div class="p-16 border border-white/5 rounded-[4rem] bg-gradient-to-br from-blue-950/20 to-rose-950/20">
+                    <span class="week-number text-base">Sonraki Hafta</span>
+                    <h2 class="text-5xl mb-6 font-black text-white">Polimorfizm</h2>
+                    <p class="text-lg text-slate-400 font-light">"Aynı çağrı, farklı davranış." Ezdiğimiz metotlar
+                        sayesinde farklı buton türleri <b>aynı arayüzle</b> ama <b>kendince</b> tepki verecek.</p>
+                    <div class="mt-10"><a href="../index.html" class="nav-link">← Ders Ana Sayfası</a></div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            margin: 0.06,
+            slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
+        });
+    </script>
+    <script>
+        // ===== CANLI ETKİLEŞİMLER (Hafta 3) =====
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+
+            // Override renk butonu (slayt 10)
+            (function () {
+                var btn = document.getElementById('ov-btn');
+                var l1 = document.getElementById('ov-l1'), l2 = document.getElementById('ov-l2');
+                var cnt = document.getElementById('ov-count');
+                if (!btn) return;
+                var sayac = 0;
+                btn.addEventListener('click', function (e) {
+                    stop(e);
+                    sayac += 1;
+                    btn.textContent = 'Tıkla (' + sayac + ')';
+                    if (cnt) cnt.textContent = sayac;
+                    if (l1) { l1.classList.add('active'); setTimeout(function () { l1.classList.remove('active'); }, 430); }
+                    if (sayac >= 5) {
+                        btn.style.background = '#ef4444';
+                        if (l2) { l2.classList.add('active'); setTimeout(function () { l2.classList.remove('active'); }, 430); }
+                    }
+                });
+            })();
+
+            // Genişletme (super ile) vs değiştirme (super'siz) — slayt 12
+            (function () {
+                var ext = document.getElementById('ext-btn'), en = document.getElementById('ext-note');
+                if (ext) {
+                    var s = 0;
+                    ext.addEventListener('click', function (e) {
+                        stop(e);
+                        s += 1;                       // super().artir() sayar
+                        ext.textContent = 'Tıkla (' + s + ')';
+                        if (s >= 5) ext.style.background = '#ef4444';   // + kendi eklemesi
+                        if (en) en.textContent = '(' + s + ' tık)';
+                    });
+                }
+                var rep = document.getElementById('rep-btn'), rn = document.getElementById('rep-note');
+                if (rep) {
+                    var t = 0;
+                    rep.addEventListener('click', function (e) {
+                        stop(e);
+                        t += 1;
+                        rep.textContent = 'değişti';  // super() yok → sayma kayboldu
+                        if (rn) rn.textContent = '(' + t + ' tık ama hâlâ "değişti")';
+                    });
+                }
+            })();
+
+            // Mini quizler (slayt 14 ve 20)
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) {
+                            if (o.dataset.correct === '1') o.classList.add('correct');
+                        });
+                        if (opt.dataset.correct === '1') {
+                            fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!');
+                            fb.style.color = '#86efac';
+                        } else {
+                            opt.classList.add('wrong');
+                            fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil işaretlendi.');
+                            fb.style.color = '#fca5a5';
+                        }
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Doğan R. - Academic Life</title><link href="https://doganr.com/" rel="alternate"/><link href="https://doganr.com/feeds/academic-life.atom.xml" rel="self"/><id>https://doganr.com/</id><updated>2025-06-01T10:00:00+03:00</updated><subtitle>Asst. Prof. • Trabzon University</subtitle><entry><title>From Ohio State to Trabzon: My TÜBİTAK 2219 Experience</title><link href="https://doganr.com/tubitak-2219-ohio-state-experience.html" rel="alternate"/><published>2025-06-01T10:00:00+03:00</published><updated>2025-06-01T10:00:00+03:00</updated><author><name>Ramazan Ozgur Dogan</name></author><id>tag:doganr.com,2025-06-01:/tubitak-2219-ohio-state-experience.html</id><summary type="html">&lt;p&gt;In May 2024, I joined The Ohio State University as a Visiting Research Scholar, supported by a TÜBİTAK 2219 Postdoctoral Research Fellowship. Here's what I learned about multimodal AI for clinical data — and about international research culture.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;From Ohio State to Trabzon: My TÜBİTAK 2219 Experience&lt;/h1&gt;
+&lt;p&gt;In May 2024, I packed my bags and flew to Columbus, Ohio to begin a year-long postdoctoral stay at
+&lt;strong&gt;The Ohio State University (OSU)&lt;/strong&gt;, supported by a &lt;strong&gt;TÜBİTAK 2219 International Postdoctoral Research Fellowship&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;This was my second international research visit — I had previously spent a year at &lt;strong&gt;Youngstown State University&lt;/strong&gt;
+(2019–2020), where I worked on pancreas segmentation. But OSU was a different scale entirely.&lt;/p&gt;
+&lt;h2&gt;What Is TÜBİTAK 2219?&lt;/h2&gt;
+&lt;p&gt;The &lt;strong&gt;TÜBİTAK 2219 Program&lt;/strong&gt; funds postdoctoral research abroad for Turkish academics. It covers:
+- Monthly stipend (~2500 USD)
+- Round-trip airfare
+- Health insurance
+- Up to 12 months at a host institution&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Application tip:&lt;/strong&gt; The key is securing a strong &lt;strong&gt;host researcher&lt;/strong&gt; who writes a compelling invitation letter.
+Your research overlap with the host lab matters more than your paper count.&lt;/p&gt;
+&lt;h2&gt;My Research at OSU&lt;/h2&gt;
+&lt;p&gt;At OSU, I joined a lab working on &lt;strong&gt;multimodal AI for clinical and pharmacological data&lt;/strong&gt;. My focus:&lt;/p&gt;
+&lt;h3&gt;1. Multimodal Fusion for Drug Response Prediction&lt;/h3&gt;
+&lt;p&gt;Combining:
+- &lt;strong&gt;Genomic data&lt;/strong&gt; (gene expression profiles)
+- &lt;strong&gt;Molecular structure&lt;/strong&gt; (SMILES / graph representations)
+- &lt;strong&gt;Clinical notes&lt;/strong&gt; (NLP features)&lt;/p&gt;
+&lt;p&gt;to predict patient-specific drug responses — a step toward &lt;strong&gt;precision medicine&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3&gt;2. Medical Foundation Models&lt;/h3&gt;
+&lt;p&gt;I spent considerable time studying and fine-tuning &lt;strong&gt;SAM (Segment Anything Model)&lt;/strong&gt; and &lt;strong&gt;MedSAM&lt;/strong&gt; for
+medical image segmentation. The zero-shot generalization of these large models is remarkable — but
+they still need domain-specific fine-tuning for clinical accuracy.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# MedSAM fine-tuning snippet&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segment_anything&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;sam_model_registry&lt;/span&gt;
+
+&lt;span class="n"&gt;model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sam_model_registry&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;vit_b&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;checkpoint&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;medsam_vit_b.pth&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Only fine-tune the mask decoder&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;image_encoder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parameters&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;requires_grad&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;  &lt;span class="c1"&gt;# Freeze encoder&lt;/span&gt;
+
+&lt;span class="n"&gt;optimizer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;torch&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;optim&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AdamW&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mask_decoder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parameters&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
+    &lt;span class="n"&gt;lr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1e-4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weight_decay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1e-4&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;3. Interpretable AI in Healthcare&lt;/h3&gt;
+&lt;p&gt;One lesson from OSU: &lt;strong&gt;clinicians don't trust black boxes&lt;/strong&gt;. We explored:
+- &lt;strong&gt;Grad-CAM&lt;/strong&gt; visualizations on CT/MRI scans
+- &lt;strong&gt;SHAP values&lt;/strong&gt; for tabular clinical predictors
+- &lt;strong&gt;Concept-based explanations&lt;/strong&gt; for deep classifiers&lt;/p&gt;
+&lt;h2&gt;Cultural Takeaways&lt;/h2&gt;
+&lt;p&gt;Beyond research, I gained a lot from observing how science is done at a top-10 US university:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Group meetings are sacred&lt;/strong&gt; — weekly lab meetings with genuine critical discussion, not just presentations&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reproducibility culture&lt;/strong&gt; — code, data, and model weights are shared by default&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reading culture&lt;/strong&gt; — every PhD student reads 2-3 papers per week and presents them&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Collaboration is easy&lt;/strong&gt; — emailing another professor for collaboration is normal and usually welcomed&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Advice for Turkish Academics Applying for 2219&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Start 18 months early&lt;/strong&gt; — finding the host, preparing the application, and waiting for the result is slow&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Target labs with shared interests&lt;/strong&gt;, not just famous names&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Learn the paperwork early&lt;/strong&gt; — international travel and financial bureaucracy can be exhausting&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Join Turkish academia networks abroad&lt;/strong&gt; — there are active WhatsApp and email groups&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;What's Next?&lt;/h2&gt;
+&lt;p&gt;I returned to &lt;strong&gt;Trabzon University&lt;/strong&gt; in May 2025 with both new research directions and stronger collaborations.
+Current projects include:
+- A multimodal learning framework for drug-disease interaction prediction
+- Adapting medical foundation models for Turkish hospital datasets
+- Submitting the OSU collaboration results to high-impact journals&lt;/p&gt;
+&lt;p&gt;If you're considering applying for TÜBİTAK 2219, feel free to message me — I'm happy to share my experience
+and help with the application process!&lt;/p&gt;
+&lt;p&gt;📧 &lt;strong&gt;dogan@trabzon.edu.tr&lt;/strong&gt;&lt;/p&gt;</content><category term="Academic Life"/><category term="tubitak"/><category term="postdoc"/><category term="research"/><category term="ohio state"/><category term="academic career"/></entry></feed>

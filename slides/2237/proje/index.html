@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Başarılı Bir Proje Dosyası · TÜBİTAK 2237-A</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700;800&display=swap">
+    <link rel="stylesheet" href="../assets/vendor/reset.min.css">
+    <link rel="stylesheet" href="../assets/vendor/reveal.min.css">
+    <link rel="stylesheet" href="../assets/ilafar.css">
+    <style>
+        #cover-cv { width: 480px; height: 480px; }
+        .ev .card { display: flex; flex-direction: column; gap: 8px; }
+        .ev .card .big { font-size: 52px; }
+        .ev .card .frm { font-size: 15px; color: var(--gray); border-top: 1px dashed #c9d6e2; padding-top: 8px; margin-top: auto; }
+        .title3 { display: flex; gap: 0; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+        .title3 div { padding: 12px 16px; font-size: 19px; line-height: 1.35; color: #fff; }
+        .title3 div b { display: block; font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.08em; opacity: 0.85; margin-bottom: 4px; }
+        .thread { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+        .thread::before { content: ''; position: absolute; left: 3%; right: 3%; top: 26px; height: 5px; background: linear-gradient(90deg, var(--navy), var(--red)); border-radius: 5px;
+            transform-origin: left; transform: scaleX(0); transition: transform 2.2s cubic-bezier(.2, .8, .2, 1) 0.2s; }
+        section.present .thread::before { transform: scaleX(1); }
+        .thread .tn { position: relative; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+        .thread .tn .no { width: 56px; height: 56px; border-radius: 50%; background: #fff; border: 5px solid var(--navy); display: grid; place-items: center; font-family: var(--head); font-weight: 900; font-size: 21px; color: var(--navy); z-index: 1; }
+        .thread .tn:nth-child(n+4) .no { border-color: var(--red); color: var(--red); }
+        .thread .tn h4 { font-size: 18px; }
+        .thread .tn .qt { font-size: 16px; background: #fff; border-radius: 12px; padding: 10px 12px; box-shadow: 0 6px 16px -10px rgba(0, 43, 70, 0.5); }
+        .thread .tn .src2 { font-family: var(--mono); font-size: 11.5px; color: #0b7a70; font-weight: 800; }
+        .flow5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .flow5 .f { background: #fff; border-radius: 12px; padding: 10px 12px; box-shadow: 0 6px 16px -10px rgba(0, 43, 70, 0.5); border-top: 5px solid var(--teal); }
+        .flow5 .f b { font-family: var(--head); font-size: 18px; color: var(--navy); display: block; margin-bottom: 4px; }
+        .flow5 .f .qt { font-size: 16px; }
+        .smart { display: grid; grid-template-columns: 64px 1fr; gap: 8px 12px; align-items: center; }
+        .smart .L { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-family: var(--head); font-weight: 900; font-size: 32px; color: #fff; }
+        .smart b { font-size: 18px; color: var(--navy); } .smart span { font-size: 16px; color: var(--ink-2); }
+        .gantt { position: relative; }
+        .gantt .gr { display: grid; grid-template-columns: 290px 1fr 70px; gap: 10px; align-items: center; margin-bottom: 7px; }
+        .gantt .gr .nm { font-size: 15.5px; font-weight: 600; color: var(--ink); line-height: 1.25; }
+        .gantt .gr .nm i { font-style: normal; font-family: var(--mono); font-weight: 800; color: var(--red); margin-right: 6px; }
+        .gantt .track { position: relative; height: 30px; background: repeating-linear-gradient(90deg, #eef2f6 0 calc(100% / 24 - 1px), #dde5ec calc(100% / 24 - 1px) calc(100% / 24)); border-radius: 6px; }
+        .gantt .bar { position: absolute; top: 3px; bottom: 3px; border-radius: 6px; transform-origin: left; transform: scaleX(0); transition: transform 0.9s cubic-bezier(.2, .8, .2, 1); }
+        .gantt .kat { font-family: var(--mono); font-weight: 800; font-size: 16px; color: var(--navy); text-align: right; }
+        .gantt .axis { display: grid; grid-template-columns: 290px 1fr 70px; gap: 10px; font-family: var(--mono); font-size: 12px; color: var(--gray); }
+        .gantt .axis div:nth-child(2) { display: flex; justify-content: space-between; }
+        .stack100 { display: flex; height: 34px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+        .stack100 div { display: grid; place-items: center; color: #fff; font-family: var(--mono); font-weight: 800; font-size: 14px; width: 0; transition: width 0.8s; }
+        .vs { display: grid; grid-template-columns: 1fr 60px 1.4fr; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .vs .bad { font-size: 19px; color: var(--gray); background: #fff; border-radius: 12px; padding: 10px 14px; box-shadow: 0 4px 12px -8px rgba(0, 0, 0, 0.3); position: relative; }
+        .vs .bad::after { content: ''; position: absolute; left: 10px; right: 10px; top: 50%; height: 3px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform 0.6s; }
+        .vs.visible .bad::after { transform: scaleX(1); }
+        .vs .ar { font-size: 30px; color: var(--red); text-align: center; font-weight: 900; }
+        .vs .good { background: #e9f7ef; border-left: 5px solid var(--green); border-radius: 0 12px 12px 0; padding: 10px 14px; }
+        .vs .good .qt { font-size: 16px; }
+        .vs .good .src2 { font-family: var(--mono); font-size: 11.5px; color: #0b7a70; font-weight: 800; }
+        .figs3 .card { display: flex; flex-direction: column; gap: 8px; }
+        .figs3 img { width: 100%; height: 230px; object-fit: contain; background: #fff; border-radius: 10px; }
+        .habit { display: grid; grid-template-columns: 290px 1fr; gap: 14px; align-items: center; background: #fff; border-radius: 12px; padding: 10px 16px; box-shadow: 0 4px 14px -9px rgba(0, 43, 70, 0.5); }
+        .habit b { font-size: 18.5px; color: var(--navy); }
+        .habit .qt { font-size: 16px; }
+        .bs5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        .bs5 .s { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px; padding: 12px; text-align: center; }
+        .bs5 .s .no { font-family: var(--head); font-weight: 900; font-size: 34px; color: #ff5a6e; }
+        .bs5 .s b { display: block; color: #fff; font-size: 19px; } .bs5 .s span { color: #9fb3c4; font-family: var(--mono); font-size: 14px; }
+        .q4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .q4 .q { background: #fff; border-radius: 12px; padding: 10px 14px; box-shadow: 0 4px 14px -9px rgba(0, 43, 70, 0.5); border-left: 5px solid var(--navy); }
+        .q4 .q b { font-size: 21px; color: var(--navy); display: block; } .q4 .q span { font-size: 18px; color: var(--ink-2); }
+        .blank { display: inline-block; min-width: 130px; border-bottom: 3px dashed var(--red); margin: 0 4px; height: 1.1em; vertical-align: bottom; }
+        .grpbtn { display: flex; gap: 10px; flex-wrap: wrap; }
+        .grpbtn .btn { font-size: 19px; padding: 10px 20px; }
+        .grpbtn .btn.done { background: var(--green); border-color: var(--green); color: #fff; }
+        .tbl td { font-weight: 400; } .tbl td b { font-weight: 700; }
+        .tbl.q td { font-size: 17px; }
+        .tbl.big td, .tbl.big th { line-height: 1.4; }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- 1 · KAPAK -->
+            <section data-id="cover" class="dark nofoot" data-sound="chime"
+                data-background-gradient="radial-gradient(circle at 12% 90%, rgba(205,6,30,0.45) 0%, rgba(205,6,30,0) 40%), radial-gradient(circle at 78% 22%, #0d6fa8 0%, #00426a 36%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:30px">
+                        <div class="f1 st slow">
+                            <div class="kick">Pazar 25 Ekim · 11:00 ve 12:00</div>
+                            <h1 style="font-size:62px; margin-top:16px; line-height:1.05">Başarılı Bir <span class="red">Proje Dosyası</span> Nasıl Kurgulanır?</h1>
+                            <div class="col" style="gap:8px; margin-top:18px">
+                                <span class="chip w" style="align-self:flex-start">Bölüm I · Dosyanın kurgusu, dili ve görselleri</span>
+                                <span class="chip w" style="align-self:flex-start">Bölüm II · Beyin fırtınası: anahtar kelime, inovasyon, fayda</span>
+                            </div>
+                            <p style="margin-top:20px; font-size:20px; line-height:1.5">Dr. Öğr. Üyesi <b>Ramazan Özgür DOĞAN</b> · Doç. Dr. <b>Hülya DOĞAN</b> · Prof. Dr. <b>Feride Sena SEZEN</b></p>
+                            <div class="row ac" style="gap:16px; margin-top:16px">
+                                <span class="logo-tb"><img src="../assets/img/h_tubitak.png" alt="TÜBİTAK" style="height:70px"></span>
+                                <p class="muted" style="font-size:14.5px; max-width:420px">Bu etkinlik TÜBİTAK BİDEB 2237-A Bilimsel Eğitim Etkinlikleri Desteği Programı kapsamında desteklenmektedir.</p>
+                            </div>
+                        </div>
+                        <canvas id="cover-cv" width="960" height="960"></canvas>
+                    </div>
+                </div>
+                <aside class="notes" data-n="1">1 dk. İki oturum var, her biri 45 dakika: 11:00’de Bölüm I (dosyanın kurgusu, dili, görselleri), 12:00’de Bölüm II (beyin fırtınası). Örnek dosya, H. Doğan’ın TÜBİTAK ARDEB 3501 Kariyer Geliştirme Programı başvurusu (2025). Slaytlarda tırnak içindeki metinler başvurudan birebir alındı; kısaltılan tablolar slaytta belirtildi. Renk kodu: camgöbeği etiketli kutular örnek dosyadan, turuncu etiketli kutular TÜBİTAK’ın 1001 yazım rehberinden alıntıdır. Önerilen görev dağılımı: H. Doğan örnek dosyayı, özeti, özgün değeri, görselleri ve dili; R. Ö. Doğan yöntemi, iş paketlerini ve başarı ölçütlerini; F. S. Sezen etik izni, veri üretimini, riskleri ve yaygın etkiyi anlatır. Bölüm II’de üç eğitici masaları paylaşır. Salonda 21 katılımcı var (15 sağlıkçı, 6 mühendis); 5 karma grup aynı masalarda oturuyor. Ön-testin 9. sorusu (TÜBİTAK’ın dört değerlendirme başlığı) ve 10. sorusu (B planı) bu oturumda işleniyor: “panel” ve “risk” slaytları. Bölüm I için önerilen süreler (toplam 45): kapak 1, panel 3, örnek dosya 2, iplik 3, özet 3, literatür 3, soru ve hipotez 3, amaç ve hedef 3, yöntem 3, iş paketleri 3, başarı ölçütü 2, grup görevi 4 ve yanıtlar 2, risk 3, görseller 3, dil ve üslup 2, özet 2 dakika.</aside>
+            </section>
+
+            <!-- 2 · DEĞERLENDİRME -->
+            <section data-id="panel">
+                <div class="sl mid">
+                    <div class="kick">Değerlendirme</div>
+                    <h2>Panel dosyanızı dört başlıkta puanlar</h2>
+                    <div class="g4 ev st" style="gap:16px; margin-top:8px">
+                        <div class="card"><div class="big">01</div><h3>Özgün Değer</h3><p>Konu neden önemli, literatürde ne eksik, sorunuz ve hipoteziniz ne?</p><div class="frm">Formda: konunun önemi, araştırma sorusu ve hipotez, amaç ve hedefler</div></div>
+                        <div class="card r"><div class="big r">02</div><h3>Yöntem</h3><p>Yöntem, hipotezi sınamaya yetecek kadar belirgin ve doğru mu?</p><div class="frm">Formda: veri, araştırma teknikleri, analiz ve ölçütler</div></div>
+                        <div class="card a"><div class="big" style="color:#d97706">03</div><h3>Proje Yönetimi</h3><p>Takvim gerçekçi mi, başarı ölçülebilir mi, B planı var mı?</p><div class="frm">Formda: iş-zaman çizelgesi, başarı ölçütleri, risk yönetimi, ekip ve olanaklar</div></div>
+                        <div class="card g"><div class="big" style="color:var(--green)">04</div><h3>Yaygın Etki</h3><p>Kim, ne zaman, hangi ölçülebilir katkıyı görecek?</p><div class="frm">Formda: çıktılar, etkiler, paylaşım ve yayılım</div></div>
+                    </div>
+                    <div class="lesson fragment rise">💰 Bütçe bu dört başlıktan biri değildir: <span class="qt">Bütçe, projenin değerlendirilmesinde dikkate alınan bir kriter değildir.</span></div>
+                    <p class="tiny muted">Kaynak: TÜBİTAK, 1001 Araştırma Projelerinin Yazımında Dikkat Edilecek Hususlar (2026)</p>
+                </div>
+                <aside class="notes" data-n="2">3 dk. Önce salona sorun: “Bir TÜBİTAK projesi hangi dört başlıkta değerlendirilir?” (ön-testin 9. sorusu). Sonra dört başlığı soldan sağa okuyun ve her birinin formdaki karşılığını gösterin; Bölüm I bu sırayla ilerliyor. Rehberden iki bilgi: panelistlerin ön değerlendirmeleri bir yapay zekâ aracıyla taslak bir ortak rapora derleniyor, ama rehber bu raporun panelistleri bağlamadığını söylüyor; Özgün Değer’den iki kez yetersiz alan bir öneri üçüncü kez sunulamıyor. Bütçe bir değerlendirme ölçütü değil, ama her kalemin ayrıntılı gerekçesi isteniyor. Sağlıkçılar için: bu dört başlık, bir klinik araştırma protokolündeki gerekçe, yöntem, iş planı ve beklenen yarar bölümlerine benzer. Mühendisler için: Özgün Değer “neden”, Yöntem “nasıl”, Proje Yönetimi “kim, ne zaman, hangi ölçütle”, Yaygın Etki “kime ne yarar” sorusudur. 16:00’daki panel simülasyonunda gruplar bu dört başlıkla puanlanacak. Kaynak: TÜBİTAK ARDEB, 1001 Araştırma Projelerinin Yazımında Dikkat Edilecek Hususlar (2026), “Bilimsel Değerlendirme” bölümü.</aside>
+            </section>
+
+            <!-- 3 · ÖRNEK DOSYA -->
+            <section data-id="ornek">
+                <div class="sl">
+                    <div class="kick">Örnek dosya</div>
+                    <h2>Bir 3501 başvurusunu bölüm bölüm okuyacağız</h2>
+                    <div class="title3 st">
+                        <div style="background:#0d9488; flex:1"><b>BAĞLAM</b>“Mikroskobik Sistemlerde</div>
+                        <div style="background:var(--navy); flex:1.1"><b>PROBLEM</b>2B ve 3B Hücre Segmentasyonu için</div>
+                        <div style="background:var(--red); flex:2"><b>ÇÖZÜM</b>Optimum Görüntüleme Sağlanması ve Yeni Derin Öğrenme Tabanlı Yaklaşımlarının Tasarlanması”</div>
+                    </div>
+                    <p class="small muted">Yürütücü: Dr. Öğr. Üyesi Hülya DOĞAN · KTÜ Yazılım Mühendisliği · 2025</p>
+                    <div class="row grow" style="gap:20px; align-items:stretch">
+                        <div class="col" style="gap:12px; width:300px">
+                            <div class="card stat"><div class="big count" data-to="24">0</div><div class="lbl">ay süre</div></div>
+                            <div class="g2" style="gap:12px"><div class="card r stat"><div class="big r count" data-to="6">0</div><div class="lbl">iş paketi</div></div><div class="card a stat"><div class="big count" data-to="7" style="color:#d97706">0</div><div class="lbl">kişilik ekip</div></div></div>
+                        </div>
+                        <div class="card t f1"><span class="chip t">FORMUN BÖLÜMLERİ</span>
+                            <ul class="ul" style="margin-top:10px; font-size:18px"><li>Tez bilgileri · <i>3501’e özgü</i></li><li>Özet ve anahtar kelimeler (Türkçe ve İngilizce)</li><li>Kariyer Geliştirme Potansiyeli · <i>3501’e özgü</i></li>
+                                <li><b>Özgün Değer · Yöntem · Proje Yönetimi · Yaygın Etki</b></li><li>Ekler: kaynaklar, bütçe, ekibin diğer projeleri</li></ul></div>
+                        <div class="card src-o f1"><span class="chip t" style="white-space:normal">ÖN ÇALIŞMA · KARİYER GELİŞTİRME POTANSİYELİ</span>
+                            <p class="qt" style="margin-top:10px">Yürütücü bu alanlarda ilk çalışmalarına lisans öğrencileri ile 2022 – 1. (…) ve 2. (…) dönemlerinde kabul edilen TUBİTAK 2209-A, 2219 doktora sonrası araştırma bursu projeleri ile başlamıştır.</p></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="3">2 dk. (H. Doğan) Dosyayı tanıtın: neden 3501, ekip nasıl kuruldu, veri nereden geliyor. Başlığın üç parçasına dikkat çekin: bağlam, problem, çözüm; panelist konuyu ve yöntemi başlıktan tek bakışta görür. Sağdaki liste formun bölümleri: koyu yazılı, camgöbeği çizgili dört bölüm 1001’deki dört değerlendirme başlığıyla aynı; “3501’e özgü” notlu ikisi bu programa özel. Ekip: yürütücü (yazılım mühendisliği), araştırmacı (yapay zekâ mühendisliği), danışman (eczacılık) ve dört bursiyer (iki doktora, iki yüksek lisans); uygulama yeri KTÜ İLAFAR. Alttaki alıntı genç araştırmacılar için önemli bir mesaj taşıyor: büyük bir proje çoğu zaman küçük projelerle toplanmış ön veriyle hazırlanır; burada iki 2209-A öğrenci projesi ve İLAFAR’da üretilen mikroskop görüntüleri. Dosyanın sonucunu ve varsa panelden gelen yorumları siz anlatın; panel yorumlarından bir iki cümle paylaşmak çok öğretici olur. Alıntılar dosyadan birebir alındı; proje numaraları “(…)” ile çıkarıldı.</aside>
+            </section>
+
+            <!-- 4 · KURGU -->
+            <section data-id="iplik">
+                <div class="sl">
+                    <div class="kick">Kurgu · örnek dosyadan</div>
+                    <h2>Problemden çıktıya tek bir iplik</h2>
+                    <div class="thread st slow" style="margin-top:8px">
+                        <div class="tn"><div class="no">1</div><h4>Problem</h4><div class="qt">Bu sınırlamalar, hücre segmentasyonu süreçlerinde yapay zekâ tekniklerinin performansını sınırlamakta ve doğruluk üzerinde olumsuz bir etki yaratmaktadır.</div><span class="src2">Konunun önemi</span></div>
+                        <div class="tn"><div class="no">2</div><h4>Soru</h4><div class="qt">Mikroskobik sistemlerde sınırlı odaklama derinliğine sahip 2B görüntülerle yapılan hücre segmentasyonu çalışmalarının başarı oranları artırılabilir mi?</div><span class="src2">Soru 4</span></div>
+                        <div class="tn"><div class="no">3</div><h4>Hipotez</h4><div class="qt">…odaklama derinliği artırılmış 2B görüntüler ve 3B şekil yapıları üzerinde gerçekleştirilecektir. Bu yöntemlerin literatürdeki mevcut çalışmalara göre daha yüksek segmentasyon doğruluğu sağlayacağı öngörülmektedir.</div></div>
+                        <div class="tn"><div class="no">4</div><h4>Amaç</h4><div class="qt">…2B görüntüler üzerinde hücre segmentasyonunun gerçekleştirilmesi ve mevcut yöntemlerin eksikliklerini gidermek için yeni bir derin öğrenme tabanlı yaklaşımın geliştirilmesi.</div><span class="src2">Amaç 5</span></div>
+                        <div class="tn"><div class="no">5</div><h4>Ölçüt</h4><div class="qt">…ham görüntülere kıyasla en az %3 belirgin bir iyileşme sağlanması.</div><span class="src2">İP5 başarı ölçütü</span></div>
+                        <div class="tn"><div class="no">6</div><h4>Çıktı</h4><div class="qt">…2 SCI&amp;Expanded taranan bilimsel makalenin (ana çıktılar) yayınlanması planlanmaktadır.</div><span class="src2">Yaygın etki</span></div>
+                    </div>
+                    <div class="lesson" style="margin-top:auto">✅ Kontrol: her hedefin bir iş paketi, her iş paketinin bir ölçütü, her ölçütün bir çıktısı var mı?</div>
+                </div>
+                <aside class="notes" data-n="4">3 dk. Paneli ikna eden şey, bölümlerin birbirine bağlı olmasıdır: problem bir soruya, soru bir hipoteze, hipotez bir amaca, amaç bir iş paketine ve ölçüte, ölçüt bir çıktıya bağlanır. Bu altı satır örnek dosyanın farklı bölümlerinden alındı (Konunun Önemi, Araştırma Sorusu 4 ve hipotezi, Amaç 5, İP5’in başarı ölçütü, Yaygın Etki tablosu); hepsi aynı ipliği izliyor. Katılımcılara sorun: “Bu zincirden bir halka eksik olsaydı panelist ne sorardı?” Örnek: ölçütü olmayan bir hedef için “Başardığınızı nasıl anlayacağız?”, hipotezi sınamayan bir yöntem için “Bu deney sorunuzu nasıl yanıtlıyor?” Öğleden sonraki atölyelerde gruplar aynı zinciri kendi projeleri için kuracak: 14:00’te problem ve hipotez, 15:00’te yöntem ve hukuki uyum.</aside>
+            </section>
+
+            <!-- 5 · BAŞLIK VE ÖZET -->
+            <section data-id="ozet">
+                <div class="sl">
+                    <div class="kick">Başlık ve özet</div>
+                    <h2>Özet, dosyanın tamamını bir sayfada anlatır</h2>
+                    <span class="chip t" style="align-self:flex-start">ÖRNEK DOSYADA · ÖZETİN AKIŞI</span>
+                    <div class="flow5 st">
+                        <div class="f"><b>Bağlam</b><div class="qt">Mikroskoplar, biyolojik ve tıbbi araştırmalarda hücresel yapıları incelemek için kullanılan en kritik tıbbi görüntüleme araçlarındandır.</div></div>
+                        <div class="f"><b>Sorun</b><div class="qt">Bu sınırlı odaklama derinliği, görüntülerde bulanıklık ve boyut kaybına neden olarak hücre segmentasyonunda performans kaybına yol açmaktadır.</div></div>
+                        <div class="f"><b>Amaç</b><div class="qt">…hücre segmentasyonunun doğruluğunun artırılması ve bu doğrultuda yeni derin öğrenme tabanlı yaklaşımların geliştirilmesi amaçlanmaktadır.</div></div>
+                        <div class="f"><b>Yöntem</b><div class="qt">Çalışma, (…) mikroskop görüntü dizilerinden oluşan kapsamlı bir veri setinin hazırlanmasıyla başlamaktadır.</div></div>
+                        <div class="f"><b>Etki</b><div class="qt">…mikroskobik sistemlerdeki mevcut sınırlamaları aşarak biyomedikal araştırmaların doğruluk ve verimliliğini artırmayı hedeflemektedir.</div></div>
+                    </div>
+                    <div class="card src-r" style="padding:12px 18px"><span class="chip a">REHBERDE</span>
+                        <div class="g2" style="gap:6px 20px; margin-top:8px; font-size:17px">
+                            <div>📄 <span class="qt">Özet bölümü 1 sayfayı geçmemelidir.</span></div><div>🧩 Projenin özgün değerini, yöntemini, proje yönetimini ve yaygın etkisini birlikte anlatır.</div>
+                            <div>⏳ <span class="qt">…proje öneri metni tamamlandıktan sonra son aşamada yazılması önerilmektedir.</span></div><div>🌐 Türkçe ve İngilizce yazılır · öncelikli alanla ilişkili projelere ek puan.</div>
+                        </div></div>
+                    <div class="lesson">Özet <b>en son yazılır</b>, ama <b>ilk okunur.</b></div>
+                </div>
+                <aside class="notes" data-n="5">3 dk. (H. Doğan) Özet, panelistin ilk ve bazen en dikkatli okuduğu sayfadır. Soldaki beş satır örnek dosyanın özetinden sırayla alındı: bağlam, sorun, amaç, yöntem, etki; her biri bir iki cümle. Rehber özetin projenin özgün değerini, yöntemini, proje yönetimini ve yaygın etkisini kapsamasını istiyor. İsteğe bağlı bir öz eleştiri: bugün yazsak örnek özete proje yönetimiyle ilgili bir cümle eklerdik (ör. süre ve iş paketi sayısı). Örnek özet ayrıca konuyu 12. Kalkınma Planı’na ve TÜBİTAK’ın “Öncelikli Ar-Ge ve Yenilik Konuları 2024-2025” belgesine bağlıyor; 2025 ARDEB 1001 başvuru rehberi, öncelikli alanlarla ilişkili projelere uygun bulunmaları hâlinde ek puan verileceğini söylüyor (miktar belirtilmemiş). Başlık ve özet Türkçe ve İngilizce verilir. Sağlıkçılar için: bir makale özetinin amaç, yöntem, bulgular, sonuç düzenine benzer; ama bulgu yerine beklenen çıktı yazılır. Mühendisler için: özet, dosyanın “yönetici özeti”dir; teknik ayrıntıya değil soruya ve katkıya yer verin. Kaynaklar: TÜBİTAK 1001 yazım rehberi (2026), “Başlık ve Özet”; ARDEB 1001 Başvuru Rehberi (2025), öncelikli alanlar.</aside>
+            </section>
+
+            <!-- 6 · KONUNUN ÖNEMİ -->
+            <section data-id="onem">
+                <div class="sl">
+                    <div class="kick">Konunun önemi · örnek dosyadan</div>
+                    <h2>Literatürü özetlemeyin, tartın</h2>
+                    <img class="fig" src="../assets/img/h_sekil1.jpg" alt="Şekil 1" style="width:100%; max-height:260px; object-fit:contain">
+                    <p class="small muted" style="text-align:center">“Şekil 1. Farklı odaklama düzlemlerinden elde edilen mikroskop görüntüleri”</p>
+                    <table class="tbl big" style="background:#fff; border-radius:14px; box-shadow:var(--shadow); font-size:20px">
+                        <tr><th>Yaklaşım ailesi</th><th>Avantajları</th><th>Dezavantajları</th></tr>
+                        <tr class="fragment rise"><td><b>Wavefront kodlama</b></td><td style="color:#0b7a44">“yüksek hassasiyet ve gerçek zamanlı performans”</td><td class="red">“yüksek maliyet ve ek donanım gerektirmesi”</td></tr>
+                        <tr class="fragment rise"><td><b>İmge füzyonu</b></td><td style="color:#0b7a44">“düşük maliyetli ve ek donanım gerektirmemesi”</td><td class="red">“incelenen numune ve kullanılan mikroskop çeşidine (ışıklı, floresan, konfokal) göre performans değişimi”</td></tr>
+                    </table>
+                </div>
+                <aside class="notes" data-n="6">3 dk. (H. Doğan) Rehberin en net uyarılarından biri: literatür ham bir liste olarak verilmez, analiz edilir. Örnek dosya her yaklaşım ailesini kaynaklarıyla tanıtıyor, sonra avantajını ve dezavantajını iki kısa cümlede söylüyor; tablodaki ifadeler bu cümlelerden birebir alındı. Ardından “Literatürdeki Eksiklikler” başlığı altında boşlukları madde madde topluyor; sağdaki cümle bunlardan biri. Şekil 1 sorunu tek bakışta gösteriyor: aynı görüş alanının iki ayrı odak düzleminde, kırmızı halkalı bölgelerden biri netken diğeri bulanık. Sağlıkçılar için: bu, bir derlemedeki çalışmaları “ne buldu” diye değil, “neyi çözemedi” diye okumaktır. Mühendisler için: ilgili çalışmalar bölümündeki karşılaştırma tablosunun düzyazı hâlidir. Rehberin iade gerekçeleri arasında “Literatür özetinin ham liste şeklinde sunulması” ve “Başvuru metni ile kaynakların ilişkilendirilmemiş olması” da var.</aside>
+            </section>
+
+            <!-- 7 · SORU VE HİPOTEZ -->
+            <section data-id="soru">
+                <div class="sl mid">
+                    <div class="kick">Araştırma sorusu ve hipotez · örnek dosyadan</div>
+                    <h2>Soru sorar, hipotez cevabı önerir</h2>
+                    <div class="g2 st" style="gap:20px; margin-top:12px">
+                        <div class="col" style="gap:10px"><div class="card"><span class="chip">❓ SORU 4</span><p class="qt" style="margin-top:8px; font-size:19px">Mikroskobik sistemlerde sınırlı odaklama derinliğine sahip 2B görüntülerle yapılan hücre segmentasyonu çalışmalarının başarı oranları artırılabilir mi?</p></div>
+                            <div class="card r"><span class="chip r">💡 HİPOTEZ</span><p class="qt" style="margin-top:8px; font-size:19px">…odaklama derinliği artırılmış 2B görüntüler ve 3B şekil yapıları üzerinde gerçekleştirilecektir. Bu yöntemlerin literatürdeki mevcut çalışmalara göre daha yüksek segmentasyon doğruluğu sağlayacağı öngörülmektedir.</p></div></div>
+                        <div class="col" style="gap:10px"><div class="card"><span class="chip">❓ SORU 5</span><p class="qt" style="margin-top:8px; font-size:19px">2B numune görüntülerinde iç içe geçmiş hücrelerin segmentasyonu başarı oranları artırılabilir mi?</p></div>
+                            <div class="card r"><span class="chip r">💡 HİPOTEZ</span><p class="qt" style="margin-top:8px; font-size:19px">Optimum odaklı 2B görüntülere ek olarak, 3B şekil yapılarının segmentasyon süreçlerine dahil edilmesi, iç içe geçmiş hücrelerin ayrıştırılmasında daha yüksek başarı sağlayacaktır.</p></div></div>
+                    </div>
+                    <div class="lesson" style="margin-top:16px">Rehber: <span class="qt">Proje önerisinde araştırma sorusu göze çarpmalıdır.</span> İyi bir hipotez de neyi karşılaştırdığınızı, neyi ölçtüğünüzü ve hangi yönde değişim beklediğinizi söyler.</div>
+                </div>
+                <aside class="notes" data-n="7">3 dk. (H. Doğan) Örnek dosya “Araştırma Sorusu ve Hipotezi” başlığı altında altı soru soruyor ve her sorunun hemen altına bir hipotez yazıyor; rehberin istediği gibi soru “göze çarpıyor”. Burada ikisini görüyoruz. Hipotezlerin ortak yapısını gösterin: neyi neyle karşılaştırıyor (ham 2B görüntü, optimum odaklı 2B görüntü, 3B şekil), neyi ölçüyor (segmentasyon doğruluğu, iç içe geçmiş hücrelerin ayrıştırılması) ve hangi yönde değişim bekliyor (daha yüksek). Rehberden bir cümle daha: “Etkili bir araştırma sorusu, ‘Bu araştırmanın neden yürütülmesi gerekiyor?’ sorusuna cevap verir.” Sağlıkçılar için: klinik araştırmalardaki H0/H1 mantığı burada da geçerli; proje dilinde hipotez, beklenen sonucu karşılaştırmalı ve ölçülebilir biçimde söyler. Mühendisler için: “Yeni modelimiz daha iyi olacak” bir hipotez değildir; hangi veride, hangi ölçütte ve neye göre daha iyi olacağı yazılmalıdır. 14:00’teki Atölye I’in konusu tam olarak bu: problem tespiti ve hipotez.</aside>
+            </section>
+
+            <!-- 8 · AMAÇ VE HEDEFLER -->
+            <section data-id="amac">
+                <div class="sl">
+                    <div class="kick">Amaç ve hedefler · örnek dosyadan</div>
+                    <h2>Amaç ne yapılacağını, hedef ne kadarını söyler</h2>
+                    <div class="row grow" style="gap:22px; align-items:center">
+                        <div class="col f1" style="gap:10px">
+                            <div class="card src-o"><span class="chip t">🎯 AMAÇ 1</span><p class="qt" style="margin-top:8px; font-size:19px">Odaklama derinliğinin artırılması ve odaktan şekil yaklaşımları için farklı bölgeleri odaklanmış mikroskop görüntü dizilerinden oluşan kapsamlı bir veri setinin hazırlanması.</p></div>
+                            <div class="col st" style="gap:8px">
+                                <div class="box"><p><b class="red">1 ·</b> <span class="qt">Her numuneden farklı büyütme objektiflerinde en az <b>50</b> görüntü dizisi oluşturulması.</span></p></div>
+                                <div class="box"><p><b class="red">2 ·</b> <span class="qt">Her bir görüntü dizisinin en az <b>30</b> farklı bölgeleri odaklanmış görüntü içermesi.</span></p></div>
+                                <div class="box"><p><b class="red">3 ·</b> <span class="qt">3 farklı denekten elde edilecek mikroskop görüntü dizilerinin en az <b>%90</b>’ının önerilen yaklaşımlar için kullanılabilir hale getirilmesi.</span></p></div>
+                            </div>
+                        </div>
+                        <div class="card src-r" style="width:420px"><span class="chip a">REHBERDE · SMART</span>
+                            <div class="smart st" style="margin-top:12px">
+                                <div class="L" style="background:#0d9488">S</div><div><b>Belirli</b> <span>hangi veri, hangi numune</span></div>
+                                <div class="L" style="background:var(--navy)">M</div><div><b>Ölçülebilir</b> <span>en az 50 dizi, en az %90</span></div>
+                                <div class="L" style="background:var(--red)">A</div><div><b>Ulaşılabilir</b> <span>İLAFAR’daki mikroskoplar</span></div>
+                                <div class="L" style="background:#d97706">R</div><div><b>Rasyonel</b> <span>200 görüntü, literatürle gerekçeli</span></div>
+                                <div class="L" style="background:var(--violet)">T</div><div><b>Zaman sınırlı</b> <span>İP1: 0–3. ay</span></div>
+                            </div></div>
+                    </div>
+                    <p class="small muted">Rehber: <span class="qt">Projenin amacı ve hedefleri, ayrı paragraflar halinde kısa ve net cümlelerle ortaya konulmalıdır.</span></p>
+                </div>
+                <aside class="notes" data-n="8">3 dk. (H. Doğan) Rehber amaç ve hedeflerin ayrı paragraflarda, kısa ve net cümlelerle yazılmasını ve SMART olmasını istiyor: belirli, ölçülebilir, ulaşılabilir, rasyonel, zaman sınırlı. Örnek dosyada altı amaç var; her amacın altında sayısal hedefler sıralanıyor. Amaç 1’in hedeflerini okuyun ve sayıları vurgulayın: en az 50 dizi, her dizide en az 30 görüntü, dizilerin en az %90’ı kullanılabilir. Sağdaki örnekler dosyanın başka yerlerinden: ekipman Araştırma Olanakları tablosunda, 200 görüntü hedefinin gerekçesi İP4’te, süre İş-Zaman Çizelgesi’nde (İP1: 0–3. ay). Panelin sorusu (rehberden): “Amaç ve hedefler açık, ölçülebilir, gerçekçi ve proje süresince ulaşılabilir nitelikte olacak şekilde ne düzeyde açıklanmıştır?” Sağlıkçılar için: bu, örneklem büyüklüğünü “yeterli sayıda” değil “en az 50” diye yazmaktır. Mühendisler için: hedef, test edilebilir bir kabul ölçütüdür.</aside>
+            </section>
+
+            <!-- 9 · YÖNTEM -->
+            <section data-id="yontem">
+                <div class="sl mid">
+                    <div class="kick">Yöntem · örnek dosyadan</div>
+                    <h2>Yöntem, hipotezi sınayacak kadar ayrıntılı olmalı</h2>
+                    <div class="g2 st" style="gap:16px; margin-top:12px">
+                        <div class="card g"><span class="chip g">⚖️ ETİK İZİN HAZIR</span><p class="qt" style="margin-top:8px">Bu numunelerin oluşturulması için Karadeniz Teknik Üniversitesi’ne bağlı Hayvan Deneyleri Yerel Etik Kurulu’ndan izinleri alınmıştır (Protokol No: 2022/57).</p></div>
+                        <div class="card"><span class="chip">📏 ÖRNEKLEM GEREKÇELİ</span><p class="qt" style="margin-top:8px">…U-Net modeli 30-100 görüntüyle başarılı sonuçlar elde ederken, (…) Cellpose çalışmasında 50-200 arasında etiketli veri kullanımıyla etkili sonuçlar rapor edilmiştir. Bu doğrultuda, 200 görüntü hedefi, literatürle uyumlu bir başlangıç noktası sunmaktadır.</p></div>
+                        <div class="card r"><span class="chip r">👩‍🔬👨‍🔬 ETİKET İKİ UZMANDAN</span><p class="qt" style="margin-top:8px">Her görüntü ve 3B şekil, iki uzman tarafından bağımsız olarak etiketlenecek ve elde edilen sonuçlar karşılaştırılacaktır. Uyuşmazlık durumunda, üçüncü bir uzman devreye girerek nihai karar verilecektir.</p></div>
+                        <div class="card a"><span class="chip a">🎯 ÖLÇÜT VERİYE UYGUN</span><p class="qt" style="margin-top:8px">Mikroskobik sistemlerde referans olarak kabul edilebilecek herhangi görüntü (tüm alanı odaklanmış) mevcut olmadığından, (…) referans görüntü gerektirmeyen performans analiz metrikleri kullanılacaktır.</p></div>
+                    </div>
+                    <div class="lesson" style="margin-top:14px">Rehber: <span class="qt">Yöntem, önerilen hipotezin doğrulanması için yeterli olmalıdır.</span></div>
+                </div>
+                <aside class="notes" data-n="9">3 dk. (R. Ö. Doğan ve F. S. Sezen) Örnek dosyanın yöntem bölümü altı iş paketini ayrı alt başlıklarda anlatıyor. Bu dört kutu, panelin “bu ekip bunu gerçekten yapabilir mi?” sorusunu yanıtlayan ayrıntılar: etik izin alınmış ve protokol numarası yazılmış; örneklem büyüklüğü literatürle gerekçelendirilmiş; etiketin güvenilirliği iki bağımsız uzman ve gerekirse üçüncü bir uzmanla güvenceye alınmış; ölçüt verinin doğasına göre seçilmiş (tüm alanı odaklı bir referans görüntü olmadığı için referanssız metrikler: BM, BRISQUE, NIQE, UQIN). Dosyada veri bölmesi de yazılı: %70 eğitim, %15 doğrulama, %15 test. Rehberin düşük puan nedenlerinden biri iki yönlüdür: “Yöntemin detaylı verilmemesi veya gereksiz ayrıntıların verilmesi.” Yani her ayrıntı hipoteze hizmet etmeli. Sağlıkçılar için: etik kurul onayı ve uzman etiketi, panelin sağlık tarafında aradığı güvencedir; 15:00’teki Atölye II’de yöntemle birlikte hukuki uyum da (KVKK, etik kurul) yazılacak. Mühendisler için: değerlendirme ölçütünü veriye göre seçin ve neden seçtiğinizi bir cümleyle yazın.</aside>
+            </section>
+
+            <!-- 10 · PROJE YÖNETİMİ -->
+            <section data-id="gantt">
+                <div class="sl">
+                    <div class="kick">Proje yönetimi · iş-zaman çizelgesinden, kısaltılmış</div>
+                    <h2>İş paketleri: kim, ne zaman, ne kadar önemli?</h2>
+                    <div class="gantt" id="gantt"></div>
+                    <div class="row" style="gap:14px; align-items:center"><span class="small" style="font-weight:700; width:160px">Katkı toplamı</span><div class="stack100 f1" id="stack"></div><span class="big count" data-to="100" data-pre="%" style="font-size:34px; width:110px; text-align:right">0</span></div>
+                    <div class="g2" style="gap:14px">
+                        <div class="card src-o" style="padding:10px 16px"><span class="chip t">ÖRNEK DOSYADA · OLANAKLAR VE EKİP</span><p style="margin-top:6px; font-size:16.5px"><span class="qt">Inverted mikroskop (Zeiss vert A1)</span> · <span class="qt">Numunelerin görüntülenmesi için kullanılacaktır.</span><br>Danışman (eczacılık) veri ve etiket paketlerinde, araştırmacı (YZ mühendisliği) modelleme paketlerinde.</p></div>
+                        <div class="card src-r" style="padding:10px 16px"><span class="chip a">REHBERDE</span><p style="margin-top:6px; font-size:16.5px">Katkı sütunu: <span class="qt">…0-100 arası sayısal değerler verilerek sütun toplamının 100 olması gerekmektedir.</span><br><span class="qt">Literatür taraması, (…) makale yazımı ve malzeme alımı iş paketi olarak sunulmamalıdır.</span></p></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="10">3 dk. (R. Ö. Doğan) Örnek dosyanın İş-Zaman Çizelgesi’ni kısalttık; asıl tabloda her satırda iş paketinin hedefi ve başarı ölçütü de yazıyor (sonraki slayt). Üç şeye dikkat çekin. 1) Katkı sütunu: rehber her iş paketinin proje başarısındaki önemini 0–100 arası sayılarla, toplamı 100 olacak şekilde istiyor (burada 10 + 20 + 20 + 10 + 20 + 20). 2) Ekip: danışman (Prof. Dr. F. S. Sezen, eczacılık) veri üretimi ve etiketleme paketlerinde, araştırmacı (Dr. Öğr. Üyesi R. Ö. Doğan, yapay zekâ mühendisliği) modelleme paketlerinde; disiplinlerin iş bölümü tabloda görünüyor. Rehber, başvuru sistemine (PBS) girilen kişilerle çizelgedeki kişilerin uyumlu olmasını da istiyor. 3) Literatür taraması, rapor ya da makale yazımı ve malzeme alımı iş paketi değildir; çok sayıda iş paketi oluşturmaktan da kaçının. Soldaki kutu Araştırma Olanakları tablosundan bir satır: rehber altyapı ve ekipmanın kullanım amacıyla birlikte listelenmesini istiyor.</aside>
+            </section>
+
+            <!-- 11 · BAŞARI ÖLÇÜTLERİ -->
+            <section data-id="olcut">
+                <div class="sl">
+                    <div class="kick">Başarı ölçütleri</div>
+                    <h2>Başarı ölçütü: sayı, karşılaştırma, net yargı</h2>
+                    <div class="row" style="gap:10px"><span class="chip r">✗ MUĞLAK (uydurma örnek)</span><span class="chip t">✓ ÖLÇÜLEBİLİR · ÖRNEK DOSYADAN</span></div>
+                    <div class="vs fragment" data-sfx="pop"><div class="bad">Yeterli sayıda görüntü toplanacaktır.</div><div class="ar">→</div><div class="good"><div class="qt">3 farklı denekten elde edilecek mikroskop görüntü dizilerinin en az %90’ının önerilen yaklaşımlar için kullanılabilir hale getirilmesi.</div><span class="src2">İP1</span></div></div>
+                    <div class="vs fragment"><div class="bad">Etiketler güvenilir olacaktır.</div><div class="ar">→</div><div class="good"><div class="qt">Ham görüntüler, optimum odaklı görüntüler ve 3B şekiller üzerinde hücre sınırlarının ve yapılarının deneyimli en az iki uzman tarafından etiketlenmesi.</div><span class="src2">İP4</span></div></div>
+                    <div class="vs fragment"><div class="bad">Model başarılı sonuçlar verecektir.</div><div class="ar">→</div><div class="good"><div class="qt">Önerilen yeni yaklaşımın Accuracy, Precision, Recall, Specificity ve F1 Score metrikleri için doğruluk seviyelerinin %85-90 arasında olması. Özellikle odaklama derinliği artırılmış optimum odaklı görüntülerde segmentasyon performansının, ham görüntülere kıyasla en az %3 belirgin bir iyileşme sağlanması.</div><span class="src2">İP5</span></div></div>
+                    <div class="lesson" style="margin-top:auto">Rehber: <span class="qt">Ölçüt olarak muğlak ifadeler kullanılmamalıdır.</span> <span class="qt">Hedeflere ilişkin sayısal ölçüt kullanılamıyorsa, ölçüt net bir yargı olmalıdır.</span></div>
+                </div>
+                <aside class="notes" data-n="11">2 dk. (R. Ö. Doğan) Soldaki cümleleri biz uydurduk; sağdakiler örnek dosyanın İş-Zaman Çizelgesi’ndeki başarı ölçütleri. Sağdaki her cümlede ya bir sayı (en az %90, en az iki uzman) ya da bir karşılaştırma (ham görüntülere kıyasla en az %3) var. Rehber, sayısal ölçüt kullanılamıyorsa ölçütün net bir yargı olmasını istiyor; örneğin “etik kurul onayı alınmış olacaktır”. İsteğe bağlı bir öz eleştiri: “%85-90 arasında olması” yerine bugün “en az %85” yazardık; ölçüt bir alt sınır olarak daha net okunur. Panelistin aklındaki soru: “Bu iş paketinin başarılı olduğunu dönem sonunda nasıl anlayacağım?” Düşük puan nedenlerinden biri: “Başarı ölçütlerinin tanımlanmaması ya da ölçülebilir ve/veya izlenebilir olmaması.” Sıradaki slaytta gruplar bunu kendileri deneyecek.</aside>
+            </section>
+
+            <!-- 12 · MUĞLAK → ÖLÇÜLEBİLİR -->
+            <section data-id="mugllak">
+                <div class="sl mid">
+                    <div class="kick">Grup görevi · sonra karşılaştırın</div>
+                    <h2>Aynı cümle, panelin puanlayabileceği hâliyle</h2>
+                    <table class="tbl big" style="background:#fff; border-radius:14px; box-shadow:var(--shadow); font-size:21px; margin-top:14px">
+                        <tr><th style="width:36%">Muğlak</th><th>Ölçülebilir hâli (örnek)</th></tr>
+                        <tr><td><b class="red">A ·</b> Geliştirilecek model ile erken tanı başarısı artırılacaktır.</td><td class="fragment rise">Model, <b>18. ayın sonunda</b> bağımsız test setinde (<b>en az 300 hasta</b>) <b>en az %90 duyarlılığa</b> ulaşacak; bu değer mevcut tarama yönteminden en az 5 yüzde puanı yüksek olacaktır.</td></tr>
+                        <tr><td><b class="red">B ·</b> Çalışmada yeterli sayıda hastadan veri toplanacaktır.</td><td class="fragment rise"><b>İlk 6 ayda</b> iki merkezden <b>en az 400 hastanın</b> verisi toplanacaktır (güç analizine göre gereken 360 hasta ve %10 kayıp payı).</td></tr>
+                        <tr><td><b class="red">C ·</b> Proje sonuçları ilgili paydaşlarla paylaşılacaktır.</td><td class="fragment rise"><b>20–24. aylarda</b> en az 1 ulusal bildiri ve 1 SCI-E makale yayımlanacak, 30 kişilik bir uygulamalı eğitim düzenlenecek; eğitimde <b>ön-test ve son-test</b> uygulanacaktır.</td></tr>
+                    </table>
+                    <p class="small muted" style="margin-top:12px">Sayılar örnektir; kendi projenizde güç analizi, pilot veri ve literatürle belirleyin. Sayısal ölçüt yoksa net bir yargı yazın: <span class="qt">Etik kurul onayı 3. ayın sonunda alınmış olacaktır.</span></p>
+                </div>
+                <aside class="notes" data-n="12">2 dk. Önce grupların yanıtlarını alın, sonra bu örneklerle karşılaştırın. Her örnekte üç öğe var: sayı (en az %90, en az 400 hasta, 30 kişi), karşılaştırma ya da gerekçe (mevcut yönteme göre 5 yüzde puanı, güç analizi) ve zaman (18. ay, ilk 6 ay, 20–24. aylar). C’deki örnek bu etkinliğin kendisi: TÜBİTAK 2237-A kapsamında yaptığımız ön-test ve son-test, yaygın etkinin ölçülebilir bir göstergesidir. Sağlıkçılar için: güç analizi örneklem büyüklüğünün gerekçesidir ve panel bunu yöntem bölümünde arar. Mühendisler için: duyarlılık gibi bir metrik seçtiyseniz, neden onu seçtiğinizi (kaçırılan vakanın bedeli) bir cümleyle yazın. Sayılar yalnızca örnektir.</aside>
+            </section>
+
+            <!-- 13 · RİSK -->
+            <section data-id="risk">
+                <div class="sl">
+                    <div class="kick">Risk yönetimi · örnek dosyadan</div>
+                    <h2>B planı: risk olursa hedefe nasıl ulaşırsınız?</h2>
+                    <table class="tbl big" style="background:#fff; border-radius:14px; box-shadow:var(--shadow); font-size:18.5px">
+                        <tr><th>İP</th><th style="width:28%">En önemli riskler</th><th>Risk yönetimi (B planı)</th></tr>
+                        <tr class="fragment rise"><td><b>1</b></td><td>Mikroskop veya kamera arızası</td><td class="qt">Gerekli ekipmanların düzenli bakımı yapılacak ve yedek cihazlar/alternatif laboratuvarlar planlanacaktır. İP 1 için planlanan 3 aylık süreç diğer iş paketlerinin aksatılmayacak şekilde uzatılacaktır.</td></tr>
+                        <tr class="fragment rise"><td><b>4</b></td><td>Uzmanların veri etiketleme sürecindeki zaman kısıtlaması</td><td class="qt">Etiketleme sürecini hızlandırmak için yarı otomatik etiketleme araçları (örneğin, Cellpose, Ilastik) kullanılacaktır.</td></tr>
+                        <tr class="fragment rise"><td><b>4</b></td><td>Etiketleme sırasında tutarsızlık veya hata yaşanması</td><td class="qt">İki bağımsız uzman tarafından çapraz doğrulama yapılacak; uyuşmazlıklarda üçüncü bir uzman devreye girecektir.</td></tr>
+                    </table>
+                    <div class="g2" style="gap:14px">
+                        <div class="card src-r" style="padding:10px 16px"><span class="chip a">REHBERDE</span><p class="qt" style="margin-top:6px; font-size:17px">B planının uygulanması projenin temel hedeflerinden ve özgün değerinden sapmaya yol açmamalıdır.</p></div>
+                        <div class="card r" style="padding:10px 16px"><span class="chip r">REHBERDE · YAZMAYIN</span><p class="qt" style="margin-top:6px; font-size:17px">«Bu olmazsa literatürdeki standart yöntem kullanılacaktır» vb. genel ifadelere yer verilmemelidir.</p></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="13">3 dk. (F. S. Sezen) Önce salona sorun: “B planı neyi anlatır?” (ön-testin 10. sorusu). Yanıt: bir risk gerçekleşirse projenin hedefine yine nasıl ulaşılacağını anlatan somut alternatif. Tablodaki üç satır örnek dosyanın Risk Yönetimi Tablosu’ndan birebir alındı. İyi bir B planının üç özelliği: somuttur (hangi araç, kaç uzman), takvime etkisini hesaba katar (İP1’in süresi diğer paketleri aksatmadan uzatılıyor) ve hedefi değiştirmez (etiketleme hızlansa da iki uzman kuralı korunuyor). Rehberden: her iş paketi için risk yazmak zorunlu değil, ama projenin başarısını olumsuz etkileyebilecek riskler yazılmalı. Düşük puan nedenlerinden biri: “Risklerin iyi öngörülmemesi ve B planın eksik veya yetersiz olması.” Sağlıkçılar için: hasta alımının yavaş gitmesi, etik kurul onayının gecikmesi, numune kaybı tipik risklerdir. Mühendisler için: modelin hedeflenen başarıya ulaşmaması da bir risktir; B planı “standart yöntemi kullanırız” değil, hangi değişikliğin deneneceğidir.</aside>
+            </section>
+
+            <!-- 14 · GÖRSELLER -->
+            <section data-id="gorsel">
+                <div class="sl">
+                    <div class="kick">Görseller · örnek dosyadan</div>
+                    <h2>Her şekil bir işi görür</h2>
+                    <div class="g3 figs3 st grow" style="gap:16px">
+                        <div class="card"><span class="chip">💡 KAVRAM</span><img src="../assets/img/h_sekil2.jpg" alt="Şekil 2"><b>Herkes aynı fiziği görür.</b><span class="small muted">“Şekil 2. Mikroskobik sistemlerde odaklama derinliği”</span></div>
+                        <div class="card r"><span class="chip r">⚙️ SÜREÇ</span><img src="../assets/img/h_sekil3.jpg" alt="Şekil 3"><b>Girdi, işlem, çıktı tek akışta.</b><span class="small muted">“Şekil 3. Odaklama derinliğinin artırılması ile optimum odaklı 2B görüntünün oluşturulması”</span></div>
+                        <div class="card a"><span class="chip a">🗺️ PLAN</span><img src="../assets/img/h_sekil6.jpg" alt="Şekil 6"><b>Altı iş paketi tek bakışta.</b><span class="small muted">“Şekil 6. Proje önerisi kapsamında gerçekleştirilecek iş paketlerinin ana hatları”</span></div>
+                    </div>
+                    <div class="lesson">Her şekil <b>numaralı ve başlıklıdır</b>, metinde adıyla anılır: <span class="qt">Şekil 3’te verildiği gibi…</span></div>
+                </div>
+                <aside class="notes" data-n="14">3 dk. (H. Doğan) Programın başlığındaki “görseller”: örnek dosyada dört tür şekil var. Şekil 1 problemi gösteriyordu (literatür slaytı). Şekil 2 kavramı açıklıyor: odaklama derinliği nedir; sağlıkçı ve mühendis panelist aynı resme bakar. Şekil 3 süreci gösteriyor: aynı görüş alanının farklı odaklarda çekilmiş görüntüleri girer, tek bir optimum odaklı görüntü çıkar. Şekil 6 planı gösteriyor: altı iş paketi ve her birinde kullanılacak yöntem aileleri. Ortak kurallar: her şekil numaralı ve başlıklı; metinde adıyla anılıyor; etiketler Türkçe; her şekil tek bir mesaj taşıyor. Başkasının şeklini kullanıyorsanız kaynağını gösterin. Yöntem bölümündeki tek bir akış şeması, sayfalarca metinden önce okunur. Sağlıkçılar için: bir deney protokolünün akış şeması iyi bir süreç görselidir. Mühendisler için: model mimarisini değil, verinin yolculuğunu çizin; panelin yarısı sağlıkçıdır.</aside>
+            </section>
+
+            <!-- 15 · DİL VE ÜSLUP -->
+            <section data-id="dil">
+                <div class="sl mid">
+                    <div class="kick">Dil ve üslup · örnek dosyadan</div>
+                    <h2>Panelin yorulmadan okuduğu metin</h2>
+                    <div class="col st" style="gap:10px; margin-top:12px">
+                        <div class="habit"><b>🏷️ Terimi bir kez tanımlayın, hep aynı adı kullanın</b><span class="qt">Görü Dönüştürücü (Vision Transformers - ViTs)</span></div>
+                        <div class="habit"><b>🎯 Kesin ve gelecek zamanlı yazın</b><span><span class="qt">…kapsamlı bir veri seti hazırlanacaktır.</span> · <span class="qt">…2 farklı USB kamera (SCMOS ve Axiocam) kullanılacaktır.</span></span></div>
+                        <div class="habit"><b>🔢 Sayı verin</b><span class="qt">Dizilerdeki görüntüler 3840 x 2160 çözünürlüğünde ve png olarak kaydedilecektir.</span></div>
+                        <div class="habit"><b>🔗 Bölümleri birbirine bağlayın</b><span class="qt">…proje önerisinin 2.1.1 kısmında (Konunun Önemi) detaylı olarak bahsedilmiş…</span></div>
+                        <div class="habit"><b>📚 Her iddiaya kaynak gösterin</b><span class="qt">U-Net (Ronneberger vd., 2015) ve türevleri gibi modeller…</span></div>
+                    </div>
+                    <div class="lesson" style="margin-top:14px">Rehberin dört başlığın dördünde de saydığı düşük puan nedeni: <span class="qt">Özensiz proje yazımı ve akıcı olmayan dil kullanımı</span></div>
+                </div>
+                <aside class="notes" data-n="15">2 dk. (H. Doğan) Beş alışkanlık, hepsi örnek dosyadan. 1) Terim ilk geçtiği yerde Türkçesi ve İngilizce aslıyla tanımlanıyor, sonra hep aynı adla kullanılıyor (odaklama derinliğinin artırılması, odaktan şekil, optimum odaklı görüntü). 2) Fiiller kesin ve gelecek zamanlı: “hazırlanacaktır”, “kullanılacaktır”; hipotezlerde ise “öngörülmektedir”. 3) Sayılar: çözünürlük, dosya biçimi, büyütme, bölme oranları. 4) Bölümler birbirine numarayla gönderme yapıyor; panelist aradığını kolayca bulur. 5) Her iddianın kaynağı var; rehber kaynakların güncel olmasını, metinle ilişkilendirilmesini ve DOI’si olan kaynaklarda DOI’nin yazılmasını istiyor. Son okuma için öneri: metni yüksek sesle okuyun, terim listesi çıkarın, şekil numaralarını ve kaynakçayı tek tek eşleştirin. Sağlıkçılar için: kısaltmaları (ör. HE, IHC) ilk geçtiği yerde açın; mühendis panelist bilmeyebilir. Mühendisler için: model adlarını (U-Net, ViT) ilk geçtiği yerde bir cümleyle tanıtın; sağlıkçı panelist bilmeyebilir.</aside>
+            </section>
+
+            <!-- 16 · BÖLÜM I ÖZETİ -->
+            <section data-id="ozet1">
+                <div class="sl mid">
+                    <div class="kick">Bölüm I’in özeti · rehberin düşük puan nedenlerinden</div>
+                    <h2>Panelin en sık yazdığı eleştiriler</h2>
+                    <div class="g4 st" style="gap:14px; margin-top:14px">
+                        <div class="card"><h4>Özgün Değer</h4><p class="qt">Projenin (hipotez, kurgu, amaç) açık olmaması ve konunun özgünlüğünün yeterince anlatılmaması</p></div>
+                        <div class="card r"><h4>Yöntem</h4><p class="qt">Yöntemin detaylı verilmemesi veya gereksiz ayrıntıların verilmesi</p></div>
+                        <div class="card a"><h4>Proje Yönetimi</h4><p class="qt">Başarı ölçütlerinin tanımlanmaması ya da ölçülebilir ve/veya izlenebilir olmaması</p></div>
+                        <div class="card g"><h4>Yaygın Etki</h4><p class="qt">Öngörülen çıktı ve etkilerin niteliğinin ve gerçekleşme zamanının gerçekçi bulunmaması</p></div>
+                    </div>
+                    <div class="lesson fragment rise" style="margin-top:18px; font-size:22px">Dördünde de: <span class="qt">Özensiz proje yazımı ve akıcı olmayan dil kullanımı</span></div>
+                </div>
+                <aside class="notes" data-n="16">2 dk. Rehberin düşük puan nedenleri dört başlıkta toplanıyor; Bölüm I’de her birinin karşılığını örnek dosyada gördük. Proje Yönetimi için bir neden daha var: “Risklerin iyi öngörülmemesi ve B planın eksik veya yetersiz olması.” Dosyanın değerlendirmeye bile alınmadan iade edilme nedenlerini de hatırlatın: eski form sürümü, araştırma niteliği taşımama, boş bırakılmış başlıklar, ham liste hâlinde literatür, metinle ilişkilendirilmemiş kaynaklar, daha önce sunulana benzer proje. Rehberin zaman önerisi: “İdeal proje hazırlama süreci ortalama 3-6 ay olmalıdır.” Molaya çıkarken gruplardan dün sabahki proje fikirlerini hatırlamalarını isteyin; Bölüm II bu fikirlerle başlıyor ve gruplar aynı masalarda çalışacak.</aside>
+            </section>
+
+            <!-- 17 · BÖLÜM II KAPAK -->
+            <section data-id="b2" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <span class="sec-tag">Bölüm II · 12:00–12:45</span>
+                    <h1 style="font-size:72px; margin-top:12px">Beyin Fırtınası</h1>
+                    <p class="lead">Anahtar kelime, temel inovasyon, kime ne fayda</p>
+                    <div class="bs5 st" style="margin-top:26px">
+                        <div class="s"><div class="no">1</div><b>Fikir</b><span>4 dakika</span></div>
+                        <div class="s"><div class="no">2</div><b>Anahtar kelime</b><span>6 dakika</span></div>
+                        <div class="s"><div class="no">3</div><b>İnovasyon</b><span>7 dakika</span></div>
+                        <div class="s"><div class="no">4</div><b>Fayda</b><span>6 dakika</span></div>
+                        <div class="s"><div class="no">5</div><b>Paylaşım</b><span>6 dakika</span></div>
+                    </div>
+                    <p style="margin-top:24px; font-size:20px">Roller: <b style="color:#fff">sözcü · yazıcı · zaman tutucu · panelist</b></p>
+                </div>
+                <aside class="notes" data-n="17">2 dk. Bu saatin sonunda her masada bir kâğıt kalacak: problem cümlesi, 5–7 anahtar kelime (Türkçe ve İngilizce), tek cümlelik inovasyon ve kime ne fayda tablosu. Bu kâğıt 14:00’teki Atölye I’in başlangıç noktası. Rolleri hemen dağıtın: sözcü (paylaşımda konuşur), yazıcı (kâğıdı tutar), zaman tutucu, panelist (her adımda “panel bunu nasıl puanlar?” diye sorar). Beş kişilik Grup 4’te iki panelist olabilir. Önerilen süreler (toplam 45): bölüm kapağı 2, fikir seçimi 4, anahtar kelime anlatımı 3 ve görevi 6, inovasyon anlatımı 4 ve görevi 7, fayda anlatımı 3 ve görevi 6, paylaşım 6, YZ kuralları 2, kapanış 2 dakika. Üç eğitici masaları paylaşsın (öneri: H. Doğan Grup 1–2, R. Ö. Doğan Grup 3–4, F. S. Sezen Grup 5 ve süre takibi); her görevin son dakikasını sahneden duyurun.</aside>
+            </section>
+
+            <!-- 18 · GÖREV: FİKİR -->
+            <section data-id="g-fikir">
+                <div class="sl">
+                    <div class="row ac" style="justify-content:space-between"><div><div class="kick">Grup görevi · 4 dakika</div><h2 style="margin-top:6px">Masanın proje fikrini seçin</h2></div><div class="timer" data-sec="240" style="--tsz:110px"></div></div>
+                    <p style="font-size:20px">Dün sabah her biriniz bir fikir söylediniz. <b>Birini seçin ya da ikisini birleştirin.</b></p>
+                    <div class="q4 st">
+                        <div class="q"><b>1 · İki disipline de iş var mı?</b><span>Sağlıkçıya klinik soru ve veri, mühendise model ve değerlendirme.</span></div>
+                        <div class="q"><b>2 · Veri var mı, üretilebilir mi?</b><span>Laboratuvar, hastane arşivi ya da açık veri seti.</span></div>
+                        <div class="q"><b>3 · 24 ayda yapılabilir mi?</b><span>Ekip, ekipman ve süre gerçekçi mi?</span></div>
+                        <div class="q"><b>4 · Etik ve KVKK açısından yürütülebilir mi?</b><span>Sabahki iki oturumu hatırlayın.</span></div>
+                    </div>
+                    <div class="card src-o" style="margin-top:auto"><span class="chip t">ÇIKTI: TEK CÜMLELİK PROBLEM · ÖRNEK DOSYADAN BİR MODEL</span>
+                        <p class="qt" style="margin-top:8px; font-size:19px">Bu sınırlı odaklama derinliği, görüntülerde bulanıklık ve boyut kaybına neden olarak hücre segmentasyonunda performans kaybına yol açmaktadır.</p>
+                        <p class="small" style="margin-top:6px">Sizinki de bir sorunu ve sonucunu söylesin. <b>Yazıcı bu cümleyi kâğıdın en üstüne yazar.</b></p></div>
+                </div>
+                <aside class="notes" data-n="18">4 dk. Gruplar ilk 30 saniyede rolleri belirlesin, kalan sürede fikri seçsin. Dünkü tanışmada eğiticilerin aldığı notlar varsa gruplara hatırlatın. Dört soru bir eleme aracıdır: iki disipline iş düşmeyen fikir bu etkinliğin amacına uymaz; verisi olmayan fikir 24 ayda bitmez; etik ve KVKK sorunu çözülmeden yöntem yazılamaz. Fikir seçilince yazıcı problem cümlesini kâğıdın en üstüne yazsın. Alttaki örnek cümle, bir sorunun ve sonucunun tek cümlede nasıl söylendiğini gösteriyor (örnek dosyanın özetinden). Sağlıkçılar için: klinikte ya da laboratuvarda yaşadığınız bir darboğaz iyi bir başlangıçtır. Mühendisler için: “elimizde şu model var, nereye uygularız?” yerine “bu sorunu hangi veriyle çözeriz?” diye düşünün.</aside>
+            </section>
+
+            <!-- 19 · ANAHTAR KELİME -->
+            <section data-id="anahtar">
+                <div class="sl mid">
+                    <div class="kick">Anahtar kelimeler · örnek dosyadan</div>
+                    <h2>Anahtar kelime, dosyanın adresidir</h2>
+                    <div class="row" style="gap:22px; align-items:center">
+                        <table class="tbl big f1" style="background:#fff; border-radius:14px; box-shadow:var(--shadow); font-size:20px">
+                            <tr><th>Türkçe</th><th>İngilizce</th><th>Tür</th></tr>
+                            <tr><td>Mikroskobik sistemler</td><td class="mono">Microscopic systems</td><td><span class="chip">alan</span></td></tr>
+                            <tr><td>odaklama derinliğinin artırılması</td><td class="mono">extended depth of field</td><td><span class="chip r">yöntem</span></td></tr>
+                            <tr><td>odaktan şekil</td><td class="mono">shape from focus</td><td><span class="chip r">yöntem</span></td></tr>
+                            <tr><td>optimum odaklı görüntü</td><td class="mono">optimally focused image</td><td><span class="chip g">hedef</span></td></tr>
+                            <tr><td>3B şekil oluşturma</td><td class="mono">3D shape extraction</td><td><span class="chip g">hedef</span></td></tr>
+                            <tr><td>2B segmentasyon</td><td class="mono">2D segmentation</td><td><span class="chip a">görev</span></td></tr>
+                            <tr><td>3B segmentasyon</td><td class="mono">3D segmentation</td><td><span class="chip a">görev</span></td></tr>
+                        </table>
+                        <div class="col" style="width:400px; gap:12px">
+                            <div class="card src-r"><span class="chip a">REHBERDE</span><p class="qt" style="margin-top:6px; font-size:16.5px">Anahtar kelimeler seçilirken, probleme, amaç ve hedefler ile metodolojiye ilişkin kelimeler tercih edilmelidir.</p><p class="qt" style="margin-top:6px; font-size:16.5px">İngilizce anahtar kelimeler, seçilen Türkçe anahtar kelimelerin tam karşılığı olmalıdır.</p></div>
+                            <div class="box g"><p>🔎 <b>İpucu:</b> Her kelimeyle bir veri tabanında arama yapın: ilk sonuçlar sizin konunuzu mu getiriyor? Sağlıkçılar MeSH gibi kontrollü terimleri, mühendisler yöntemin yerleşik İngilizce adını bilir; ikisini birleştirin.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="19">3 dk. (H. Doğan) Örnek dosyanın yedi anahtar kelimesi ve İngilizce karşılıkları; “Tür” sütunu bizim yorumumuz: kelimeler alanı, yöntemi, hedefi ve görevi birlikte kapsıyor. Rehberin iki kuralı sağda. İsteğe bağlı küçük bir son okuma örneği: “3B şekil oluşturma” için “3D shape extraction” yerine “3D shape reconstruction” daha tam bir karşılık olurdu; tam karşılık kuralı kendi dosyamızda bile gözden kaçabiliyor. Anahtar kelimeler literatür taramasının da arama sorgusudur: seçtiğiniz kelimeyle aradığınızda kendi alanınızın çalışmaları çıkmıyorsa kelime yanlış ya da fazla geneldir. Sağlıkçılar için: PubMed’in MeSH terimleri iyi bir başlangıç. Mühendisler için: yöntemin yerleşik İngilizce adını kullanın (ör. “shape from focus”, “extended depth of field”).</aside>
+            </section>
+
+            <!-- 20 · GÖREV: ANAHTAR KELİME -->
+            <section data-id="g-anahtar">
+                <div class="sl">
+                    <div class="row ac" style="justify-content:space-between"><div><div class="kick">Grup görevi · 6 dakika</div><h2 style="margin-top:6px">5–7 anahtar kelime seçin</h2></div><div class="timer" data-sec="360" style="--tsz:110px"></div></div>
+                    <div class="col st" style="gap:10px; margin-top:6px">
+                        <div class="habit" style="grid-template-columns:60px 1fr"><div class="big r" style="font-size:40px">1</div><span style="font-size:20px">Problem cümlenizdeki kavramları sıralayın: hastalık, organ ya da hücre; veri türü; yöntem; çıktı.</span></div>
+                        <div class="habit" style="grid-template-columns:60px 1fr"><div class="big r" style="font-size:40px">2</div><span style="font-size:20px">5–7 kelime seçin: en az ikisi problem ya da alan, en az ikisi yöntem, en az biri hedef.</span></div>
+                        <div class="habit" style="grid-template-columns:60px 1fr"><div class="big r" style="font-size:40px">3</div><span style="font-size:20px">Her birinin İngilizce <b>tam karşılığını</b> yazın.</span></div>
+                        <div class="habit" style="grid-template-columns:60px 1fr"><div class="big r" style="font-size:40px">4</div><span style="font-size:20px">Birini telefonla bir veri tabanında arayın (PubMed, Google Akademik): ilk sonuçlar sizin konunuz mu?</span></div>
+                    </div>
+                    <div class="lesson" style="margin-top:auto">🩺 Sağlıkçı klinik terimi ve MeSH karşılığını, 💻 mühendis yöntemin yerleşik İngilizce adını getirsin.</div>
+                </div>
+                <aside class="notes" data-n="20">6 dk. Yazıcı kelimeleri iki sütun (Türkçe, İngilizce) hâlinde yazsın. 2 dakika kala dördüncü adımı hatırlatın: arama başka bir alanın çalışmalarını getiriyorsa kelime fazla genel ya da yanlış alandandır. Masaları dolaşırken iki hatayı arayın: yalnızca genel kelimeler (“yapay zekâ”, “sağlık”) ve İngilizcesi Türkçesinin tam karşılığı olmayanlar. Panelist rolündeki kişi şunu sorsun: “Bu kelimelerden hangisi başlıkta, hangisi yöntemde geçecek?”</aside>
+            </section>
+
+            <!-- 21 · İNOVASYON -->
+            <section data-id="inovasyon">
+                <div class="sl">
+                    <div class="kick">Temel inovasyon · örnek dosyadan</div>
+                    <h2>Eksiklikten özgün değere</h2>
+                    <table class="tbl big" style="background:#fff; border-radius:14px; box-shadow:var(--shadow); font-size:20px">
+                        <tr><th>Literatürdeki eksiklik</th><th style="width:34%">Projenin özgün değeri</th></tr>
+                        <tr class="fragment rise"><td class="qt">…mikroskobik sistemlerde derin öğrenme tabanlı odaklama derinliğinin artırılması ve odaktan şekil yaklaşımlarında kullanılabilecek veri setlerinin bulunmayışıdır.</td><td><b class="red">→ Kapsamlı ve Çeşitli Veri Seti Oluşturulması</b></td></tr>
+                        <tr class="fragment rise"><td class="qt">…literatürde özellikle ışıklı ve inverted mikroskop sistemlerinde 3B şekil kullanılarak hücrelerin otomatik segmentasyonunu gerçekleştiren çalışma bulunmamaktadır.</td><td><b class="red">→ 3B Şekil Üzerinde Hücre Segmentasyonu</b></td></tr>
+                    </table>
+                    <div class="card src-r"><span class="chip a">REHBERDE · AR-GE TESTİ</span>
+                        <div class="g3" style="gap:12px; margin-top:10px">
+                            <div class="box g"><p>✅ <b>Olmalı</b><br><span class="qt">Yeni: Yeni bulgular hedeflenmeli (novel)</span></p></div>
+                            <div class="box r"><p>❌ <b>Ar-Ge sayılmaz</b><br><span class="qt">Sadece veri toplama ve/veya durum tespitine yönelik çalışmalar</span></p></div>
+                            <div class="box r"><p>❌ <b>Ar-Ge sayılmaz</b><br><span class="qt">…niteliksel değişiklik yapılmadan daha önce yapılan araştırmaların benzerlerini yapmaya yönelik çalışmalar</span></p></div>
+                        </div></div>
+                </div>
+                <aside class="notes" data-n="21">4 dk. (H. Doğan) Örnek dosya önce “Literatürdeki Eksiklikler” başlığı altında boşlukları sıralıyor, sonra “Projenin Özgün Değeri” başlığı altında her boşluğa karşılık gelen bir katkı yazıyor; tablo bu iki bölümden birebir alındı. Temel inovasyonu bulmanın yolu budur: önce eksikliği kanıtıyla yazın, sonra onu kapatan katkıyı adlandırın. Alttaki kutu rehberin Ar-Ge tanımından: proje yeni bulgu hedeflemeli; yalnızca veri toplamak ya da durum tespiti yapmak, ya da kuram, yöntem, soru veya kapsamda niteliksel bir değişiklik olmadan önceki bir çalışmanın benzerini yapmak Ar-Ge projesi sayılmaz. Bu, rehberin iade nedenleri arasındaki “Araştırma projesi niteliğinin bulunmaması” maddesine karşılık gelir. Sağlıkçılar için: “X hastalarında Y’nin sıklığını belirlemek” tek başına bir durum tespitidir; yenilik bu bilgiyle neyi ilk kez yapacağınızdadır (ör. bir tahmin modeli kurup doğrulamak). Mühendisler için: bilinen bir modeli yeni bir veri setine uygulamak tek başına yeterli olmayabilir; veride, yöntemde ya da klinik kullanımdaki yeniliği açıkça adlandırın.</aside>
+            </section>
+
+            <!-- 22 · GÖREV: İNOVASYON -->
+            <section data-id="g-inovasyon">
+                <div class="sl">
+                    <div class="row ac" style="justify-content:space-between"><div><div class="kick">Grup görevi · 7 dakika</div><h2 style="margin-top:6px">Tek cümlelik inovasyon</h2></div><div class="timer" data-sec="420" style="--tsz:110px"></div></div>
+                    <div class="card r"><span class="chip r">ŞABLON · YAZICI DOLDURSUN</span>
+                        <p style="font-size:25px; line-height:2; margin-top:8px">Literatürde <span class="blank"></span> yapılıyor; ancak <span class="blank"></span> eksik kalıyor. Bu projede <span class="blank"></span> kullanılarak <span class="blank"></span> ilk kez / daha <span class="blank"></span> yapılacak; başarı <span class="blank"></span> ile ölçülecek.</p></div>
+                    <div class="row" style="gap:18px; align-items:stretch">
+                        <div class="card f1"><span class="chip">PANELİST ÜÇ SORU SORAR</span>
+                            <ul class="ul" style="margin-top:10px"><li>1 · Bu yalnızca veri toplama ya da durum tespiti mi?</li><li>2 · Aynısı daha önce yapıldı mı? Kısa bir arama yapın.</li><li>3 · Yeni olan ne: veri mi, yöntem mi, klinik kullanım mı?</li></ul></div>
+                        <div class="lesson" style="width:380px; display:flex; align-items:center; font-size:21px"><p>En güçlü inovasyon, <b>klinik soruyla teknik yeniliğin buluştuğu</b> yerdedir.</p></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="22">7 dk. Yazıcı şablonu doldursun; panelist rolündeki kişi üç soruyu sırayla sorsun. İkinci soru için bir iki kişi telefonla hızlı bir arama yapabilir (anahtar kelimeler hazır). Masaları dolaşırken en sık iki sorunu arayın: inovasyonun yalnızca “yapay zekâ kullanmak” olması ve eksikliğin kanıtsız yazılması (“literatürde hiç yok” demek için arama yapılmış olmalı). Örnek dosyadan model: eksiklik “ışıklı ve inverted mikroskop sistemlerinde 3B şekil kullanılarak hücrelerin otomatik segmentasyonunu gerçekleştiren çalışma bulunmamaktadır”, katkı “3B Şekil Üzerinde Hücre Segmentasyonu”, ölçüt Accuracy, Precision, Recall, Specificity ve F1. Sağlıkçılar için: yenilik klinik tarafta olabilir (yeni bir hasta grubu, yeni bir klinik soru). Mühendisler için: yenilik teknik tarafta olabilir (yeni bir model, yeni bir veri türü). En güçlüsü ikisinin buluştuğu yerdir. 1 dakika kala uyarın.</aside>
+            </section>
+
+            <!-- 23 · YAYGIN ETKİ -->
+            <section data-id="etki">
+                <div class="sl">
+                    <div class="kick">Yaygın etki · örnek dosyadan</div>
+                    <h2>Kime, ne fayda, ne zaman?</h2>
+                    <table class="tbl big" style="background:#fff; border-radius:14px; box-shadow:var(--shadow); font-size:18.5px">
+                        <tr><th>Kime</th><th>Ne (örnek dosyada)</th><th style="width:20%">Ne zaman</th></tr>
+                        <tr class="fragment rise"><td><b>🎓 Bilim çevresi</b></td><td class="qt">…en az 1 ulusal, 1 uluslararası bildirinin (ara çıktılar) sunulması ve 2 SCI&amp;Expanded taranan bilimsel makalenin (ana çıktılar) yayınlanması planlanmaktadır.</td><td>Bildiriler 12–18. ay, makaleler 18–24. ay</td></tr>
+                        <tr class="fragment rise"><td><b>🏭 Sektör</b></td><td class="qt">Geliştirilen algoritmalar ve veri setleri, biyoteknoloji ve sağlık teknolojileri sektöründeki firmalarla paylaşılabilecek…</td><td>24–36. ay</td></tr>
+                        <tr class="fragment rise"><td><b>👩‍🎓 Öğrenciler</b></td><td class="qt">…sağlık ve bilişim alanındaki öğrencilere (…) eğitim verilecektir.</td><td>18–24. ay</td></tr>
+                    </table>
+                    <div class="g2" style="gap:14px">
+                        <div class="card src-r" style="padding:10px 16px"><span class="chip a">REHBERDE</span><p style="margin-top:6px; font-size:16px"><span class="qt">Çıktılar, nicel gösterge ve hedeflere dayandırılmalı…</span> <span class="qt">Beklenen etkiler doğrulanabilir ve ölçülebilir olmalıdır.</span> <span class="qt">Proje sonuçlarının sadece bilimsel değil, toplumsal, ekonomik ve kültürel düzeyde de değer üretebileceği gösterilmelidir.</span></p></div>
+                        <div class="card src-r" style="padding:10px 16px"><span class="chip a">FORMUN DİPNOTU</span><p class="qt" style="margin-top:6px; font-size:16px">(*) Proje başlangıcından itibaren 6 aylık süreler halinde belirtilmelidir (Örn. 0-6 ay/6-12 ay/12-18 ay vb.).</p></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="23">3 dk. (F. S. Sezen) Yaygın etki üç tabloyla yazılır: çıktılar, etkiler, paylaşım ve yayılım. Örnek dosyadan üç satır: bilim çevresi için sayısı ve takvimi belli yayınlar; sektör için algoritmaların ve veri setlerinin firmalarla paylaşılabilmesi; öğrenciler için İLAFAR’da bir eğitim (ikinci bir eğitim akademisyenlere). “Ne zaman” sütunu dosyadaki zaman sütunlarından özetlendi. Formun dipnotu çıktı zamanlarının proje başlangıcından itibaren 6 aylık dilimlerle yazılmasını istiyor. Rehber, başvuru sistemindeki Proje Çıktı Planı ile formdaki bilgilerin uyumlu olmasını da istiyor. İsteğe bağlı bir öz eleştiri: örnek dosyanın etki tablosundaki “küresel sağlık sorunlarına yönelik çözümlerin geliştirilmesine katkı sağlayacaktır” gibi cümleler, bugün bir gösterge ve bir zamanla yazılsa daha güçlü olurdu. Düşük puan nedeni: “Öngörülen çıktı ve etkilerin niteliğinin ve gerçekleşme zamanının gerçekçi bulunmaması.” Sağlıkçılar için: hasta yararını doğrudan ölçemiyorsanız bir ara gösterge seçin (tanı süresi, doğru sınıflandırılan vaka oranı). Mühendisler için: yazılım ya da veri seti de bir çıktıdır; kimin, nasıl kullanacağını yazın.</aside>
+            </section>
+
+            <!-- 24 · GÖREV: FAYDA -->
+            <section data-id="g-fayda">
+                <div class="sl">
+                    <div class="row ac" style="justify-content:space-between"><div><div class="kick">Grup görevi · 6 dakika</div><h2 style="margin-top:6px">Kime ne fayda?</h2></div><div class="timer" data-sec="360" style="--tsz:110px"></div></div>
+                    <p style="font-size:20px">En az <b>üç paydaş</b> yazın; her biri için bir gösterge ve 6 aylık bir dilim (0–6, 6–12, 12–18… ay).</p>
+                    <table class="tbl big" style="background:#fff; border-radius:14px; box-shadow:var(--shadow); font-size:19px">
+                        <tr><th>Kim?</th><th>Ne fayda?</th><th>Nasıl ölçülür?</th><th>Ne zaman?</th></tr>
+                        <tr style="background:#e9f7ef"><td><b>Örnek: patoloji uzmanı</b></td><td>Vaka başına okuma süresi kısalır</td><td>Dakika/vaka, öncesi ve sonrası</td><td>18–24. ay</td></tr>
+                        <tr><td>Hasta ya da klinisyen</td><td class="muted">…</td><td class="muted">…</td><td class="muted">…</td></tr>
+                        <tr><td>Araştırmacı</td><td class="muted">…</td><td class="muted">…</td><td class="muted">…</td></tr>
+                        <tr><td>Sanayi ya da kamu</td><td class="muted">…</td><td class="muted">…</td><td class="muted">…</td></tr>
+                    </table>
+                    <div class="lesson" style="margin-top:auto">Yazmayın: <s>“Topluma katkı sağlayacaktır.”</s> Yazın: <b>kime, ne kadar, ne zaman.</b></div>
+                </div>
+                <aside class="notes" data-n="24">6 dk. Yazıcı tabloyu kâğıda çizsin. İlk satır bir örnek; gruplar kendi paydaşlarını yazsın (satır adlarını değiştirebilirler). Panelist rolündeki kişi her satır için “bunu proje bitince nasıl kanıtlarız?” diye sorsun. Sağlıkçılar için: hasta yararını doğrudan ölçemiyorsanız bir ara gösterge seçin (tanı süresi, doğru sınıflandırılan vaka oranı). Mühendisler için: yazılım ya da veri seti bir çıktıdır; kimin, nasıl kullanacağını ve kaç kullanıcıya ulaşmayı hedeflediğinizi yazın. 1 dakika kala uyarın; sözcüler paylaşıma hazırlansın.</aside>
+            </section>
+
+            <!-- 25 · PAYLAŞIM -->
+            <section data-id="paylasim">
+                <div class="sl mid">
+                    <div class="kick">Paylaşım · 6 dakika</div>
+                    <h2>Her grup 60 saniye</h2>
+                    <div class="row grow" style="gap:30px; align-items:center">
+                        <div class="col f1" style="gap:14px">
+                            <div class="card"><span class="chip">🎤 SÖZCÜ ÜÇ CÜMLE SÖYLER</span>
+                                <ol class="ul" style="margin-top:10px; font-size:21px"><li><b>Problemimiz:</b> …</li><li><b>İnovasyonumuz:</b> …</li><li><b>En önemli paydaşımız ve göstergemiz:</b> …</li></ol></div>
+                            <div class="card r"><span class="chip r">👂 DİNLEYENLER PANELİSTTİR</span>
+                                <p style="margin-top:8px; font-size:19px">Başka bir grup tek bir soru sorar; soruyu dört başlıktan biriyle kurar:</p>
+                                <div class="row" style="gap:8px; flex-wrap:wrap; margin-top:8px"><span class="chip">Özgün Değer</span><span class="chip r">Yöntem</span><span class="chip a">Proje Yönetimi</span><span class="chip g">Yaygın Etki</span></div></div>
+                        </div>
+                        <div class="col" style="align-items:center; gap:14px; width:380px">
+                            <div class="timer" id="py-timer" data-sec="60" style="--tsz:200px"></div>
+                            <div class="grpbtn" id="py-grp"><button class="btn">Grup 1</button><button class="btn">Grup 2</button><button class="btn">Grup 3</button><button class="btn">Grup 4</button><button class="btn">Grup 5</button></div>
+                            <span class="tiny muted">Gruba tıklayın: 60 saniye başlar</span>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="25">6 dk. Sırayla Grup 1’den 5’e; her sözcüye 60 saniye, ardından başka bir gruptan tek soru. Süreyi kesin tutun (5 × 60 saniye ve sorular, yaklaşık 6 dakika). Eğiticiler her grup için bir güçlü yanı ve bir riski not alsın; bu notlar 14:00’teki atölyede mentörlere iletilecek. Soru örnekleri: “Bu yalnızca bir durum tespiti mi?” (Özgün Değer), “Etiketi kim koyacak?” (Yöntem), “Veri gelmezse B planınız ne?” (Proje Yönetimi), “Kim, ne zaman yararlanacak?” (Yaygın Etki).</aside>
+            </section>
+
+            <!-- 26 · YZ ARAÇLARI -->
+            <section data-id="yzarac">
+                <div class="sl mid">
+                    <div class="kick">Yapay zekâ araçlarıyla yazarken · rehberde</div>
+                    <h2>Atölyede YZ kullanacaksanız: TÜBİTAK’ın kuralları</h2>
+                    <div class="g2 st" style="gap:18px; margin-top:12px">
+                        <div class="card r"><span class="chip r">⛔ YASAK</span>
+                            <ul class="ul" style="margin-top:10px; font-size:18px"><li><span class="qt">İntihal: Başkalarına ait fikir, metin veya verileri kaynak göstermeden yapay zeka yardımıyla kopyalama.</span></li>
+                                <li>Yapay zekâyla “sahte referanslar oluşturmak”.</li><li><span class="qt">KVKK kapsamındaki kişisel verileri veya yayınlanmamış proje detaylarını yapay zeka araçlarına girmek kesinlikle yasaktır.</span></li></ul></div>
+                        <div class="card a"><span class="chip a">⚠️ DİKKAT</span>
+                            <ul class="ul" style="margin-top:10px; font-size:18px"><li><span class="qt">Nihai metin, tamamen özgünleştirilmeli ve araştırmacının kendi analizini yansıtmalıdır.</span></li>
+                                <li><span class="qt">DOI numarası bulunan kaynaklar için kaynağın sonuna DOI numarasının da eklenmesi zorunludur.</span></li><li>Ön incelemede “ÜYZ Rehberine Uygunluğu” da kontrol edilir.</li></ul></div>
+                    </div>
+                    <div class="lesson fragment rise" style="margin-top:16px; font-size:21px">Hasta verisini ve yayımlanmamış proje ayrıntılarını YZ aracına <b>yapıştırmayın</b>; YZ’nin önerdiği her kaynağı <b>bulup okuyun.</b></div>
+                </div>
+                <aside class="notes" data-n="26">2 dk. Atölyelerde YZ araçlarını kullanmak isteyen gruplar olacak; buradaki kurallar rehberin “Yapay Zekâ Kullanımı” kısmından birebir alındı. Üç pratik kural: 1) Hasta verisi, kişisel veri ya da yayımlanmamış proje ayrıntısı YZ aracına girilmez; bu, sabahki KVKK ve YZ etiği oturumlarının somut karşılığıdır. 2) YZ’nin önerdiği her kaynak bulunup okunur; var olmayan bir kaynak dosyayı düşürür. 3) Son metin sizin analizinizi yansıtmalı; TÜBİTAK ön incelemede üretken yapay zekâ (ÜYZ) rehberine uygunluğu da kontrol ediyor. Bu kurallar yalnızca TÜBİTAK başvuruları için değil, tez ve makale yazımında da iyi bir alışkanlıktır.</aside>
+            </section>
+
+            <!-- 27 · BÖLÜM II ÖZETİ -->
+            <section data-id="ozet2">
+                <div class="sl mid">
+                    <div class="kick">Bölüm II’nin özeti</div>
+                    <h2>Kâğıdınız 14:00’te atölyeye girer</h2>
+                    <div class="g3 st" style="gap:16px">
+                        <div class="card"><h3>🔑 Anahtar kelime</h3><p style="margin-top:6px">Problemi, yöntemi ve hedefi birlikte adlandırır; İngilizcesi tam karşılıktır.</p></div>
+                        <div class="card r"><h3>💡 İnovasyon</h3><p style="margin-top:6px">Kanıtlanmış bir eksikliği kapatır ve ölçülür.</p></div>
+                        <div class="card g"><h3>🎯 Fayda</h3><p style="margin-top:6px">Bir paydaşa, bir göstergeye ve bir zamana bağlanır.</p></div>
+                    </div>
+                    <h4 style="margin-top:10px">Bugün sırada</h4>
+                    <div class="row st" style="gap:12px">
+                        <div class="card t f1" style="text-align:center"><div class="mono red" style="font-weight:800">12:45</div><b>Öğle arası</b><div class="small muted">KTÜ Koru Otel</div></div>
+                        <div class="card f1" style="text-align:center"><div class="mono red" style="font-weight:800">14:00</div><b>Atölye I</b><div class="small muted">problem ve hipotez</div></div>
+                        <div class="card r f1" style="text-align:center"><div class="mono red" style="font-weight:800">15:00</div><b>Atölye II</b><div class="small muted">yöntem ve hukuki uyum</div></div>
+                        <div class="card a f1" style="text-align:center"><div class="mono red" style="font-weight:800">16:00</div><b>Panel simülasyonu</b></div>
+                        <div class="card g f1" style="text-align:center"><div class="mono red" style="font-weight:800">17:00</div><b>Son-test ve kapanış</b></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="27">2 dk. Üç cümleyi gruplara okutun. Kâğıtlar masada kalsın; 14:00’te Atölye I bu kâğıttan başlıyor: problem cümlesi araştırma sorusuna, inovasyon cümlesi hipoteze dönüşecek. 15:00’te yöntem ve hukuki uyum (KVKK, etik kurul), 16:00’da panel simülasyonu: gruplar dört başlıkla puanlanacak; 17:00’de son-test, kapanış ve sertifikalar. Öğle arası 12:45–14:00, KTÜ Koru Otel; servis saatini duyurun. Eğiticiler paylaşımda aldıkları notları (her grup için bir güçlü yan ve bir risk) atölye mentörlerine iletsin.</aside>
+            </section>
+
+            <!-- 28 · SON-TEST -->
+            <section data-id="sontest" class="dark" data-sound="fanfare"
+                data-background-gradient="radial-gradient(circle at 80% 80%, rgba(205,6,30,0.45) 0%, rgba(205,6,30,0) 40%), radial-gradient(circle at 20% 20%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:50px">
+                        <div class="f1 st">
+                            <div class="kick">Pazar 17:00 · son-test</div>
+                            <h1 style="font-size:76px">✅ Son-test</h1>
+                            <p class="lead" style="margin-top:10px">Cumartesi sabahki <b style="color:#fff">aynı 10 soru</b> + kısa bir etkinlik değerlendirmesi (yaklaşık 7 dakika).</p>
+                            <div class="box" style="margin-top:18px"><p style="font-size:20px">🔑 Ön-testteki <b>katılımcı kodunuzu</b> yazın: annenizin adının ilk iki harfi + doğduğunuz ayın iki hanesi (ör. <b>AY07</b>).</p></div>
+                            <p class="muted" style="margin-top:14px">Formu gönderdikten sonra puanınızı ve doğru cevapları görebilirsiniz. Teşekkürler! 🙏</p>
+                        </div>
+                        <div class="col" style="align-items:center; gap:12px">
+                            <div class="linkqr" data-key="son" data-size="250"></div>
+                            <div class="timer" data-sec="600" style="--tsz:110px"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="../assets/vendor/reveal.min.js"></script>
+    <script src="../assets/vendor/notes.min.js"></script>
+    <script src="../assets/vendor/qrcode.min.js"></script>
+    <script src="../assets/formlar.js"></script>
+    <script src="../assets/ilafar.js"></script>
+    <script src="proje.js"></script>
+</body>
+
+</html>

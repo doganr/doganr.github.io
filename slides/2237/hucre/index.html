@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Hücreden Koda · TÜBİTAK 2237</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700;800&display=swap">
+    <link rel="stylesheet" href="../assets/vendor/reset.min.css">
+    <link rel="stylesheet" href="../assets/vendor/reveal.min.css">
+    <link rel="stylesheet" href="../assets/ilafar.css">
+    <style>
+        #cover-cv { width: 520px; height: 520px; filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.55)); }
+        .journey { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+        .journey .nd { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 150px; text-align: center; }
+        .journey .nd .ic { width: 96px; height: 96px; border-radius: 50%; display: grid; place-items: center; font-size: 46px; background: #fff;
+            box-shadow: var(--shadow); border: 4px solid var(--navy); }
+        .journey .nd:nth-child(4n+1) .ic { border-color: var(--red); }
+        .journey .nd b { font-family: var(--head); font-size: 21px; color: var(--navy); }
+        .journey .nd span { font-size: 15px; color: var(--gray); line-height: 1.3; }
+        .journey .ar { font-size: 30px; color: var(--red); font-weight: 900; }
+        #game-wrap { position: relative; width: 640px; height: 480px; flex: none; }
+        #game-cv { transition: filter 0.6s; }
+        #game-cover { position: absolute; inset: 0; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(135deg, var(--navy), #001a2c);
+            color: #fff; font-family: var(--head); font-size: 150px; font-weight: 900; transition: opacity 0.4s; }
+        #game-timer { position: absolute; top: 14px; right: 18px; font-family: var(--head); font-weight: 900; font-size: 64px; color: #fff;
+            text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6); opacity: 0; }
+        .lens-cell { font-family: var(--mono); }
+        .pub-col h4 { font-size: 19px; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .pub-col .pub + .pub { margin-top: 7px; }
+        .dsc .card p { font-size: 16.5px; }
+        .dsc .card .tag { font-family: var(--mono); font-size: 12.5px; font-weight: 800; color: var(--red); }
+        .tabs .btn { font-size: 16px; padding: 7px 15px; }
+        .bar { height: 30px; border-radius: 8px; width: 0; transition: width 1.4s cubic-bezier(.2, .8, .2, 1); display: flex; align-items: center;
+            padding-left: 10px; color: #fff; font-family: var(--mono); font-weight: 800; font-size: 15px; white-space: nowrap; }
+        .rule { display: flex; gap: 12px; align-items: flex-start; background: #fff; border-radius: 14px; padding: 10px 14px; box-shadow: var(--shadow); }
+        .rule .n { font-family: var(--head); font-weight: 900; font-size: 30px; color: var(--red); line-height: 1; min-width: 28px; }
+        .rule b { font-size: 21px; color: var(--navy); display: block; }
+        .rule span { font-size: 17px; color: var(--ink-2); line-height: 1.38; }
+        .crops { display: grid; grid-template-columns: repeat(4, 88px); gap: 10px; }
+        .crop { position: relative; opacity: 0; transform: scale(0.4) rotate(-8deg); transition: all 0.45s cubic-bezier(.3, 1.5, .5, 1); }
+        .crop.on { opacity: 1; transform: none; }
+        .crop canvas { width: 88px; height: 88px; border-radius: 10px; display: block; box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.4); }
+        .crop span { position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 11px; font-weight: 800;
+            color: #fff; border-radius: 6px; padding: 0 6px; }
+        .kern { display: grid; grid-template-columns: repeat(3, 54px); gap: 4px; }
+        .kern div { height: 46px; display: grid; place-items: center; font-family: var(--mono); font-weight: 800; font-size: 17px; border-radius: 8px;
+            background: #fff; box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 0.4); color: var(--navy); }
+        .kern div.neg { color: var(--red); }
+        #unet-svg .blk { transition: opacity 0.4s; }
+        #unet-svg .skip { stroke-dasharray: 8 7; animation: dash 1.2s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: -30; } }
+        .waffle { display: grid; grid-template-columns: repeat(10, 30px); gap: 8px; }
+        .waffle i { width: 30px; height: 30px; border-radius: 50%; display: block; background: #e9a3a8; transform: scale(0); transition: transform 0.3s; }
+        .waffle i.w { background: var(--violet); }
+        .waffle.on i { transform: scale(1); }
+        .waffle.judge i { box-shadow: 0 0 0 3px #0f9d58; } .waffle.judge i.w { box-shadow: 0 0 0 3px var(--red); opacity: 0.45; }
+        .venn { position: relative; height: 400px; width: 660px; flex: none; }
+        .venn .c { position: absolute; top: 5px; width: 390px; height: 390px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center;
+            box-sizing: border-box; font-size: 19px; line-height: 1.5; transition: transform 1.2s cubic-bezier(.2, .8, .2, 1); }
+        .venn .c h4 { margin-bottom: 8px; font-size: 24px; }
+        .venn .c1 { left: 0; padding: 0 150px 0 52px; background: rgba(205, 6, 30, 0.12); border: 3px solid var(--red); transform: translateX(-90px); }
+        .venn .c2 { left: 270px; padding: 0 52px 0 150px; background: rgba(0, 66, 106, 0.12); border: 3px solid var(--navy); transform: translateX(90px); text-align: right; }
+        section.present .venn .c1, section.present .venn .c2 { transform: none; }
+        .venn .mid { position: absolute; left: 330px; top: 50%; transform: translate(-50%, -50%); text-align: center; font-family: var(--head); font-weight: 800;
+            color: var(--navy); font-size: 20px; line-height: 1.25; width: 110px; }
+        .colab { background: #fff; border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; font-family: var(--mono); }
+        .colab .bar2 { background: #f1f3f4; padding: 8px 14px; font-size: 14px; color: #5f6368; display: flex; gap: 18px; }
+        .colab .bar2 b { color: #e8710a; }
+        .colab .cell { display: flex; gap: 12px; padding: 14px; align-items: flex-start; }
+        .colab .play { width: 38px; height: 38px; border-radius: 50%; background: #e8eaed; display: grid; place-items: center; font-size: 15px; flex: none;
+            color: #444; box-shadow: 0 0 0 0 rgba(205, 6, 30, 0.6); animation: ring 1.6s infinite; }
+        @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(205, 6, 30, 0.55); } 100% { box-shadow: 0 0 0 16px rgba(205, 6, 30, 0); } }
+        .colab .src2 { background: #f7f9fb; border-radius: 8px; padding: 10px 12px; font-size: 18px; color: #1a5fb4; flex: 1; }
+        .colab .out { padding: 4px 14px 16px 64px; font-size: 18px; color: #222; min-height: 22px; }
+        .map { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+        .map .mp { background: #fff; border-radius: 14px; padding: 18px 18px; min-height: 170px; box-sizing: border-box; box-shadow: var(--shadow); cursor: pointer; border-top: 5px solid var(--navy);
+            transition: transform 0.15s, background 0.2s; position: relative; }
+        .map .mp:hover { transform: translateY(-3px); }
+        .map .mp .no { font-family: var(--head); font-weight: 900; font-size: 44px; color: var(--red); line-height: 1; }
+        .map .mp b { display: block; font-size: 21px; color: var(--navy); margin: 8px 0 4px; }
+        .map .mp span { font-size: 16px; color: var(--gray); line-height: 1.35; display: block; }
+        .map .mp.done { background: #e9f7ef; border-top-color: var(--green); }
+        .map .mp.done::after { content: '✓'; position: absolute; top: 8px; right: 12px; font-size: 24px; color: var(--green); font-weight: 900; }
+        .xml { font-family: var(--mono); font-size: 19px; line-height: 1.5; background: #0b1b2a; color: #dbe7f3; border-radius: 14px; padding: 12px 16px; white-space: pre; }
+        .xml .t { color: #8ccfff; } .xml .v { color: #ffd479; font-weight: 700; }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ============ KAPAK ============ -->
+            <section data-id="cover" class="dark nofoot" data-sound="chime"
+                data-background-gradient="radial-gradient(circle at 12% 90%, rgba(205,6,30,0.45) 0%, rgba(205,6,30,0) 40%), radial-gradient(circle at 78% 22%, #0d6fa8 0%, #00426a 36%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:36px">
+                        <div class="f1 st slow">
+                            <div class="kick">TÜBİTAK-BİDEB 2237 · KTÜ İLAFAR</div>
+                            <h1 style="font-size:104px; margin-top:18px">Hücreden<br><span class="red">Koda</span></h1>
+                            <h3 style="color:#c9d8e4; font-weight:600; margin-top:8px">Veri Seti Anlatımı ve Python Uygulaması I</h3>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px">
+                                <span class="chip w">🕑 14:00 Teori</span><span class="chip w">💻 15:00 Uygulama</span><span class="chip w">📅 24 Ekim 2026</span>
+                            </div>
+                            <p style="margin-top:26px; font-size:23px">Dr. Öğr. Üyesi <b>Ramazan Özgür Doğan</b><br>
+                                <span class="muted" style="font-size:18px">Trabzon Üniversitesi · Yapay Zekâ Mühendisliği · PharmAI KTÜ</span></p>
+                        </div>
+                        <canvas id="cover-cv" width="1040" height="1040"></canvas>
+                    </div>
+                    <p class="tiny muted" style="margin-top:6px">Uygulamalı Eğitimle Sağlık Araştırmalarında Yapay Zekâ ve Hukuki Çerçevesi</p>
+                </div>
+                <aside class="notes">Hoş geldiniz. Sağdaki "mikroskop" penceresi dersin özeti: hücre → piksel → sayı → kod. 14:00 teori, 15:00 Colab'da uygulama. Ses: M tuşu.</aside>
+            </section>
+
+            <!-- ============ YOL HARİTASI ============ -->
+            <section data-id="plan">
+                <div class="sl">
+                    <div class="kick">Bugünün yolculuğu</div>
+                    <h2>Bir mikroskop görüntüsünden bilimsel bulguya</h2>
+                    <div class="journey st" style="margin-top:34px">
+                        <div class="nd"><div class="ic">🔬</div><b>Mikroskop</b><span>numune, boya, büyütme</span></div>
+                        <div class="ar">→</div>
+                        <div class="nd"><div class="ic">🖼️</div><b>Görüntü</b><span>milyonlarca piksel</span></div>
+                        <div class="ar">→</div>
+                        <div class="nd"><div class="ic">🔢</div><b>Sayılar</b><span>bilgisayarın gördüğü</span></div>
+                        <div class="ar">→</div>
+                        <div class="nd"><div class="ic">🏷️</div><b>Veri seti</b><span>görüntü + uzman etiketi</span></div>
+                        <div class="ar">→</div>
+                        <div class="nd"><div class="ic">🧠</div><b>Model</b><span>kural ya da öğrenme</span></div>
+                        <div class="ar">→</div>
+                        <div class="nd"><div class="ic">📊</div><b>Bulgu</b><span>sayım, ölçüm, karar desteği</span></div>
+                    </div>
+                    <div class="g2 st" style="margin-top:40px">
+                        <div class="card r"><h4>🩺 Sağlıkçılar için</h4><p>Kod yazmanız gerekmiyor. Hedef: <b>neyin mümkün olduğunu</b> görmek ve kendi sorunuzu bir yapay zekâ projesine çevirebilmek.</p></div>
+                        <div class="card"><h4>💻 Bilgisayarcılar için</h4><p>Verinin <b>laboratuvardaki hikâyesi</b>: nasıl üretilir, nasıl etiketlenir, hangi tuzaklar modeli yanıltır?</p></div>
+                    </div>
+                </div>
+                <aside class="notes">İki kitle var; ikisine de söz: sağlıkçılar fizibiliteyi, bilgisayarcılar verinin hikâyesini görecek. Yol haritası tüm ders boyunca geri dönülecek çerçeve.</aside>
+            </section>
+
+            <!-- ============ OYUN: KAÇ HÜCRE ============ -->
+            <section data-id="game">
+                <div class="sl">
+                    <div class="kick">Isınma turu</div>
+                    <h2>Kaç hücre görüyorsunuz? 👀</h2>
+                    <div class="row grow" style="gap:30px">
+                        <div id="game-wrap">
+                            <canvas id="game-cv" class="cv" width="640" height="480"></canvas>
+                            <div id="game-cover">?</div>
+                            <div id="game-timer">5</div>
+                        </div>
+                        <div class="col f1" style="gap:16px">
+                            <p style="font-size:21px">Kan yayması görüntüsünü <b>5 saniye</b> göstereceğim. Alyuvarları ve akyuvarları içinizden sayın!</p>
+                            <div class="seg">
+                                <button class="btn go" id="game-start">▶ 5 saniye bak</button>
+                                <button class="btn" id="game-expert">👩‍🔬 Uzman</button>
+                                <button class="btn r" id="game-pc">🤖 Bilgisayar</button>
+                            </div>
+                            <div class="row ac" style="gap:26px; margin-top:6px">
+                                <div class="stat"><div class="big" id="game-n">?</div><div class="lbl">uzman sayımı</div></div>
+                                <div class="stat"><div class="big r" id="game-m">?</div><div class="lbl">basit bilgisayar</div></div>
+                            </div>
+                            <div class="box" id="game-msg"><p>Tahminler? 🙋 En yakın tahmin alkışı hak eder.</p></div>
+                        </div>
+                    </div>
+                    <div class="src">Görüntü: BCCD veri seti (BloodImage_00000), MIT lisansı</div>
+                </div>
+                <aside class="notes">Önce 5 saniye göster, tahmin topla. Sonra "Uzman": kutular tek tek çıkar (19 alyuvar + 1 akyuvar = 20). "Bilgisayar": basit eşikleme birbirine değen hücreleri tek leke sanıyor → çok az sayıyor. Soru: bunu nasıl düzeltiriz? Cevap dersin içinde.</aside>
+            </section>
+
+            <!-- ============ NEDEN ============ -->
+            <section data-id="why">
+                <div class="sl">
+                    <div class="kick">Neden bilgisayar?</div>
+                    <h2>Göz yorulur, bilgisayar yorulmaz… ama öğretilmesi gerekir</h2>
+                    <div class="g4 st" style="margin-top:18px">
+                        <div class="card r"><span class="em">⏱️</span><h4>Hız</h4><p>Bir uzmanın saatlerini alan binlerce görüntü dakikalar içinde.</p></div>
+                        <div class="card"><span class="em">🔁</span><h4>Tekrarlanabilirlik</h4><p>Aynı görüntü → her seferinde aynı sonuç. Yorgunluk, dikkat dağınıklığı yok.</p></div>
+                        <div class="card a"><span class="em">📏</span><h4>Nesnellik</h4><p>“Biraz büyük” yerine ölçülen alan, yoğunluk, şekil.</p></div>
+                        <div class="card g"><span class="em">🔭</span><h4>Yeni bulgu</h4><p>Gözün fark etmediği ince desenler, 3B yapı, zaman içindeki değişim.</p></div>
+                    </div>
+                    <div class="lesson fragment rise" style="margin-top:22px; font-size:24px">
+                        Ama bilgisayar “hücre nedir?” bilmez. Ona <b>örneklerle</b> göstermek gerekir → bu örneklerin düzenli hâline <b class="red">veri seti</b> diyoruz.
+                    </div>
+                </div>
+                <aside class="notes">Kısa tut. Mesaj: yapay zekâ uzmanın yerini almaz, onun tekrarlı işini devralır. Ama önce veri seti şart.</aside>
+            </section>
+
+            <!-- ============ BÖLÜM 1 ============ -->
+            <section data-id="s1" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac st slow" style="gap:48px">
+                        <div class="sec-num">01</div>
+                        <div class="col"><span class="sec-tag">Teori · bölüm 1</span>
+                            <h2 style="font-size:66px">Görüntü = Sayı</h2>
+                            <p class="lead">Bilgisayar bir mikroskop fotoğrafında aslında ne “görür”?</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ PİKSEL MERCEĞİ ============ -->
+            <section data-id="pixel">
+                <div class="sl">
+                    <div class="kick">Piksel merceği</div>
+                    <h2>Fareyi gezdirin: her nokta üç sayıdır</h2>
+                    <div class="row grow" style="gap:26px">
+                        <div class="col">
+                            <canvas id="pix-cv" class="cv" width="576" height="432" style="cursor:crosshair"></canvas>
+                            <div class="readout">640 × 480 piksel × 3 kanal = <b class="count" data-to="921600">0</b> sayı</div>
+                        </div>
+                        <div class="col f1" style="align-items:center">
+                            <canvas id="pix-lens" width="420" height="420" style="border-radius:14px; box-shadow:var(--shadow)"></canvas>
+                            <div class="readout" id="pix-read" style="text-align:center">konum (x, y) · R G B</div>
+                        </div>
+                    </div>
+                    <p style="font-size:19px">Her pikselde <b class="red">R</b>(kırmızı) <b style="color:#0f9d58">G</b>(yeşil) <b style="color:#1d4ed8">B</b>(mavi): 0 (karanlık) … 255 (parlak). Tüm yapay zekâ bu sayılarla çalışır.</p>
+                </div>
+                <aside class="notes">Fareyi görüntü üzerinde gezdir; sağda 7×7 piksel ve sayıları. Hücre içi (pembe) ile arka plan arasındaki sayı farkına dikkat çek. Dokunulmazsa mercek kendi kendine gezinir.</aside>
+            </section>
+
+            <!-- ============ RENK KANALLARI ============ -->
+            <section data-id="rgb">
+                <div class="sl">
+                    <div class="kick">Renk kanalları</div>
+                    <h2>Hücre hangi kanalda en belirgin?</h2>
+                    <div class="row grow" style="gap:26px">
+                        <canvas id="rgb-cv" class="cv" width="560" height="420" style="width:520px; height:390px"></canvas>
+                        <div class="col f1" style="gap:14px">
+                            <div class="seg tabs" id="rgb-tabs">
+                                <button class="btn on" data-c="rgb">🎨 Renkli</button>
+                                <button class="btn" data-c="0" style="border-color:#cd061e; color:#cd061e">R</button>
+                                <button class="btn" data-c="1" style="border-color:#0f9d58; color:#0f9d58">G</button>
+                                <button class="btn" data-c="2" style="border-color:#1d4ed8; color:#1d4ed8">B</button>
+                            </div>
+                            <canvas id="rgb-hist" width="560" height="200" style="width:500px; height:178px"></canvas>
+                            <div class="readout" id="rgb-read">Kanal seçin</div>
+                            <div class="lesson">Yeşil kanalda pembe alyuvarlar <b>koyu</b>, arka plan <b>açık</b> çıkar → histogramda iki tepe. İkisini ayıran bir eşik seçebiliriz!</div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">R kanalında hücreler arka planla neredeyse aynı; G kanalında kontrast en yüksek. Histogramdaki iki tepe = hücre ve arka plan. Bu, birazdan yapacağımız eşiklemenin temeli.</aside>
+            </section>
+
+            <!-- ============ BÖLÜM 2 ============ -->
+            <section data-id="s2" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac st slow" style="gap:48px">
+                        <div class="sec-num">02</div>
+                        <div class="col"><span class="sec-tag">Teori · bölüm 2</span>
+                            <h2 style="font-size:62px">Mikroskobun sınırları</h2>
+                            <p class="lead">…ve grubumuzun bu sınırları aşmak için ürettiği veri setleri ve yöntemler</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ EDOF ============ -->
+            <section data-id="edof">
+                <div class="sl">
+                    <div class="kick">Sorun 1 · Odak</div>
+                    <h2>Mikroskop aynı anda her yeri net göremez</h2>
+                    <div class="row grow" style="gap:26px">
+                        <div class="col" style="gap:10px">
+                            <canvas id="edof-cv" class="cv" width="620" height="390"></canvas>
+                            <div class="ctl"><span>🔭 Odak</span><input type="range" class="rng" id="edof-f" min="0" max="100" value="25"><span class="v" id="edof-fv">25</span></div>
+                            <div class="row" id="edof-stack" style="gap:8px; height:64px"></div>
+                        </div>
+                        <div class="col f1" style="gap:12px">
+                            <p style="font-size:20px">Büyütme arttıkça <b>alan derinliği</b> incelir: hücrelerin bir kısmı net, kalanı bulanık.</p>
+                            <div class="seg"><button class="btn" id="edof-scan">📚 Odak yığını çek</button><button class="btn r go" id="edof-fuse">⚡ Birleştir (EDOF)</button></div>
+                            <div class="box"><p><b>EDOF</b> (genişletilmiş odak derinliği): farklı odaklarda çekilmiş kareleri <b>her yeri net</b> tek görüntüde birleştirmek.</p></div>
+                            <div class="col" style="gap:6px">
+                                <div class="pub"><span class="y">2024 · J. Imaging Informatics in Medicine</span><span class="ds">VERİ SETİ</span><div class="t">DL-EDOF: yeni çok odaklı veri seti + derin öğrenme</div></div>
+                                <div class="pub"><span class="y">2025 · J. Supercomputing</span><div class="t">İki aşamalı derin öğrenme ile görüntü füzyonu</div></div>
+                                <div class="pub"><span class="y">2026 · J. Supercomputing</span><div class="t">Piramit görüntü dönüştürücü (PVT) tabanlı EDOF</div></div>
+                                <div class="pub"><span class="y">2026 · ICCTA</span><div class="t">Neuro-Focus Fusion: tamamen odaklı mikroskobik görüntü</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Kaydırıcıyla odağı değiştir: her seferinde başka hücreler net. "Odak yığını çek" 5 kare alır, "Birleştir" hepsini net yapar. Bu bizim EDOF çalışmalarımızın özü; veri setini de kendimiz ürettik (DL-EDOF).</aside>
+            </section>
+
+            <!-- ============ SFF 3B ============ -->
+            <section data-id="sff">
+                <div class="sl">
+                    <div class="kick">Sorun 2 · Derinlik</div>
+                    <h2>Odaktan şekle: alyuvarın 3B yapısı</h2>
+                    <div class="row grow" style="gap:26px">
+                        <div class="col" style="gap:10px">
+                            <canvas id="sff-cv" width="900" height="840" style="width:450px; height:420px; border-radius:14px; background:radial-gradient(circle at 50% 40%, #0d3a5c, #001a2c); cursor:grab"></canvas>
+                            <div class="ctl" style="width:450px; grid-template-columns:auto 1fr 104px"><span>🔭 Odak düzlemi</span><input type="range" class="rng" id="sff-z" min="0" max="100" value="50"><span class="v" id="sff-zv">—</span></div>
+                            <div class="seg"><button class="btn r" id="sff-cut">✂️ Ortadan kes</button></div>
+                        </div>
+                        <div class="col f1" style="gap:10px">
+                            <ol class="ul" style="font-size:19px">
+                                <li class="fragment rise"><b>Odak yığını:</b> aynı alanı farklı odak yüksekliklerinde çek.</li>
+                                <li class="fragment rise"><b>Odak ölçütü:</b> her piksel için “en net” kareyi bul (sarı halka: o odakta net olan bölge).</li>
+                                <li class="fragment rise"><b>Derinlik haritası:</b> kare numarası = yükseklik.</li>
+                                <li class="fragment rise"><b>3B yüzey:</b> alyuvarın ortası çukur, kenarı kalın: <b class="red">bikonkav disk</b>.</li>
+                            </ol>
+                            <div class="g2" style="gap:6px; margin-top:4px">
+                                <div class="pub"><span class="y">2025 · Optics & Lasers in Eng.</span><div class="t">Swin Transformer ile odaktan şekil</div></div>
+                                <div class="pub"><span class="y">2024 · ASYU</span><div class="t">Kan hücrelerinin 3B yapısını odaktan çıkarmak</div></div>
+                                <div class="pub"><span class="y">2024 · Multimedia Tools & Appl.</span><div class="t">Denetimsiz derin öğrenme ile SFF</div></div>
+                                <div class="pub"><span class="y">2026 · Arch. Comput. Methods Eng.</span><div class="t">El yapımı operatörlerden derin öğrenmeye: derleme</div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="src">3B model: Evans–Fung alyuvar şekil denklemi (1972) ile çizildi · fareyle döndürün</div>
+                </div>
+                <aside class="notes">Fareyle sürükleyip döndür. Kaydırıcı: odak düzlemini hücrenin içinde gezdir, sarı halka o odakta net görünen yükseklik. SFF bu halkaları üst üste koyup 3B şekli kurar. Alyuvarın bikonkav şekli sağlıkçılar için tanıdık.</aside>
+            </section>
+
+            <!-- ============ YAYIN DUVARI ============ -->
+            <section data-id="pubs">
+                <div class="sl" style="gap:10px">
+                    <div class="row ac" style="justify-content:space-between">
+                        <div><div class="kick">Hücreden koda · grubumuzun çalışmaları</div><h2 style="font-size:40px; margin-top:6px">Mikroskoptan yapay zekâya 18 çalışma</h2></div>
+                        <div class="row ac" style="gap:12px"><span class="small muted" style="text-align:right">Google Scholar<br>profili</span><div class="qr" data-url="https://scholar.google.com/citations?user=F2NkKNAAAAAJ&hl=tr" data-size="92"></div></div>
+                    </div>
+                    <div class="g3 st" style="gap:16px; align-items:start">
+                        <div class="pub-col">
+                            <h4>🔍 Odak birleştirme (EDOF)</h4>
+                            <div class="pub"><span class="y">2026 · J. Supercomputing</span><div class="t">Piramit görüntü dönüştürücü ile EDOF</div></div>
+                            <div class="pub"><span class="y">2026 · ICCTA</span><div class="t">Neuro-Focus Fusion: tamamen odaklı görüntü</div></div>
+                            <div class="pub"><span class="y">2025 · J. Supercomputing</span><div class="t">İki aşamalı derin öğrenme ile füzyon</div></div>
+                            <div class="pub"><span class="y">2025 · Smart Multimedia</span><span class="ds">VERİ SETİ</span><div class="t">Mikroskopide yeni çok odaklı veri seti</div></div>
+                            <div class="pub"><span class="y">2024 · J. Imaging Inform. Med.</span><span class="ds">VERİ SETİ</span><div class="t">DL-EDOF: numuneden bağımsız EDOF</div></div>
+                            <div class="pub"><span class="y">2023 · ESOGÜ Müh. Mim. Fak. Derg.</span><div class="t">Derin özniteliklerin odak değerine etkisi</div></div>
+                        </div>
+                        <div class="pub-col">
+                            <h4>🧊 Odaktan 3B şekil · otomatik odak</h4>
+                            <div class="pub" style="border-left-color:var(--red)"><span class="y">2026 · Arch. Comput. Methods Eng.</span><div class="t">Odak operatörlerinden derin öğrenmeye: SFF derlemesi</div></div>
+                            <div class="pub" style="border-left-color:var(--red)"><span class="y">2025 · Optics & Lasers in Eng.</span><div class="t">Swin Transformer tabanlı odaktan şekil</div></div>
+                            <div class="pub" style="border-left-color:var(--red)"><span class="y">2024 · Multimedia Tools & Appl.</span><div class="t">Denetimsiz derin öğrenme ile 3B şekil</div></div>
+                            <div class="pub" style="border-left-color:var(--red)"><span class="y">2024 · ASYU</span><div class="t">Kan hücrelerinin 3B yapısını çıkarmak</div></div>
+                            <div class="pub" style="border-left-color:var(--red)"><span class="y">2023 · Müh. Bil. ve Araşt. Derg.</span><div class="t">Shearlet tabanlı yeni odak ölçütü</div></div>
+                            <div class="pub" style="border-left-color:var(--red)"><span class="y">2023 · SIU</span><div class="t">3B görüntüleme için derin odak ölçütü</div></div>
+                            <div class="pub" style="border-left-color:var(--red)"><span class="y">2023 · Int. Congr. Electr. Comput. Eng.</span><div class="t">Mikroskopta derin öğrenme ile otomatik odaklama</div></div>
+                        </div>
+                        <div class="pub-col">
+                            <h4>🩸 Hücre bölütleme · veri setleri</h4>
+                            <div class="pub" style="border-left-color:var(--amber)"><span class="y">2026 · IHMC</span><span class="ds">VERİ SETİ</span><div class="t">Yeni veri seti + VGG-UNet ile kan hücresi bölütleme</div></div>
+                            <div class="pub" style="border-left-color:var(--amber)"><span class="y">2024 · IDAP</span><div class="t">Görüntü füzyonu ile daha iyi hücre bölütleme</div></div>
+                            <div class="pub" style="border-left-color:var(--amber)"><span class="y">2024 · KSÜ Müh. Bil. Derg.</span><div class="t">Kan hücrelerinin optimum odaklı görüntülenmesi</div></div>
+                            <div class="pub" style="border-left-color:var(--amber)"><span class="y">2023 · Karadeniz Fen Bil. Derg.</span><div class="t">Floresan mikroskopide çekirdek bölütleme</div></div>
+                            <div class="pub" style="border-left-color:var(--amber)"><span class="y">2023 · HORA</span><span class="ds">VERİ SETİ</span><div class="t">Ters mikroskop HaCaT veri seti + oto-kodlayıcılar</div></div>
+                            <div class="box r" style="margin-top:10px; padding:10px 14px"><p style="font-size:16px">Ortak payda: <b>önce veri seti</b>, sonra model. Hazır veri sorumuzu cevaplamıyorsa, kendimiz üretiyoruz.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Detaya girmeden üç tema: odak birleştirme, odaktan 3B şekil, hücre bölütleme. Kırmızı "VERİ SETİ" etiketli çalışmalarda veriyi kendimiz ürettik. Scholar QR'ı isteyen için.</aside>
+            </section>
+
+            <!-- ============ VERİ SETLERİMİZ ============ -->
+            <section data-id="datasets">
+                <div class="sl">
+                    <div class="kick">Kendi ürettiğimiz veri setleri</div>
+                    <h2>Her biri bir laboratuvar sorusundan doğdu</h2>
+                    <div class="g4 dsc st" style="margin-top:10px">
+                        <div class="card r"><span class="em">🔬</span><h4>Çok odaklı mikroskopi</h4><span class="tag">DL-EDOF · 2024–2025</span>
+                            <p><b>Ne var?</b> Aynı alanın farklı odaklarda çekilmiş kareleri.<br><b>Soru:</b> Hepsini tek, her yeri net görüntüde birleştirebilir miyiz?</p></div>
+                        <div class="card"><span class="em">🩸</span><h4>Kan hücresi bölütleme</h4><span class="tag">VGG-UNet · 2026</span>
+                            <p><b>Ne var?</b> Uzmanın piksel piksel çizdiği hücre sınırları.<br><b>Soru:</b> Her hücrenin sınırını otomatik bulabilir miyiz?</p></div>
+                        <div class="card a"><span class="em">🧫</span><h4>HaCaT hücre kültürü</h4><span class="tag">Ters mikroskop · 2023</span>
+                            <p><b>Ne var?</b> İnsan keratinosit (deri) hücre hattı görüntüleri.<br><b>Soru:</b> Kültürdeki hücreleri ayırt edip ölçebilir miyiz?</p></div>
+                        <div class="card g"><span class="em">🧊</span><h4>Kan hücresinde 3B</h4><span class="tag">KTÜ BAP · 2023–2024</span>
+                            <p><b>Ne var?</b> Kan hücrelerinin odak yığınları.<br><b>Soru:</b> Tek mikroskopla hücrenin 3B şeklini çıkarabilir miyiz?</p></div>
+                    </div>
+                    <div class="lesson fragment rise" style="margin-top:18px">🧫 <b>HaCaT</b> = deri hücresi → sedef hastalığı araştırmalarının sık kullanılan hücre modeli. <b>16:00 dersinde</b> hücreden canlı modele geçeceğiz!</div>
+                </div>
+                <aside class="notes">Veri seti anlatımı vurgusu: her veri seti bir soruyla başlar. HaCaT kartı 2. derse köprü (sedef/psoriasis).</aside>
+            </section>
+
+            <!-- ============ BÖLÜM 3 ============ -->
+            <section data-id="s3" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac st slow" style="gap:48px">
+                        <div class="sec-num">03</div>
+                        <div class="col"><span class="sec-tag">Teori · bölüm 3</span>
+                            <h2 style="font-size:66px">Veri seti nedir?</h2>
+                            <p class="lead">Görüntü + “doğru cevap” (etiket) + hikâyesi (meta veri)</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ ETİKET TÜRLERİ ============ -->
+            <section data-id="annot">
+                <div class="sl">
+                    <div class="kick">Etiket türleri</div>
+                    <h2>Aynı görüntü, dört farklı “doğru cevap”</h2>
+                    <div class="row grow" style="gap:26px">
+                        <canvas id="ann-cv" class="cv" width="640" height="480" style="width:600px; height:450px"></canvas>
+                        <div class="col f1" style="gap:14px">
+                            <div class="seg tabs" id="ann-tabs">
+                                <button class="btn on" data-m="0">🏷️ Sınıf</button>
+                                <button class="btn" data-m="1">🔢 Sayım</button>
+                                <button class="btn" data-m="2">⬜ Kutu</button>
+                                <button class="btn" data-m="3">🎭 Maske</button>
+                            </div>
+                            <div class="card" style="padding:14px 18px"><h4 id="ann-q">Soru</h4><p id="ann-d">…</p></div>
+                            <div>
+                                <div class="small muted" style="font-weight:700; margin-bottom:6px">Etiketleme emeği (görüntü başına)</div>
+                                <div style="background:#e3e9ef; border-radius:10px; height:22px; overflow:hidden"><div id="ann-bar" style="height:100%; width:10%; background:linear-gradient(90deg, var(--amber), var(--red)); transition:width 0.6s"></div></div>
+                                <div class="small" id="ann-cost" style="margin-top:6px">saniyeler</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Sekmeler arasında geç. Mesaj: sorunuz etiket türünü belirler, etiket türü de emeği. Maske en pahalı ama en zengin bilgi. (Maske burada temsili çizildi.)</aside>
+            </section>
+
+            <!-- ============ BCCD ============ -->
+            <section data-id="bccd">
+                <div class="sl">
+                    <div class="kick">Bugün kullanacağımız açık veri seti</div>
+                    <h2>BCCD: Kan hücresi sayım ve tespit veri seti</h2>
+                    <div class="row grow" style="gap:30px; align-items:center">
+                        <div class="col" style="gap:18px; width:520px">
+                            <div class="g2">
+                                <div class="stat card"><div class="big count" data-to="364">0</div><div class="lbl">kan yayması görüntüsü</div></div>
+                                <div class="stat card r"><div class="big r count" data-to="4888">0</div><div class="lbl">uzman kutusu</div></div>
+                            </div>
+                            <div id="bccd-bars" style="display:grid; grid-template-columns:150px 1fr; gap:10px 12px; align-items:center; font-size:20px">
+                                <b style="white-space:nowrap">🔴 Alyuvar</b><div class="bar" data-w="100" style="background:var(--red)">4.155</div>
+                                <b style="white-space:nowrap">🟣 Akyuvar</b><div class="bar" data-w="9" style="background:var(--violet)">372</div>
+                                <b style="white-space:nowrap">🟡 Trombosit</b><div class="bar" data-w="8.7" style="background:var(--amber)">361</div>
+                            </div>
+                            <div class="lesson fragment rise">Her 100 kutunun <b>85'i alyuvar</b> → <b>dengesiz sınıflar</b>. Bunu birazdan hatırlayacağız!</div>
+                        </div>
+                        <div class="col f1" style="gap:10px">
+                            <img class="fig" src="../assets/img/bccd_00098.jpg" alt="BCCD örnek" style="width:100%">
+                            <div class="row" style="gap:8px; flex-wrap:wrap">
+                                <span class="chip">640 × 480 JPEG</span><span class="chip">Pascal VOC (XML) kutuları</span><span class="chip g">MIT lisansı</span><span class="chip r">ücretsiz</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="src">github.com/Shenggan/BCCD_Dataset</div>
+                </div>
+                <aside class="notes">Neden BCCD? Açık, küçük, lisansı serbest: herkes kendi bilgisayarında deneyebilir. Dengesizlik notunu "doğruluk tuzağı" slaytında geri çağıracağız.</aside>
+            </section>
+
+            <!-- ============ 7 KURAL ============ -->
+            <section data-id="rules">
+                <div class="sl mid">
+                    <div class="kick">Kendi veri setinizi kurarken</div>
+                    <h2>İyi bir hücre veri setinin 7 altın kuralı</h2>
+                    <div class="g2 st" style="gap:12px 22px; margin-top:6px">
+                        <div class="rule"><div class="n">1</div><div><b>Protokolü sabitleyin</b><span>Aynı mikroskop, büyütme, boya, ışık. Değişiyorsa kaydedin.</span></div></div>
+                        <div class="rule"><div class="n">2</div><div><b>Meta veriyi baştan tutun</b><span>Numune/hasta kimliği, tarih, cihaz, operatör: sonradan bulunmaz.</span></div></div>
+                        <div class="rule"><div class="n">3</div><div><b>Etiketleme rehberi yazın</b><span>“Kenarda yarım kalan hücre sayılır mı?” sorusunun yazılı cevabı olsun.</span></div></div>
+                        <div class="rule"><div class="n">4</div><div><b>En az iki uzman</b><span>Uyumu ölçün (ör. Cohen κ). Uzmanlar ayrışıyorsa model de zorlanır.</span></div></div>
+                        <div class="rule"><div class="n">5</div><div><b>Numune / hasta düzeyinde bölün</b><span>Aynı numunenin görüntüleri hem eğitimde hem testte olmasın.</span></div></div>
+                        <div class="rule"><div class="n">6</div><div><b>Ham veriyi saklayın, sürümleyin</b><span>Sıkıştırılmamış asıllar + “v1, v2” etiket sürümleri.</span></div></div>
+                        <div class="rule"><div class="n">7</div><div><b>Etik ve KVKK baştan</b><span>Onay, anonimleştirme, paylaşım lisansı: veri toplanmadan önce.</span></div></div>
+                        <div class="rule" style="background:var(--navy)"><div class="n" style="color:#fff">★</div><div><b style="color:#fff">Küçük başlayın</b><span style="color:#c9d8e4">50–100 iyi etiketli görüntüyle bir pilot, 5.000 kötü etiketliden değerlidir.</span></div></div>
+                    </div>
+                </div>
+                <aside class="notes">Sağlıkçılar için en pratik slayt. 5. kural canlı model dersinde "sızıntı" olarak ayrıntılı dönecek. Son kart: pilotla başlayın.</aside>
+            </section>
+
+            <!-- ============ BÖLÜM 4 ============ -->
+            <section data-id="s4" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac st slow" style="gap:48px">
+                        <div class="sec-num">04</div>
+                        <div class="col"><span class="sec-tag">Teori · bölüm 4</span>
+                            <h2 style="font-size:62px">Bilgisayara saydırmak</h2>
+                            <p class="lead">Önce kural yazarak, sonra örnekten öğreterek</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ EŞİKLEME ============ -->
+            <section data-id="thresh">
+                <div class="sl">
+                    <div class="kick">Yöntem 1 · Eşikleme</div>
+                    <h2>“Yeşil değeri eşikten küçükse hücredir”</h2>
+                    <div class="row grow" style="gap:26px">
+                        <canvas id="th-cv" class="cv" width="640" height="480" style="width:600px; height:450px"></canvas>
+                        <div class="col f1" style="gap:14px">
+                            <div class="ctl"><span>Eşik</span><input type="range" class="rng" id="th-t" min="60" max="230" value="150"><span class="v" id="th-tv">200</span></div>
+                            <div class="seg tabs" id="th-view">
+                                <button class="btn" data-v="0">🖼️ Görüntü</button>
+                                <button class="btn on" data-v="1">⬛ Maske</button>
+                                <button class="btn" data-v="2">🎨 Nesneler</button>
+                            </div>
+                            <div class="seg"><button class="btn r" id="th-otsu">✨ Otsu: eşiği kendin bul</button><button class="btn" id="th-box">👩‍🔬 Uzman kutuları</button></div>
+                            <div class="row ac" style="gap:30px">
+                                <div class="stat"><div class="big r" id="th-n">0</div><div class="lbl">bulunan nesne</div></div>
+                                <div class="stat"><div class="big">20</div><div class="lbl">uzman (alyuvar + akyuvar)</div></div>
+                            </div>
+                            <div class="lesson" id="th-msg">Eşiği değiştirin: çok düşük → hücreler parçalanır, çok yüksek → birbirine yapışır.</div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Kaydırıcıyı canlı oynat. Otsu: histogramdaki iki tepeyi en iyi ayıran eşiği otomatik bulur. "Nesneler" görünümünde renkler: birbirine değen hücreler tek renk = tek nesne. Sayının uzmanın çok altında kalmasının sebebi bu.</aside>
+            </section>
+
+            <!-- ============ HAVZA (WATERSHED) ============ -->
+            <section data-id="water">
+                <div class="sl">
+                    <div class="kick">Yöntem 2 · Havza (watershed)</div>
+                    <h2>Yapışık hücreleri “su basarak” ayırmak</h2>
+                    <div class="row grow" style="gap:24px">
+                        <div class="col" style="gap:10px">
+                            <canvas id="ws-cv" class="cv" width="560" height="300"></canvas>
+                            <canvas id="ws-prof" class="cv" width="560" height="150"></canvas>
+                        </div>
+                        <div class="col f1" style="gap:12px">
+                            <div class="seg" style="flex-direction:column; align-items:stretch">
+                                <button class="btn" data-ws="0">1 · Maske: kaç nesne?</button>
+                                <button class="btn" data-ws="1">2 · Merkeze uzaklık haritası</button>
+                                <button class="btn r" data-ws="2">3 · ▶ Su bas!</button>
+                            </div>
+                            <div class="readout" id="ws-read">Maske: <b>1</b> nesne (yanlış!)</div>
+                            <div class="box"><p>Her pikselin <b>kenara uzaklığı</b> = dağ yüksekliği. Ters çevirip çukurları suyla doldurunca, suların <b class="red">buluştuğu çizgi</b> iki hücrenin sınırıdır.</p></div>
+                            <img class="fig fragment rise" src="../assets/img/nb_watershed.jpg" alt="havza sonucu" style="width:100%">
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Düğmelere sırayla bas. Alt grafik ortadan bir kesit: üç vadi, su seviyesi yükseliyor, renkler buluşunca kırmızı baraj. Sonra gerçek görüntü: havza ile 18 hücre, uzman 20.</aside>
+            </section>
+
+            <!-- ============ SONUÇLAR ============ -->
+            <section data-id="results">
+                <div class="sl">
+                    <div class="kick">100 görüntüde sınav</div>
+                    <h2>Bilgisayar ne kadar iyi saydı?</h2>
+                    <div class="row grow" style="gap:26px; align-items:flex-start">
+                        <div class="col" style="width:400px; gap:10px">
+                            <img class="fig" src="../assets/img/nb_sayim_scatter.jpg" alt="sayım saçılım" style="width:400px">
+                            <div class="readout">Ortalama mutlak hata: <b class="count" data-to="4" data-dec="1">0</b> hücre / görüntü</div>
+                        </div>
+                        <div class="col f1" style="gap:12px">
+                            <img class="fig fragment rise" src="../assets/img/nb_eksik_etiket.jpg" alt="eksik etiket" style="width:100%">
+                            <div class="lesson fragment rise">En büyük farklardan biri: uzman <b>12</b>, bilgisayar <b>24</b>. Bilgisayar bazı soluk hücreleri böldü, <b>ama</b> uzman da kenardaki ve kümelenmiş birçok hücreyi hiç etiketlememiş!</div>
+                            <div class="box a fragment rise"><p>🎓 <b>Ders:</b> “Doğru cevap” sandığımız etiketler de hata içerir. Modelin kalitesi, etiketin kalitesini geçemez.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Kırmızı çizgi mükemmel uyum. Ortalama 4 hücre sapma: kural tabanlı basit bir yöntem için fena değil. Sağdaki örnek dersin en önemli mesajlarından: veri seti de kusurlu olabilir.</aside>
+            </section>
+
+            <!-- ============ KURAL vs ÖĞRENME ============ -->
+            <section data-id="learn">
+                <div class="sl">
+                    <div class="kick">Paradigma değişimi</div>
+                    <h2>Kural yazmak yerine örnek göstermek</h2>
+                    <div class="g2 grow" style="gap:26px">
+                        <div class="card" style="display:flex; flex-direction:column; gap:22px; justify-content:center">
+                            <h3>🧑‍💻 Klasik: kuralı biz yazarız</h3>
+                            <div class="code" style="font-size:19px"><span class="k">eğer</span> yeşil &lt; <span class="n">176</span>      → hücre
+<span class="k">eğer</span> alan  &lt; <span class="n">120</span>      → gürültü, at
+<span class="k">eğer</span> mavi − yeşil &gt; <span class="n">60</span> → akyuvar
+<span class="c"># yeni mikroskop? yeni boya? baştan yaz…</span></div>
+                            <p style="font-size:21px">✓ Az veriyle çalışır, açıklanabilir<br>✗ Her yeni koşulda kurallar elle güncellenir</p>
+                        </div>
+                        <div class="card r" style="display:flex; flex-direction:column; gap:22px; justify-content:center">
+                            <h3>🧠 Öğrenme: kuralı veri yazar</h3>
+                            <div class="row ac" style="gap:14px">
+                                <div class="crops" id="learn-crops"></div>
+                                <div style="font-size:34px; color:var(--red); font-weight:900">→</div>
+                                <div class="col" style="align-items:center; gap:6px"><div id="learn-brain" style="font-size:64px">🧠</div><span class="chip r" id="learn-out">model</span></div>
+                            </div>
+                            <p style="font-size:21px">✓ Karmaşık desenleri kendisi bulur<br>✗ Çok sayıda ve <b>doğru etiketli</b> örnek ister</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Sağdaki hücreler BCCD'den gerçek kesitler, etiketleriyle modele "akıyor". Mesaj: derin öğrenmede uzmanın emeği kural yazmaya değil, etiketlemeye gider.</aside>
+            </section>
+
+            <!-- ============ EVRİŞİM ============ -->
+            <section data-id="conv">
+                <div class="sl">
+                    <div class="kick">Derin öğrenmenin yapı taşı</div>
+                    <h2>Evrişim: görüntü üzerinde kayan küçük bir filtre</h2>
+                    <div class="row grow ac" style="gap:22px; justify-content:center">
+                        <div class="col" style="align-items:center; gap:6px"><canvas id="cv-in" class="cv" width="384" height="320"></canvas><span class="small muted">giriş</span></div>
+                        <div class="col" style="align-items:center; gap:10px">
+                            <div class="kern" id="cv-k"></div>
+                            <div class="seg" id="cv-tabs" style="flex-direction:column; align-items:stretch; gap:6px">
+                                <button class="btn on" data-k="blur">🌫️ Bulanık</button>
+                                <button class="btn" data-k="sharp">✨ Keskin</button>
+                                <button class="btn" data-k="edge">✏️ Kenar</button>
+                                <button class="btn" data-k="emboss">🗿 Kabartma</button>
+                            </div>
+                        </div>
+                        <div class="col" style="align-items:center; gap:6px"><canvas id="cv-out" class="cv" width="384" height="320"></canvas><span class="small muted">çıkış (öznitelik haritası)</span></div>
+                    </div>
+                    <div class="lesson">Telefonunuzdaki fotoğraf filtreleri de böyle çalışır. <b>Evrişimli sinir ağı (CNN)</b> binlerce filtre kullanır ve filtredeki sayıları <b>veriden kendisi öğrenir</b>.</div>
+                </div>
+                <aside class="notes">Filtre düğmelerine bas: sarı kare görüntüde kayar, sağda sonuç oluşur. Kenar filtresi hücre sınırlarını çıkarır. CNN'in ilk katmanları tam olarak bunları öğrenir.</aside>
+            </section>
+
+            <!-- ============ U-NET ============ -->
+            <section data-id="unet">
+                <div class="sl">
+                    <div class="kick">Bölütleme modeli</div>
+                    <h2>U-Net: “ne var?” ve “tam olarak nerede?”</h2>
+                    <div class="row grow ac" style="gap:16px; justify-content:center">
+                        <div class="col" style="align-items:center; gap:6px"><canvas id="un-in" class="cv" width="200" height="160"></canvas><span class="small muted">mikroskop görüntüsü</span></div>
+                        <svg id="unet-svg" width="700" height="420" viewBox="0 0 700 420"></svg>
+                        <div class="col" style="align-items:center; gap:6px"><canvas id="un-out" class="cv" width="200" height="160"></canvas><span class="small muted">hücre maskesi</span></div>
+                    </div>
+                    <div class="g3" style="gap:14px">
+                        <div class="box"><p><b class="navy">⬇ Kodlayıcı</b> görüntüyü küçültür, “ne var?” sorusunu cevaplar.</p></div>
+                        <div class="box r"><p><b class="red">⬆ Kod çözücü</b> büyütür, “nerede?” sorusunu piksel piksel cevaplar.</p></div>
+                        <div class="box a"><p><b>↔ Köprüler</b> ince ayrıntıyı (hücre kenarı) doğrudan taşır.</p></div>
+                    </div>
+                </div>
+                <aside class="notes">Tıbbi görüntü bölütlemenin en yaygın mimarisi. Bizim VGG-UNet (IHMC 2026) ve oto-kodlayıcı çalışmalarımız bu ailenin üyeleri. Çıkıştaki maske burada temsilidir.</aside>
+            </section>
+
+            <!-- ============ IoU ============ -->
+            <section data-id="iou">
+                <div class="sl">
+                    <div class="kick">Değerlendirme</div>
+                    <h2>Model hücreyi ne kadar iyi buldu? IoU ve Dice</h2>
+                    <div class="row grow" style="gap:30px; align-items:center">
+                        <svg id="iou-svg" width="520" height="400" viewBox="0 0 520 400" style="background:#fff; border-radius:14px; box-shadow:var(--shadow)"></svg>
+                        <div class="col f1" style="gap:14px">
+                            <div class="ctl"><span>Kaydır</span><input type="range" class="rng" id="iou-dx" min="0" max="220" value="40"><span class="v" id="iou-dxv">40</span></div>
+                            <div class="ctl"><span>Büyüklük</span><input type="range" class="rng" id="iou-r" min="40" max="150" value="100"><span class="v" id="iou-rv">100</span></div>
+                            <div class="seg"><button class="btn" data-p="0,100">🎯 Mükemmel</button><button class="btn" data-p="70,100">↔ Kaymış</button><button class="btn" data-p="0,145">🎈 Fazla büyük</button><button class="btn" data-p="210,90">💨 Iskaladı</button></div>
+                            <div class="g2">
+                                <div class="stat card"><div class="big" id="iou-v">0</div><div class="lbl">IoU = kesişim / birleşim</div></div>
+                                <div class="stat card r"><div class="big r" id="dice-v">0</div><div class="lbl">Dice = 2·kesişim / toplam</div></div>
+                            </div>
+                            <p class="small">Tespitte genelde <b>IoU ≥ 0,5</b> ise “buldu” sayılır. Uygulamada akyuvar için bunu hesaplayacağız.</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Yeşil kesikli: uzman. Kırmızı: model. Sarı: kesişim. Hazır düğmelerle hızlıca göster. Dice her zaman IoU'dan büyük ya da eşittir; makalelerde ikisi de raporlanır.</aside>
+            </section>
+
+            <!-- ============ DOĞRULUK TUZAĞI ============ -->
+            <section data-id="acc">
+                <div class="sl mid">
+                    <div class="kick">Doğruluk tuzağı</div>
+                    <h2>%92 doğruluk… harika mı?</h2>
+                    <div class="row grow" style="gap:34px; align-items:center">
+                        <div class="col" style="gap:10px">
+                            <div class="waffle" id="waf"></div>
+                            <div class="small muted">100 hücre: 92 alyuvar 🔴 · 8 akyuvar 🟣</div>
+                        </div>
+                        <div class="col f1">
+                            <div class="quiz" style="--n:1">
+                                <div class="q">Tembel bir model her hücreye “alyuvar” diyor. Doğruluğu kaç?</div>
+                                <div class="opts" style="grid-template-columns:repeat(3,1fr)">
+                                    <div class="opt" data-fb="Daha yüksek! Saymayı deneyin.">%8</div>
+                                    <div class="opt" data-fb="Daha yüksek!">%50</div>
+                                    <div class="opt" data-ok data-fb="✓ %92 doğru… ama tek bir akyuvarı bile bulamadı!">%92</div>
+                                </div>
+                                <div class="fb"></div>
+                            </div>
+                            <div class="lesson fragment rise" data-call="wafJudge" style="margin-top:14px">Dengesiz veride doğruluk yanıltır. Her sınıf için ayrı bakın: <b>duyarlılık</b> (kaçını yakaladı?) ve <b>kesinlik</b> (yakaladıklarının kaçı doğru?).</div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Önce soruyu sor, cevap gelsin. Sonra fragman: noktalar yeşil/kırmızı çerçeveyle işaretlenir. Tıbbi tarama testlerindeki duyarlılık/özgüllük kavramıyla aynı mantık: sağlıkçılar buna aşina.</aside>
+            </section>
+
+            <!-- ============ BÖLÜM 5 ============ -->
+            <section data-id="s5" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac st slow" style="gap:48px">
+                        <div class="sec-num">05</div>
+                        <div class="col"><span class="sec-tag">Teori · bölüm 5</span>
+                            <h2 style="font-size:66px">Hayalden projeye</h2>
+                            <p class="lead">Laboratuvardaki sorunuz hangi yapay zekâ görevine karşılık geliyor?</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ HAYAL KARTLARI ============ -->
+            <section data-id="dream">
+                <div class="sl">
+                    <div class="kick">Kartları çevirin</div>
+                    <h2>Sizin sorunuz → yapay zekâ görevi</h2>
+                    <div class="g3 grow" style="gap:16px; grid-auto-rows:1fr">
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">🔢</span><h4>“Bu preparatta kaç hücre var?”</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Tespit + sayım</h4><span><b>Etiket:</b> kutu ya da nokta</span><span><b>Başlangıç:</b> birkaç yüz görüntü</span><span><b>Bugün:</b> BCCD, havza yöntemi</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">✂️</span><h4>“Hücre tam olarak nerede bitiyor?”</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Bölütleme</h4><span><b>Etiket:</b> piksel maskesi</span><span><b>Model:</b> U-Net ailesi</span><span><b>Bizden:</b> VGG-UNet, HaCaT, floresan çekirdek</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">🏷️</span><h4>“Bu hücre hangi tip / normal mi?”</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Sınıflandırma</h4><span><b>Etiket:</b> hücre başına sınıf</span><span><b>Dikkat:</b> dengesiz sınıflar, hasta düzeyinde bölme</span><span><b>Bugün:</b> uygulamada ilk modelimiz</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">⏳</span><h4>“İlaçtan sonra hücreler zamanla nasıl değişiyor?”</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Zaman serisi / takip</h4><span><b>Etiket:</b> zaman damgalı ölçümler</span><span><b>Veri:</b> aynı alanın düzenli çekimleri</span><span><b>16:00:</b> canlı modelde günlük takip</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">🧊</span><h4>“Hücrenin 3B şekli bozuk mu?”</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Odaktan şekil (SFF)</h4><span><b>Veri:</b> odak yığını</span><span><b>Çıktı:</b> derinlik haritası, 3B yüzey</span><span><b>Bizden:</b> Swin-SFF, kan hücresinde 3B</span></div></div></div>
+                        <div class="flip"><div class="in"><div class="fa"><span class="em">🌫️</span><h4>“Görüntülerim hep yarı bulanık.”</h4><span class="hint">tıkla ↻</span></div>
+                            <div class="ba"><h4>Görüntü iyileştirme / EDOF</h4><span><b>Veri:</b> çok odaklı kareler</span><span><b>Çıktı:</b> her yeri net tek görüntü</span><span><b>Bizden:</b> DL-EDOF, PVT, Neuro-Focus</span></div></div></div>
+                    </div>
+                </div>
+                <aside class="notes">Salondan bir sağlıkçıya kendi sorusunu sor, hangi karta düştüğünü birlikte bulun. Kartlar tıklayınca döner.</aside>
+            </section>
+
+            <!-- ============ EKİP ============ -->
+            <section data-id="team">
+                <div class="sl">
+                    <div class="kick">Başarılı projenin formülü</div>
+                    <h2>Sağlıkçı + bilgisayarcı = veri seti</h2>
+                    <div class="row grow" style="gap:30px; align-items:center">
+                        <div class="venn">
+                            <div class="c c1"><h4 class="red">🩺 Sağlıkçı</h4>doğru soru<br>numune, protokol<br>etiket (uzmanlık)<br>etik onay<br>klinik yorum</div>
+                            <div class="c c2"><h4>💻 Bilgisayarcı</h4>veri hattı<br>model, yazılım<br>değerlendirme<br>tekrarlanabilirlik<br>hesaplama gücü</div>
+                            <div class="mid">🤝<br>ortak<br>veri seti<br>&amp; makale</div>
+                        </div>
+                        <div class="col" style="width:440px; gap:10px">
+                            <h3>İlk toplantıda 5 soru</h3>
+                            <ol class="ul st" style="font-size:19px">
+                                <li>Tam olarak neyi <b>ölçmek</b> istiyoruz?</li>
+                                <li>Şu an bunu <b>elle</b> nasıl yapıyoruz?</li>
+                                <li>Kaç <b>numune / birey</b>, kaç görüntü?</li>
+                                <li>“Doğru cevabı” <b>kim, nasıl</b> verecek?</li>
+                                <li>Sonuç kimin <b>kararını</b> kolaylaştıracak?</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Daireler birbirine yaklaşır: kesişim veri setidir. 5 soru projeye dönüşmenin en hızlı yolu; 2237 sonrası işbirlikleri için davet.</aside>
+            </section>
+
+            <!-- ============ QUIZ ============ -->
+            <section data-id="quiz">
+                <div class="sl mid">
+                    <div class="kick">Hızlı tekrar</div>
+                    <h2>Üç soru, üç saniye 🎯</h2>
+                    <div class="col" style="gap:18px; margin-top:4px">
+                        <div class="quiz">
+                            <div class="q">1 · Bilgisayar için bir mikroskop görüntüsü nedir?</div>
+                            <div class="opts"><div class="opt" data-fb="Bilgisayar hücreyi bilmez; sayıları görür.">Hücrelerin listesi</div><div class="opt" data-ok data-fb="✓ Her pikselde R, G, B sayıları.">Bir sayı tablosu</div><div class="opt" data-fb="Fotoğraf bizim için; bilgisayar için sayı.">Bir fotoğraf</div></div>
+                            <div class="fb"></div>
+                        </div>
+                        <div class="quiz">
+                            <div class="q">2 · İki hücre birbirine değiyor. Basit eşikleme kaç nesne bulur?</div>
+                            <div class="opts"><div class="opt" data-ok data-fb="✓ Tek leke! Bu yüzden havza (watershed) gerekli.">1</div><div class="opt" data-fb="Eşikleme değen hücreleri ayıramaz.">2</div><div class="opt" data-fb="Eşikleme değen hücreleri ayıramaz.">0</div></div>
+                            <div class="fb"></div>
+                        </div>
+                        <div class="quiz">
+                            <div class="q">3 · IoU = 1 ne demektir?</div>
+                            <div class="opts"><div class="opt" data-fb="O IoU = 0.">Hiç örtüşmüyor</div><div class="opt" data-fb="Yarı örtüşme ≈ 0,33.">Yarısı örtüşüyor</div><div class="opt" data-ok data-fb="✓ Model ile uzman birebir aynı.">Tam örtüşme</div></div>
+                            <div class="fb"></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Salona sor, el kaldırma ile cevap al, sonra tıkla.</aside>
+            </section>
+
+            <!-- ============ ARA ============ -->
+            <section data-id="break" class="dark" data-sound="chime"
+                data-background-gradient="radial-gradient(circle at 80% 80%, rgba(205,6,30,0.45) 0%, rgba(205,6,30,0) 40%), radial-gradient(circle at 20% 20%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:56px">
+                        <div class="f1 st">
+                            <div class="kick">14:45 – 15:00</div>
+                            <h1 style="font-size:92px">☕ Ara</h1>
+                            <p class="lead" style="margin-top:12px">15:00'te <b style="color:#fff">Google Colab</b>'da buluşuyoruz. Aradan önce defteri açın:</p>
+                            <ul class="ul" style="margin-top:16px; font-size:21px">
+                                <li>Dizüstü bilgisayar + <b>Google hesabı</b> (Gmail)</li>
+                                <li>Tarayıcı: Chrome / Edge / Firefox</li>
+                                <li>Kurulum <b>yok</b>: her şey tarayıcıda çalışır</li>
+                            </ul>
+                        </div>
+                        <div class="col" style="align-items:center; gap:14px">
+                            <div class="qr pop-in" data-url="https://doganr.com/slides/2237/u1/" data-size="250"></div>
+                            <span class="url">doganr.com/slides/2237/u1</span>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">QR veya kısa adres doğrudan Colab defterini açar. Arada bağlantı sorunu olanlara yardım.</aside>
+            </section>
+
+            <!-- ==================== UYGULAMA ==================== -->
+            <section data-id="u-intro" class="dark" data-transition="zoom" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:50px">
+                        <div class="f1 st slow">
+                            <span class="sec-tag">Uygulama · 15:00</span>
+                            <h1 style="font-size:84px; margin-top:16px">Hücreden <span class="red">Koda</span></h1><h3 style="color:#c9d8e4; margin-top:6px">Python ile kan hücresi sayımı</h3>
+                            <div class="col" style="gap:10px; margin-top:22px; font-size:21px">
+                                <div>① QR'ı okutun ya da adresi yazın</div>
+                                <div>② Google hesabınızla giriş yapın</div>
+                                <div>③ <b>Dosya → Drive'a kopya kaydet</b></div>
+                                <div>④ Her hücrede <b>▶</b> (ya da Shift + Enter)</div>
+                            </div>
+                        </div>
+                        <div class="col" style="align-items:center; gap:14px">
+                            <div class="qr" data-url="https://doganr.com/slides/2237/u1/" data-size="260"></div>
+                            <span class="url">doganr.com/slides/2237/u1</span>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Herkes defteri açana kadar bekle. Colab ilk açılışta "Google tarafından yazılmadı" uyarısı verir: "Yine de çalıştır".</aside>
+            </section>
+
+            <section data-id="u-colab">
+                <div class="sl">
+                    <div class="kick">Colab'a 1 dakikada alışmak</div>
+                    <h2>Gri kutu = kod, ▶ = çalıştır</h2>
+                    <div class="row grow" style="gap:28px; align-items:center">
+                        <div class="colab f1">
+                            <div class="bar2"><b>CO</b><span>Dosya</span><span>Düzenle</span><span>Görünüm</span><span>Ekle</span><span><b style="color:#5f6368">Çalışma zamanı</b></span><span>Araçlar</span></div>
+                            <div class="cell"><div class="play">▶</div><div class="src2">#@title ▶ 1 · BCCD veri setini indir</div></div>
+                            <div class="out tw">364 görüntü indirildi ✓   örnek: BloodImage_00000.jpg</div>
+                            <div class="cell"><div class="play" style="animation-delay:0.8s">▶</div><div class="src2" style="color:#333">img = io.imread(dosyalar[0])<br>print("Boyut:", img.shape)</div></div>
+                            <div class="out tw">Boyut: (480, 640, 3)</div>
+                        </div>
+                        <div class="col" style="width:470px; gap:12px">
+                            <div class="box"><p>⚠️ <b>“Bu not defteri Google tarafından yazılmadı”</b> uyarısı → <b>Yine de çalıştır</b></p></div>
+                            <div class="box"><p>💾 Değişiklikleriniz kalsın: <b>Dosya → Drive'a kopya kaydet</b></p></div>
+                            <div class="box"><p>⏩ Hepsini birden: <b>Çalışma zamanı → Tümünü çalıştır</b> (Ctrl + F9)</p></div>
+                            <div class="box r"><p>🧯 Bir şey bozuldu mu? <b>Çalışma zamanı → Oturumu yeniden başlat</b>, sonra baştan çalıştırın.</p></div>
+                            <div class="box g"><p>🩺 Kodu anlamak zorunda değilsiniz; her adımın açıklaması hücrenin üstünde.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Colab Google'ın bulut bilgisayarı; kendi bilgisayarına kurulum yok. Gizli hücreler "#@title" ile form gibi görünür, bilgisayarcılar açıp kodu görebilir.</aside>
+            </section>
+
+            <section data-id="u-map">
+                <div class="sl">
+                    <div class="kick">Defterin haritası</div>
+                    <h2>10 adımda hücreden koda</h2>
+                    <div class="map" style="margin-top:10px">
+                        <div class="mp"><div class="no">0</div><b>Hazırlık</b><span>kütüphaneleri çağır</span></div>
+                        <div class="mp"><div class="no">1</div><b>Veriyi indir</b><span>364 görüntü, GitHub'dan</span></div>
+                        <div class="mp"><div class="no">2</div><b>Görüntü = sayı</b><span>piksel tablosu</span></div>
+                        <div class="mp"><div class="no">3</div><b>Renk kanalları</b><span>yeşil kanal + histogram</span></div>
+                        <div class="mp"><div class="no">4</div><b>Uzman etiketleri</b><span>XML → tablo · veri temizliği</span></div>
+                        <div class="mp"><div class="no">5</div><b>Eşikleme + havza</b><span>hücreleri ayır, say</span></div>
+                        <div class="mp"><div class="no">6</div><b>Büyük sınav</b><span>100 görüntüde hata</span></div>
+                        <div class="mp"><div class="no">7</div><b>Akyuvarı bul</b><span>renk kuralı + IoU</span></div>
+                        <div class="mp"><div class="no">8</div><b>İlk ML modeli</b><span>“Bu hücre ne?”</span></div>
+                        <div class="mp"><div class="no">9</div><b>Kendi görüntün</b><span>yükle, saydır</span></div>
+                    </div>
+                    <p class="small muted" style="margin-top:12px">Adımlara tıklayıp nerede olduğumuzu işaretleyebiliriz ✓</p>
+                </div>
+                <aside class="notes">İlerledikçe kartlara tıklayıp yeşile çevir: salon nerede olduğumuzu görür.</aside>
+            </section>
+
+            <section data-id="u-s23">
+                <div class="sl">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 2–3</span><div class="kick">Görüntü = sayı · renk kanalları</div></div>
+                    <h2>Teoride gördüğümüz mercek, şimdi kodda</h2>
+                    <img class="fig" src="../assets/img/nb_piksel.jpg" alt="piksel" style="height:250px; width:auto; align-self:center">
+                    <img class="fig" src="../assets/img/nb_kanallar.jpg" alt="kanallar" style="width:100%">
+                    <div class="tryit"><b>Deneyin:</b> yakınlaştırma hücresindeki <code>y, x = 200, 300</code> satırını değiştirin. Hücrenin içi ile arka planın sayıları nasıl farklı?</div>
+                </div>
+                <aside class="notes">Hücre 2: piksel tablosu. Hücre 3: üç kanal ve yeşil kanal histogramı, iki tepe.</aside>
+            </section>
+
+            <section data-id="u-s4">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 4</span><div class="kick">Uzman etiketleri</div></div>
+                    <h2>Uzmanın çizdiği kutu, bilgisayarda bir satır olur</h2>
+                    <div class="row grow ac" style="gap:22px">
+                        <div class="xml">&lt;<span class="t">object</span>&gt;
+  &lt;<span class="t">name</span>&gt;<span class="v">WBC</span>&lt;/<span class="t">name</span>&gt;
+  &lt;<span class="t">bndbox</span>&gt;
+    &lt;<span class="t">xmin</span>&gt;<span class="v">260</span>&lt;/<span class="t">xmin</span>&gt;
+    &lt;<span class="t">ymin</span>&gt;<span class="v">177</span>&lt;/<span class="t">ymin</span>&gt;
+    &lt;<span class="t">xmax</span>&gt;<span class="v">491</span>&lt;/<span class="t">xmax</span>&gt;
+    &lt;<span class="t">ymax</span>&gt;<span class="v">376</span>&lt;/<span class="t">ymax</span>&gt;
+  &lt;/<span class="t">bndbox</span>&gt;
+&lt;/<span class="t">object</span>&gt;</div>
+                        <div class="pulse" style="font-size:50px; color:var(--red); font-weight:900">→</div>
+                        <div class="col f1" style="gap:12px">
+                            <table class="tbl" style="background:#fff; border-radius:12px; box-shadow:var(--shadow); font-size:20px">
+                                <tr><th>dosya</th><th>sınıf</th><th>xmin</th><th>ymin</th><th>xmax</th><th>ymax</th></tr>
+                                <tr style="background:#fff4f5"><td>…00000.jpg</td><td><b style="color:var(--violet)">WBC</b></td><td class="n">260</td><td class="n">177</td><td class="n">491</td><td class="n">376</td></tr>
+                                <tr><td>…00000.jpg</td><td><b class="red">RBC</b></td><td class="n">78</td><td class="n">336</td><td class="n">184</td><td class="n">435</td></tr>
+                                <tr><td>…00000.jpg</td><td><b class="red">RBC</b></td><td class="n">63</td><td class="n">237</td><td class="n">169</td><td class="n">336</td></tr>
+                                <tr><td colspan="6" class="muted" style="text-align:center">… toplam 4.888 satır</td></tr>
+                            </table>
+                            <div class="lesson">Tüm veri seti tek bir tabloya döndü: artık <b>Excel gibi</b> sorgulayabiliriz: “Hangi görüntüde kaç akyuvar var?”</div>
+                        </div>
+                    </div>
+                    <div class="tryit"><b>Deneyin:</b> <code>kutulari_ciz(...)</code> içine başka bir dosya adı verin.</div>
+                </div>
+                <aside class="notes">XML ilk bakışta korkutucu ama sadece kutu koordinatları. pandas ile tabloya çeviriyoruz.</aside>
+            </section>
+
+            <section data-id="u-s5">
+                <div class="sl">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 5</span><div class="kick">Eşikleme + havza</div></div>
+                    <h2>Önce 8 leke, sonra 18 hücre</h2>
+                    <img class="fig" src="../assets/img/nb_watershed.jpg" alt="havza" style="width:100%; max-height:400px; object-fit:contain">
+                    <div class="g2">
+                        <div class="tryit"><b>Deneyin:</b> <code>hucre_say(img, min_mesafe=36)</code> → 20 ya da 50 yapın. Hücreler nasıl bölünüyor?</div>
+                        <div class="tryit"><b>Deneyin:</b> <code>min_alan=900</code> → 300 yapın. Küçük parçalar da sayılırsa ne olur?</div>
+                    </div>
+                </div>
+                <aside class="notes">Basit Otsu eşiği 8 nesne buluyordu, havza ile 18; uzman 20. Parametreleri değiştirmeleri için zaman ver.</aside>
+            </section>
+
+            <section data-id="u-s6">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 6</span><div class="kick">Büyük sınav</div></div>
+                    <h2>100 görüntü, tek tuş</h2>
+                    <div class="row grow" style="gap:22px; align-items:flex-start">
+                        <img class="fig" src="../assets/img/nb_sayim_scatter.jpg" alt="saçılım" style="width:440px">
+                        <div class="col f1" style="gap:12px">
+                            <img class="fig" src="../assets/img/nb_eksik_etiket.jpg" alt="eksik etiket" style="width:100%">
+                            <div class="tryit"><b>Mini yarışma 🏆</b> Adım 5'teki parametrelerle oynayın, Adım 6'yı yeniden çalıştırın. <b>Ortalama hatayı 4'ün altına</b> kim indirecek?</div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Yarışma: en düşük hatayı bulan ekrana gelsin. İpucu: min_mesafe ve min_alan birlikte.</aside>
+            </section>
+
+            <section data-id="u-s7">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 7</span><div class="kick">Akyuvarı rengiyle bulmak + IoU</div></div>
+                    <h2>Mor çekirdek ipucu: mavi − yeşil &gt; 60</h2>
+                    <img class="fig" src="../assets/img/nb_wbc_iou.jpg" alt="akyuvar IoU" style="width:100%">
+                    <div class="g2">
+                        <div class="lesson">Bilgisayar yalnız <b>çekirdeği</b> buldu, uzman ise tüm hücreyi kutuladı → IoU 0,6 civarı. Kural basit, sonuç fena değil!</div>
+                        <div class="tryit"><b>Deneyin:</b> eşiği 60 yerine 40 ya da 80 yapın. IoU artıyor mu?</div>
+                    </div>
+                </div>
+                <aside class="notes">Teorideki IoU kaydırıcısının gerçek hayattaki karşılığı. Üçüncü örnekte IoU 0,38: çekirdek hücrenin sadece bir kısmı.</aside>
+            </section>
+
+            <section data-id="u-s8">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 8</span><div class="kick">İlk makine öğrenmesi modelimiz</div></div>
+                    <h2>“Bu hücre ne?” Rastgele orman cevaplıyor</h2>
+                    <img class="fig" src="../assets/img/nb_rf.jpg" alt="rastgele orman" style="width:100%">
+                    <div class="g2">
+                        <div class="box"><p>Her kutudan 8 sayı (renk ortalamaları, renk oynaklığı, alan, en-boy) → model <b>%99,7</b> doğru. En önemli ipucu: <b>alan</b>.</p></div>
+                        <div class="lesson">Aynı görüntünün hücreleri ya eğitimde ya testte: <b>sızıntı</b> olmasın! 16:00'da bunun neden hayati olduğunu göreceğiz.</div>
+                    </div>
+                </div>
+                <aside class="notes">Burada yüksek başarı görüntüler arası ayrımla elde edildi. Bir sonraki dersin ana teması sızıntı; burada tohum ek.</aside>
+            </section>
+
+            <section data-id="u-s9">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:12px"><span class="step">ADIM 9</span><div class="kick">Sıra sizde</div></div>
+                    <h2>Kendi mikroskop görüntünüzü saydırın</h2>
+                    <div class="row grow" style="gap:30px; align-items:center">
+                        <div class="col f1" style="gap:14px">
+                            <ul class="ul">
+                                <li>Hücre 9'u çalıştırın → <b>Dosya seç</b></li>
+                                <li>Telefonla çekilmiş bir preparat fotoğrafı da olur</li>
+                                <li>Defter aynı havza yöntemini <b>sizin</b> görüntünüzde çalıştırır</li>
+                            </ul>
+                            <div class="box a"><p>Sonuç kötü mü? <b>Çok normal!</b> Kurallar BCCD'ye göre ayarlandı: farklı boya, büyütme ve ışık = farklı sayılar. İşte bu yüzden <b>kendi veri setiniz</b> gerekir.</p></div>
+                            <div class="box r"><p>🔒 Hasta verisi yüklemeyin: Colab bir bulut hizmetidir. Kimliksizleştirilmemiş tıbbi veri için kurumunuzun kurallarına uyun.</p></div>
+                        </div>
+                        <div class="card" style="width:400px; text-align:center"><span class="em" style="font-size:90px">📱🔬</span><h4>Okülere telefon tutup çekmek bile bir başlangıç</h4><p class="small">Pilot veriniz, ilk projenizin tohumu olabilir.</p></div>
+                    </div>
+                </div>
+                <aside class="notes">Bu adım isteğe bağlı. KVKK uyarısını mutlaka vurgula; yarınki hukuki oturumlara bağla.</aside>
+            </section>
+
+            <section data-id="end" class="dark" data-sound="fanfare"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="kick">Toparlarsak</div>
+                    <h2 style="font-size:58px; margin-top:8px">Hücreden koda: 5 cümle</h2>
+                    <div class="g5 st" style="margin-top:26px">
+                        <div class="card"><span class="em">🔢</span><p>Görüntü bir <b>sayı tablosudur</b>.</p></div>
+                        <div class="card"><span class="em">🏷️</span><p><b>Sorunuz</b> etiket türünü belirler.</p></div>
+                        <div class="card"><span class="em">✂️</span><p>Kural (eşik, havza) az veriyle <b>hızlı başlatır</b>.</p></div>
+                        <div class="card"><span class="em">🧠</span><p>Öğrenme, <b>iyi etiketli</b> çok veri ister.</p></div>
+                        <div class="card"><span class="em">⚖️</span><p>Doğruluk tek başına <b>yanıltır</b>.</p></div>
+                    </div>
+                    <div class="row ac" style="gap:24px; margin-top:34px">
+                        <div class="sec-tag" style="font-size:22px; padding:10px 20px; white-space:nowrap">16:00 · Canlı Modellerden Koda 🐭</div>
+                        <p class="lead">Hücreden canlıya: sedef hastalığı modeli ve <b style="color:#fff">PCL-PASI</b> veri seti</p>
+                    </div>
+                    <p class="muted" style="margin-top:28px; font-size:18px">doganr.com · pharmaiktu.github.io · Teşekkürler! 🙏</p>
+                </div>
+                <aside class="notes">Kapanış ve 16:00 dersine köprü.</aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="../assets/vendor/reveal.min.js"></script>
+    <script src="../assets/vendor/notes.min.js"></script>
+    <script src="../assets/vendor/qrcode.min.js"></script>
+    <script src="../assets/bccd_data.js"></script>
+    <script src="../assets/ilafar.js"></script>
+    <script src="hucre.js"></script>
+</body>
+
+</html>

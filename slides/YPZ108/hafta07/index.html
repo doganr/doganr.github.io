@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 7. Hafta - Gözetim Toplumu ve Mahremiyet Dengesi</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 7 — Pink & Rose & Indigo Theme */
+        .reveal h1,
+        .reveal h2,
+        .reveal h3,
+        .reveal h4 {
+            font-family: 'Inter', sans-serif;
+            text-transform: none;
+        }
+
+        .reveal h1 {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(236, 72, 153, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .concept-badge {
+            background: rgba(236, 72, 153, 0.15);
+            color: #f472b6;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0
+            }
+
+            100% {
+                background-position: 200% 0
+            }
+        }
+
+        @keyframes scan {
+            0% {
+                top: -10%
+            }
+
+            100% {
+                top: 110%
+            }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #f472b6 0%, #c084fc 50%, #f472b6 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        /* Scanning line */
+        .scan-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(244, 114, 182, 0.6), transparent);
+            animation: scan 3s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Data stream */
+        @keyframes dataflow {
+            0% {
+                transform: translateY(-100%)
+            }
+
+            100% {
+                transform: translateY(100%)
+            }
+        }
+
+        .data-stream {
+            font-family: monospace;
+            font-size: 8px;
+            color: rgba(244, 114, 182, 0.15);
+            line-height: 1.2;
+            animation: dataflow 8s linear infinite;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 1: KAPAK                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 30% 50%, #4a1942 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-pink-600 top-0 right-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <!-- Badge -->
+                    <div
+                        class="px-4 py-2 bg-pink-500/10 rounded-full text-xs font-bold tracking-widest mb-6 border border-pink-500/30">
+                        <span class="text-pink-400">HAFTA 07</span>
+                        <span class="text-slate-600 mx-2">•</span>
+                        <span class="text-slate-400">BİLİŞİM ETİĞİ</span>
+                    </div>
+
+                    <!-- İkon -->
+                    <div class="relative mb-8 group">
+                        <div
+                            class="absolute inset-0 bg-pink-600 rounded-full blur-[60px] opacity-30 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse">
+                        </div>
+                        <div
+                            class="absolute inset-[-20px] rounded-full border border-pink-500/20 animate-[spin_15s_linear_infinite]">
+                        </div>
+                        <div
+                            class="absolute inset-[-40px] rounded-full border border-purple-500/10 border-dashed animate-[spin_25s_linear_infinite_reverse]">
+                        </div>
+                        <div
+                            class="p-8 bg-pink-500/10 rounded-full border border-pink-500/20 relative z-10 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110">
+                            <i data-lucide="eye" style="width: 80px; height: 80px;"
+                                class="text-pink-400 drop-shadow-[0_0_15px_rgba(244,114,182,0.8)]"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl mb-4 leading-tight">Gözetim Toplumu ve<br>
+                        <span class="shimmer-text">Mahremiyet Dengesi</span>
+                    </h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">7. Hafta: Kim İzliyor, Kim
+                        İzleniyor?</p>
+                    <div class="mt-8 flex gap-6 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span class="flex items-center gap-2"><i data-lucide="cctv" size="12" class="text-pink-500"></i>
+                            GÖZETİM</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="shield" size="12"
+                                class="text-pink-500"></i> MAHREMİYET</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="scale" size="12"
+                                class="text-pink-500"></i> DENGE</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 2: PANOPTİKON                        -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-pink-600 bottom-0 left-0"></div>
+                    <div class="grid grid-cols-2 gap-10 items-center text-left">
+                        <div>
+                            <div class="concept-badge mb-6">Jeremy Bentham • 1785</div>
+                            <h2 class="text-4xl mb-4">Panoptikon<br><span class="text-pink-400">Hapishanesi</span></h2>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-5">
+                                Merkezi bir kule, etrafında hücreler. Mahkumlar kuleyi göremez ama izlendiklerini
+                                <strong class="text-white">varsayarlar</strong>. Bu varsayım tek başına davranışı
+                                değiştirir.
+                            </p>
+                            <div class="p-4 bg-pink-900/20 border-l-4 border-pink-500 rounded-r-xl mb-5">
+                                <p class="text-[11px] italic text-pink-200 m-0">"Görünmeden gözetlemek, iktidarın en
+                                    büyük gücüdür."</p>
+                                <p class="text-[9px] text-pink-400 mt-1 m-0 font-bold">— Michel Foucault</p>
+                            </div>
+                            <div class="space-y-3">
+                                <div
+                                    class="flex items-center gap-3 p-2.5 bg-pink-500/5 rounded-xl border border-pink-500/10 hover:bg-pink-500/10 transition-all cursor-default">
+                                    <div class="p-1.5 bg-pink-500/20 rounded-lg"><i data-lucide="video"
+                                            class="text-pink-400" size="18"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Modern CCTV Şebekesi</h4>
+                                        <p class="text-slate-500 text-[9px] m-0">Londra: 1 kişi başına 68 kamera</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex items-center gap-3 p-2.5 bg-pink-500/5 rounded-xl border border-pink-500/10 hover:bg-pink-500/10 transition-all cursor-default">
+                                    <div class="p-1.5 bg-pink-500/20 rounded-lg"><i data-lucide="smartphone"
+                                            class="text-pink-400" size="18"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Dijital Panoptikon</h4>
+                                        <p class="text-slate-500 text-[9px] m-0">Sosyal medya, konum takibi, cookie'ler
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Görsel -->
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-0 bg-pink-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl">
+                            </div>
+                            <!-- GÖRSEL: Panoptikon / Gözetim temalı -> images/panopticon.png -->
+                            <img src="images/panopticon_prison.jpg" alt="Dijital Panoptikon"
+                                class="w-full rounded-2xl border border-pink-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500"
+                                style="max-height:460px; object-fit:cover;"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-pink-500/20 items-center justify-center flex-col relative overflow-hidden"
+                                style="height:400px;">
+                                <div class="scan-line"></div>
+                                <i data-lucide="eye" class="text-pink-400 mb-4" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/panopticon.png</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.1: Dijital Panoptikon İstatistikleri -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-3xl mb-8"><span class="text-pink-400">Dijital Gözetim</span> Sayılarla</h2>
+                    <div class="grid grid-cols-4 gap-5">
+                        <div
+                            class="fragment glass-card p-5 text-center border-pink-500/10 hover:border-pink-500/30 transition-all group">
+                            <div class="text-3xl font-black text-white mb-1 group-hover:scale-110 transition-transform">
+                                5.9<span class="text-lg text-pink-400">M</span></div>
+                            <div class="text-pink-400 text-[10px] font-bold mb-1">CCTV Kamera</div>
+                            <p class="text-[9px] text-slate-500 m-0">Sadece Londra'da kurulu — dünyanın en gözetlenen
+                                şehri</p>
+                        </div>
+                        <div
+                            class="fragment glass-card p-5 text-center border-purple-500/10 hover:border-purple-500/30 transition-all group">
+                            <div class="text-3xl font-black text-white mb-1 group-hover:scale-110 transition-transform">
+                                2.5<span class="text-lg text-purple-400">EB</span></div>
+                            <div class="text-purple-400 text-[10px] font-bold mb-1">Günlük Veri</div>
+                            <p class="text-[9px] text-slate-500 m-0">Dünya genelinde her gün üretilen veri miktarı
+                                (Exabyte)</p>
+                        </div>
+                        <div
+                            class="fragment glass-card p-5 text-center border-rose-500/10 hover:border-rose-500/30 transition-all group">
+                            <div class="text-3xl font-black text-white mb-1 group-hover:scale-110 transition-transform">
+                                72<span class="text-lg text-rose-400">%</span></div>
+                            <div class="text-rose-400 text-[10px] font-bold mb-1">İzlendiğini Bilmiyor</div>
+                            <p class="text-[9px] text-slate-500 m-0">Kullanıcıların çoğu hangi verilerinin
+                                toplandığından habersiz</p>
+                        </div>
+                        <div
+                            class="fragment glass-card p-5 text-center border-indigo-500/10 hover:border-indigo-500/30 transition-all group">
+                            <div class="text-3xl font-black text-white mb-1 group-hover:scale-110 transition-transform">
+                                1<span class="text-lg text-indigo-400">B+</span></div>
+                            <div class="text-indigo-400 text-[10px] font-bold mb-1">Yüz Tanıma DB</div>
+                            <p class="text-[9px] text-slate-500 m-0">Clearview AI'ın sosyal medyadan toplanan yüz
+                                veritabanı</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-3 bg-pink-500/5 rounded-xl border border-pink-500/10 max-w-3xl mx-auto">
+                        <p class="text-[10px] text-slate-400 italic m-0"><i data-lucide="info" size="12"
+                                class="text-pink-400 inline mr-1"></i> Shoshana Zuboff buna <strong
+                                class="text-pink-400">"Gözetim Kapitalizmi"</strong> diyor: Kişisel verileriniz ücretsiz
+                            ürünün bedelidir.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 3: GÜVENLİK vs ÖZGÜRLÜK              -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-pink-500/20 rounded-xl"><i data-lucide="scale" class="text-pink-400"
+                                size="28"></i></div>
+                        <h2 class="text-4xl m-0">Güvenlik vs. <span class="text-pink-400">Özgürlük</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8">
+                        <div
+                            class="fragment glass-card p-5 text-left border-blue-500/20 hover:border-blue-500/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all group">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-blue-500/20 rounded-lg group-hover:bg-blue-500/30 transition-colors">
+                                    <i data-lucide="shield-check" class="text-blue-400" size="24"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg text-blue-400 font-bold m-0">Güvenlik Tarafı</h3>
+                                    <span class="text-[9px] text-slate-500 uppercase tracking-widest">"Koruma için
+                                        izleme şart"</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2.5">
+                                <div class="flex items-start gap-2 text-[11px] text-slate-300"><i data-lucide="check"
+                                        class="text-blue-400 shrink-0 mt-0.5" size="12"></i> Terörle mücadele ve kamu
+                                    güvenliği</div>
+                                <div class="flex items-start gap-2 text-[11px] text-slate-300"><i data-lucide="check"
+                                        class="text-blue-400 shrink-0 mt-0.5" size="12"></i> Suç önleme ve caydırıcılık
+                                </div>
+                                <div class="flex items-start gap-2 text-[11px] text-slate-300"><i data-lucide="check"
+                                        class="text-blue-400 shrink-0 mt-0.5" size="12"></i> Kayıp kişi ve çocuk arama
+                                </div>
+                            </div>
+                            <div class="mt-3 p-2 bg-blue-500/5 rounded-lg border border-blue-500/10">
+                                <p class="text-[9px] text-blue-400 italic m-0">Örnek: 11 Eylül sonrası Patriot Act (ABD)
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="fragment glass-card p-5 text-left border-pink-500/20 hover:border-pink-500/40 hover:shadow-[0_0_30px_rgba(236,72,153,0.1)] transition-all group">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-pink-500/20 rounded-lg group-hover:bg-pink-500/30 transition-colors">
+                                    <i data-lucide="lock" class="text-pink-400" size="24"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg text-pink-400 font-bold m-0">Özgürlük Tarafı</h3>
+                                    <span class="text-[9px] text-slate-500 uppercase tracking-widest">"Mahremiyet temel
+                                        haktır"</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2.5">
+                                <div class="flex items-start gap-2 text-[11px] text-slate-300"><i data-lucide="check"
+                                        class="text-pink-400 shrink-0 mt-0.5" size="12"></i> İfade özgürlüğü ve
+                                    oto-sansür riski</div>
+                                <div class="flex items-start gap-2 text-[11px] text-slate-300"><i data-lucide="check"
+                                        class="text-pink-400 shrink-0 mt-0.5" size="12"></i> Kötüye kullanım ve
+                                    profilleme tehlikesi</div>
+                                <div class="flex items-start gap-2 text-[11px] text-slate-300"><i data-lucide="check"
+                                        class="text-pink-400 shrink-0 mt-0.5" size="12"></i> Güç dengesizliği: devlet vs
+                                    birey</div>
+                            </div>
+                            <div class="mt-3 p-2 bg-pink-500/5 rounded-lg border border-pink-500/10">
+                                <p class="text-[9px] text-pink-400 italic m-0">Örnek: Snowden İfşaatları (2013, NSA)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-3 bg-slate-900/60 rounded-xl border border-slate-700 max-w-3xl mx-auto">
+                        <p class="text-[10px] text-slate-400 m-0 text-center"><i data-lucide="quote" size="12"
+                                class="text-pink-400 inline mr-1"></i> <em>"Saklayacak bir şeyiniz olmasa bile,
+                                mahremiyet sizin hakkınızdır."</em> — <strong class="text-pink-400">Edward
+                                Snowden</strong></p>
+                    </div>
+                </section>
+
+                <!-- 3.1: Black Mirror — Nosedive -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-5"><i data-lucide="tv" class="text-pink-400 inline mr-2" size="24"></i>Black
+                        Mirror: <span class="text-pink-400">"Nosedive"</span> <span
+                            class="text-slate-600 text-base">(S3E1)</span></h2>
+                    <div class="grid grid-cols-2 gap-6 items-center">
+                        <div class="text-left">
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                                Herkesin birbirini <strong class="text-pink-400">5 üzerinden puanladığı</strong> bir
+                                dünya. Puanınız hayatınızın her alanını belirliyor: ev, iş, uçuş, hatta arkadaşlık.
+                                Lacie Pound, 4.2 puanını yükseltmeye çalışırken her şeyi kaybeder.
+                            </p>
+                            <div class="space-y-3">
+                                <div
+                                    class="fragment p-3 bg-slate-900 border-l-4 border-pink-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-pink-400 mb-0.5 m-0">🎭 Sahte Gülümsemeler</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Herkes puanını yükseltmek için "yapay"
+                                        davranışlar sergiler. Gerçek ilişkiler yok olur.</p>
+                                </div>
+                                <div
+                                    class="fragment p-3 bg-slate-900 border-l-4 border-purple-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-purple-400 mb-0.5 m-0">📉 Sosyal Çöküş</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Tek bir kötü gün, zincirleme düşük
+                                        puanlara ve toplumdan dışlanmaya yol açabilir.</p>
+                                </div>
+                                <div
+                                    class="fragment p-3 bg-slate-900 border-l-4 border-rose-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-rose-400 mb-0.5 m-0">🔗 Gerçek Hayat Bağlantısı
+                                    </p>
+                                    <p class="text-[10px] text-slate-400 m-0">Çin Sosyal Kredi, Uber/Airbnb puanlama,
+                                        Instagram beğeni kültürü — kurgu gerçek oluyor.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sağ: Sahte sosyal skor kartı -->
+                        <div class="glass-card p-5 border-pink-500/30 text-center relative overflow-hidden">
+                            <div class="scan-line"></div>
+                            <center><img src="images/nosedive.gif" alt="Lacie Pound"
+                                    class="w-40 h-40 rounded-full mx-auto mb-3 border-2 border-pink-500/40 shadow-[0_0_20px_rgba(236,72,153,0.3)] object-cover">
+                            </center>
+                            <h4 class="text-white font-bold text-sm m-0">Lacie Pound</h4>
+                            <p class="text-[9px] text-slate-500 m-0 mb-3">@lacie_pound</p>
+                            <div class="flex items-baseline justify-center gap-2 mb-3">
+                                <span class="text-5xl font-black text-white">4.2</span>
+                                <span class="text-sm text-pink-400/60 font-bold">/ 5.0</span>
+                            </div>
+                            <div class="flex justify-center gap-1 mb-3">
+                                <span class="text-amber-400 text-lg">★★★★</span><span
+                                    class="text-slate-600 text-lg">★</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 mb-3">
+                                <div class="p-1.5 bg-pink-500/10 rounded-lg border border-pink-500/10">
+                                    <p class="text-[8px] text-pink-400 m-0 font-bold">Prime Apart</p>
+                                    <p class="text-[7px] text-slate-500 m-0">4.5+ gerekli</p>
+                                </div>
+                                <div class="p-1.5 bg-emerald-500/10 rounded-lg border border-emerald-500/10">
+                                    <p class="text-[8px] text-emerald-400 m-0 font-bold">İş Başvurusu</p>
+                                    <p class="text-[7px] text-slate-500 m-0">✓ Uygun</p>
+                                </div>
+                                <div class="p-1.5 bg-red-500/10 rounded-lg border border-red-500/10">
+                                    <p class="text-[8px] text-red-400 m-0 font-bold">VIP Uçuş</p>
+                                    <p class="text-[7px] text-slate-500 m-0">4.8+ gerekli</p>
+                                </div>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-red-500 via-amber-400 to-emerald-400"
+                                    style="width:84%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 4: GÖZETİM TEKNOLOJİLERİ             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-purple-600 top-0 right-0"></div>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-purple-500/20 rounded-xl"><i data-lucide="scan-face" class="text-purple-400"
+                                size="28"></i></div>
+                        <h2 class="text-4xl m-0">Gözetim <span class="text-purple-400">Teknolojileri</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-5">
+                        <div
+                            class="fragment glass-card p-5 text-center border-pink-500/10 hover:border-pink-500/40 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all group">
+                            <div
+                                class="p-3 bg-pink-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-pink-500/20">
+                                <i data-lucide="scan-face" class="text-pink-400" size="32"></i>
+                            </div>
+                            <h4 class="text-pink-400 font-bold text-sm m-0 mb-2">Yüz Tanıma</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-2">Clearview AI: 30 milyar+ fotoğraf.
+                                Kalabalıkta anında kimlik tespiti.</p>
+                            <div class="p-1.5 bg-pink-500/5 rounded-lg border border-pink-500/10">
+                                <p class="text-[8px] text-pink-400 m-0 italic">AB'de kamusal alanda yasaklama tartışması
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="fragment glass-card p-5 text-center border-purple-500/10 hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] transition-all group">
+                            <div
+                                class="p-3 bg-purple-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-purple-500/20">
+                                <i data-lucide="map-pin" class="text-purple-400" size="32"></i>
+                            </div>
+                            <h4 class="text-purple-400 font-bold text-sm m-0 mb-2">Konum Takibi</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-2">Telefonunuz dakikada 1 konum verisi gönderir.
+                                Tüm hareketleriniz kaydedilir.</p>
+                            <div class="p-1.5 bg-purple-500/5 rounded-lg border border-purple-500/10">
+                                <p class="text-[8px] text-purple-400 m-0 italic">Google Timeline: Yılların hareketi tek
+                                    haritada</p>
+                            </div>
+                        </div>
+                        <div
+                            class="fragment glass-card p-5 text-center border-indigo-500/10 hover:border-indigo-500/40 hover:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all group">
+                            <div
+                                class="p-3 bg-indigo-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-indigo-500/20">
+                                <i data-lucide="brain" class="text-indigo-400" size="32"></i>
+                            </div>
+                            <h4 class="text-indigo-400 font-bold text-sm m-0 mb-2">Davranış Analizi</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-2">Sosyal medya beğenileri, arama geçmişi, satın
+                                alma kalıplarından profilleme.</p>
+                            <div class="p-1.5 bg-indigo-500/5 rounded-lg border border-indigo-500/10">
+                                <p class="text-[8px] text-indigo-400 m-0 italic">Cambridge Analytica: Seçim
+                                    manipülasyonu</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4.1: Çin Sosyal Kredi Sistemi -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-6"><i data-lucide="star" class="text-rose-400 inline mr-2"
+                            size="24"></i>Vaka: <span class="text-rose-400">Çin Sosyal Kredi Sistemi</span></h2>
+                    <div class="grid grid-cols-2 gap-6 items-center">
+                        <div class="text-left">
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                                Her vatandaşa bir <strong class="text-white">"güvenilirlik puanı"</strong> veriliyor.
+                                Puanınız düşerse uçak bileti alamaz, çocuğunuz özel okula gidemez, hatta internet
+                                hızınız yavaşlatılabilir.
+                            </p>
+                            <div class="space-y-3">
+                                <div
+                                    class="fragment flex items-start gap-3 p-2.5 bg-emerald-500/5 rounded-xl border border-emerald-500/10">
+                                    <i data-lucide="thumbs-up" class="text-emerald-400 shrink-0 mt-0.5" size="16"></i>
+                                    <div>
+                                        <h4 class="text-[10px] text-emerald-400 font-bold m-0">Puan Artıran</h4>
+                                        <p class="text-[9px] text-slate-400 m-0">Faturaları zamanında ödeme, kan bağışı,
+                                            toplum hizmeti</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="fragment flex items-start gap-3 p-2.5 bg-red-500/5 rounded-xl border border-red-500/10">
+                                    <i data-lucide="thumbs-down" class="text-red-400 shrink-0 mt-0.5" size="16"></i>
+                                    <div>
+                                        <h4 class="text-[10px] text-red-400 font-bold m-0">Puan Düşüren</h4>
+                                        <p class="text-[9px] text-slate-400 m-0">Trafik ihlali, sahte haber paylaşma,
+                                            borç geciktirme</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="fragment flex items-start gap-3 p-2.5 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                    <i data-lucide="ban" class="text-rose-400 shrink-0 mt-0.5" size="16"></i>
+                                    <div>
+                                        <h4 class="text-[10px] text-rose-400 font-bold m-0">Düşük Puan Cezaları</h4>
+                                        <p class="text-[9px] text-slate-400 m-0">Uçuş yasağı, tren yasağı, otel
+                                            kısıtlaması, internet yavaşlatma</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sağ: Puan gösterge kartı -->
+                        <div class="glass-card p-5 border-rose-500/30 text-center relative overflow-hidden">
+                            <div class="scan-line"></div>
+                            <div class="text-[9px] text-rose-400 font-bold uppercase tracking-widest mb-3">Sosyal Kredi
+                                Puanı</div>
+                            <div class="relative inline-block mb-3">
+                                <div class="text-7xl font-black text-white">680</div>
+                                <div
+                                    class="absolute -top-1 -right-4 text-[8px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full border border-amber-500/30">
+                                    ORTALAMAx</div>
+                            </div>
+                            <div class="w-full h-3 bg-slate-800 rounded-full mb-2 overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500"
+                                    style="width:68%"></div>
+                            </div>
+                            <div class="flex justify-between text-[8px] text-slate-500 mb-4">
+                                <span>350</span><span class="text-red-400">Düşük</span><span
+                                    class="text-amber-400">Orta</span><span
+                                    class="text-emerald-400">İyi</span><span>950</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="p-2 bg-red-500/10 rounded-lg border border-red-500/10">
+                                    <i data-lucide="plane" class="text-red-400 mx-auto mb-1" size="16"></i>
+                                    <p class="text-[8px] text-red-400 m-0">Uçuş ❌</p>
+                                </div>
+                                <div class="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/10">
+                                    <i data-lucide="train-front" class="text-emerald-400 mx-auto mb-1" size="16"></i>
+                                    <p class="text-[8px] text-emerald-400 m-0">Tren ✓</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 5: KORUNMA YÖNTEMLERİ                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(135deg, #020617 0%, #4a1942 100%)">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="p-3 bg-emerald-500/20 rounded-xl"><i data-lucide="shield-check" class="text-emerald-400"
+                            size="28"></i></div>
+                    <h2 class="text-4xl m-0">Dijital <span class="text-emerald-400">Korunma</span></h2>
+                </div>
+
+                <div class="grid grid-cols-4 gap-4">
+                    <div
+                        class="fragment glass-card p-4 text-center border-emerald-500/10 hover:border-emerald-500/40 transition-all group">
+                        <div
+                            class="p-2.5 bg-emerald-500/10 rounded-xl inline-block mb-2 group-hover:scale-110 transition-transform group-hover:bg-emerald-500/20">
+                            <i data-lucide="shield" class="text-emerald-400" size="28"></i>
+                        </div>
+                        <h4 class="text-emerald-400 font-bold text-xs m-0 mb-1">VPN Kullanımı</h4>
+                        <p class="text-[9px] text-slate-500 m-0">İnternet trafiğinizi şifreler, IP adresinizi gizler</p>
+                    </div>
+                    <div
+                        class="fragment glass-card p-4 text-center border-teal-500/10 hover:border-teal-500/40 transition-all group">
+                        <div
+                            class="p-2.5 bg-teal-500/10 rounded-xl inline-block mb-2 group-hover:scale-110 transition-transform group-hover:bg-teal-500/20">
+                            <i data-lucide="lock-keyhole" class="text-teal-400" size="28"></i>
+                        </div>
+                        <h4 class="text-teal-400 font-bold text-xs m-0 mb-1">Uçtan Uca Şifreleme</h4>
+                        <p class="text-[9px] text-slate-500 m-0">Signal, WhatsApp E2E — yalnızca siz ve alıcı okur</p>
+                    </div>
+                    <div
+                        class="fragment glass-card p-4 text-center border-cyan-500/10 hover:border-cyan-500/40 transition-all group">
+                        <div
+                            class="p-2.5 bg-cyan-500/10 rounded-xl inline-block mb-2 group-hover:scale-110 transition-transform group-hover:bg-cyan-500/20">
+                            <i data-lucide="cookie" class="text-cyan-400" size="28"></i>
+                        </div>
+                        <h4 class="text-cyan-400 font-bold text-xs m-0 mb-1">Cookie Yönetimi</h4>
+                        <p class="text-[9px] text-slate-500 m-0">Takip çerezlerini reddedin, düzenli temizleyin</p>
+                    </div>
+                    <div
+                        class="fragment glass-card p-4 text-center border-blue-500/10 hover:border-blue-500/40 transition-all group">
+                        <div
+                            class="p-2.5 bg-blue-500/10 rounded-xl inline-block mb-2 group-hover:scale-110 transition-transform group-hover:bg-blue-500/20">
+                            <i data-lucide="key-round" class="text-blue-400" size="28"></i>
+                        </div>
+                        <h4 class="text-blue-400 font-bold text-xs m-0 mb-1">2FA & Güçlü Şifre</h4>
+                        <p class="text-[9px] text-slate-500 m-0">İki faktörlü kimlik doğrulama + şifre yöneticisi</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 max-w-3xl mx-auto">
+                    <p class="text-[10px] text-slate-400 m-0"><i data-lucide="info" size="12"
+                            class="text-emerald-400 inline mr-1"></i> <strong class="text-emerald-400">KVKK (Türkiye) ve
+                            GDPR (AB)</strong> — kişisel veri toplama ve işleme için açık rıza zorunludur. Bireylerin
+                        verilerini silme hakkı vardır.</p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 6: İNTERAKTİF SENARYO                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-pink-600 top-0 right-0"></div>
+                <div class="grid grid-cols-2 gap-8 items-center">
+                    <!-- SOL: Görsel -->
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 bg-pink-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl">
+                        </div>
+                        <!-- GÖRSEL: Çalışan izleme / ofis gözetim -> images/surveillance.jpg -->
+                        <img src="images/surveillance.jpg" alt="Şirket İçi Gözetim"
+                            class="w-full rounded-2xl border border-pink-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500"
+                            style="max-height:480px; object-fit:cover;"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden glass-card p-12 border-pink-500/20 items-center justify-center flex-col relative overflow-hidden"
+                            style="height:400px;">
+                            <div class="scan-line"></div>
+                            <i data-lucide="cctv" class="text-pink-400 mb-4" size="80"></i>
+                            <p class="text-slate-500 text-sm">images/surveillance.png</p>
+                        </div>
+                    </div>
+
+                    <!-- SAĞ: İçerik -->
+                    <div class="text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="p-1.5 bg-pink-500/20 rounded-lg animate-pulse"><i
+                                    data-lucide="mouse-pointer-click" class="text-pink-400" size="16"></i></div>
+                            <span class="concept-badge" style="margin-bottom:0;">ETİK İKİLEM</span>
+                        </div>
+
+                        <h2 class="text-2xl mb-4 m-0"><span class="text-pink-400">Senaryo:</span> "Verimlilik" Takibi
+                        </h2>
+
+                        <div class="glass-card p-4 border-pink-400/30 mb-4">
+                            <p class="text-[11px] text-slate-200 mb-2 m-0 leading-relaxed">
+                                Bir yazılım şirketinde yöneticisiniz. Şirket, çalışanların kameralarını kullanarak <span
+                                    class="bg-pink-500/20 text-pink-400 px-1.5 py-0.5 rounded border border-pink-500/30 font-bold text-[10px]">"odaklanma
+                                    sürelerini"</span> ve <span
+                                    class="bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30 font-bold text-[10px]">"duygu
+                                    durumlarını"</span> analiz eden bir AI sistemi kurmak istiyor.
+                            </p>
+                            <div class="bg-black/60 p-2.5 rounded-lg border border-slate-700">
+                                <p class="text-[10px] text-slate-400 italic m-0 pl-2">Verimlilik <strong
+                                        class="text-white">%20 artacak</strong> iddia ediliyor. <strong
+                                        class="text-pink-400">Kurar mısınız?</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div
+                                class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-indigo-500 hover:bg-indigo-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div
+                                        class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-indigo-900/50 transition-colors">
+                                        <i data-lucide="line-chart"
+                                            class="text-slate-400 group-hover:text-indigo-400 transition-colors"
+                                            size="16"></i>
+                                    </div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-indigo-400 m-0">Verimlilik
+                                        Odaklı</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"İş saati şirkete ait. Artış herkesin
+                                    yararına."</p>
+                            </div>
+                            <div
+                                class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-pink-500 hover:bg-pink-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(236,72,153,0.2)]">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div
+                                        class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-pink-900/50 transition-colors">
+                                        <i data-lucide="heart"
+                                            class="text-slate-400 group-hover:text-pink-400 transition-colors"
+                                            size="16"></i>
+                                    </div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-pink-400 m-0">Güven Odaklı
+                                    </h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Gözetim yaratıcılığı öldürür, onura
+                                    aykırı."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 7: KAPANIŞ                           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 100%, #4a1942 0%, #000 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2 class="text-4xl mb-4">Haftaya Bakış</h2>
+                    <p class="text-xl text-slate-400 mb-8">Sıradaki Konu: <span
+                            class="text-pink-400 border-b border-pink-400">Kişisel Veriler ve Mahremiyet</span></p>
+
+                    <div class="glass-card p-6 max-w-3xl mb-6 border-pink-500/30">
+                        <h4 class="text-white text-sm font-bold mb-5 text-center tracking-widest">BU HAFTA NE ÖĞRENDİK?
+                        </h4>
+                        <div class="grid grid-cols-4 gap-6 text-center">
+                            <div>
+                                <i data-lucide="eye" class="text-pink-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-pink-400 text-xs font-bold m-0">Panoptikon</p>
+                                <p class="text-slate-500 text-[10px] m-0">Dijital Gözetim</p>
+                            </div>
+                            <div>
+                                <i data-lucide="scale" class="text-blue-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-blue-400 text-xs font-bold m-0">Güvenlik vs.</p>
+                                <p class="text-slate-500 text-[10px] m-0">Özgürlük Dengesi</p>
+                            </div>
+                            <div>
+                                <i data-lucide="scan-face" class="text-purple-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-purple-400 text-xs font-bold m-0">Teknolojiler</p>
+                                <p class="text-slate-500 text-[10px] m-0">Yüz Tanıma, AI</p>
+                            </div>
+                            <div>
+                                <i data-lucide="shield-check" class="text-emerald-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-emerald-400 text-xs font-bold m-0">Korunma</p>
+                                <p class="text-slate-500 text-[10px] m-0">VPN, E2E, KVKK</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-sm italic text-slate-300">
+                        <i data-lucide="quote" class="inline text-pink-400" size="14"></i>
+                        Güvenlik için mahremiyetten ne kadar vazgeçebiliriz? Gözetim toplumu kapıda mı?
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false,
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+
+</html>

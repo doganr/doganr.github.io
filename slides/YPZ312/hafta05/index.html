@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapay Sinir Ağları 5. Hafta — Sürekli (Sigmoid) Perceptron</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+    <style>
+        .math-box { background: rgba(147, 197, 253, 0.06); border: 1px solid rgba(147, 197, 253, 0.22);
+            border-radius: 16px; padding: 12px 22px; margin: 0 auto; }
+        .katex { color: #e8eefc; }
+        .math-box { font-size: 0.6em; }
+        .math-box .katex-display { margin: 0.2em 0; }
+        .svg-wrap { max-width: 940px; margin: 0 auto; }
+        .svg-wrap svg { width: 100%; height: auto; }
+        .sec-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; font-weight: 700;
+            color: #64748b; letter-spacing: 0.04em; }
+        .dtab { border-collapse: collapse; margin: 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 0.5em; }
+        .dtab th, .dtab td { border: 1px solid rgba(255,255,255,0.12); padding: 5px 14px; color: #e2e8f0; text-align: left; }
+        .dtab th { color: #93c5fd; background: rgba(96,165,250,0.08); }
+        .dtab td.ok { color: #86efac; font-weight: 800; }
+        .dtab td.bad { color: #fca5a5; }
+        .dtab.nowrap-t td, .dtab.nowrap-t th { white-space: nowrap; padding: 4px 12px; }
+        .reveal pre code .hljs-comment { color: #a8b3c7; font-style: normal; }
+        .runbtn { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.5em; cursor: pointer;
+            background: rgba(108,99,255,0.16); color: #c7d2fe; border: 1px solid #6c63ff; border-radius: 999px;
+            padding: 6px 16px; transition: background 0.15s; }
+        .runbtn:hover { background: rgba(108,99,255,0.32); }
+        .runbtn.on { background: #6c63ff; color: #fff; }
+        .play-row { display: grid; grid-template-columns: 74px 1fr 58px; align-items: center; gap: 10px; margin: 5px 0; }
+        .play-row label { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.52em;
+            color: #c4b5fd; text-align: left; }
+        .play-row input[type=range] { width: 100%; accent-color: #6c63ff; }
+        .play-row .val { font-family: 'JetBrains Mono', monospace; font-size: 0.52em; color: #e2e8f0; text-align: right; }
+        .readout { font-family: 'JetBrains Mono', monospace; font-size: 0.5em; color: #cbd5e1; line-height: 1.7; }
+        .readout b { color: #fff; }
+        .wk { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #0b1020;
+            background: #93c5fd; border-radius: 6px; padding: 0 6px; font-weight: 800; }
+        .cite { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; color: #64748b; line-height: 1.5; }
+        .cards-tight .concept-card { padding: 12px 16px; }
+        .cards-tight .concept-card h4 { font-size: 0.66em; margin-bottom: 3px; }
+        .cards-tight .concept-card p { font-size: 0.54em; line-height: 1.45; }
+        .cards-mini .concept-card { padding: 10px 14px; }
+        .cards-mini .concept-card h4 { font-size: 0.6em; }
+        .cards-mini .concept-card p { font-size: 0.48em; line-height: 1.45; }
+        .w5quiz .quiz { margin-bottom: 4px; }
+        .w5quiz .quiz-q { font-size: 0.56em; margin-bottom: 5px; }
+        .w5quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.52em; }
+        .w5quiz .quiz-fb { font-size: 0.48em; min-height: 1.2em; margin-top: 4px; }
+        #w5sum .concept-card { padding: 6px 14px; min-height: 0; }
+        #w5sum .concept-card p { font-size: 0.5em; line-height: 1.4; }
+        /* okunuş notu: özel karakteri ilk gördükleri yerde */
+        .say { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; color: #94a3b8; margin: -4px auto 10px; }
+        .say b { color: #fde047; font-size: 1.2em; font-weight: 700; } .say i { color: #e2e8f0; font-style: normal; }
+        .say .sp { color: #475569; margin: 0 6px; }
+        i.rd { font-style: normal; color: #fde047; }
+        /* sembol ↔ sayı renkleri: w mavi, x mor, d yeşil, y sarı, η turuncu, r pembe, net camgöbeği */
+        .cw { color: #93c5fd; } .cx { color: #c4b5fd; } .cd { color: #86efac; } .cy { color: #fde047; }
+        .ce { color: #fdba74; } .cr { color: #f9a8d4; } .cn { color: #67e8f9; }
+        /* adım adım perceptron */
+        .st { display: flex; gap: 22px; align-items: flex-start; justify-content: center; }
+        .st-cv { width: 300px; height: 300px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); display: block; }
+        .st-leg { font-family: 'JetBrains Mono', monospace; font-size: 0.34em; color: #94a3b8; margin-top: 6px; max-width: 300px; }
+        .st-right { flex: 1; max-width: 720px; text-align: left; }
+        .st-ctrl { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+        .st .runbtn { font-size: 0.4em; padding: 5px 12px; }
+        .st-math { font-family: 'JetBrains Mono', monospace; font-size: 0.37em; line-height: 1.55; color: #cbd5e1;
+            background: rgba(147,197,253,0.06); border: 1px solid rgba(147,197,253,0.22); border-radius: 12px;
+            padding: 8px 12px; min-height: 9.6em; }
+        .st-math b { color: #fff; } .st-math .g { color: #86efac; } .st-math .r { color: #fca5a5; }
+        .st-math .y { color: #fbbf24; } .st-math .m { color: #64748b; }
+        .st-math .c1 { font-weight: 700; text-decoration: underline dotted; text-underline-offset: 3px; }
+        .reveal .st-eq { width: 100%; border-collapse: collapse; margin: 5px 0; font-size: 1em; }
+        .reveal .st-eq th { text-align: left; font-weight: 600; color: #64748b; padding: 0 6px 2px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+        .reveal .st-eq td { padding: 1px 6px; vertical-align: top; border-bottom: 1px dashed rgba(255,255,255,0.07); white-space: nowrap; }
+        .reveal .st-eq td:first-child { color: #e2e8f0; border-right: 1px solid rgba(255,255,255,0.12); }
+        .reveal .st-eq td:nth-child(2) { white-space: normal; }
+        .reveal .st-eq td:last-child { border-left: 1px solid rgba(255,255,255,0.12); }
+        .st-hist { font-size: 0.36em; margin: 8px 0 0 0; width: 100%; }
+        .st-hist th, .st-hist td { padding: 2px 8px; }
+        /* elle hesap tablosu: ileri geçiş ↔ öğrenme sütunları */
+        .hf { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 auto 10px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.48em; color: #e2e8f0; }
+        .hf .seg { padding: 5px 12px; border-radius: 10px; }
+        .hf .seg.fwd { border: 1px solid rgba(103,232,249,0.45); background: rgba(103,232,249,0.06); }
+        .hf .seg.upd { border: 1px solid rgba(249,168,212,0.55); background: rgba(236,72,153,0.10); }
+        .hf .ar { color: #64748b; } .hf .ar.big { font-size: 1.3em; color: #94a3b8; }
+        .htab .cw { color: #60a5fa; } .htab .cx { color: #a78bfa; }
+        .htab tr.grp th { font-size: 0.85em; letter-spacing: 0.04em; border-bottom: none; padding-bottom: 2px; }
+        .htab th.fwd { color: #67e8f9; border-bottom: 2px solid rgba(103,232,249,0.5) !important; }
+        .htab th.upd { color: #f9a8d4; background: rgba(236,72,153,0.12); }
+        .htab tr.grp th.upd { border-bottom: 2px solid rgba(249,168,212,0.6) !important; }
+        .htab td.upd { background: rgba(236,72,153,0.07); color: #fbcfe8; }
+        .htab td.upd.new { color: #86efac; font-weight: 700; }
+        .htab td.upd.zero { color: #64748b; }
+        .htab tr.stop td { color: #86efac; font-weight: 700; background: rgba(34,197,94,0.06); }
+        /* etkileşimli tuval + panel düzeni */
+        .wbox { display: flex; gap: 22px; align-items: flex-start; justify-content: center; }
+        .wcv { border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); display: block; touch-action: none; }
+        .wpanel { text-align: left; }
+        .wbtns { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+        .wbtns .runbtn { font-size: 0.4em; padding: 5px 12px; }
+        .wbtns .lbl { font-family: 'JetBrains Mono', monospace; font-size: 0.36em; color: #64748b; align-self: center; margin-right: 2px; }
+        .wro { font-family: 'JetBrains Mono', monospace; font-size: 0.4em; color: #cbd5e1; line-height: 1.6;
+            background: rgba(147,197,253,0.06); border: 1px solid rgba(147,197,253,0.22); border-radius: 12px; padding: 8px 12px; }
+        .wro b { color: #fff; } .wro .g { color: #86efac; } .wro .r { color: #fca5a5; } .wro .y { color: #fde047; } .wro .m { color: #64748b; }
+        .wleg { font-family: 'JetBrains Mono', monospace; font-size: 0.34em; color: #94a3b8; margin-top: 6px; }
+        .wpanel .play-row { grid-template-columns: 150px 1fr 54px; }
+        .wpanel .play-row label { font-size: 0.42em; }
+        .wpanel .play-row .val { font-size: 0.42em; }
+        /* olasılık çubuğu (odds) */
+        .obar { height: 14px; border-radius: 7px; overflow: hidden; background: rgba(244,63,94,0.45); margin: 6px 0 2px; }
+        .obar span { display: block; height: 100%; background: #3b82f6; }
+        /* zaman çizelgesi kartları */
+        .yr { display: block; font-family: 'JetBrains Mono', monospace; font-weight: 800; color: #fde047; font-size: 1.15em; margin-bottom: 2px; }
+        /* MSE ↔ CE renkleri */
+        .cmse { color: #fdba74; } .cce { color: #67e8f9; }
+        .wpanel .dtab { margin: 6px 0 0; }
+        .duo { display: flex; gap: 14px; justify-content: center; align-items: flex-start; }
+        .cards-xs .concept-card { padding: 8px 14px; }
+        .cards-xs .concept-card h4 { font-size: 0.52em; margin-bottom: 2px; }
+        .cards-xs .concept-card p { font-size: 0.43em; line-height: 1.42; }
+        /* widget altı not: sol alttaki slayt numarasına binmesin */
+        .reveal .slides section > p.wnote { max-width: 1010px; margin-left: auto; margin-right: auto; }
+        .sc .st-math { font-size: 0.35em; } .sc .st-hist { font-size: 0.34em; }
+        .duo .ttl { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.42em; margin-bottom: 4px; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere" style="width: 620px; height: 620px; top: -12%; left: -12%; background: #1e3a8a;"></div>
+                <div class="glow-sphere" style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #0e7490; animation-delay: -5s;"></div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">σ(net)</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">−ln y</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">d − y</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">softmax</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">λ</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">logit</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">1838</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">Iris</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">Yapay Sinir Ağları · Hafta 05</span>
+                    <div class="cover-icon mb-6"><i data-lucide="activity" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Sürekli <span
+                            class="grad-text">Perceptron</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Sigmoid · Güven · Çapraz Entropi ·
+                        Softmax</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span><span style="color:#f92672;">w</span>
+                        ← <span style="color:#f92672;">w</span> + <span style="color:#fd971f;">η</span>·<span
+                            style="color:#a6e22e;">(d − y)</span>·<span style="color:#66d9ef;">x</span> &nbsp;<span
+                            style="color:#475569;"># y artık σ(net)</span></span></div>
+                </div>
+            </section>
+
+
+            <!-- 2. GEÇEN HAFTA → BU HAFTA -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Hafta</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Kararla Birlikte <span
+                        class="code-note">Güven</span></h2>
+                <p class="code-note mb-4">Hafta 4'ün perceptronu yalnız “evet / hayır” diyordu. Basamağın yerine <b>σ</b> koyunca
+                    nöron <b>ne kadar emin</b> olduğunu da söyler; doğru hata ölçüsüyle (çapraz entropi) kural yine yalın kalır.
+                    Kapsam: hâlâ <b>tek nöron / tek katman</b>.</p>
+                <div class="grid grid-cols-4 gap-3 text-left cards-tight">
+                    <div class="concept-card fragment fade-up"><h4>📈 1 · Model</h4><p>y = σ(λ·net): diklik λ, güven = ‖w‖,
+                        y'yi olasılık gibi okumak.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>📉 2 · Hata ölçüsü</h4><p>MSE mi, çapraz entropi mi?
+                        CE'yi olabilirlikten türetmek.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⚙️ 3 · Kural</h4><p>Δw = η(d − y)x: f′ sadeleşir. Hata
+                        yüzeyi, adım adım AND.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🌸 4 ·
+                        Ötesi</h4><p>XOR'da “bilmiyorum”, Iris, softmax ile çok sınıf, lojistik regresyon.</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.5em;">🗺️ H3–H5 tek katman → H6 çok katmanlı ağ →
+                    H7 geri yayılım. Bugünkü nöron tek katmanın en çok kullanılan hâli: istatistikte ve tıpta her gün
+                    karşımıza çıkan <b>lojistik</b> nöron.</p>
+            </section>
+
+
+            <!-- 3. H3 + H4: İKİ YARIM -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="history" style="width:14px;height:14px;"></i> Hatırla · Hafta 3–4</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">İki Yarım, <span
+                        class="code-note">Bir Bütün</span></h2>
+                <div class="grid grid-cols-2 gap-4 text-left cards-tight" style="max-width:1000px;margin:0 auto;">
+                    <div class="concept-card" style="border-color:rgba(251,191,36,0.45);"><h4>🧱 H4 · Perceptron</h4>
+                        <p>y = sgn(net), Δw = η(d − y)x: türevsiz, doğruysa durur. Ama çıktı yalnız ±1 (ne kadar emin?) ve
+                            ayrılamazsa hiç durmaz: cep (pocket) gerekti.</p></div>
+                    <div class="concept-card" style="border-color:rgba(147,197,253,0.45);"><h4>📉 H3 · Delta</h4>
+                        <p>y = σ(net), Δw = η(d − y)·y(1 − y)·x: hatayı küçültür, ayrılamaz veride de bir en iyisi var. Ama
+                            f′ ≈ 0 iken <b>doyar</b>: emin ama yanlış örnekte öğrenme durur.</p></div>
+                </div>
+                <div class="math-box mt-4 fragment fade-in" style="max-width:900px;border-color:rgba(52,211,153,0.5);">
+                    \[ \underbrace{y = \sigma(\mathbf{w}^\top\mathbf{x} + b)}_{\text{Delta'dan: sürekli çıktı}} \qquad\qquad
+                    \underbrace{\Delta\mathbf{w} = \eta\,(d - y)\,\mathbf{x}}_{\text{Perceptron'dan: yalın kural}} \]
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.5em;">H4'ün sonunda söz vermiştik: “ikisinin iyi
+                    yanlarını birleştiren sürekli perceptron”. Köprü, <b>hata ölçüsünü</b> değiştirmek: MSE → çapraz entropi.
+                    Neden işe yaradığını türeteceğiz (Slayt 12).</p>
+            </section>
+
+
+            <!-- 4. MODEL -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="cpu" style="width:14px;height:14px;"></i> Model</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Sürekli <span
+                        class="code-note">Perceptron</span></h2>
+                <div class="math-box mb-1" style="max-width:980px;font-size:0.54em;">
+                    \[ y = \sigma(\lambda\,\text{net}) = \frac{1}{1 + e^{-\lambda\,\text{net}}}, \qquad
+                    \text{net} = \mathbf{w}^\top\mathbf{x} + b, \qquad \frac{dy}{d\,\text{net}} = \lambda\, y\,(1 - y) \]
+                </div>
+                <p class="say">🔈 okunuş: <b>σ</b> “<i>sigma</i>”<span class="sp">·</span><b>λ</b> “<i>lambda</i>”: diklik<span
+                        class="sp">·</span><b>e</b> “<i>e sayısı</i>” ≈ 2.718</p>
+                <div class="grid grid-cols-3 gap-4 text-left cards-xs" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>🎯 Karar yine bir doğru</h4><p>y ≥ 0.5 ⇔ net ≥ 0. Sınır
+                        H4'teki gibi wᵀx + b = 0: geometri aynı, yalnız çıktı yumuşadı.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🎚️ λ: diklik</h4><p>λ büyüdükçe σ basamağa yaklaşır;
+                        λ → ∞ ayrık perceptron (H4). λ küçükse çıktı hep 0.5 civarında kalır.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.4);"><h4>↔️ Bipolar hâli
+                        (Zurada)</h4><p>f = 2σ(λnet) − 1 = tanh(λnet/2), çıktı (−1, 1); f′ = ½λ(1 − y²).
+                        MSE ile kural: Δw = ½ηλ(d − y)(1 − y²)x.</p></div>
+                </div>
+                <table class="dtab nowrap-t mt-3 fragment fade-in" style="font-size:0.44em;">
+                    <tr><th></th><th>ayrık perceptron (H4)</th><th>sürekli perceptron (bu hafta)</th></tr>
+                    <tr><td>f</td><td>sgn / basamak</td><td>σ (unipolar) / tanh (bipolar)</td></tr>
+                    <tr><td>y değerleri</td><td>{−1, +1} ya da {0, 1}</td><td>(0, 1) ya da (−1, 1): arası da var</td></tr>
+                    <tr><td>f′</td><td class="bad">0 (net = 0 dışında her yerde)</td><td class="ok">λy(1 − y) &gt; 0</td></tr>
+                    <tr><td>y bize ne söyler?</td><td>yalnız karar</td><td class="ok">karar + güven</td></tr>
+                </table>
+                <p class="cite mt-2">Zurada, J. M. (1992). Introduction to Artificial Neural Systems. West Publishing
+                    (“continuous perceptron”).</p>
+            </section>
+
+
+            <!-- 5. ETKİLEŞİMLİ: λ -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="sliders-horizontal" style="width:14px;height:14px;"></i> Etkileşimli ·
+                    Diklik</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">λ'yı Çevir, <span
+                        class="code-note">Basamağa Dönüşsün</span></h2>
+                <div class="wbox">
+                    <div style="width:330px;flex:0 0 auto;">
+                        <canvas id="lm-cv" class="wcv" width="360" height="360" style="width:330px;height:330px;"
+                            aria-label="AND noktaları üzerinde sigmoid çıktısının renk haritası ve karar doğrusu"></canvas>
+                        <p class="wleg"><span style="color:#93c5fd;">mavi</span> → y ≈ 1 · <span style="color:#fca5a5;">kırmızı</span>
+                            → y ≈ 0 · koyu bant = kararsız · <span style="color:#fbbf24;">sarı</span> = net = 0 · kesikli =
+                            y = 0.1 / 0.9</p>
+                    </div>
+                    <div class="wpanel" style="width:530px;">
+                        <canvas id="lm-fc" width="560" height="200"
+                            style="width:530px;height:189px;display:block;border-radius:12px;border:1px solid rgba(255,255,255,0.12);"
+                            aria-label="σ(λ·net) eğrisi, basamak fonksiyonu ve sıfırdaki eğim"></canvas>
+                        <div class="wbtns mt-2" id="lm-mode"><span class="lbl">çıktı</span>
+                            <button type="button" class="runbtn on" data-v="uni">unipolar σ: (0, 1)</button>
+                            <button type="button" class="runbtn" data-v="bi">bipolar tanh: (−1, 1)</button></div>
+                        <div class="play-row"><label>diklik λ</label><input type="range" id="lm-l" min="0.2" max="10" step="0.1" value="1"><span class="val" id="lm-lv"></span></div>
+                        <div class="wro mt-1" id="lm-out"></div>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.46em;">AND nöronu: w = [2, 2], b = −3. Dene: λ'yı 10'a çıkar → bant
+                    incelir, çıktılar 0/1'e yapışır: <b>ayrık perceptron</b>. λ = 0.2 → her yer ≈ 0.5: karar aynı, güven yok.
+                    Sarı doğru hiç kıpırdamaz.</p>
+            </section>
+
+
+            <!-- 6. ‖w‖ = GÜVEN -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="gauge" style="width:14px;height:14px;"></i> Sayısal Örnek ·
+                    Ölçek</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Aynı Sınır, <span
+                        class="code-note">Farklı Güven</span></h2>
+                <p class="code-note mb-3" style="font-size:0.5em;">AND, aynı doğru: 2x₁ + 2x₂ − 3 = 0. İkinci nöronda w ve b'nin
+                    hepsi 3 ile çarpıldı: 6x₁ + 6x₂ − 9 = 0.</p>
+                <table class="dtab nowrap-t" style="font-size:0.48em;">
+                    <tr><th class="cx">x</th><th class="cd">d</th><th class="cn">net (w = [2, 2], b = −3)</th><th class="cy">y</th>
+                        <th class="cn">net (× 3)</th><th class="cy">y (× 3)</th><th>karar</th></tr>
+                    <tr class="fragment fade-in"><td class="cx">(0, 0)</td><td class="cd">0</td><td class="cn">−3</td><td class="cy">0.0474</td><td class="cn">−9</td><td class="cy">0.0001</td><td>0 · 0</td></tr>
+                    <tr class="fragment fade-in"><td class="cx">(0, 1)</td><td class="cd">0</td><td class="cn">−1</td><td class="cy">0.2689</td><td class="cn">−3</td><td class="cy">0.0474</td><td>0 · 0</td></tr>
+                    <tr class="fragment fade-in"><td class="cx">(1, 0)</td><td class="cd">0</td><td class="cn">−1</td><td class="cy">0.2689</td><td class="cn">−3</td><td class="cy">0.0474</td><td>0 · 0</td></tr>
+                    <tr class="fragment fade-in"><td class="cx">(1, 1)</td><td class="cd">1</td><td class="cn">1</td><td class="cy">0.7311</td><td class="cn">3</td><td class="cy">0.9526</td><td class="ok">1 · 1</td></tr>
+                    <tr class="fragment fade-in"><td colspan="3">ortalama çapraz entropi (Slayt 9)</td><td>0.2471</td><td></td><td class="ok">0.0365</td><td></td></tr>
+                </table>
+                <div class="grid grid-cols-3 gap-4 text-left cards-mini mt-3" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up"><h4>📐 Aynı karar</h4><p>Sınır ve kararlar (0, 0, 0, 1) birebir
+                        aynı: “y ≥ 0.5” de sgn gibi ölçeğe bakmaz.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>🔍 H4'te “ölçek
+                        serbest”ti</h4><p>σ ise ölçeğe bakar: ‖w‖ büyüdükçe net'ler büyür, çıktılar 0/1'e kayar: <b>güven
+                        artar</b>.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🎚️ λ gereksizleşir</h4><p>σ(λ·(wᵀx + b)) = σ((λw)ᵀx + λb):
+                        λ'yı öğrenilen w zaten içerir. Bundan sonra <b>λ = 1</b>.</p></div>
+                </div>
+            </section>
+
+
+            <!-- 7. y BİR OLASILIK GİBİ -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="percent" style="width:14px;height:14px;"></i> Yorum · Olasılık</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">y Bir Olasılık Gibi: <span
+                        class="code-note">Odds ve Logit</span></h2>
+                <div class="math-box mb-1" style="max-width:860px;">
+                    \[ \text{odds} = \frac{y}{1 - y} = e^{\text{net}} \qquad\Longleftrightarrow\qquad
+                    \text{net} = \ln\frac{y}{1 - y} = \operatorname{logit}(y) \]
+                </div>
+                <p class="say">🔈 okunuş: <b>odds</b> “<i>ods</i>”: bahis oranı, “kaça kaç”<span class="sp">·</span><b>ln</b>
+                    “<i>doğal logaritma</i>” (e tabanı)<span class="sp">·</span><b>logit</b> “<i>lojit</i>”: odds'un ln'i</p>
+                <div class="flex items-start justify-center gap-6">
+                    <table class="dtab nowrap-t" style="font-size:0.46em;margin:0;">
+                        <tr><th class="cn">net</th><th class="cy">y = σ(net)</th><th>odds = e<sup>net</sup></th><th>okuma</th></tr>
+                        <tr><td class="cn">−4</td><td class="cy">0.018</td><td>0.018</td><td>neredeyse kesin “hayır”</td></tr>
+                        <tr><td class="cn">−2</td><td class="cy">0.119</td><td>0.135</td><td>“hayır” lehine 7.4 : 1</td></tr>
+                        <tr><td class="cn">−1</td><td class="cy">0.269</td><td>0.368</td><td>“hayır” lehine 2.7 : 1</td></tr>
+                        <tr><td class="cn">0</td><td class="cy">0.5</td><td>1</td><td>yazı-tura</td></tr>
+                        <tr><td class="cn">1</td><td class="cy">0.731</td><td>2.718</td><td>“evet” lehine 2.7 : 1</td></tr>
+                        <tr><td class="cn">2</td><td class="cy">0.881</td><td>7.389</td><td>“evet” lehine 7.4 : 1</td></tr>
+                        <tr><td class="cn">4</td><td class="cy">0.982</td><td>54.6</td><td>neredeyse kesin “evet”</td></tr>
+                    </table>
+                    <div class="wpanel" style="width:450px;">
+                        <div class="play-row"><label>net</label><input type="range" id="od-n" min="-6" max="6" step="0.05" value="-0.55"><span class="val" id="od-nv"></span></div>
+                        <div class="wro" id="od-out"></div>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-3" style="font-size:0.46em;">H2'de nöronumuzun çıktısını (0.366) “%37 ihtimalle evet” diye
+                    okumuştuk; işte hesabı. Net'e 1 eklemek odds'u <b>e ≈ 2.72 ile çarpar</b>; y ≥ 0.9 için
+                    net ≥ ln 9 ≈ 2.20 gerekir.</p>
+            </section>
+
+
+            <!-- 8. TARİH -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="landmark" style="width:14px;height:14px;"></i> Tarih · 1838 → 1990</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">S Eğrisinin <span
+                        class="code-note">Yolculuğu</span></h2>
+                <div class="grid grid-cols-5 gap-3 text-left cards-mini" style="max-width:1140px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4><span class="yr">1838 · 1845</span>📈 Verhulst</h4><p>Belçikalı
+                        matematikçi. Nüfus artışı: önce üstel büyüme, kaynak sınırına yaklaşınca yavaşlama. 1845'te eğriye
+                        <b>“logistique”</b> adını verdi.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4><span
+                        class="yr">1944</span>💊 Berkson</h4><p>Mayo Clinic'te hekim ve biyoistatistikçi. Doz–yanıt (biyolojik
+                        test) verisi için <b>“logit”</b> terimini önerdi.</p></div>
+                    <div class="concept-card fragment fade-up"><h4><span class="yr">1958</span>📊 Cox</h4><p>İkili (0/1)
+                        sonuçlar için regresyon: <b>lojistik regresyon</b>. Bugünkü nöronun istatistikteki adı
+                        (Slayt 27).</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(147,197,253,0.45);"><h4><span
+                        class="yr">1986</span>🧠 Rumelhart vd.</h4><p>Geri yayılım: türevli olduğu için σ'yı çok katmanlı ağların
+                        her nöronunda kullandılar <span class="wk">H7</span></p></div>
+                    <div class="concept-card fragment fade-up"><h4><span class="yr">1990</span>🎲 Bridle</h4><p><b>“Softmax”</b>
+                        adı ve ağ çıktılarının olasılık olarak yorumu (Slayt 22).</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.5em;">Aynı eğri üç alanda iş başında: nüfus bilimi,
+                    tıp / istatistik, yapay sinir ağları. Ortak ihtiyaç: 0 ile 1 arasında kalan, <b>yumuşak bir eşik</b>.</p>
+                <p class="cite mt-2">Verhulst, P.-F. (1845). Recherches mathématiques sur la loi d'accroissement de la population.
+                    · Berkson, J. (1944). Application of the logistic function to bio-assay. JASA, 39, 357–365. · Cox, D. R.
+                    (1958). The regression analysis of binary sequences. JRSS B, 20(2), 215–242.</p>
+            </section>
+
+
+            <!-- 9. MSE MI CE MI -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="scale" style="width:14px;height:14px;"></i> Hata Ölçüsü</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Hangi Hata? <span
+                        class="code-note">MSE mi, Çapraz Entropi mi?</span></h2>
+                <div class="math-box mb-1" style="max-width:900px;">
+                    \[ E_{\text{MSE}} = \tfrac12\,(d - y)^2 \qquad\qquad
+                    E_{\text{CE}} = -\big[\,d\,\ln y + (1 - d)\,\ln(1 - y)\,\big] \]
+                </div>
+                <p class="say">🔈 okunuş: <b>CE</b> “<i>çapraz entropi</i>” (cross-entropy, log-loss)<span class="sp">·</span>d = 1
+                    ise E<sub>CE</sub> = −ln y, d = 0 ise −ln(1 − y)</p>
+                <div class="flex items-start justify-center gap-6">
+                    <table class="dtab nowrap-t" style="font-size:0.48em;margin:0;">
+                        <tr><th colspan="2">hedef d = 1, nöron der ki…</th><th class="cmse">MSE</th><th class="cce">CE</th></tr>
+                        <tr class="fragment fade-in"><td class="cy">y = 0.99</td><td>“kesin 1” ✓</td><td>0.0001</td><td>0.0101</td></tr>
+                        <tr class="fragment fade-in"><td class="cy">y = 0.9</td><td>“büyük ihtimalle 1” ✓</td><td>0.0050</td><td>0.1054</td></tr>
+                        <tr class="fragment fade-in"><td class="cy">y = 0.5</td><td>“bilmiyorum”</td><td>0.1250</td><td>0.6931</td></tr>
+                        <tr class="fragment fade-in"><td class="cy">y = 0.1</td><td>“büyük ihtimalle 0” ✗</td><td>0.4050</td><td>2.3026</td></tr>
+                        <tr class="fragment fade-in"><td class="cy">y = 0.01</td><td>“kesin 0” ✗✗</td><td class="bad">0.4900</td><td class="bad">4.6052</td></tr>
+                    </table>
+                    <div class="grid gap-3 text-left cards-xs" style="max-width:450px;">
+                        <div class="concept-card fragment fade-up"><h4>📏 MSE'nin tavanı ½</h4><p>En kötü cevap bile en fazla 0.5
+                            ceza alır: “kesin 0” ile “büyük ihtimalle 0” hemen hemen aynı cezalı.</p></div>
+                        <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>♾️ CE
+                            sınırsız</h4><p>y → 0 iken −ln y → ∞. Emin ama yanlış cevap çok pahalı: 0.1 → 0.01 cezayı
+                            <b>2 katına</b> çıkarır (MSE'de 1.2 katı). d = 0 ise ayna görüntüsü: y → 1 iken patlar.</p></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 10. CE NEREDEN GELİYOR -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="dice-5" style="width:14px;height:14px;"></i> Türetme ·
+                    Olabilirlik</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Çapraz Entropi <span
+                        class="code-note">Nereden Geliyor?</span></h2>
+                <div class="math-box mb-1" style="max-width:960px;font-size:0.54em;">
+                    \[ P(d \mid \mathbf{x}) = y^{\,d}\,(1 - y)^{1 - d} \quad\Rightarrow\quad
+                    L(\mathbf{w}) = \prod_{i=1}^{N} y_i^{\,d_i}\,(1 - y_i)^{1 - d_i} \]
+                    \[ -\ln L(\mathbf{w}) = -\sum_{i=1}^{N} \big[\, d_i \ln y_i + (1 - d_i) \ln(1 - y_i) \,\big]
+                    = \sum_{i=1}^{N} E_{\text{CE}}(i) \]
+                </div>
+                <p class="say">🔈 okunuş: <b>P(d | x)</b> “<i>x verildiğinde d'nin olasılığı</i>”<span class="sp">·</span><b>∏</b>
+                    “<i>çarpım</i>” (Σ'nın çarpma hâli)<span class="sp">·</span><b>L</b> “<i>olabilirlik</i>” (likelihood)</p>
+                <div class="grid grid-cols-3 gap-4 text-left cards-xs" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>🎲 Bernoulli</h4><p>y'yi “1 olma olasılığı” say: d = 1 için
+                        olasılık y, d = 0 için 1 − y. İkisi tek formülde: y<sup>d</sup>(1 − y)<sup>1−d</sup>.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>✖️ → ➕</h4><p>Örnekler bağımsızsa olasılıklar çarpılır.
+                        ln çarpımı toplama çevirir; minik sayıların çarpımı da sıfıra “erimez”.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🔄 Eksi
+                        işareti</h4><p>L'yi büyütmek = −ln L'yi küçültmek. <b>En çok olabilirlik</b> (MLE) = en küçük çapraz
+                        entropi.</p></div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.48em;">AND nöronu (Slayt 6) doğru
+                    etiketlere 0.953, 0.731, 0.731, 0.731 olasılık veriyor → L = 0.372 → −ln L / 4 = <b>0.247</b>: tablodaki
+                    ortalama CE.</p>
+            </section>
+
+
+            <!-- 11. ETKİLEŞİMLİ: EMİN AMA YANLIŞ -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="triangle-alert" style="width:14px;height:14px;"></i> Etkileşimli ·
+                    Gradyan</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Emin Ama Yanlış: <span
+                        class="code-note">Kim Daha Çok İter?</span></h2>
+                <div class="wbox">
+                    <div style="width:600px;flex:0 0 auto;">
+                        <canvas id="ew-cv" class="wcv" width="640" height="300" style="width:600px;height:281px;"
+                            aria-label="MSE ve çapraz entropinin net'e göre değeri ve gradyanı"></canvas>
+                        <p class="wleg"><span class="cmse">turuncu</span> = MSE + σ · <span class="cce">camgöbeği</span> = CE + σ ·
+                            kırmızı bölge: net &lt; −2, “emin ama yanlış” · hedef d = 1</p>
+                    </div>
+                    <div class="wpanel" style="width:400px;">
+                        <div class="play-row"><label>net</label><input type="range" id="ew-n" min="-8" max="4" step="0.1" value="-4"><span class="val" id="ew-nv"></span></div>
+                        <div class="wro mt-1" id="ew-out"></div>
+                        <table class="dtab nowrap-t" style="font-size:0.4em;">
+                            <tr><th>net</th><th class="cmse">MSE |∂E/∂net|</th><th class="cce">CE |∂E/∂net|</th><th>CE / MSE</th></tr>
+                            <tr><td>−8</td><td>0.00034</td><td>0.99966</td><td>2983×</td></tr>
+                            <tr><td>−6</td><td>0.00246</td><td>0.99753</td><td>405×</td></tr>
+                            <tr><td>−4</td><td>0.01735</td><td>0.98201</td><td>56.6×</td></tr>
+                            <tr><td>−2</td><td>0.09248</td><td>0.88080</td><td>9.5×</td></tr>
+                            <tr><td>0</td><td>0.125</td><td>0.5</td><td>4×</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.46em;">Adımın boyu gradyanın boyuyla orantılı. MSE'de y(1 − y)
+                    çarpanı (σ′) en çok yanıldığı yerde gradyanı söndürür: <b>doyma</b> (H3). CE'de gradyan d − y: ne kadar
+                    yanlışsa o kadar iter.</p>
+            </section>
+
+
+            <!-- 12. TÜREV -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="square-function" style="width:14px;height:14px;"></i> Türetme · Zincir
+                    Kuralı</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Türevde <span
+                        class="code-note">f′ Sadeleşir</span></h2>
+                <div class="math-box mb-2" style="max-width:1060px;font-size:0.52em;">
+                    \[ \frac{\partial E}{\partial y} = -\frac{d}{y} + \frac{1 - d}{1 - y} = \frac{y - d}{y\,(1 - y)}, \qquad
+                    \frac{\partial y}{\partial\,\text{net}} = y\,(1 - y), \qquad \frac{\partial\,\text{net}}{\partial
+                    \mathbf{w}} = \mathbf{x} \]
+                    \[ \frac{\partial E}{\partial \mathbf{w}} = \frac{y - d}{\cancel{y\,(1 - y)}} \cdot \cancel{y\,(1 - y)}
+                    \cdot \mathbf{x} = (y - d)\,\mathbf{x} \quad\Rightarrow\quad \boxed{\;\Delta\mathbf{w} = -\eta\,
+                    \frac{\partial E}{\partial \mathbf{w}} = \eta\,(d - y)\,\mathbf{x}\;} \]
+                </div>
+                <table class="dtab nowrap-t fragment fade-in" style="font-size:0.46em;">
+                    <tr><th>hata ölçüsü</th><th>δ = −∂E/∂net</th><th>Δw</th><th>emin ama yanlış (d = 1, y → 0)</th></tr>
+                    <tr><td class="cmse">MSE + σ (Delta, H3)</td><td>(d − y)·y(1 − y)</td><td>η·δ·x</td><td class="bad">δ → 0:
+                        doyar</td></tr>
+                    <tr><td class="cce">CE + σ (bu hafta)</td><td>d − y</td><td>η(d − y)x</td><td class="ok">δ → 1: tam adım</td></tr>
+                </table>
+                <div class="grid grid-cols-2 gap-4 text-left cards-xs mt-3" style="max-width:1000px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up"><h4>🧩 Üç kural, tek kalıp</h4><p>Perceptron η(d − sgn(net))x,
+                        Widrow–Hoff η(d − net)x, sürekli η(d − σ(net))x. Hep <b>η·(hedef − çıktı)·girdi</b>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🔗 Tesadüf
+                        değil</h4><p>σ + CE, doğrusal + MSE, softmax + CE (Slayt 22): her çift aynı biçimi verir.
+                        İstatistikte “kanonik” eşleşme denir.</p></div>
+                </div>
+            </section>
+
+
+            <!-- 13. TEK ADIM: MSE vs CE -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="hash" style="width:14px;height:14px;"></i> Sayısal Örnek</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Tek Adım: <span
+                        class="code-note">MSE mi, CE mi?</span></h2>
+                <p class="code-note mb-2" style="font-size:0.5em;">x = (1, 1), d = 1, w = [−1, −1], b = 0.5, η = 1 →
+                    net = −1.5, y = σ(−1.5) = <b>0.1824</b>: %82 emin “0” diyor, ama cevap 1.</p>
+                <div class="hf"><span class="seg fwd"><span class="cn">net</span> = <span class="cw">w</span>ᵀ<span class="cx">x</span>
+                    <span class="ar">→</span> <span class="cy">y</span> = σ(<span class="cn">net</span>)</span><span class="ar big">⟹</span><span
+                        class="seg upd"><span class="cr">r</span> <span class="ar">→</span> <span style="color:#86efac;font-weight:700;">yeni
+                        w</span> = <span class="cw">w</span> + <span class="ce">η</span>·<span class="cr">r</span>·<span class="cx">x</span>
+                        <span class="ar">→</span> yeni <span class="cy">y</span></span></div>
+                <table class="dtab htab nowrap-t" style="font-size:0.46em;">
+                    <tr><th>kural</th><th class="upd">r</th><th class="upd">yeni w = [w₁, w₂, b]</th><th class="upd">yeni net → yeni y</th></tr>
+                    <tr class="fragment fade-in"><td class="cmse">MSE: r = (d − y)·y(1 − y)</td><td class="upd">0.8176 · 0.1824 · 0.8176 = 0.1219</td><td class="upd">[−0.878, −0.878, 0.622]</td><td class="upd">−1.134 → <b>0.2434</b> ✗</td></tr>
+                    <tr class="fragment fade-in"><td class="cce">CE: r = d − y</td><td class="upd">1 − 0.1824 = 0.8176</td><td class="upd new">[−0.182, −0.182, 1.318]</td><td class="upd new">0.953 → <b>0.7217</b> ✓</td></tr>
+                </table>
+                <div class="grid grid-cols-3 gap-4 text-left cards-mini mt-4" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up"><h4>🐢 MSE</h4><p>y(1 − y) = 0.149 çarpanı adımı küçülttü: y yalnız
+                        0.18 → 0.24 oldu. Hâlâ yanlış.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🚀 CE</h4><p>Aynı
+                        yön, <b>6.7 kat</b> büyük adım (1 / 0.149): tek adımda kararı düzeltti (0.18 → 0.72).</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🧭 Yön aynı</h4><p>İkisinde de Δw ∝ x; fark yalnız adımın
+                        boyunda. CE'de boy, yanılma miktarı (d − y) kadar.</p></div>
+                </div>
+            </section>
+
+
+            <!-- 14. ETKİLEŞİMLİ: HATA YÜZEYİ -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="mountain" style="width:14px;height:14px;"></i> Etkileşimli · Hata
+                    Yüzeyi</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Çukur mu, <span
+                        class="code-note">Plato mu?</span></h2>
+                <div class="wbox">
+                    <div class="duo">
+                        <div><div class="ttl cmse">MSE + σ</div><canvas id="es-m" class="wcv" width="300" height="300"
+                            style="width:290px;height:290px;" aria-label="MSE hata yüzeyi ve gradyan inişi yolu"></canvas></div>
+                        <div><div class="ttl cce">CE + σ</div><canvas id="es-c" class="wcv" width="300" height="300"
+                            style="width:290px;height:290px;" aria-label="Çapraz entropi hata yüzeyi ve gradyan inişi yolu"></canvas></div>
+                    </div>
+                    <div class="wpanel" style="width:380px;">
+                        <div class="wbtns" id="es-pre"><span class="lbl">başlangıç (w, b)</span>
+                            <button type="button" class="runbtn on" data-v="-4,3">(−4, 3)</button>
+                            <button type="button" class="runbtn" data-v="-5,-4">(−5, −4)</button>
+                            <button type="button" class="runbtn" data-v="0,0">(0, 0)</button></div>
+                        <div class="wbtns">
+                            <button type="button" class="runbtn on" id="es-play">⏵ oynat</button>
+                            <button type="button" class="runbtn" id="es-reset">↺</button>
+                        </div>
+                        <div class="wro" id="es-out"></div>
+                        <p class="wleg">yatay: w · dikey: b (−6…6) · koyu = düşük hata · <span style="color:#fde047;">★</span> =
+                            minimum · beyaz = yol. Yüzeye tıkla: oradan başlat.</p>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.46em;">Tek girdili veri: x = −3, −2, −1, 1, 2, 3 → d = 0, 0, 1, 0,
+                    1, 1 (ayrılamaz, en iyisi 4/6). Toplu gradyan inişi, η = 2. (−4, 3)'ten MSE düz bir <b>platoda</b> takılır
+                    (500 epoch sonra E = 0.333, 2/6 doğru); CE <b>10 epoch'ta</b> dibe yaklaşır. CE yüzeyi dışbükey: tek çukur.</p>
+            </section>
+
+
+            <!-- 15. NEDEN CE? DÜRÜST KARŞILAŞTIRMA -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="scale" style="width:14px;height:14px;"></i> Yan Yana · AND</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Neden <span
+                        class="code-note">Çapraz Entropi?</span></h2>
+                <p class="code-note mb-3" style="font-size:0.5em;">Aynı AND, aynı başlangıç (Hafta 2'nin nöronu), örnek örnek
+                    güncelleme. <b>Güven</b> = en zayıf örnekte doğru sınıfa verilen olasılık.</p>
+                <table class="dtab nowrap-t" style="font-size:0.46em;">
+                    <tr><th>kural</th><th class="ce">η</th><th>ilk 4/4 doğru</th><th>hepsi ≥ 0.9 güven</th>
+                        <th class="cw">50. epoch w = [w₁, w₂, b]</th><th>50. epoch güven</th></tr>
+                    <tr class="fragment fade-in"><td class="cmse">Delta (MSE)</td><td class="ce">2</td><td class="ok">3. epoch</td><td class="bad">207. epoch</td><td class="cw">[2.90, 2.83, −4.28]</td><td>0.80</td></tr>
+                    <tr class="fragment fade-in"><td class="cce">Sürekli (CE)</td><td class="ce">2</td><td>6. epoch</td><td class="ok">22. epoch</td><td class="cw">[6.32, 6.21, −9.39]</td><td class="ok">0.96</td></tr>
+                    <tr class="fragment fade-in"><td class="cce">Sürekli (CE)</td><td class="ce">0.5</td><td>4. epoch</td><td>107. epoch</td><td class="cw">[3.36, 3.26, −5.01]</td><td>0.83</td></tr>
+                </table>
+                <div class="grid grid-cols-2 gap-3 text-left cards-mini mt-3" style="max-width:1060px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>⚖️ Dürüst
+                        olalım</h4><p>İlk doğru karar MSE'de daha erken (3 ↔ 6). CE için η = 2 büyük: ilk epoch'ta ortalama CE
+                        0.77 → 0.99 <b>arttı</b>, sonra hızla düştü.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🚀 Güvene ~9 kat
+                        hızlı</h4><p>Dört örneğin hepsinde ≥ 0.9: CE 22, MSE 207 epoch. CE, η = 0.5 ile bile MSE'nin η = 2'sinden
+                        ~2 kat hızlı.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🏔️ Plato yok</h4><p>σ + CE dışbükey: yerel minimum ve plato
+                        yok. Ayrılamaz veride tek bir dip var (Slayt 14).</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🎲 Anlamlı çıktı</h4><p>CE = olabilirlik: eğitilen y olasılık
+                        gibi okunabilir. Klinik risk modelleri de böyle eğitilir (Slayt 27).</p></div>
+                </div>
+            </section>
+
+
+            <!-- 16. ALGORİTMA -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="list-ordered" style="width:14px;height:14px;"></i> Algoritma</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Sürekli Perceptron Eğitimi: <span
+                        class="code-note">Ne Zaman Durur?</span></h2>
+                <pre style="max-width:900px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1|2-5|6-7" style="font-size:0.86em;">w = küçük_rastgele()                # ya da Hafta 2'nin nöronu
+for epoch in range(max_epoch):
+    for x, d in veri:               # x'in sonunda 1 → bias dahil
+        y = sigmoid(w @ x)          # 0 ile 1 arası: "güven"
+        w = w + eta * (d - y) * x   # her örnekte, yanıldığı kadar
+    E = ortalama_CE(veri)
+    if E < eps: break               # ya da: doğrulama hatası artınca (H8)</code></pre>
+                <div class="grid grid-cols-3 gap-3 text-left cards-mini mt-3" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>♾️ Kendiliğinden
+                        durmaz</h4><p>y hiçbir zaman tam 0 ya da 1 değil → d − y ≠ 0: her örnek biraz iter. Perceptron'daki
+                        “hatasız tur → DUR” yok.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⏹️ Durma ölçütü bizden</h4><p>E &lt; ε, max_epoch ya da ayrı
+                        bir doğrulama kümesinde hata artmaya başlayınca (erken durdurma <span class="wk">H8</span>).</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🎚️ Karar
+                        eşiği</h4><p>Varsayılan: y ≥ 0.5 → 1. Hastalığı kaçırmak pahalıysa eşik düşürülür (0.3 gibi):
+                        duyarlılık ↑, kesinlik ↓.</p></div>
+                </div>
+            </section>
+
+
+            <!-- 17. ETKİLEŞİMLİ: SÜREKLİ PERCEPTRON ADIM ADIM -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="footprints" style="width:14px;height:14px;"></i> Etkileşimli · Sürekli
+                    Perceptron</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Sürekli Perceptron <span
+                        class="code-note">Adım Adım</span></h2>
+                <div class="st sc" data-set="and" data-eta="2" data-w="0.5,-0.25,0.2" data-loss="ce">
+                    <div class="st-left">
+                        <canvas class="st-cv" width="330" height="330" aria-label="Veri noktaları, sigmoid çıktısının renk haritası ve karar doğrusu"></canvas>
+                        <p class="st-leg">● hedef 1 · ○ hedef 0 · etiket = y · <span style="color:#fbbf24;">sarı halka</span> =
+                            sıradaki · <span style="color:#fca5a5;">kırmızı halka</span> = yanlış · kesikli = önceki doğru ve
+                            y = 0.1 / 0.9</p>
+                    </div>
+                    <div class="st-right">
+                        <div class="wbtns"><span class="lbl">veri</span>
+                            <span data-k="set" style="display:flex;gap:6px;"><button type="button" class="runbtn on" data-v="and">AND</button><button
+                                type="button" class="runbtn" data-v="or">OR</button><button type="button" class="runbtn" data-v="xor">XOR</button></span>
+                            <span class="lbl" style="margin-left:10px;">hata ölçüsü</span>
+                            <span data-k="loss" style="display:flex;gap:6px;"><button type="button" class="runbtn on" data-v="ce">CE</button><button
+                                type="button" class="runbtn" data-v="mse">MSE</button></span>
+                            <span class="lbl" style="margin-left:10px;">η</span>
+                            <span data-k="eta" style="display:flex;gap:6px;"><button type="button" class="runbtn" data-v="0.5">0.5</button><button
+                                type="button" class="runbtn on" data-v="2">2</button></span>
+                        </div>
+                        <div class="st-ctrl">
+                            <button type="button" class="runbtn" data-act="back">◀ geri</button>
+                            <button type="button" class="runbtn on" data-act="step">▶ 1 adım</button>
+                            <button type="button" class="runbtn" data-act="epoch">▶▶ 1 epoch</button>
+                            <button type="button" class="runbtn" data-act="ten">⏩ 10 epoch</button>
+                            <button type="button" class="runbtn" data-act="play">⏵ oynat</button>
+                            <button type="button" class="runbtn" data-act="reset">↺</button>
+                        </div>
+                        <div class="st-math"></div>
+                        <table class="dtab st-hist"></table>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.46em;">Varsayılan: AND, CE, η = 2, başlangıç Hafta 2'nin nöronu (H3'teki
+                    Delta demosuyla aynı). 50. epoch'ta w = [6.32, 6.21, −9.39]: kod slaytıyla aynı (Slayt 24). MSE'ye
+                    geç: aynı 50 epoch'ta [2.90, 2.83, −4.28], H3'teki sayı.</p>
+            </section>
+
+
+            <!-- 18. ETKİLEŞİMLİ: ‖w‖ HİÇ DURMAZ + L2 -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="trending-up" style="width:14px;height:14px;"></i> Etkileşimli ·
+                    Ayrılabilir Veri</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Ayrılabilir Veride <span
+                        class="code-note">‖w‖ Hiç Durmaz</span></h2>
+                <div class="wbox">
+                    <div style="width:330px;flex:0 0 auto;">
+                        <canvas id="wg-cv" class="wcv" width="360" height="360" style="width:330px;height:330px;"
+                            aria-label="Seçilen epoch'ta AND nöronunun çıktı haritası"></canvas>
+                        <p class="wleg">AND, CE, η = 2, Hafta 2'nin nöronundan · koyu bant = kararsız bölge · kesikli =
+                            y = 0.1 / 0.9</p>
+                    </div>
+                    <div class="wpanel" style="width:540px;">
+                        <div class="play-row"><label>epoch (log ölçek)</label><input type="range" id="wg-ep" min="0" max="4" step="0.01" value="1"><span class="val" id="wg-epv"></span></div>
+                        <div class="wbtns" id="wg-a"><span class="lbl">L2 freni α</span>
+                            <button type="button" class="runbtn on" data-v="0">0 (yok)</button>
+                            <button type="button" class="runbtn" data-v="0.001">0.001</button>
+                            <button type="button" class="runbtn" data-v="0.01">0.01</button>
+                            <button type="button" class="runbtn" data-v="0.1">0.1</button></div>
+                        <div class="wro" id="wg-out"></div>
+                        <svg id="wg-chart" viewBox="0 0 540 150" style="width:100%;height:auto;margin-top:6px;"
+                            aria-label="Epoch'a göre ağırlık normu"></svg>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.46em;">AND ayrılabilir: w büyüdükçe CE hep biraz daha düşer → ‖w‖
+                    hiç durmaz (her 10 kat epoch'ta ≈ +5…6). L2 freni (ağırlık sönümü): w ← w + η(d − y)x <b>− ηα·w</b> (bias
+                    hariç). α = 0.01 ile ‖w‖ = 5.64'te durur; α = 0.1 fazla: model yanlışa razı olur. Ayrıntısı <span
+                        class="wk">H8</span></p>
+            </section>
+
+
+            <!-- 19. XOR: "BİLMİYORUM" -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="help-circle" style="width:14px;height:14px;"></i> Ayrılamaz Veri ·
+                    XOR</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">XOR'da: <span
+                        class="code-note">“Bilmiyorum” Demeyi Öğrenir</span></h2>
+                <p class="code-note mb-2" style="font-size:0.5em;">Toplu (batch) CE gradyan inişi, η = 0.5, başlangıç Hafta 2'nin
+                    nöronu. Unipolar XOR: d = 0, 1, 1, 0.</p>
+                <table class="dtab nowrap-t" style="font-size:0.46em;">
+                    <tr><th>epoch</th><th class="cw">w = [w₁, w₂, b]</th><th class="cy">y: (0,0) · (0,1) · (1,0) · (1,1)</th><th>ortalama CE</th></tr>
+                    <tr class="fragment fade-in"><td>0</td><td class="cw">[0.5, −0.25, 0.2]</td><td class="cy">0.550 · 0.488 · 0.668 · 0.611</td><td>0.7158</td></tr>
+                    <tr class="fragment fade-in"><td>10</td><td class="cw">[0.291, −0.258, 0.019]</td><td class="cy">0.505 · 0.441 · 0.577 · 0.513</td><td>0.6980</td></tr>
+                    <tr class="fragment fade-in"><td>100</td><td class="cw">[0.016, −0.015, −0.001]</td><td class="cy">0.500 · 0.496 · 0.504 · 0.500</td><td>0.6932</td></tr>
+                    <tr class="fragment fade-in"><td>1000</td><td class="cw ok">[0, 0, 0]</td><td class="cy">0.5 · 0.5 · 0.5 · 0.5</td><td class="ok">0.6931 = ln 2</td></tr>
+                </table>
+                <div class="math-box mt-3 fragment fade-in" style="max-width:1040px;font-size:0.46em;">
+                    \[ \mathbf{w} = \mathbf{0} \text{ iken gradyan: } \sum_i \big(d_i - \tfrac12\big)\,\mathbf{x}_i =
+                    \tfrac12\big[-(0,0,1) + (0,1,1) + (1,0,1) - (1,1,1)\big] = (0, 0, 0) \]
+                </div>
+                <div class="grid grid-cols-3 gap-3 text-left cards-xs mt-3" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up"><h4>🤷 Dürüst cevap</h4><p>Her yerde y = 0.5: “bilmiyorum”. CE
+                        dışbükey olduğu için tek doğruyla bundan iyisi yok: bu, <b>en iyi</b> çözüm.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>🔁 H4 ile fark</h4>
+                        <p>Perceptron XOR'da her 4 adımda w = 0'a dönüp sonsuz döngüye giriyordu. Burada w = 0 bir <b>denge</b>:
+                            gradyan sıfır, orada durulur.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🔀 Örnek örnek ise</h4><p>Online güncellemede w, sıfırın
+                        çevresinde küçük bir döngüde kalır: epoch sonunda [−0.57, −0.29, 0.29], CE 0.708. Canlısı: Slayt
+                        17, XOR + η = 0.5.</p></div>
+                </div>
+            </section>
+
+
+            <!-- 20. ETKİLEŞİMLİ: IRIS AYRIK vs SÜREKLİ -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="flower-2" style="width:14px;height:14px;"></i> Etkileşimli · Gerçek
+                    Veri</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Iris: <span
+                        class="code-note">Ayrık mı, Sürekli mi?</span></h2>
+                <div class="wbox">
+                    <div style="width:420px;flex:0 0 auto;">
+                        <canvas id="ic-cv" class="wcv" width="460" height="362" style="width:420px;height:330px;"
+                            aria-label="Versicolor ve virginica çiçekleri, ayrık ve sürekli perceptronun karar doğruları"></canvas>
+                        <p class="wleg">○ versicolor (0) · <span style="color:#34d399;">●</span> virginica (1) · <span
+                            style="color:#67e8f9;">camgöbeği</span> = sürekli (renk: y) · <span style="color:#fbbf24;">sarı</span>
+                            = ayrık perceptron · <span style="color:#86efac;">yeşil kesikli</span> = en iyi doğru (3 hata) ·
+                            <span style="color:#fca5a5;">kırmızı halka</span> = süreklinin yanlışı</p>
+                    </div>
+                    <div class="wpanel" style="width:560px;">
+                        <div class="wbtns">
+                            <button type="button" class="runbtn on" id="ic-ep">▶▶ 1 epoch</button>
+                            <button type="button" class="runbtn" id="ic-play">⏵ oynat (60 epoch)</button>
+                            <button type="button" class="runbtn" id="ic-reset">↺</button>
+                        </div>
+                        <div class="wro" id="ic-out"></div>
+                        <svg id="ic-chart" viewBox="0 0 560 120" style="width:100%;height:auto;margin-top:6px;"
+                            aria-label="Epoch sonunda yanlış sayısı: ayrık ve sürekli perceptron"></svg>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.44em;">H4'teki ayar: versicolor / virginica, petal ölçüleri, dönüşümlü
+                    sıra, standart ölçek, η = 0.1, w₀ = 0. Perceptron epoch sonunda 5 ile 6 hata arasında gidip gelir; sürekli
+                    perceptron <b>6 hatada durulur</b>, w yerine oturur. En iyi doğru 3 hata yapıyor: sürekli onu neden bulmuyor? →</p>
+            </section>
+
+
+            <!-- 21. HATA SAYISI MI, OLASILIK MI? -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="crosshair" style="width:14px;height:14px;"></i> Neyi Küçültüyoruz?</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Hata Sayısı mı, <span
+                        class="code-note">Olasılık mı?</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <div style="flex:1.1;">
+                        <table class="dtab nowrap-t" style="font-size:0.44em;margin:0 auto;">
+                            <tr><th>Iris, 100 çiçek</th><th>hata</th><th>ortalama CE</th></tr>
+                            <tr><td>en iyi doğru (kaba kuvvet)</td><td class="ok">3</td><td>≥ 0.134</td></tr>
+                            <tr><td>ayrık perceptron, cep</td><td>5</td><td>—</td></tr>
+                            <tr><td>sürekli perceptron (= sklearn)</td><td class="bad">6</td><td class="ok">0.103 (en küçük)</td></tr>
+                        </table>
+                        <p class="code-note mt-3 mb-1" style="font-size:0.44em;color:#94a3b8;">Süreklinin 6 yanlışı ve verdiği
+                            olasılık:</p>
+                        <table class="dtab nowrap-t" style="font-size:0.42em;margin:0 auto;">
+                            <tr><th>petal (cm)</th><th>gerçek tür</th><th class="cy">p(virginica)</th></tr>
+                            <tr><td>(4.5, 1.7)</td><td>virginica</td><td class="cy">0.164</td></tr>
+                            <tr><td>(5.0, 1.5)</td><td>virginica</td><td class="cy">0.308</td></tr>
+                            <tr><td>(5.1, 1.5)</td><td>virginica</td><td class="cy">0.443</td></tr>
+                            <tr><td>(5.1, 1.6)</td><td>versicolor</td><td class="cy">0.692</td></tr>
+                            <tr><td>(4.8, 1.8)</td><td>versicolor</td><td class="cy">0.759</td></tr>
+                            <tr><td>(5.0, 1.7)</td><td>versicolor</td><td class="cy">0.780</td></tr>
+                        </table>
+                    </div>
+                    <div class="grid gap-3 text-left cards-xs" style="flex:1;max-width:500px;">
+                        <div class="concept-card fragment fade-up"><h4>🎯 CE'yi küçültür, sayıyı değil</h4><p>Hata sayısı (0–1
+                            kaybı) basamak gibidir: türevi 0 (H3), gradyanla küçültülemez. CE onun türevli <b>vekili</b>.</p></div>
+                        <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>⚖️ Bedeli</h4>
+                            <p>3 hatalı doğrunun CE'si, w'yi hangi ölçekte seçersen seç ≥ 0.134. Sürekli perceptron 3 fazla hata
+                                yapıyor ama tüm çiçeklere verdiği olasılıklar toplamda daha iyi: 0.103.</p></div>
+                        <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🌸 Dürüst
+                            olasılık</h4><p>(4.8, 1.8) ölçüsünde <b>3 çiçek</b> var: 1 versicolor, 2 virginica. Model 0.76 diyor,
+                            yani ≈ 2/3. Hiçbir doğru üçünü birden bilemez.</p></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 22. SOFTMAX -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="shapes" style="width:14px;height:14px;"></i> Çok Sınıf</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">İkiden Fazla Sınıf: <span
+                        class="code-note">Softmax</span></h2>
+                <div class="math-box mb-1" style="max-width:940px;font-size:0.52em;padding:4px 22px;">
+                    \[ p_k = \frac{e^{\text{net}_k}}{\sum_{j} e^{\text{net}_j}}, \qquad E = -\ln p_d, \qquad
+                    \Delta\mathbf{w}_k = \eta\,(t_k - p_k)\,\mathbf{x} \]
+                </div>
+                <p class="say">🔈 okunuş: <b>softmax</b> “<i>soft-maks</i>”: yumuşak argmax<span class="sp">·</span><b>t<sub>k</sub></b>:
+                    doğru sınıfta 1, diğerlerinde 0<span class="sp">·</span><b>p<sub>d</sub></b>: doğru sınıfın olasılığı</p>
+                <table class="dtab nowrap-t" style="font-size:0.42em;">
+                    <tr><th>sınıf k</th><th class="cn">net<sub>k</sub></th><th>exp(net<sub>k</sub>)</th><th class="cy">p<sub>k</sub> =
+                        exp(net<sub>k</sub>) / 11.213</th><th>hedef t<sub>k</sub></th><th class="cr">t<sub>k</sub> − p<sub>k</sub></th></tr>
+                    <tr><td>0 (doğru sınıf)</td><td class="cn">2.0</td><td>7.389</td><td class="cy">0.659</td><td>1</td><td class="cr">+0.341</td></tr>
+                    <tr><td>1</td><td class="cn">1.0</td><td>2.718</td><td class="cy">0.242</td><td>0</td><td class="cr">−0.242</td></tr>
+                    <tr><td>2</td><td class="cn">0.1</td><td>1.105</td><td class="cy">0.099</td><td>0</td><td class="cr">−0.099</td></tr>
+                    <tr><td colspan="6">E = −ln 0.659 = <b>0.417</b> · p'lerin toplamı 1 · karar: argmax = 0 ✓</td></tr>
+                </table>
+                <div class="grid grid-cols-3 gap-3 text-left cards-xs mt-2" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up"><h4>🔢 2 sınıfta = σ</h4><p>p₁ = σ(net₁ − net₂): sürekli perceptron,
+                        softmax'ın 2 sınıflı hâli.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🧭 Yumuşak argmax</h4><p>Karar hâlâ argmax (H4); ama her
+                        sınıfın bir olasılığı da var.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>♻️ Aynı kural</h4>
+                        <p>Doğru sınıf x'e yaklaşır, diğerleri uzaklaşır: <b>her örnekte</b>, yanıldığı kadar.</p></div>
+                </div>
+                <p class="cite mt-1">Bridle, J. S. (1990). Probabilistic interpretation of feedforward classification network
+                    outputs… Neurocomputing, NATO ASI F68, 227–236.</p>
+            </section>
+
+
+            <!-- 23. ETKİLEŞİMLİ: SOFTMAX IRIS -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="flower-2" style="width:14px;height:14px;"></i> Etkileşimli · 3
+                    Sınıf</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Softmax: <span class="code-note">Üç
+                    Iris Türü</span></h2>
+                <div class="wbox">
+                    <div style="width:420px;flex:0 0 auto;">
+                        <canvas id="sm-cv" class="wcv" width="460" height="362" style="width:420px;height:330px;"
+                            aria-label="Üç Iris türü ve softmax olasılıklarının renk haritası"></canvas>
+                        <p class="wleg"><span style="color:#60a5fa;">●</span> setosa · <span style="color:#34d399;">●</span>
+                            versicolor · <span style="color:#f59e0b;">●</span> virginica · renk karışımı = p · <span
+                            style="color:#fca5a5;">kırmızı halka</span> = yanlış · ✚ = tıkladığın nokta</p>
+                    </div>
+                    <div class="wpanel" style="width:540px;">
+                        <div class="wbtns">
+                            <button type="button" class="runbtn" id="sm-one">▶ 1 örnek</button>
+                            <button type="button" class="runbtn on" id="sm-ep">▶▶ 1 epoch</button>
+                            <button type="button" class="runbtn" id="sm-play">⏵ oynat</button>
+                            <button type="button" class="runbtn" id="sm-reset">↺</button>
+                        </div>
+                        <div class="wro" id="sm-out"></div>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.44em;">150 çiçek, petal uzunluğu ve genişliği (standart), 3 × (w₁, w₂,
+                    b), W₀ = 0, η = 0.1, örnek örnek. 1 epoch'ta 142/150; 20 epoch'ta 144/150 (%96), CE 0.095. Tuvale tıkla: o
+                    ölçüdeki bir çiçek için üç olasılık.</p>
+            </section>
+
+
+            <!-- 24. KOD: SÜREKLİ PERCEPTRON SIFIRDAN -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="code-2" style="width:14px;height:14px;"></i> Koda Dök</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Sürekli Perceptron, <span
+                        class="code-note">Sıfırdan</span></h2>
+                <pre style="max-width:1000px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1-5|6-10|11-16|17-18" style="font-size:0.72em;">import torch
+import torch.nn.functional as F
+X = torch.tensor([[0., 0.], [0., 1.], [1., 0.], [1., 1.]])
+d = torch.tensor([0., 0., 0., 1.])                              # AND
+w, b, eta = torch.tensor([0.5, -0.25]), torch.tensor(0.2), 2.0  # Hafta 2'nin nöronu
+for epoch in range(1, 51):
+    for x, t in zip(X, d):                    # örnek örnek (online)
+        y = torch.sigmoid(w @ x + b)
+        w = w + eta * (t - y) * x             # Δw = η(d − y)x : f′ yok!
+        b = b + eta * (t - y)
+    if epoch in (1, 10, 50):
+        E = F.binary_cross_entropy(torch.sigmoid(X @ w + b), d)  # ortalama CE
+        print(epoch, round(E.item(), 4))
+# 1 0.988
+# 10 0.1233
+# 50 0.0322
+print(w, b)                 # tensor([6.3183, 6.2145]) tensor(-9.3882)
+torch.sigmoid(X @ w + b)    # tensor([8.3698e-05, 4.0167e-02, 4.4365e-02, 9.5869e-01])</code></pre>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.5em;">H3'teki Delta kodundan farkı güncellemede
+                    (9–10. satırlar): δ = (t − y)·y(1 − y) yerine yalnız (t − y). Canlı demonun (Slayt 17) varsayılanıyla
+                    aynı sayılar. İlk epoch'ta E 0.77'den 0.99'a çıktı (η = 2 büyük), sonra hızla düştü.</p>
+            </section>
+
+
+            <!-- 25. KOD: HAZIR KAYIPLAR -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="code-2" style="width:14px;height:14px;"></i> PyTorch</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Hazır Kayıplar: <span
+                        class="code-note">Logit Ver</span></h2>
+                <pre style="max-width:1040px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1-3|4-6|7-9" style="font-size:0.72em;">import torch
+import torch.nn.functional as F
+z, t = torch.tensor([-120.]), torch.tensor([1.])     # çok emin ve yanlış: net = −120, d = 1
+torch.sigmoid(z)                                      # tensor([0.])  → ln 0 = −∞ !
+F.binary_cross_entropy(torch.sigmoid(z), t)           # tensor(100.)  ← ln, −100'de kırpılır
+F.binary_cross_entropy_with_logits(z, t)              # tensor(120.)  ← doğru: −ln σ(−120) ≈ 120
+net = torch.tensor([2.0, 1.0, 0.1])                   # 3 sınıfın net'leri (logit)
+torch.softmax(net, dim=0)                             # tensor([0.6590, 0.2424, 0.0986])
+F.cross_entropy(net.unsqueeze(0), torch.tensor([0]))  # tensor(0.4170) = −ln 0.659</code></pre>
+                <div class="grid grid-cols-3 gap-3 text-left cards-mini mt-3" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>💥 Sorun</h4><p>σ(−120)
+                        bilgisayarda tam 0 olur; ln 0 = −∞. PyTorch ln'i −100'de kırpar: kayıp yanlış çıkar (100 ≠ 120).</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>✅ Çözüm: logit
+                        ver</h4><p>*_with_logits ve cross_entropy, σ / softmax'ı içeride kararlı hesaplar. Eğitimde kayba net'i
+                        (logit) ver; olasılık gerekince σ'yı sonra uygula.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🤖 Gradyanı kim hesaplıyor?</h4><p>Bu hafta biz türettik:
+                        d − y. Çok katmanda elle türetmek zorlaşır → otomatik türev (autograd) <span class="wk">H7</span></p></div>
+                </div>
+            </section>
+
+
+            <!-- 26. KARŞILAŞTIRMA -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="table" style="width:14px;height:14px;"></i> Yan Yana</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Dört Kural, <span
+                        class="code-note">Tek Tablo</span></h2>
+                <table class="dtab" style="font-size:0.42em;">
+                    <tr><th></th><th>Perceptron (H4)</th><th>Widrow–Hoff (H3)</th><th>Delta, MSE (H3)</th><th>Sürekli, CE (H5)</th></tr>
+                    <tr><td>Çıktı y</td><td>sgn(net): ±1</td><td>net</td><td>σ(net) ∈ (0, 1)</td><td>σ(net) ∈ (0, 1)</td></tr>
+                    <tr><td>Hata ölçüsü</td><td>(yanlış sayısı)</td><td>½(d − net)²</td><td>½(d − y)²</td><td>−[d ln y + (1 − d) ln(1 − y)]</td></tr>
+                    <tr><td>r (Δw = η·r·x)</td><td>d − y</td><td>d − net</td><td>(d − y)·y(1 − y)</td><td class="ok">d − y</td></tr>
+                    <tr><td>Emin ama yanlışta</td><td>tam adım</td><td>büyük adım</td><td class="bad">doyar (f′ ≈ 0)</td><td class="ok">tam adım</td></tr>
+                    <tr><td>Doğruyken</td><td class="ok">durur (r = 0)</td><td class="bad">iter (d − net ≠ 0)</td><td>az iter</td><td>az iter; ‖w‖ yavaşça büyür</td></tr>
+                    <tr><td>Ayrılamaz veride</td><td class="bad">durmaz → cep</td><td>en küçük kareler çözümü</td><td>bir minimum (plato riski)</td><td class="ok">tek minimum (dışbükey)</td></tr>
+                    <tr><td>y'nin anlamı</td><td>karar</td><td>sayı</td><td>0–1 arası skor</td><td class="ok">olasılık gibi</td></tr>
+                </table>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.5em;">H4'teki söz tutuldu: perceptronun yalın kuralı
+                    (d − y) + Delta'nın türevli, ayrılamaz veride de anlamlı hedefi. Bedeli: kendiliğinden durmaz, ayrılabilir
+                    veride ‖w‖ büyür (Slayt 18).</p>
+            </section>
+
+
+            <!-- 27. LOJİSTİK REGRESYON -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="microscope" style="width:14px;height:14px;"></i> İstatistikteki Adı</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Sürekli Perceptron = <span
+                        class="code-note">Lojistik Regresyon</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <table class="dtab nowrap-t" style="font-size:0.44em;margin:0;">
+                        <tr><th>YSA dili</th><th>istatistik dili</th></tr>
+                        <tr><td>sürekli perceptron</td><td>lojistik regresyon (Cox, 1958)</td></tr>
+                        <tr><td>net = wᵀx + b</td><td>doğrusal öngörücü = log-odds</td></tr>
+                        <tr><td>w, b</td><td>katsayılar β₁, β₂ ve sabit β₀</td></tr>
+                        <tr><td>CE'yi küçültmek</td><td>olabilirliği büyütmek (MLE)</td></tr>
+                        <tr><td>exp(wⱼ)</td><td>odds oranı (OR)</td></tr>
+                    </table>
+                    <div class="grid gap-3 text-left cards-xs" style="max-width:480px;">
+                        <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🩺 Odds oranı</h4>
+                            <p>Ham ölçekte (cm): petal genişliği 1 mm artınca virginica olma odds'u <b>× 2.84</b>, uzunluğu 1 mm
+                                artınca × 1.78. Tıp makalelerinde raporlanan “OR” tam olarak bu sayı.</p></div>
+                        <div class="concept-card fragment fade-up"><h4>🔭 Bakış farkı</h4><p>İstatistik katsayıları yorumlar
+                            (güven aralığı, p-değeri). YSA'da bu nöron, çok katmanlı ağın <b>yapı taşı</b> olur <span
+                                class="wk">H6</span></p></div>
+                    </div>
+                </div>
+                <table class="dtab nowrap-t mt-4 fragment fade-in" style="font-size:0.44em;">
+                    <tr><th>Iris versicolor / virginica, standart ölçek</th><th class="cw">w₁, w₂, b</th><th>ortalama CE</th><th>hata</th></tr>
+                    <tr><td>bizim döngü (online, η = 0.1, 200 epoch)</td><td class="cw">4.753, 4.383, 0.474</td><td>0.1028</td><td>6</td></tr>
+                    <tr><td>sklearn LogisticRegression(penalty=None)</td><td class="cw">4.727, 4.415, 0.468</td><td>0.1028</td><td>6</td></tr>
+                </table>
+            </section>
+
+
+            <!-- 28. MİNİ QUIZ -->
+            <section class="w5quiz">
+                <span class="chip mb-2" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · Haftayı Yokla</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Kendini Test Et</h2>
+                <div class="grid grid-cols-2 gap-x-8 gap-y-0 text-left" style="max-width:1000px;margin:0 auto;">
+                    <div class="quiz fragment" data-ok="Karar 1, üstelik güveni de söylüyor: %80 olasılıkla 1."
+                        data-no="y ≥ 0.5 → karar 1; y ayrıca güveni söyler: %80 olasılıkla 1.">
+                        <div class="quiz-q">1) Sürekli perceptron y = 0.8 verdi. Ne demek?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">kesinlikle 1</button>
+                        <button type="button" class="quiz-opt" data-correct="1">%80 olasılıkla 1</button>
+                        <button type="button" class="quiz-opt" data-correct="0">net = 0.8</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="CE'nin türevindeki 1/(y(1 − y)), σ′ ile sadeleşir."
+                        data-no="CE'nin türevindeki 1/(y(1 − y)), σ′ ile sadeleşir: Δw = η(d − y)x.">
+                        <div class="quiz-q">2) σ + çapraz entropi ile güncelleme kuralı?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">Δw = η(d − y)·y(1 − y)·x</button>
+                        <button type="button" class="quiz-opt" data-correct="1">Δw = η(d − y)·x</button>
+                        <button type="button" class="quiz-opt" data-correct="0">Δw = η·d·x</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="CE: 1 − y = 0.99; MSE: (1 − y)·y(1 − y) ≈ 0.0098 → ~100 kat."
+                        data-no="MSE'nin y(1 − y) çarpanı burada ≈ 0.0099: adım söner. CE: 1 − y = 0.99.">
+                        <div class="quiz-q">3) d = 1 iken y = 0.01 (emin ama yanlış). Kim daha büyük adım atar?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">MSE</button>
+                        <button type="button" class="quiz-opt" data-correct="1">CE</button>
+                        <button type="button" class="quiz-opt" data-correct="0">ikisi aynı</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="w = 0'da gradyan sıfır ve CE dışbükey: her yerde y = 0.5."
+                        data-no="Döngü, perceptronun (H4) davranışıydı. Toplu CE'de w → 0, her yerde y = 0.5.">
+                        <div class="quiz-q">4) XOR'da toplu CE gradyan inişi nereye varır?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">sonsuz döngü</button>
+                        <button type="button" class="quiz-opt" data-correct="1">w = 0: her yerde y = 0.5</button>
+                        <button type="button" class="quiz-opt" data-correct="0">4/4 doğru</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 29. ÖZET -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="list-checks" style="width:14px;height:14px;"></i> Toparlayalım</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-2 text-left cards-tight" id="w5sum" style="max-width:1040px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ Model: <code>y = σ(wᵀx + b)</code>; karar yine net = 0
+                        doğrusu, y ise güven</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ λ ya da ‖w‖ = diklik = güven; λ → ∞: basamak, yani ayrık
+                        perceptron</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ y olasılık gibi okunur: odds = e<sup>net</sup>,
+                        logit(y) = net</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Çapraz entropi = −ln(olabilirlik): Bernoulli'den
+                        türedi</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Kural: <code>Δw = η(d − y)x</code>: f′ sadeleşir,
+                        emin-yanlışta doyma yok</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ σ + CE dışbükey: plato yok; MSE + σ platoda
+                        takılabilir</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Ayrılabilirse ‖w‖ → ∞ (L2 frenler); XOR'da w → 0,
+                        y = 0.5</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Softmax + CE: çok sınıf, aynı kural; istatistikte
+                        lojistik regresyon</p></div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.5em;">🗺️ Tek katmanın son durağı. XOR hâlâ
+                    çözülmedi: H6'da <b>gizli katman</b> ekliyoruz.</p>
+            </section>
+
+
+            <!-- 30. UYGULAMA -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.4);color:#6ee7b7;">
+                    <i data-lucide="rocket" style="width:14px;height:14px;"></i> Uygulama · ~40 dk</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Sürekli Perceptronu Kendin Kodla</h2>
+                <div class="grid grid-cols-2 gap-3 text-left cards-tight" style="max-width:1050px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p><b>1 · OR'u elle çalıştır.</b> Unipolar OR, w₀ = 0, η = 1, CE
+                        kuralı. İlk epoch'un 4 adımını hesapla: sonunda w ≈ [0.63, 0.78, 0.75] çıkmalı. Kaçıncı epoch'ta 4/4
+                        doğru? (cevap: 7)</p></div>
+                    <div class="concept-card fragment fade-up"><p><b>2 · MSE–CE yarışı.</b> Kod slaytındaki (Slayt 24)
+                        kuralı MSE'ye çevir. Dört örneğin hepsi ≥ 0.9 güvene kaçıncı epoch'ta ulaşıyor? (CE 22, MSE 207)</p></div>
+                    <div class="concept-card fragment fade-up"><p><b>3 · XOR'da w → 0.</b> Kodu XOR'a uyarla; toplu (batch)
+                        güncellemeyle 1000 epoch çalıştır. w ve y ne oluyor? Örnek örnek güncellemede ne değişiyor?</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><p><b>4 · Iris +
+                        sklearn.</b> Versicolor / virginica (petal, standart) için sürekli perceptronu yaz;
+                        <code>LogisticRegression(penalty=None)</code> ile karşılaştır: aynı w, aynı 6 hata mı?</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;color:#7dd3fc;">İpucu (toplu güncelleme):
+                    <code>w = w + eta * (d - torch.sigmoid(Xb @ w)) @ Xb / len(d)</code>, burada Xb = [X | 1].</p>
+            </section>
+
+
+            <!-- 31. SONRAKİ HAFTA -->
+            <section data-background-color="#020617">
+                <div class="flex flex-col items-center">
+                    <span class="chip mb-6"><i data-lucide="arrow-right-circle" style="width:14px;height:14px;"></i>
+                        Sonraki Hafta</span>
+                    <h2 class="text-4xl font-black mb-4 tracking-tighter text-white">Hafta 6 — <span
+                            class="grad-text">Çok Katmanlı Algılayıcı</span></h2>
+                    <p class="code-note mb-6" style="max-width:760px;">Tek doğru XOR'u ayıramıyordu. Araya bir <b>gizli katman</b>
+                        koyalım: gizli nöronlar yeni öznitelikleri kendileri üretir (H4'teki x₁x₂ fikrinin öğrenilen hâli). Her
+                        gizli nöron, bugünkü sürekli perceptron. Peki gizli katmanın ağırlıklarını kim eğitecek? → H7.</p>
+                    <div class="math-box mb-8" style="max-width:560px;">\[ y = \sigma\big(\mathbf{w}_2^\top\,
+                        \sigma(W_1\mathbf{x} + \mathbf{b}_1) + b_2\big) \]</div>
+                    <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            transition: 'slide', backgroundTransition: 'fade', margin: 0.06, slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
+        });
+        function renderMath() {
+            if (typeof renderMathInElement === 'undefined') return;
+            renderMathInElement(document.querySelector('.reveal .slides'), {
+                delimiters: [{ left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }],
+                throwOnError: false
+            });
+        }
+        if (typeof Reveal !== 'undefined' && Reveal.on) { Reveal.on('ready', renderMath); }
+        else { window.addEventListener('load', renderMath); }
+    </script>
+    <script>
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+            function $(id) { return document.getElementById(id); }
+            function mn(s) { return String(s).replace(/-/g, '−'); }
+            function fx(v, n) { var s = v.toFixed(n === undefined ? 2 : n); if (/^-0\.?0*$/.test(s)) s = s.slice(1); return mn(s); }
+            function nf(v, n) { var r = Math.round(v); return Math.abs(v - r) < 1e-9 ? mn(String(r === 0 ? 0 : r)) : fx(v, n === undefined ? 2 : n); }
+            function sg(v) { return v > 0 ? '+' + nf(v) : nf(v); }
+            function vec(a, n) { return '[' + a.map(function (v) { return nf(v, n); }).join(', ') + ']'; }
+            function C(c, t) { return '<span class="' + c + '">' + t + '</span>'; }
+            function sgn(z) { return z >= 0 ? 1 : -1; }
+            function onLeave(fn) { if (typeof Reveal !== 'undefined' && Reveal.on) Reveal.on('slidechanged', fn); }
+            function pickButtons(box, onPick) {
+                if (!box) return;
+                box.querySelectorAll('button').forEach(function (b) {
+                    b.addEventListener('click', function (e) {
+                        stop(e); b.blur();
+                        box.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
+                        onPick(b.getAttribute('data-v'));
+                    });
+                });
+            }
+            function setOn(box, v) { box.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-v') === v); }); }
+            function mulberry32(a) {
+                return function () {
+                    a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+                    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296;
+                };
+            }
+            function gauss(r) { var u = 1 - r(), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+            function canvasPoint(cv, e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * cv.width / r.width, (e.clientY - r.top) * cv.height / r.height]; }
+
+            // Dünya koordinatlı 2B tuval yardımcısı: bölge boyama, eksen, doğru, nokta, ok
+            function Plane(cv, xr, yr) {
+                var ctx = cv.getContext('2d'), W = cv.width, H = cv.height, P = { ctx: ctx, W: W, H: H };
+                P.px = function (x) { return (x - xr[0]) / (xr[1] - xr[0]) * W; };
+                P.py = function (y) { return H - (y - yr[0]) / (yr[1] - yr[0]) * H; };
+                P.ix = function (X) { return xr[0] + X / W * (xr[1] - xr[0]); };
+                P.iy = function (Y) { return yr[0] + (H - Y) / H * (yr[1] - yr[0]); };
+                P.shade = function (f, cols) {
+                    var S = 6; cols = cols || { '1': '#1e3a5f', '-1': '#3b1a24', '0': '#111827' };
+                    for (var i = 0; i < W; i += S) for (var j = 0; j < H; j += S) {
+                        ctx.fillStyle = cols[String(f(P.ix(i + S / 2), P.iy(j + S / 2)))]; ctx.fillRect(i, j, S, S);
+                    }
+                };
+                P.axes = function () {
+                    ctx.strokeStyle = 'rgba(148,163,184,0.35)'; ctx.lineWidth = 1; ctx.beginPath();
+                    ctx.moveTo(P.px(0), 0); ctx.lineTo(P.px(0), H); ctx.moveTo(0, P.py(0)); ctx.lineTo(W, P.py(0)); ctx.stroke();
+                };
+                P.line = function (w, style, width, dash) {   // w₁x + w₂y + b = 0
+                    if (Math.abs(w[0]) < 1e-12 && Math.abs(w[1]) < 1e-12) return;
+                    ctx.save(); ctx.strokeStyle = style; ctx.lineWidth = width; ctx.setLineDash(dash || []); ctx.beginPath();
+                    if (Math.abs(w[1]) >= Math.abs(w[0])) {
+                        ctx.moveTo(P.px(xr[0]), P.py(-(w[0] * xr[0] + w[2]) / w[1])); ctx.lineTo(P.px(xr[1]), P.py(-(w[0] * xr[1] + w[2]) / w[1]));
+                    } else {
+                        ctx.moveTo(P.px(-(w[1] * yr[0] + w[2]) / w[0]), P.py(yr[0])); ctx.lineTo(P.px(-(w[1] * yr[1] + w[2]) / w[0]), P.py(yr[1]));
+                    }
+                    ctx.stroke(); ctx.restore();
+                };
+                P.seg = function (x0, y0, x1, y1, col, lw, dash) {
+                    ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.setLineDash(dash || []); ctx.beginPath();
+                    ctx.moveTo(P.px(x0), P.py(y0)); ctx.lineTo(P.px(x1), P.py(y1)); ctx.stroke(); ctx.restore();
+                };
+                P.arrow = function (x0, y0, x1, y1, col, lw, dash) {
+                    var a = P.px(x0), b = P.py(y0), c = P.px(x1), d = P.py(y1), t = Math.atan2(d - b, c - a), L = Math.hypot(c - a, d - b);
+                    if (L < 3) return;
+                    ctx.save(); ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = lw; ctx.setLineDash(dash || []);
+                    ctx.beginPath(); ctx.moveTo(a, b); ctx.lineTo(c, d); ctx.stroke(); ctx.setLineDash([]);
+                    ctx.beginPath(); ctx.moveTo(c, d); ctx.lineTo(c - 12 * Math.cos(t - 0.4), d - 12 * Math.sin(t - 0.4));
+                    ctx.lineTo(c - 12 * Math.cos(t + 0.4), d - 12 * Math.sin(t + 0.4)); ctx.closePath(); ctx.fill(); ctx.restore();
+                };
+                P.dot = function (x, y, d, r) {
+                    ctx.beginPath(); ctx.arc(P.px(x), P.py(y), r, 0, 6.283);
+                    if (d > 0) { ctx.fillStyle = '#34d399'; ctx.fill(); }
+                    else { ctx.fillStyle = '#0b1020'; ctx.fill(); ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = Math.max(1.5, r / 4); ctx.stroke(); }
+                };
+                P.ring = function (x, y, r, col, lw) { ctx.beginPath(); ctx.arc(P.px(x), P.py(y), r, 0, 6.283); ctx.strokeStyle = col; ctx.lineWidth = lw || 2.5; ctx.stroke(); };
+                P.text = function (x, y, s, col, font, align) {
+                    ctx.fillStyle = col; ctx.font = font || 'bold 12px monospace'; ctx.textAlign = align || 'center'; ctx.fillText(s, P.px(x), P.py(y));
+                };
+                return P;
+            }
+
+            // Sürekli çıktı: σ ve renk haritası (y ≈ 1 mavi, y ≈ 0 kırmızı, y ≈ 0.5 koyu)
+            function sigm(z) { return z >= 0 ? 1 / (1 + Math.exp(-z)) : Math.exp(z) / (1 + Math.exp(z)); }
+            function softplus(z) { return z > 30 ? z : Math.log(1 + Math.exp(z)); }   // −ln σ(−z)
+            function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+            function rgb(c) { return 'rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'; }
+            var Y1 = [37, 84, 156], Y0 = [128, 30, 58], YM = [12, 17, 30];
+            function ycol(y) { return y >= 0.5 ? mix(YM, Y1, Math.min(1, (y - 0.5) * 2)) : mix(YM, Y0, Math.min(1, (0.5 - y) * 2)); }
+            function PlaneY(cv, xr, yr) {
+                var P = Plane(cv, xr, yr);
+                P.shadeY = function (f) {
+                    var S = 5, ctx = P.ctx;
+                    for (var i = 0; i < P.W; i += S) for (var j = 0; j < P.H; j += S) {
+                        ctx.fillStyle = rgb(ycol(f(P.ix(i + S / 2), P.iy(j + S / 2)))); ctx.fillRect(i, j, S, S);
+                    }
+                };
+                return P;
+            }
+            var AND4 = [[0, 0, 0], [0, 1, 0], [1, 0, 0], [1, 1, 1]], LN9 = Math.log(9);
+
+            // ---------------------------------------------------------------- Slayt 5: λ (diklik)
+            (function () {
+                var cv = $('lm-cv'); if (!cv) return;
+                var P = PlaneY(cv, [-0.6, 1.6], [-0.6, 1.6]), fc = $('lm-fc'), g = fc.getContext('2d'), FW = fc.width, FH = fc.height;
+                var W = [2, 2, -3], mode = 'uni';
+                function f(n, lam) { var s = sigm(lam * n); return mode === 'uni' ? s : 2 * s - 1; }
+                function curve(lam) {
+                    var L = 36, R = 12, T = 12, B = 28, x0 = -6, x1 = 6, uni = mode === 'uni', lo = uni ? -0.08 : -1.15, hi = uni ? 1.08 : 1.15;
+                    var ticks = uni ? [0, 0.5, 1] : [-1, 0, 1], low = uni ? 0 : -1, s = uni ? lam / 4 : lam / 2, y0 = f(0, lam);
+                    function X(n) { return L + (n - x0) / (x1 - x0) * (FW - L - R); }
+                    function Y(v) { return T + (hi - v) / (hi - lo) * (FH - T - B); }
+                    g.fillStyle = '#0b1222'; g.fillRect(0, 0, FW, FH);
+                    g.strokeStyle = 'rgba(148,163,184,0.18)'; g.lineWidth = 1; g.beginPath();
+                    ticks.forEach(function (v) { g.moveTo(L, Y(v)); g.lineTo(FW - R, Y(v)); });
+                    g.moveTo(X(0), T); g.lineTo(X(0), FH - B); g.stroke();
+                    g.fillStyle = '#64748b'; g.font = '11px monospace'; g.textAlign = 'right';
+                    ticks.forEach(function (v) { g.fillText(mn(String(v)), L - 5, Y(v) + 4); });
+                    g.textAlign = 'center'; [-6, -4, -2, 0, 2, 4, 6].forEach(function (n) { g.fillText(mn(String(n)), X(n), FH - B + 14); });
+                    g.fillStyle = '#94a3b8'; g.textAlign = 'right'; g.fillText('net', FW - R, FH - 4);
+                    g.save(); g.beginPath(); g.rect(L, T, FW - L - R, FH - T - B); g.clip();
+                    g.strokeStyle = 'rgba(203,213,225,0.5)'; g.lineWidth = 2; g.setLineDash([6, 5]); g.beginPath();
+                    g.moveTo(X(x0), Y(low)); g.lineTo(X(0), Y(low)); g.lineTo(X(0), Y(1)); g.lineTo(X(x1), Y(1)); g.stroke();
+                    g.strokeStyle = '#fdba74'; g.setLineDash([3, 4]); g.beginPath(); g.moveTo(X(-2), Y(y0 - 2 * s)); g.lineTo(X(2), Y(y0 + 2 * s)); g.stroke();
+                    g.setLineDash([]); g.strokeStyle = '#93c5fd'; g.lineWidth = 3; g.beginPath();
+                    for (var i = 0; i <= 240; i++) { var n = x0 + (x1 - x0) * i / 240; if (i) g.lineTo(X(n), Y(f(n, lam))); else g.moveTo(X(n), Y(f(n, lam))); }
+                    g.stroke(); g.restore();
+                    AND4.forEach(function (p) {
+                        var n = W[0] * p[0] + W[1] * p[1] + W[2], v = f(n, lam);
+                        g.beginPath(); g.arc(X(n), Y(v), 6, 0, 6.283);
+                        if (p[2]) { g.fillStyle = '#34d399'; g.fill(); } else { g.fillStyle = '#0b1020'; g.fill(); g.strokeStyle = '#e2e8f0'; g.lineWidth = 1.8; g.stroke(); }
+                    });
+                    g.font = 'bold 12px monospace'; g.textAlign = 'left';
+                    g.fillStyle = '#93c5fd'; g.fillText(uni ? 'σ(λ·net)' : 'tanh(λ·net/2)', L + 8, T + 14);
+                    g.fillStyle = '#fdba74'; g.fillText('eğim f′(0) = ' + fx(s, 2), X(0.4), Y(low) - 8);
+                    g.fillStyle = 'rgba(203,213,225,0.75)'; g.fillText('basamak', X(3.2), Y(1) + 16);
+                }
+                function draw() {
+                    var lam = +$('lm-l').value, q = LN9 / lam, uni = mode === 'uni';
+                    P.shadeY(function (a, b) { return sigm(lam * (W[0] * a + W[1] * b + W[2])); });
+                    P.axes();
+                    P.line([W[0], W[1], W[2] - q], 'rgba(147,197,253,0.75)', 1.5, [4, 5]);
+                    P.line([W[0], W[1], W[2] + q], 'rgba(252,165,165,0.75)', 1.5, [4, 5]);
+                    P.line(W, '#fbbf24', 3);
+                    var ys = AND4.map(function (p) { return f(W[0] * p[0] + W[1] * p[1] + W[2], lam); });
+                    AND4.forEach(function (p, i) {
+                        P.dot(p[0], p[1], p[2], 11);
+                        P.text(p[0], p[1] + (p[1] > 0.5 ? 0.16 : -0.23), fx(ys[i], 3), '#f8fafc', 'bold 13px monospace');
+                    });
+                    curve(lam);
+                    $('lm-lv').textContent = fx(lam, 1);
+                    var s = (uni ? C('cy', 'y') + ' = σ(λ·' + C('cn', 'net') + ')'
+                        : C('cy', 'y') + ' = 2σ(λ·' + C('cn', 'net') + ') − 1 = tanh(λ·' + C('cn', 'net') + '/2)') +
+                        ' · eğim f′(0) = ' + (uni ? 'λ/4' : 'λ/2') + ' = <b>' + fx(uni ? lam / 4 : lam / 2, 3) + '</b>' +
+                        '<br>' + C('cn', 'net') + ' = 2x₁ + 2x₂ − 3 = (' + C('cn', '−3, −1, −1, 1') + ')' +
+                        '<br>' + C('cy', 'y') + ' = (' + ys.map(function (v) { return C('cy', fx(v, 3)); }).join(', ') + ') → karar (' +
+                        ys.map(function (v) { return uni ? (v >= 0.5 ? '1' : '0') : (v >= 0 ? '+1' : '−1'); }).join(', ') + ')' +
+                        '<br><span class="m">kararsız bant (' + (uni ? '0.1 &lt; y &lt; 0.9' : '|y| &lt; 0.8') + '): |net| &lt; ln 9 / λ = ' + fx(q, 2) + '</span>';
+                    if (lam >= 6) s += '<br><span class="y">λ büyük: çıktılar uçlara yapıştı → neredeyse basamak: ayrık perceptron (H4).</span>';
+                    else if (lam <= 0.5) s += '<br><span class="y">λ küçük: çıktılar ortaya yığıldı → karar aynı, güven yok.</span>';
+                    else s += '<br><span class="m">Sarı doğru (net = 0) λ\'dan bağımsız: λ yalnız güveni değiştirir.</span>';
+                    $('lm-out').innerHTML = s;
+                }
+                $('lm-l').addEventListener('input', function (e) { stop(e); draw(); });
+                pickButtons($('lm-mode'), function (v) { mode = v; draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Slayt 7: net → y → odds
+            (function () {
+                var r = $('od-n'); if (!r) return;
+                function draw() {
+                    var n = +r.value, y = sigm(n), od = Math.exp(n);
+                    $('od-nv').textContent = fx(n, 2);
+                    var who = od >= 1 ? '“evet” lehine <b>' + fx(od, 2) + ' : 1</b>' : '“hayır” lehine <b>' + fx(1 / od, 2) + ' : 1</b>';
+                    $('od-out').innerHTML = C('cy', 'y') + ' = σ(' + C('cn', fx(n, 2)) + ') = <b>' + C('cy', fx(y, 3)) + '</b> → “evet” olasılığı %' + fx(100 * y, 1) +
+                        '<div class="obar"><span style="width:' + (100 * y).toFixed(1) + '%"></span></div>' +
+                        '<span class="m">mavi = y (“evet”), kırmızı = 1 − y (“hayır”)</span>' +
+                        '<br>odds = ' + C('cy', 'y') + ' / (1 − ' + C('cy', 'y') + ') = ' + fx(y, 3) + ' / ' + fx(1 - y, 3) + ' = <b>' + fx(od, 3) + '</b> = e<sup>' + fx(n, 2) + '</sup>' +
+                        '<br>okuma: ' + who +
+                        '<br>logit(' + C('cy', 'y') + ') = ln ' + fx(od, 3) + ' = <b>' + C('cn', fx(n, 2)) + '</b> = ' + C('cn', 'net') + ' ✓' +
+                        (Math.abs(n + 0.55) < 0.001 ? '<br><span class="m">Varsayılan: H2\'deki nöronumuz (net = −0.55).</span>' : '');
+                }
+                r.addEventListener('input', function (e) { stop(e); draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Slayt 11: emin ama yanlış (gradyan karşılaştırması)
+            (function () {
+                var cv = $('ew-cv'); if (!cv) return;
+                var g = cv.getContext('2d'), W = cv.width, H = cv.height, x0 = -8, x1 = 4, T = 26, B = 32;
+                var PL = [
+                    { L: 44, R: 300, ttl: 'E (d = 1)', hi: 8.4, ticks: [0, 2, 4, 6, 8],
+                        fm: function (y) { return 0.5 * (1 - y) * (1 - y); }, fc: function (y, n) { return softplus(-n); } },
+                    { L: 366, R: 626, ttl: '|∂E/∂net| (d = 1)', hi: 1.05, ticks: [0, 0.5, 1],
+                        fm: function (y) { return (1 - y) * y * (1 - y); }, fc: function (y) { return 1 - y; } }];
+                function X(p, n) { return p.L + (n - x0) / (x1 - x0) * (p.R - p.L); }
+                function Y(p, v) { return T + (p.hi - Math.min(v, p.hi)) / p.hi * (H - T - B); }
+                function draw() {
+                    var n0 = +$('ew-n').value, y0 = sigm(n0);
+                    g.fillStyle = '#0b1222'; g.fillRect(0, 0, W, H);
+                    PL.forEach(function (p) {
+                        g.fillStyle = 'rgba(244,63,94,0.12)'; g.fillRect(X(p, x0), T, X(p, -2) - X(p, x0), H - T - B);
+                        g.strokeStyle = 'rgba(148,163,184,0.15)'; g.lineWidth = 1; g.beginPath();
+                        p.ticks.forEach(function (v) { g.moveTo(p.L, Y(p, v)); g.lineTo(p.R, Y(p, v)); }); g.stroke();
+                        g.strokeStyle = '#475569'; g.beginPath(); g.moveTo(p.L, T); g.lineTo(p.L, H - B); g.lineTo(p.R, H - B); g.stroke();
+                        g.fillStyle = '#64748b'; g.font = '11px monospace'; g.textAlign = 'right';
+                        p.ticks.forEach(function (v) { g.fillText(String(v), p.L - 5, Y(p, v) + 4); });
+                        g.textAlign = 'center'; [-8, -6, -4, -2, 0, 2, 4].forEach(function (n) { g.fillText(mn(String(n)), X(p, n), H - B + 14); });
+                        g.fillStyle = '#94a3b8'; g.fillText('net', (p.L + p.R) / 2, H - 4);
+                        g.fillStyle = '#e2e8f0'; g.font = 'bold 12px monospace'; g.textAlign = 'left'; g.fillText(p.ttl, p.L + 4, T - 10);
+                        g.fillStyle = '#fca5a5'; g.font = '10px monospace'; g.fillText('emin ama yanlış', X(p, x0) + 4, H - B - 6);
+                        [['#fdba74', p.fm], ['#67e8f9', p.fc]].forEach(function (c) {
+                            g.save(); g.beginPath(); g.rect(p.L, T - 2, p.R - p.L, H - T - B + 2); g.clip();
+                            g.strokeStyle = c[0]; g.lineWidth = 3; g.beginPath();
+                            for (var i = 0; i <= 240; i++) { var n = x0 + (x1 - x0) * i / 240, v = c[1](sigm(n), n); if (i) g.lineTo(X(p, n), Y(p, v)); else g.moveTo(X(p, n), Y(p, v)); }
+                            g.stroke(); g.restore();
+                            g.beginPath(); g.arc(X(p, n0), Y(p, c[1](y0, n0)), 6, 0, 6.283); g.fillStyle = c[0]; g.fill();
+                            g.strokeStyle = '#0b1020'; g.lineWidth = 1.5; g.stroke();
+                        });
+                        g.save(); g.strokeStyle = 'rgba(248,250,252,0.7)'; g.setLineDash([4, 4]); g.lineWidth = 1.5; g.beginPath();
+                        g.moveTo(X(p, n0), T); g.lineTo(X(p, n0), H - B); g.stroke(); g.restore();
+                    });
+                    var em = 0.5 * (1 - y0) * (1 - y0), ec = softplus(-n0), gm = (1 - y0) * y0 * (1 - y0), gc = 1 - y0;
+                    $('ew-nv').textContent = fx(n0, 1);
+                    $('ew-out').innerHTML = C('cn', 'net') + ' = ' + fx(n0, 1) + ' → ' + C('cy', 'y') + ' = σ(net) = <b>' + C('cy', fx(y0, 4)) + '</b>' +
+                        (n0 < -2 ? ' <span class="r">emin ama yanlış</span>' : y0 < 0.5 ? ' <span class="y">yanlış</span>' : ' <span class="g">doğru</span>') +
+                        '<br>E: ' + C('cmse', 'MSE ' + fx(em, 4)) + ' · ' + C('cce', 'CE ' + fx(ec, 4)) +
+                        '<br>|∂E/∂net|: ' + C('cmse', 'MSE ' + fx(gm, 5)) + ' · ' + C('cce', 'CE ' + fx(gc, 5)) +
+                        '<br>→ CE\'nin adımı <b>' + fx(gc / gm, 1) + ' kat</b> büyük <span class="m">= 1 / (y(1 − y))</span>';
+                }
+                $('ew-n').addEventListener('input', function (e) { stop(e); draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Slayt 14: hata yüzeyi (MSE ↔ CE), toplu gradyan inişi
+            (function () {
+                var cm = $('es-m'), cc = $('es-c'); if (!cm || !cc) return;
+                var X1 = [-3, -2, -1, 1, 2, 3], D1 = [0, 0, 1, 0, 1, 1], LO = -6, HI = 6, ETA = 2, NMAX = 500, ep = 0, raf = null, start = [-4, 3];
+                var RAMP = [[8, 7, 34], [72, 18, 116], [160, 45, 124], [233, 94, 87], [252, 196, 120], [252, 247, 200]];
+                function ramp(t) { t = Math.max(0, Math.min(1, t)) * (RAMP.length - 1); var i = Math.min(RAMP.length - 2, Math.floor(t)); return mix(RAMP[i], RAMP[i + 1], t - i); }
+                function E(w, b, ce) {
+                    var s = 0;
+                    for (var i = 0; i < 6; i++) {
+                        var n = w * X1[i] + b;
+                        if (ce) s += D1[i] ? softplus(-n) : softplus(n);
+                        else { var y = sigm(n); s += 0.5 * (D1[i] - y) * (D1[i] - y); }
+                    }
+                    return s / 6;
+                }
+                function acc(w, b) { var a = 0; for (var i = 0; i < 6; i++) if ((w * X1[i] + b >= 0) === (D1[i] === 1)) a++; return a; }
+                function run(w, b, ce) {
+                    var path = [[w, b]];
+                    for (var t = 0; t < NMAX; t++) {
+                        var gw = 0, gb = 0;
+                        for (var i = 0; i < 6; i++) { var y = sigm(w * X1[i] + b), r = (D1[i] - y) * (ce ? 1 : y * (1 - y)); gw += r * X1[i]; gb += r; }
+                        w += ETA * gw / 6; b += ETA * gb / 6; path.push([w, b]);
+                    }
+                    return path;
+                }
+                function surface(cv, ce) {
+                    var Wd = cv.width, Hd = cv.height, off = document.createElement('canvas'); off.width = Wd; off.height = Hd;
+                    var og = off.getContext('2d'), img = og.createImageData(Wd, Hd), v = new Float64Array(Wd * Hd), lo = Infinity, hi = -Infinity, L = 12;
+                    for (var j = 0; j < Hd; j++) for (var i = 0; i < Wd; i++) {
+                        var e = Math.log(E(LO + (i + 0.5) / Wd * (HI - LO), HI - (j + 0.5) / Hd * (HI - LO), ce));
+                        v[j * Wd + i] = e; if (e < lo) lo = e; if (e > hi) hi = e;
+                    }
+                    function lv(k) { return Math.floor((v[k] - lo) / (hi - lo) * L - 1e-9); }
+                    for (var k = 0; k < Wd * Hd; k++) {
+                        var c = ramp((v[k] - lo) / (hi - lo)), l = lv(k);
+                        if ((k % Wd < Wd - 1 && lv(k + 1) !== l) || (k + Wd < Wd * Hd && lv(k + Wd) !== l)) c = mix(c, [255, 255, 255], 0.35);
+                        img.data[4 * k] = c[0]; img.data[4 * k + 1] = c[1]; img.data[4 * k + 2] = c[2]; img.data[4 * k + 3] = 255;
+                    }
+                    og.putImageData(img, 0, 0); return off;
+                }
+                var S = [{ cv: cm, ce: false, min: [0.572, 0], col: '#fdba74', nm: 'MSE', cls: 'cmse' },
+                         { cv: cc, ce: true, min: [0.732, 0], col: '#67e8f9', nm: 'CE', cls: 'cce' }];
+                S.forEach(function (o) { o.g = o.cv.getContext('2d'); o.bg = surface(o.cv, o.ce); });
+                function px(o, w) { return (w - LO) / (HI - LO) * o.cv.width; }
+                function py(o, b) { return (HI - b) / (HI - LO) * o.cv.height; }
+                function star(g, x, y) {
+                    g.save(); g.fillStyle = '#fde047'; g.strokeStyle = '#0b1020'; g.lineWidth = 1.5; g.beginPath();
+                    for (var k = 0; k < 10; k++) { var r = k % 2 ? 4 : 9, a = -Math.PI / 2 + k * Math.PI / 5; g.lineTo(x + r * Math.cos(a), y + r * Math.sin(a)); }
+                    g.closePath(); g.fill(); g.stroke(); g.restore();
+                }
+                function reset(st) { if (st) start = st; S.forEach(function (o) { o.path = run(start[0], start[1], o.ce); }); ep = 0; }
+                function drawOne(o) {
+                    var g = o.g, Wd = o.cv.width, Hd = o.cv.height;
+                    g.drawImage(o.bg, 0, 0);
+                    g.strokeStyle = 'rgba(226,232,240,0.28)'; g.lineWidth = 1; g.beginPath();
+                    g.moveTo(px(o, 0), 0); g.lineTo(px(o, 0), Hd); g.moveTo(0, py(o, 0)); g.lineTo(Wd, py(o, 0)); g.stroke();
+                    g.fillStyle = 'rgba(226,232,240,0.75)'; g.font = '11px monospace'; g.textAlign = 'right'; g.fillText('w →', Wd - 4, py(o, 0) - 5);
+                    g.textAlign = 'left'; g.fillText('b ↑', px(o, 0) + 5, 12);
+                    star(g, px(o, o.min[0]), py(o, o.min[1]));
+                    g.strokeStyle = '#f8fafc'; g.lineWidth = 2.5; g.beginPath();
+                    for (var t = 0; t <= ep; t++) { var p = o.path[t]; if (t) g.lineTo(px(o, p[0]), py(o, p[1])); else g.moveTo(px(o, p[0]), py(o, p[1])); }
+                    g.stroke();
+                    var p0 = o.path[0], pe = o.path[ep];
+                    g.beginPath(); g.arc(px(o, p0[0]), py(o, p0[1]), 6, 0, 6.283); g.strokeStyle = '#f8fafc'; g.lineWidth = 2; g.stroke();
+                    g.beginPath(); g.arc(px(o, pe[0]), py(o, pe[1]), 6.5, 0, 6.283); g.fillStyle = o.col; g.fill(); g.strokeStyle = '#0b1020'; g.lineWidth = 2; g.stroke();
+                }
+                function out() {
+                    var s = '<b>epoch ' + ep + '</b> <span class="m">/ ' + NMAX + ' · başlangıç (' + fx(start[0], 2) + ', ' + fx(start[1], 2) + ')</span>';
+                    S.forEach(function (o) {
+                        var p = o.path[ep];
+                        s += '<br>' + C(o.cls, '<b>' + o.nm + '</b>') + ': w = ' + fx(p[0], 2) + ', b = ' + fx(p[1], 2) + ' · E = ' + fx(E(p[0], p[1], o.ce), 4) +
+                            ' · doğru ' + acc(p[0], p[1]) + '/6';
+                    });
+                    var pm = S[0].path[ep];
+                    if (ep >= 60 && E(pm[0], pm[1], false) > 0.2) s += '<br><span class="y">MSE platoda: σ doymuş, y(1 − y) ≈ 0 → gradyan ≈ 0.</span>';
+                    else s += '<br><span class="m">en dip: MSE 0.0817 (w = 0.57) · CE 0.4794 (w = 0.73) · b = 0</span>';
+                    $('es-out').innerHTML = s;
+                }
+                function render() { S.forEach(drawOne); out(); }
+                function pause() { if (raf) { cancelAnimationFrame(raf); raf = null; } $('es-play').textContent = '⏵ oynat'; }
+                function frame() {
+                    ep = Math.min(NMAX, ep + 3); render();
+                    if (ep < NMAX) raf = requestAnimationFrame(frame); else pause();
+                }
+                function play() { if (raf) cancelAnimationFrame(raf); if (ep >= NMAX) ep = 0; $('es-play').textContent = '⏸ durdur'; raf = requestAnimationFrame(frame); }
+                $('es-play').addEventListener('click', function (e) { stop(e); this.blur(); if (raf) pause(); else play(); });
+                $('es-reset').addEventListener('click', function (e) { stop(e); this.blur(); pause(); ep = 0; render(); });
+                pickButtons($('es-pre'), function (v) { pause(); reset(v.split(',').map(Number)); render(); play(); });
+                S.forEach(function (o) {
+                    o.cv.addEventListener('pointerdown', function (e) {
+                        stop(e); var c = canvasPoint(o.cv, e);
+                        $('es-pre').querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+                        pause(); reset([LO + c[0] / o.cv.width * (HI - LO), HI - c[1] / o.cv.height * (HI - LO)]); render(); play();
+                    });
+                });
+                onLeave(pause);
+                reset(); render();
+            })();
+
+            // ---------------------------------------------------------------- Slayt 17: sürekli perceptron adım adım (AND / OR / XOR, CE / MSE)
+            (function () {
+                var SETS = { and: AND4, or: [[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]], xor: [[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 0]] };
+                var NM = { and: 'AND', or: 'OR', xor: 'XOR' };
+                document.querySelectorAll('.st.sc').forEach(function (root) {
+                    var cv = root.querySelector('.st-cv'), P = PlaneY(cv, [-0.6, 1.6], [-0.6, 1.6]);
+                    var set = root.dataset.set, eta = +root.dataset.eta, loss = root.dataset.loss, W0 = root.dataset.w.split(',').map(Number);
+                    var pts, w, k, hist, last, timer = null, anim = null;
+                    function out(x1, x2, ww) { ww = ww || w; return ww[0] * x1 + ww[1] * x2 + ww[2]; }
+                    function ys(ww) { return pts.map(function (q) { return sigm(out(q[0], q[1], ww)); }); }
+                    function acc(ww) { var y = ys(ww); return pts.filter(function (q, i) { return (y[i] >= 0.5) === (q[2] === 1); }).length; }
+                    function ce(ww) { var s = 0; pts.forEach(function (q) { var n = out(q[0], q[1], ww); s += q[2] ? softplus(-n) : softplus(n); }); return s / 4; }
+                    function conf(ww) { var y = ys(ww); return Math.min.apply(null, pts.map(function (q, i) { return q[2] ? y[i] : 1 - y[i]; })); }
+                    function reset() { pts = SETS[set]; w = W0.slice(); k = 0; hist = []; last = null; }
+                    function step() {
+                        var q = pts[k % 4], x = [q[0], q[1], 1], d = q[2], net = out(q[0], q[1]), y = sigm(net);
+                        var r = loss === 'ce' ? d - y : (d - y) * y * (1 - y), dw = x.map(function (v) { return eta * r * v; }), w0 = w.slice();
+                        w = w.map(function (v, i) { return v + dw[i]; });
+                        last = { k: k + 1, ep: Math.floor(k / 4) + 1, q: q, x: x, d: d, net: net, y: y, r: r, dw: dw, w0: w0, w1: w.slice() };
+                        hist.push(last); if (hist.length > 4000) hist.shift(); k++;
+                    }
+                    function back() { if (!hist.length) return; var h = hist.pop(); w = h.w0; k--; last = hist[hist.length - 1] || null; }
+                    function draw(ww) {
+                        ww = ww || w;
+                        P.shadeY(function (a, b) { return sigm(out(a, b, ww)); });
+                        P.axes();
+                        P.line([ww[0], ww[1], ww[2] - LN9], 'rgba(147,197,253,0.6)', 1.2, [3, 5]);
+                        P.line([ww[0], ww[1], ww[2] + LN9], 'rgba(252,165,165,0.6)', 1.2, [3, 5]);
+                        if (last) P.line(last.w0, 'rgba(203,213,225,0.7)', 2, [6, 5]);
+                        P.line(ww, '#fbbf24', 3);
+                        var y = ys(ww);
+                        pts.forEach(function (q, n) {
+                            P.dot(q[0], q[1], q[2], 12);
+                            if ((y[n] >= 0.5) !== (q[2] === 1)) P.ring(q[0], q[1], 18, '#f87171', 3);
+                            if (n === k % 4) P.ring(q[0], q[1], 24, '#fbbf24', 2.5);
+                            P.text(q[0], q[1] + (q[1] > 0.5 ? 0.17 : -0.25), fx(y[n], 2), '#f8fafc', 'bold 12px monospace');
+                        });
+                        if (Math.abs(ww[0]) + Math.abs(ww[1]) < 0.05) P.text(0.5, 1.45, 'w₁, w₂ ≈ 0: her yer y ≈ σ(b)', '#cbd5e1', 'bold 12px monospace');
+                    }
+                    var W1 = C('cw', 'w₁'), W2 = C('cw', 'w₂'), B = C('cw', 'b'), X1 = C('cx', 'x₁'), X2 = C('cx', 'x₂'), ONE = C('cx c1', '1');
+                    var D = C('cd', 'd'), Y = C('cy', 'y'), NET = C('cn', 'net'), ETA = C('ce', 'η'), RR = C('cr', 'r'), XX = C('cx', 'x');
+                    function f3(v) { return fx(v, 3); }
+                    function xi(v) { return v < 0 ? '(' + f3(v) + ')' : f3(v); }
+                    function v3(a) { return '[' + a.map(f3).join(', ') + ']'; }
+                    function rows(h) {
+                        var dash = '<span class="m">—</span>', isce = loss === 'ce';
+                        var L = [
+                            ['net = ' + W1 + X1 + ' + ' + W2 + X2 + ' + ' + B + '·' + ONE,
+                                h && C('cw', xi(h.w0[0])) + '·' + C('cx', nf(h.x[0])) + ' + ' + C('cw', xi(h.w0[1])) + '·' + C('cx', nf(h.x[1])) + ' + ' +
+                                C('cw', xi(h.w0[2])) + '·' + ONE, h && C('cn', f3(h.net))],
+                            ['y = σ(' + NET + ')', h && 'σ(' + C('cn', f3(h.net)) + ')', h && C('cy', fx(h.y, 4))],
+                            [isce ? 'r = ' + D + ' − ' + Y : 'r = (' + D + ' − ' + Y + ')·' + Y + '(1 − ' + Y + ')',
+                                h && (isce ? C('cd', nf(h.d)) + ' − ' + C('cy', fx(h.y, 4))
+                                    : '(' + C('cd', nf(h.d)) + ' − ' + C('cy', f3(h.y)) + ')·' + C('cy', f3(h.y)) + '·' + f3(1 - h.y)), h && C('cr', fx(h.r, 4))],
+                            ['Δw = ' + ETA + '·' + RR + '·' + XX, h && C('ce', String(eta)) + '·' + C('cr', xi(h.r)) + '·' + C('cx', vec(h.x)), h && '<b>' + v3(h.dw) + '</b>'],
+                            ['w ← ' + C('cw', 'w') + ' + Δw', h && C('cw', v3(h.w0)) + ' + Δw', h && C('g', v3(h.w1))]
+                        ];
+                        return '<table class="st-eq"><tr><th>formül</th><th>yerine koy</th><th>sonuç</th></tr>' + L.map(function (r) {
+                            return '<tr><td>' + r[0] + '</td><td>' + (r[1] || dash) + '</td><td>' + (r[2] || dash) + '</td></tr>';
+                        }).join('') + '</table>';
+                    }
+                    function panel() {
+                        var m = root.querySelector('.st-math'), h = last, a = acc();
+                        var head = h
+                            ? '<b>Adım ' + h.k + '</b> <span class="m">· epoch ' + h.ep + ' ·</span> ' + XX + ' = (' + X1 + ', ' + X2 + ', ' + ONE + ') = ' +
+                              C('cx', '(' + nf(h.q[0]) + ', ' + nf(h.q[1]) + ', 1)') + ' · ' + D + ' = ' + C('cd', nf(h.d)) + ' · ' + ETA + ' = ' + C('ce', String(eta)) +
+                              '<br>' + C('cw', 'w') + ' = [' + W1 + ', ' + W2 + ', ' + B + '] = ' + C('cw', v3(h.w0))
+                            : '<b>Başlangıç</b> · ' + NM[set] + ' · ' + (loss === 'ce' ? 'CE' : 'MSE') + ' · ' + ETA + ' = ' + C('ce', String(eta)) + ' · ' +
+                              C('cw', 'w') + ' = [' + W1 + ', ' + W2 + ', ' + B + '] = ' + C('cw', v3(w)) +
+                              '<br><span class="m">Hafta 2\'nin nöronu. Her örnekte y = σ(net) ve ' + (loss === 'ce' ? 'r = d − y' : 'r = (d − y)·y(1 − y)') +
+                              ' kadar itilir; doğru örnek de (az da olsa) iter. “▶ 1 adım” ile başla.</span>';
+                        var stat = '<span class="m">adım ' + k + ' · epoch ' + Math.ceil(k / 4) + ' · doğru: </span><span class="' + (a === 4 ? 'g' : 'r') + '">' + a + '/4</span>' +
+                            '<span class="m"> · ort. CE: </span><b>' + fx(ce(), 4) + '</b><span class="m"> · en düşük güven: </span><b>' + fx(conf(), 3) + '</b>';
+                        if (h) {
+                            var gap = Math.abs(h.d - h.y);
+                            if (gap > 0.8) stat += '<br><span class="y">⚠ Emin ama yanlış (y = ' + f3(h.y) + '): ' + (loss === 'ce' ? 'CE tam adım attı, r = ' + f3(h.r)
+                                : 'MSE\'de y(1 − y) = ' + f3(h.y * (1 - h.y)) + ' → adım söndü, r = ' + f3(h.r)) + '</span>';
+                            else if (gap > 0.5) stat += '<br><span class="y">✗ Yanlış taraf: r = ' + f3(h.r) + ' ile sınır bu örneğe doğru itildi.</span>';
+                            else if (Math.abs(h.r) < 0.05) stat += '<br><span class="g">✓ Doğru ve emin: minik adım (r = ' + fx(h.r, 4) + ').</span>';
+                            else stat += '<br><span class="g">✓ Doğru taraf ama emin değil: yine de itti (r = ' + f3(h.r) + ').</span>';
+                            if (k % 200 === 0) {
+                                stat += '<br><b>' + (k / 4) + '. epoch:</b> w = ' + C('cw', v3(w));
+                                if (k === 200 && set === 'and' && eta === 2 && W0.join() === '0.5,-0.25,0.2')
+                                    stat += loss === 'ce' ? ' <span class="g">· kod slaytıyla aynı ✓</span>' : ' <span class="g">· H3\'teki Delta ile aynı ✓</span>';
+                            }
+                        }
+                        m.innerHTML = head + rows(h) + stat;
+                        var tr = '<tr><th>adım</th><th>örnek → d</th><th>y</th><th>r</th><th>yeni w = [w₁, w₂, b]</th></tr>';
+                        hist.slice(-2).forEach(function (q) {
+                            tr += '<tr><td>' + q.k + '</td><td>(' + nf(q.q[0]) + ', ' + nf(q.q[1]) + ') → ' + nf(q.d) + '</td><td>' + f3(q.y) + '</td><td>' + f3(q.r) + '</td><td>' + v3(q.w1) + '</td></tr>';
+                        });
+                        root.querySelector('.st-hist').innerHTML = tr;
+                    }
+                    function render(animate) {
+                        panel();
+                        if (anim) cancelAnimationFrame(anim);
+                        if (!animate || !last) { draw(); return; }
+                        var a = last.w0, b = last.w1, t0 = null;
+                        function tick(ts) {
+                            if (!t0) t0 = ts; var u = Math.min(1, (ts - t0) / 320), e = 1 - Math.pow(1 - u, 3);
+                            draw(a.map(function (v, i) { return v + (b[i] - v) * e; }));
+                            if (u < 1) anim = requestAnimationFrame(tick);
+                        }
+                        anim = requestAnimationFrame(tick);
+                    }
+                    function pause() { if (timer) { clearInterval(timer); timer = null; } root.querySelector('[data-act=play]').textContent = '⏵ oynat'; }
+                    function act(a) {
+                        if (a !== 'play') pause();
+                        if (a === 'step') { step(); render(true); }
+                        if (a === 'epoch') { do { step(); } while (k % 4 !== 0); render(false); }
+                        if (a === 'ten') { var tg = (Math.floor(k / 4) + 10) * 4; while (k < tg) step(); render(false); }
+                        if (a === 'back') { back(); render(false); }
+                        if (a === 'reset') { reset(); render(false); }
+                        if (a === 'play') {
+                            if (timer) { pause(); return; }
+                            var goal = (Math.floor(k / 200) + 1) * 200;
+                            root.querySelector('[data-act=play]').textContent = '⏸ durdur';
+                            timer = setInterval(function () {
+                                do { step(); } while (k % 4 !== 0 && k < goal);
+                                render(false);
+                                if (k >= goal) pause();
+                            }, 120);
+                        }
+                    }
+                    root.querySelectorAll('[data-act]').forEach(function (b) {
+                        b.addEventListener('click', function (e) { stop(e); b.blur(); act(b.getAttribute('data-act')); });
+                    });
+                    pickButtons(root.querySelector('[data-k=set]'), function (v) { pause(); set = v; reset(); render(false); });
+                    pickButtons(root.querySelector('[data-k=loss]'), function (v) { pause(); loss = v; reset(); render(false); });
+                    pickButtons(root.querySelector('[data-k=eta]'), function (v) { pause(); eta = +v; reset(); render(false); });
+                    onLeave(pause);
+                    reset(); render(false);
+                });
+            })();
+
+            // ---------------------------------------------------------------- Slayt 18: ayrılabilir veride ‖w‖ büyümesi ve L2 freni
+            (function () {
+                var cv = $('wg-cv'); if (!cv) return;
+                var P = PlaneY(cv, [-0.6, 1.6], [-0.6, 1.6]), NE = 10000, runs = {}, alpha = '0';
+                function run(a) {   // AND, CE, η = 2, online; L2: w ← w + η(d − y)x − ηα·w (bias hariç)
+                    if (runs[a]) return runs[a];
+                    var al = +a, w = [0.5, -0.25, 0.2], h = new Float64Array(3 * (NE + 1));
+                    h[0] = w[0]; h[1] = w[1]; h[2] = w[2];
+                    for (var e = 1; e <= NE; e++) {
+                        for (var j = 0; j < 4; j++) {
+                            var p = AND4[j], r = p[2] - sigm(w[0] * p[0] + w[1] * p[1] + w[2]);
+                            w = [w[0] + 2 * r * p[0] - 2 * al * w[0], w[1] + 2 * r * p[1] - 2 * al * w[1], w[2] + 2 * r];
+                        }
+                        h[3 * e] = w[0]; h[3 * e + 1] = w[1]; h[3 * e + 2] = w[2];
+                    }
+                    return (runs[a] = h);
+                }
+                function wAt(a, e) { var h = run(a); return [h[3 * e], h[3 * e + 1], h[3 * e + 2]]; }
+                function nrm(w) { return Math.hypot(w[0], w[1]); }
+                function chart(e) {
+                    var Wd = 540, Hd = 150, L = 40, R = 14, T = 12, B = 32, ymax = 25, g = '';
+                    function X(t) { return L + Math.log10(t) / 4 * (Wd - L - R); }
+                    function Yv(v) { return T + (1 - Math.min(v, ymax) / ymax) * (Hd - T - B); }
+                    [0, 5, 10, 15, 20, 25].forEach(function (t) {
+                        g += '<line x1="' + L + '" y1="' + Yv(t) + '" x2="' + (Wd - R) + '" y2="' + Yv(t) + '" stroke="rgba(148,163,184,0.12)"/>' +
+                            '<text x="' + (L - 6) + '" y="' + (Yv(t) + 4) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="end">' + t + '</text>';
+                    });
+                    [1, 10, 100, 1000, 10000].forEach(function (t) {
+                        g += '<text x="' + X(t) + '" y="' + (Hd - B + 15) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="middle">' + t.toLocaleString('tr-TR') + '</text>';
+                    });
+                    g += '<text x="' + ((L + Wd - R) / 2) + '" y="' + (Hd - 3) + '" fill="#94a3b8" font-size="11" font-family="monospace" text-anchor="middle">epoch (log ölçek)</text>' +
+                        '<text x="' + (L + 6) + '" y="' + (T + 11) + '" fill="#94a3b8" font-size="11" font-family="monospace">‖w‖ = √(w₁² + w₂²)</text>';
+                    function pl(a, col, wd, dash) {
+                        var q = [];
+                        for (var i = 0; i <= 200; i++) { var t = Math.max(1, Math.round(Math.pow(10, i / 50))); q.push(X(t).toFixed(1) + ',' + Yv(nrm(wAt(a, t))).toFixed(1)); }
+                        return '<polyline fill="none" stroke="' + col + '" stroke-width="' + wd + '"' + (dash ? ' stroke-dasharray="' + dash + '"' : '') + ' points="' + q.join(' ') + '"/>';
+                    }
+                    g += pl('0', alpha === '0' ? '#f472b6' : '#94a3b8', alpha === '0' ? 3 : 2, alpha === '0' ? '' : '6 5');
+                    if (alpha !== '0') g += pl(alpha, '#86efac', 3);
+                    var lg = alpha === '0' ? [['#f472b6', 'L2 yok', '']] : [['#94a3b8', 'L2 yok', '6 5'], ['#86efac', 'α = ' + alpha, '']];
+                    lg.forEach(function (q, j) {
+                        var yy = T + 28 + j * 16, lx = L + 8;   // sol üst: eğri orada alçakta
+                        g += '<line x1="' + lx + '" y1="' + (yy - 4) + '" x2="' + (lx + 24) + '" y2="' + (yy - 4) + '" stroke="' + q[0] + '" stroke-width="3"' +
+                            (q[2] ? ' stroke-dasharray="' + q[2] + '"' : '') + '/><text x="' + (lx + 30) + '" y="' + yy + '" fill="' + q[0] + '" font-size="11" font-family="monospace">' + q[1] + '</text>';
+                    });
+                    g += '<line x1="' + X(e) + '" y1="' + T + '" x2="' + X(e) + '" y2="' + (Hd - B) + '" stroke="#fde047" stroke-width="1.5" stroke-dasharray="3 3"/>' +
+                        '<circle cx="' + X(e) + '" cy="' + Yv(nrm(wAt(alpha, e))) + '" r="4.5" fill="#fde047"/>';
+                    $('wg-chart').innerHTML = g;
+                }
+                function draw() {
+                    var e = Math.max(1, Math.min(NE, Math.round(Math.pow(10, +$('wg-ep').value)))), w = wAt(alpha, e);
+                    P.shadeY(function (a, b) { return sigm(w[0] * a + w[1] * b + w[2]); });
+                    P.axes();
+                    P.line([w[0], w[1], w[2] - LN9], 'rgba(147,197,253,0.7)', 1.2, [3, 5]);
+                    P.line([w[0], w[1], w[2] + LN9], 'rgba(252,165,165,0.7)', 1.2, [3, 5]);
+                    P.line(w, '#fbbf24', 3);
+                    var ys = AND4.map(function (p) { return sigm(w[0] * p[0] + w[1] * p[1] + w[2]); }), a = 0, ce = 0;
+                    AND4.forEach(function (p, i) {
+                        P.dot(p[0], p[1], p[2], 11);
+                        var n = w[0] * p[0] + w[1] * p[1] + w[2];
+                        if ((ys[i] >= 0.5) === (p[2] === 1)) a++; else P.ring(p[0], p[1], 17, '#f87171', 3);
+                        ce += p[2] ? softplus(-n) : softplus(n);
+                        P.text(p[0], p[1] + (p[1] > 0.5 ? 0.16 : -0.23), fx(ys[i], 4), '#f8fafc', 'bold 12px monospace');
+                    });
+                    $('wg-epv').textContent = e.toLocaleString('tr-TR');
+                    var s = 'epoch <b>' + e.toLocaleString('tr-TR') + '</b> · α = ' + alpha + ' · ' + C('cw', 'w') + ' = ' + C('cw', vec(w, 2)) +
+                        '<br>‖w‖ = <b>' + fx(nrm(w), 2) + '</b> · ' + C('cy', 'y(1, 1)') + ' = ' + C('cy', fx(ys[3], 4)) + ' · doğru: <b class="' + (a === 4 ? 'g' : 'r') + '">' +
+                        a + '/4</b> · ort. CE = ' + fx(ce / 4, 4);
+                    if (alpha === '0') s += '<br><span class="y">L2 yok: CE hiç 0 olmaz; w büyüdükçe biraz daha düşer → ‖w‖ durmaz. Bant incelir: σ basamağa döner.</span>';
+                    else if (a < 4) s += '<br><span class="r">α çok büyük: fren, veriye uymaktan güçlü → model yanlışa razı (' + a + '/4).</span>';
+                    else s += '<br><span class="g">L2 freni: büyüme ile −ηα·w dengelenir → ‖w‖ ≈ ' + fx(nrm(wAt(alpha, NE)), 2) + ' değerinde durur.</span>';
+                    $('wg-out').innerHTML = s;
+                    chart(e);
+                }
+                $('wg-ep').addEventListener('input', function (e) { stop(e); draw(); });
+                pickButtons($('wg-a'), function (v) { alpha = v; draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Iris verisi (Fisher, 1936): petal uzunluğu ve genişliği (cm)
+            var IRIS = {
+                SE: [[1.4,0.2],[1.4,0.2],[1.3,0.2],[1.5,0.2],[1.4,0.2],[1.7,0.4],[1.4,0.3],[1.5,0.2],[1.4,0.2],[1.5,0.1],[1.5,0.2],[1.6,0.2],[1.4,0.1],[1.1,0.1],[1.2,0.2],[1.5,0.4],[1.3,0.4],[1.4,0.3],[1.7,0.3],[1.5,0.3],[1.7,0.2],[1.5,0.4],[1,0.2],[1.7,0.5],[1.9,0.2],[1.6,0.2],[1.6,0.4],[1.5,0.2],[1.4,0.2],[1.6,0.2],[1.6,0.2],[1.5,0.4],[1.5,0.1],[1.4,0.2],[1.5,0.2],[1.2,0.2],[1.3,0.2],[1.4,0.1],[1.3,0.2],[1.5,0.2],[1.3,0.3],[1.3,0.3],[1.3,0.2],[1.6,0.6],[1.9,0.4],[1.4,0.3],[1.6,0.2],[1.4,0.2],[1.5,0.2],[1.4,0.2]],
+                VE: [[4.7,1.4],[4.5,1.5],[4.9,1.5],[4,1.3],[4.6,1.5],[4.5,1.3],[4.7,1.6],[3.3,1],[4.6,1.3],[3.9,1.4],[3.5,1],[4.2,1.5],[4,1],[4.7,1.4],[3.6,1.3],[4.4,1.4],[4.5,1.5],[4.1,1],[4.5,1.5],[3.9,1.1],[4.8,1.8],[4,1.3],[4.9,1.5],[4.7,1.2],[4.3,1.3],[4.4,1.4],[4.8,1.4],[5,1.7],[4.5,1.5],[3.5,1],[3.8,1.1],[3.7,1],[3.9,1.2],[5.1,1.6],[4.5,1.5],[4.5,1.6],[4.7,1.5],[4.4,1.3],[4.1,1.3],[4,1.3],[4.4,1.2],[4.6,1.4],[4,1.2],[3.3,1],[4.2,1.3],[4.2,1.2],[4.2,1.3],[4.3,1.3],[3,1.1],[4.1,1.3]],
+                VI: [[6,2.5],[5.1,1.9],[5.9,2.1],[5.6,1.8],[5.8,2.2],[6.6,2.1],[4.5,1.7],[6.3,1.8],[5.8,1.8],[6.1,2.5],[5.1,2],[5.3,1.9],[5.5,2.1],[5,2],[5.1,2.4],[5.3,2.3],[5.5,1.8],[6.7,2.2],[6.9,2.3],[5,1.5],[5.7,2.3],[4.9,2],[6.7,2],[4.9,1.8],[5.7,2.1],[6,1.8],[4.8,1.8],[4.9,1.8],[5.6,2.1],[5.8,1.6],[6.1,1.9],[6.4,2],[5.6,2.2],[5.1,1.5],[5.6,1.4],[6.1,2.3],[5.6,2.4],[5.5,1.8],[4.8,1.8],[5.4,2.1],[5.6,2.4],[5.1,2.3],[5.1,1.9],[5.9,2.3],[5.7,2.5],[5.2,2.3],[5,1.9],[5.2,2],[5.4,2.3],[5.1,1.8]]
+            };
+            function standardize(A) {   // ortalama 0, standart sapma 1 (n'e bölerek)
+                var mu = [0, 0], sd = [0, 0];
+                for (var c = 0; c < 2; c++) {
+                    var m = 0, v = 0; A.forEach(function (p) { m += p[c]; }); m /= A.length;
+                    A.forEach(function (p) { v += (p[c] - m) * (p[c] - m); }); mu[c] = m; sd[c] = Math.sqrt(v / A.length);
+                }
+                return { mu: mu, sd: sd, Z: A.map(function (p) { return [(p[0] - mu[0]) / sd[0], (p[1] - mu[1]) / sd[1], 1]; }),
+                    orig: function (w) { return [w[0] / sd[0], w[1] / sd[1], w[2] - w[0] * mu[0] / sd[0] - w[1] * mu[1] / sd[1]]; } };
+            }
+            // cm ekseni olan Iris tuvali: arka plan, eksen, doğru çizimi
+            function IrisCanvas(cv, xr, yr, ax) {
+                var ctx = cv.getContext('2d'), CW = cv.width, CH = cv.height, ML = 46, MB = 36, MT = 10, MR = 12, Q = { ctx: ctx };
+                Q.sx = function (v) { return ML + (v - xr[0]) / (xr[1] - xr[0]) * (CW - ML - MR); };
+                Q.sy = function (v) { return CH - MB - (v - yr[0]) / (yr[1] - yr[0]) * (CH - MB - MT); };
+                Q.ix = function (X) { return xr[0] + (X - ML) / (CW - ML - MR) * (xr[1] - xr[0]); };
+                Q.iy = function (Y) { return yr[0] + (CH - MB - Y) / (CH - MB - MT) * (yr[1] - yr[0]); };
+                Q.fill = function (colAt) {
+                    var S = 6; ctx.fillStyle = '#0b1222'; ctx.fillRect(0, 0, CW, CH);
+                    for (var px = ML; px < CW - MR; px += S) for (var py = MT; py < CH - MB; py += S) {
+                        ctx.fillStyle = colAt(Q.ix(px + S / 2), Q.iy(py + S / 2)); ctx.fillRect(px, py, S, S);
+                    }
+                };
+                Q.axes = function () {
+                    ctx.strokeStyle = '#475569'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(ML, MT); ctx.lineTo(ML, CH - MB); ctx.lineTo(CW - MR, CH - MB); ctx.stroke();
+                    ctx.fillStyle = '#64748b'; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+                    for (var t = Math.ceil(xr[0]); t <= xr[1] + 1e-9; t += 1) ctx.fillText(fx(t, 0), Q.sx(t), CH - MB + 14);
+                    ctx.textAlign = 'right';
+                    for (var t2 = Math.ceil(yr[0] * 2) / 2; t2 <= yr[1] + 1e-9; t2 += 0.5) ctx.fillText(fx(t2, 1), ML - 5, Q.sy(t2) + 4);
+                    ctx.fillStyle = '#94a3b8'; ctx.font = '12px monospace'; ctx.textAlign = 'center'; ctx.fillText(ax[0], ML + (CW - ML - MR) / 2, CH - 6);
+                    ctx.save(); ctx.translate(13, MT + (CH - MT - MB) / 2); ctx.rotate(-Math.PI / 2); ctx.fillText(ax[1], 0, 0); ctx.restore();
+                };
+                Q.line = function (wo, style, width, dash) {
+                    if (Math.abs(wo[0]) < 1e-12 && Math.abs(wo[1]) < 1e-12) return;
+                    ctx.save(); ctx.beginPath(); ctx.rect(ML, MT, CW - ML - MR, CH - MT - MB); ctx.clip();
+                    ctx.strokeStyle = style; ctx.lineWidth = width; ctx.setLineDash(dash || []); ctx.beginPath();
+                    if (Math.abs(wo[1] * (yr[1] - yr[0])) >= Math.abs(wo[0] * (xr[1] - xr[0]))) {
+                        ctx.moveTo(Q.sx(xr[0]), Q.sy(-(wo[0] * xr[0] + wo[2]) / wo[1])); ctx.lineTo(Q.sx(xr[1]), Q.sy(-(wo[0] * xr[1] + wo[2]) / wo[1]));
+                    } else {
+                        ctx.moveTo(Q.sx(-(wo[1] * yr[0] + wo[2]) / wo[0]), Q.sy(yr[0])); ctx.lineTo(Q.sx(-(wo[1] * yr[1] + wo[2]) / wo[0]), Q.sy(yr[1]));
+                    }
+                    ctx.stroke(); ctx.restore();
+                };
+                return Q;
+            }
+
+            // ---------------------------------------------------------------- Slayt 20: Iris, ayrık ↔ sürekli perceptron
+            (function () {
+                var cv = $('ic-cv'); if (!cv) return;
+                var Q = IrisCanvas(cv, [2.8, 7.2], [0.8, 2.7], ['petal uzunluğu (cm)', 'petal genişliği (cm)']), ctx = Q.ctx;
+                var A = [], D = [];
+                for (var j = 0; j < 50; j++) { A.push(IRIS.VE[j]); D.push(0); A.push(IRIS.VI[j]); D.push(1); }   // dönüşümlü sıra (H4)
+                var S = standardize(A), Z = S.Z, BEST = [0.4462, 0.8949, -3.5292];   // kaba kuvvetle en iyi doğru (3 hata), cm
+                var wp, wc, pk, ep, eP, eC, cE, timer = null;
+                function errs(w) { var e = 0; Z.forEach(function (x, i) { if ((w[0] * x[0] + w[1] * x[1] + w[2] >= 0) !== (D[i] === 1)) e++; }); return e; }
+                function ceOf(w) { var s = 0; Z.forEach(function (x, i) { var n = w[0] * x[0] + w[1] * x[1] + w[2]; s += D[i] ? softplus(-n) : softplus(n); }); return s / Z.length; }
+                function reset() { pause(); wp = [0, 0, 0]; wc = [0, 0, 0]; pk = 101; ep = 0; eP = []; eC = []; cE = []; }
+                function epoch() {
+                    for (var i = 0; i < Z.length; i++) {
+                        var x = Z[i], d = D[i], dp = 2 * d - 1, yp = wp[0] * x[0] + wp[1] * x[1] + wp[2] >= 0 ? 1 : -1, c;
+                        if (yp !== dp) { for (c = 0; c < 3; c++) wp[c] += 0.1 * (dp - yp) * x[c]; pk = Math.min(pk, errs(wp)); }   // ayrık: ±1, yalnız yanılınca
+                        var r = d - sigm(wc[0] * x[0] + wc[1] * x[1] + wc[2]);
+                        for (c = 0; c < 3; c++) wc[c] += 0.1 * r * x[c];                                                       // sürekli: her örnekte
+                    }
+                    ep++; eP.push(errs(wp)); eC.push(errs(wc)); cE.push(ceOf(wc));
+                }
+                function draw() {
+                    var wo = S.orig(wc);
+                    Q.fill(function (xv, yv) { return rgb(ycol(sigm(wo[0] * xv + wo[1] * yv + wo[2]))); });
+                    Q.axes();
+                    Q.line(BEST, '#86efac', 2.5, [8, 6]);
+                    if (ep) { Q.line(S.orig(wp), '#fbbf24', 2.5); Q.line(wo, '#67e8f9', 3); }
+                    for (var j = 0; j < A.length; j++) {
+                        var p = A[j], x = Z[j], X0 = Q.sx(p[0]), Y0 = Q.sy(p[1]);
+                        ctx.beginPath(); ctx.arc(X0, Y0, 5, 0, 6.283);
+                        if (D[j]) { ctx.fillStyle = '#34d399'; ctx.fill(); } else { ctx.fillStyle = '#0b1020'; ctx.fill(); ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1.6; ctx.stroke(); }
+                        if (ep && (wc[0] * x[0] + wc[1] * x[1] + wc[2] >= 0) !== (D[j] === 1)) { ctx.beginPath(); ctx.arc(X0, Y0, 8.5, 0, 6.283); ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2; ctx.stroke(); }
+                    }
+                    var s = 'epoch <b>' + ep + '</b> <span class="m">/ 60</span>';
+                    if (ep) {
+                        var tail = eP.slice(-10), jump = Math.max.apply(null, tail) !== Math.min.apply(null, tail), calm = eC.slice(-10).every(function (v) { return v === eC[ep - 1]; });
+                        s += '<br><span style="color:#fbbf24;">ayrık perceptron</span>: <b>' + eP[ep - 1] + '</b> hata · cep: <b class="g">' + pk + '</b>' +
+                            '<br><span style="color:#67e8f9;">sürekli</span>: <b>' + eC[ep - 1] + '</b> hata · ort. CE = ' + fx(cE[ep - 1], 4) + ' · ' + C('cw', 'w') + ' (standart) = ' + C('cw', vec(wc, 3)) +
+                            '<br><span class="m">son epoch\'lar · ayrık: ' + eP.slice(-8).join(', ') + ' | sürekli: ' + eC.slice(-8).join(', ') + '</span>';
+                        if (ep >= 10 && jump && calm) s += '<br><span class="y">Ayrık perceptron zıplıyor; sürekli yerine oturdu. En iyi doğru: 3 hata.</span>';
+                    } else s += '<br><span class="m">Başta iki model de w = 0. “▶▶ 1 epoch”: ikisini aynı veride, aynı sırayla eğitir.</span>';
+                    $('ic-out').innerHTML = s;
+                    chart();
+                }
+                function chart() {
+                    var Wd = 560, Hd = 120, L = 30, R = 12, T = 10, B = 22, n = 60, ymax = 10, g = '';
+                    function X(i) { return L + i / (n - 1) * (Wd - L - R); }
+                    function Yv(v) { return T + (1 - Math.min(v, ymax) / ymax) * (Hd - T - B); }
+                    [0, 3, 5, 10].forEach(function (t) {
+                        g += '<line x1="' + L + '" y1="' + Yv(t) + '" x2="' + (Wd - R) + '" y2="' + Yv(t) + '" stroke="' + (t === 3 ? 'rgba(134,239,172,0.55)' : 'rgba(148,163,184,0.12)') + '"' +
+                            (t === 3 ? ' stroke-dasharray="6 5"' : '') + '/><text x="' + (L - 5) + '" y="' + (Yv(t) + 4) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="end">' + t + '</text>';
+                    });
+                    function pl(arr, col, wd) {
+                        return arr.length ? '<polyline fill="none" stroke="' + col + '" stroke-width="' + wd + '" points="' +
+                            arr.map(function (v, i) { return X(i).toFixed(1) + ',' + Yv(v).toFixed(1); }).join(' ') + '"/>' : '';
+                    }
+                    g += pl(eP, '#fbbf24', 2) + pl(eC, '#67e8f9', 3);
+                    g += '<text x="' + L + '" y="' + (Hd - 5) + '" fill="#94a3b8" font-size="11" font-family="monospace">epoch sonunda yanlış (100 çiçek) · 1 → 60</text>' +
+                        '<text x="' + (Wd - R) + '" y="' + (Yv(3) - 5) + '" fill="#86efac" font-size="11" font-family="monospace" text-anchor="end">en iyi doğru: 3</text>';
+                    $('ic-chart').innerHTML = g;
+                }
+                function pause() { if (timer) { clearInterval(timer); timer = null; } $('ic-play').textContent = '⏵ oynat (60 epoch)'; }
+                $('ic-ep').addEventListener('click', function (e) { stop(e); this.blur(); pause(); if (ep < 60) epoch(); draw(); });
+                $('ic-reset').addEventListener('click', function (e) { stop(e); this.blur(); reset(); draw(); });
+                $('ic-play').addEventListener('click', function (e) {
+                    stop(e); this.blur();
+                    if (timer) { pause(); return; }
+                    if (ep >= 60) reset();
+                    $('ic-play').textContent = '⏸ durdur';
+                    timer = setInterval(function () { epoch(); draw(); if (ep >= 60) pause(); }, 150);
+                });
+                onLeave(pause);
+                reset(); draw();
+            })();
+
+            // ---------------------------------------------------------------- Slayt 23: softmax, üç Iris türü
+            (function () {
+                var cv = $('sm-cv'); if (!cv) return;
+                var Q = IrisCanvas(cv, [0.5, 7.2], [-0.1, 2.7], ['petal uzunluğu (cm)', 'petal genişliği (cm)']), ctx = Q.ctx;
+                var A = [], D = [];
+                for (var j = 0; j < 50; j++) [IRIS.SE, IRIS.VE, IRIS.VI].forEach(function (src, k) { A.push(src[j]); D.push(k); });
+                var S = standardize(A), Z = S.Z, COL = ['#60a5fa', '#34d399', '#f59e0b'], RC = [[30, 64, 128], [16, 88, 62], [118, 76, 12]];
+                var NMS = ['setosa', 'versicolor', 'virginica'], W, i, ep, last, timer = null, probe = [4.8, 1.8];
+                function probs(x) {
+                    var n = [0, 1, 2].map(function (k) { return W[k][0] * x[0] + W[k][1] * x[1] + W[k][2]; }), m = Math.max(n[0], n[1], n[2]);
+                    var e = n.map(function (v) { return Math.exp(v - m); }), s = e[0] + e[1] + e[2];
+                    return e.map(function (v) { return v / s; });
+                }
+                function arg(p) { return p[0] >= p[1] && p[0] >= p[2] ? 0 : p[1] >= p[2] ? 1 : 2; }
+                function zs(p) { return [(p[0] - S.mu[0]) / S.sd[0], (p[1] - S.mu[1]) / S.sd[1], 1]; }
+                function reset() { pause(); W = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]; i = 0; ep = 0; last = null; }
+                function one() {
+                    var x = Z[i], p = probs(x), d = D[i];
+                    for (var k = 0; k < 3; k++) for (var c = 0; c < 3; c++) W[k][c] += 0.1 * ((k === d ? 1 : 0) - p[k]) * x[c];
+                    last = { i: i, p: p, d: d }; i++; if (i === Z.length) { i = 0; ep++; }
+                }
+                function epoch() { do { one(); } while (i !== 0); }
+                function pv(p) { return '[' + p.map(function (v) { return fx(v, 3); }).join(', ') + ']'; }
+                function draw() {
+                    Q.fill(function (xv, yv) {   // bölge rengi = sınıf renklerinin p ile ağırlıklı karışımı
+                        var p = probs(zs([xv, yv]));
+                        return rgb([0, 1, 2].map(function (c) { return p[0] * RC[0][c] + p[1] * RC[1][c] + p[2] * RC[2][c]; }));
+                    });
+                    Q.axes();
+                    var a = 0, ce = 0;
+                    for (var j = 0; j < A.length; j++) {
+                        var p = probs(Z[j]), ok = arg(p) === D[j], X0 = Q.sx(A[j][0]), Y0 = Q.sy(A[j][1]);
+                        if (ok) a++; ce -= Math.log(p[D[j]]);
+                        ctx.beginPath(); ctx.arc(X0, Y0, 4.5, 0, 6.283); ctx.fillStyle = COL[D[j]]; ctx.fill(); ctx.strokeStyle = '#0b1020'; ctx.lineWidth = 1.2; ctx.stroke();
+                        if (!ok && (ep || i)) { ctx.beginPath(); ctx.arc(X0, Y0, 8, 0, 6.283); ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2; ctx.stroke(); }
+                    }
+                    if (last && (ep < 1 || i)) { var lp = A[last.i]; ctx.beginPath(); ctx.arc(Q.sx(lp[0]), Q.sy(lp[1]), 11, 0, 6.283); ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2.5; ctx.stroke(); }
+                    var PX = Q.sx(probe[0]), PY = Q.sy(probe[1]);
+                    ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(PX - 8, PY); ctx.lineTo(PX + 8, PY); ctx.moveTo(PX, PY - 8); ctx.lineTo(PX, PY + 8); ctx.stroke();
+                    var pp = probs(zs(probe)), s = 'epoch <b>' + ep + '</b>' + (i ? ' <span class="m">+ ' + i + ' örnek</span>' : '') +
+                        ' · doğru: <b class="' + (a === 150 ? 'g' : 'r') + '">' + a + '/150</b> (%' + fx(a / 1.5, 1) + ') · ort. CE = ' + fx(ce / 150, 4);
+                    s += '<br>✚ (' + fx(probe[0], 1) + ', ' + fx(probe[1], 1) + ') cm → p = ' + pv(pp) + ' → <b style="color:' + COL[arg(pp)] + ';">' + NMS[arg(pp)] + '</b>';
+                    s += '<div style="display:flex;height:12px;border-radius:6px;overflow:hidden;margin:5px 0 2px;">' + pp.map(function (v, k) {
+                        return '<span style="width:' + (100 * v).toFixed(1) + '%;background:' + COL[k] + ';"></span>'; }).join('') + '</div>';
+                    if (last && !ep && i < 6) s += '<span class="m">son örnek: ' + NMS[last.d] + ' · p = ' + pv(last.p) + ' → her w<sub>k</sub> += η(t<sub>k</sub> − p<sub>k</sub>)x</span>';
+                    else if (!ep && !i) s += '<span class="m">W = 0 → her yerde p = [⅓, ⅓, ⅓]; eşitlikte ilk sınıf (setosa) seçilir.</span>';
+                    else s += '<span class="m">sınıf başına w (standart ölçek): ' + W.map(function (r, k) { return '<span style="color:' + COL[k] + ';">' + vec(r, 2) + '</span>'; }).join(' ') + '</span>';
+                    $('sm-out').innerHTML = s;
+                }
+                function pause() { if (timer) { clearInterval(timer); timer = null; } $('sm-play').textContent = '⏵ oynat'; }
+                function btn(id, fn) { $(id).addEventListener('click', function (e) { stop(e); this.blur(); fn(); draw(); }); }
+                btn('sm-one', function () { pause(); one(); });
+                btn('sm-ep', function () { pause(); epoch(); });
+                btn('sm-reset', function () { reset(); });
+                btn('sm-play', function () {
+                    if (timer) { pause(); return; }
+                    if (ep >= 20) reset();
+                    $('sm-play').textContent = '⏸ durdur';
+                    timer = setInterval(function () { epoch(); draw(); if (ep >= 20) pause(); }, 260);
+                });
+                cv.addEventListener('pointerdown', function (e) {
+                    stop(e); var c = canvasPoint(cv, e);
+                    probe = [Math.max(0.5, Math.min(7.2, Q.ix(c[0]))), Math.max(-0.1, Math.min(2.7, Q.iy(c[1])))]; draw();
+                });
+                onLeave(pause);
+                reset(); draw();
+            })();
+
+            // Kaydırıcılar: sunum kumandası (PageDown/PageUp) slaytı değiştirsin; bırakınca odak Reveal'e dönsün
+            document.querySelectorAll('.reveal input[type=range]').forEach(function (r) {
+                r.addEventListener('keydown', function (e) {
+                    if (e.key === 'PageDown' || e.key === 'PageUp') {
+                        e.preventDefault(); r.blur();
+                        if (typeof Reveal !== 'undefined') { if (e.key === 'PageDown') Reveal.next(); else Reveal.prev(); }
+                    }
+                });
+                r.addEventListener('change', function () { r.blur(); });
+            });
+
+            // Mini quiz
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) { if (o.dataset.correct === '1') o.classList.add('correct'); });
+                        if (opt.dataset.correct === '1') { fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!'); fb.style.color = '#86efac'; }
+                        else { opt.classList.add('wrong'); fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil.'); fb.style.color = '#fca5a5'; }
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>
