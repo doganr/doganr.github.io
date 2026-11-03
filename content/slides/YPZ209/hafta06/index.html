@@ -1,47 +1,974 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İleri Programlama 6. Hafta - Reveal.js</title>
+    <title>İleri Programlama 6. Hafta — Soyut Sınıflar &amp; Arayüzler</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+    <style>
+        /* Hafta 4'e özel bileşenler */
+        .wk { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.82em; color: #0b1020;
+            background: #93c5fd; border-radius: 6px; padding: 0 7px; margin-right: 6px; }
+        .err { color: #fca5a5; font-family: 'JetBrains Mono', monospace; }
+        .cards-tight .concept-card { padding: 11px 16px; border-radius: 14px; }
+        .cards-tight .concept-card h4 { font-size: 0.66em; margin-bottom: 3px; }
+        .cards-tight .concept-card p { font-size: 0.54em; line-height: 1.45; }
+        .sec-tag { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.4em; color: #64748b; line-height: 1.5; }
+        .reveal pre.two, .reveal pre.long { font-size: 0.35em; }
+        .qt-btn.mini { padding: 5px 11px; font-size: 13px; border-radius: 8px; font-weight: 700;
+            font-family: 'JetBrains Mono', ui-monospace, monospace; }
+        .qt-btn.sel { outline: 2px solid #fbbf24; outline-offset: 1px; }
+        .qt-btn:disabled { opacity: 0.45; cursor: default; filter: none; }
+        .qt-btn.red { background: #ef4444; }
+        .qt-btn.ghost { background: #2a2a44; color: #cbd5e1; }
+        .qt-btn.flash { animation: qtflash 0.45s ease; }
+        @keyframes qtflash { 0% { transform: scale(1); } 40% { transform: scale(1.06); filter: brightness(1.35); } 100% { transform: scale(1); } }
+        /* metot arama gezgini (H2'deki gibi) */
+        .mro-box { display: flex; justify-content: space-between; align-items: center; width: 300px; padding: 3px 14px;
+            border-radius: 9px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03);
+            transition: background .15s, border-color .15s, opacity .2s; }
+        .mro-box code { font-size: 14px; color: #cbd5e1; background: none; padding: 0; }
+        .mro-box span { font-size: 11px; color: #64748b; }
+        .mro-box.ours { border-color: rgba(167, 139, 250, 0.55); }
+        .mro-box.look { border-color: #fbbf24; background: rgba(251, 191, 36, 0.13); }
+        .mro-box.hit { border-color: #22c55e; background: rgba(34, 197, 94, 0.22); }
+        .mro-box.hit code { color: #bbf7d0; }
+        .mro-box.off { opacity: 0.22; }
+        .mro-arrow { font-size: 9px; color: #475569; line-height: 1.1; }
+        .mro-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+        .out-ln { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 20px; color: #e2e8f0;
+            line-height: 1.7; white-space: pre-wrap; }
+        .out-ln .ok { color: #86efac; } .out-ln .bad { color: #fca5a5; } .out-ln .str { color: #fde68a; } .out-ln .cm { color: #64748b; }
+        /* canlı panel düzenleri */
+        .qt-body.wide { min-width: 300px; gap: 10px; padding: 20px 28px 24px; }
+        .qt-body.wide .qt-btn { min-width: 230px; border-radius: 12px; }
+        .qt-row { display: flex; gap: 10px; justify-content: center; }
+        .qt-field { background: #1e1e33; color: #f0f0f8; border: 2px solid #33335a; border-radius: 6px; padding: 6px 10px;
+            font-size: 14px; width: 230px; font-family: inherit; }
+        .qt-check { color: #f0f0f8; font-size: 14px; font-weight: 700; display: flex; gap: 8px; align-items: center; }
+        .qt-lbl { color: #f0f0f8; font-size: 17px; font-weight: 800; align-self: flex-start; }
+        .qt-off .qt-lbl, .qt-off .qt-check { color: #5b5b7a; }
+        .qt-off .qt-field { color: #6b6b8a; border-color: #26263f; background: #17172a; }
+        .qt-off .qt-btn.target { background: #3b3a5c; color: #8a8aac; }
+        .shape-canvas { display: block; border-radius: 10px; background: #12121f; }
+        /* yan kartlar (kodun yanındaki sütun) ve sıkı quiz */
+        .flex > .concept-card h4, .flex > .grid .concept-card h4 { font-size: 0.64em; margin-bottom: 4px; }
+        .flex > .concept-card p, .flex > .grid .concept-card p { font-size: 0.5em; line-height: 1.5; }
+        .flex > .concept-card, .flex > .grid .concept-card { padding: 13px 16px; }
+        .qz .quiz { margin-bottom: 6px; }
+        .qz .quiz-q { font-size: 0.6em; margin-bottom: 6px; }
+        .qz .quiz-opt { padding: 7px 14px; font-size: 0.54em; margin-bottom: 4px; }
+        .qz .quiz-fb { font-size: 0.52em; min-height: 1.3em; margin-top: 4px; }
+        /* Hafta 6: soyutluk denetçisi, yuvarlak buton, arayüz tablosu */
+        .chk-row { display: flex; gap: 18px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 21px; color: #e2e8f0; }
+        .chk-row label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+        .chk-row input { width: 18px; height: 18px; accent-color: #6c63ff; }
+        .yb { width: 120px; height: 120px; border-radius: 50%; border: none; color: #fff; font-weight: 800; font-size: 18px;
+            background: #6c63ff; cursor: pointer; transition: background .2s, transform .08s; font-family: inherit; }
+        .yb.on { background: #22c55e; }
+        .yb:active { transform: scale(0.96); }
+        .ay-tab { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 19px; }
+        .reveal .ay-tab th, .reveal .ay-tab td { padding: 7px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: center; color: #cbd5e1; }
+        .reveal .ay-tab th { color: #93c5fd; font-weight: 700; }
+        .reveal .ay-tab td:first-child { text-align: left; color: #e2e8f0; }
+        .ay-tab tr.sel td { background: rgba(251,191,36,0.10); }
+        .reveal .ay-tab td.t { color: #86efac; font-weight: 800; } .reveal .ay-tab td.f { color: #fca5a5; }
+    </style>
 </head>
+
 <body>
+
     <div class="reveal">
         <img src="../images/logo.png" class="watermark" alt="Logo">
         <div class="slides">
+
+                        <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere"
+                    style="width: 620px; height: 620px; top: -12%; left: -12%; background: #1e3a8a;"></div>
+                <div class="glow-sphere"
+                    style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #581c87; animation-delay: -5s;">
+                </div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">ABC</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">@abstractmethod</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">Protocol</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">QAbstractButton</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">söz</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">arayüz</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">metaclass</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">has-a</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">İleri Programlama · Hafta 06</span>
+                    <div class="cover-icon mb-6"><i data-lucide="file-signature" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Söz Ver,<br><span
+                            class="grad-text">Çocuk Yazsın</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Soyut Sınıflar &amp; Arayüzler</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span><span style="color:#a6e22e;">@abstractmethod</span>
+                            &nbsp;<span style="color:#475569;"># yazmayan kurulamaz</span></span></div>
+                </div>
+            </section>
+
+            <!-- 2. YOL HARİTASI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Hafta</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Polimorfizm Bir <span
+                        style="color:#93c5fd;">Söz İster</span></h2>
+                <p class="code-note mb-6">H4'te döngü <code>s.alan()</code> dedi ve her şeklin bu metodu olduğuna <b>güvendi</b>.
+                    Bu hafta o güveni bir <b>sözleşmeye</b> çeviriyoruz: metodu yazmayan sınıf nesne üretemesin.</p>
+                <div class="grid grid-cols-4 gap-3 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · Sorun</h4><p>Unutulan metot sessizce
+                        <code>0</code> ya da boş çizim döndürür.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · ABC</h4><p><code>abc.ABC</code> +
+                        <code>@abstractmethod</code>: söz tutulmadan nesne yok.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · Qt'de</h4><p><code>QAbstractButton</code> kurulamaz;
+                        ondan kendi butonumuzu türeteceğiz.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>4 · Arayüz</h4>
+                        <p>Hiç gövde yok, yalnız söz: <code>Protocol</code> ve ördek tipleme.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Sonunda: soyut bir <code>Sekil</code> sözleşmesine uyan şekilleri çizen
+                    bir panel.</p>
+            </section>
+
+            <!-- 3. HATIRLA -->
             <section data-background-color="#020617">
-                <div class="glow-sphere" style="width: 600px; height: 600px; top: -10%; left: -10%; background: #1e3a8a;"></div>
-                <div class="glow-sphere" style="width: 500px; height: 500px; bottom: -10%; right: -10%; background: #881337; animation-delay: -5s;"></div>
+                <span class="chip mb-3"><i data-lucide="history" style="width:14px;height:14px;"></i> Hatırla · Hafta 4–5</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Boş Bırakılan <span
+                        style="color:#93c5fd;">Metotlar</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>🎨 H4 · <code>Cizim.ciz()</code></h4><p>Atada
+                        <code>pass</code>; “çocuklar ezecek” dedik. Ezmeyen çocuk ne çizer? Hiçbir şey.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🦆 H4 · Ördek</h4>
+                        <p>Metot yoksa <code>AttributeError</code>, ama ancak çağrıldığı <b>anda</b>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🤷 H5 ·
+                        NotImplemented</h4><p>Bir <b>değer</b>di. Bu hafta kardeşi <code>NotImplementedError</code>'u, bir
+                        <b>hatayı</b> göreceğiz.</p></div>
+                </div>
+                <div class="glass-card mx-auto p-6 mt-6 fragment fade-in" style="max-width:860px;text-align:left;">
+                    <p style="font-size:0.62em;line-height:1.5;color:#cbd5e1;">Ortak dert: hata <b>geç</b> fark ediliyor. Amaç, “bu metodu
+                        yazmadın” uyarısını nesne <b>kurulurken</b> almak.</p>
+                </div>
+            </section>
+
+            <!-- 4. SORUN -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="eye-off" style="width:14px;height:14px;"></i> Sorun</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Unuttuk, <span
+                        style="color:#fda4af;">Kimse Fark Etmedi</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:600px;"><code class="language-python" data-trim data-line-numbers="1-3|5-9|11-13|15-16">class Sekil:
+    def alan(self):
+        return 0                # “varsayılan” cevap
+
+class Kare(Sekil):
+    def __init__(self, a):
+        self.a = a
+    def alan(self):
+        return self.a ** 2
+
+class Ucgen(Sekil):             # alan() yazmayı unuttuk
+    def __init__(self, t, h):
+        self.t, self.h = t, h
+
+Kare(3).alan()                  # 9
+Ucgen(4, 5).alan()              # 0</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <h4>😶 Sessiz yanlış</h4>
+                        <p>Üçgenin alanı 0 çıktı; ne hata ne uyarı. Bu sonuç bir rapora, bir faturaya girebilir.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Atadaki “varsayılan” gövde, unutkanlığı <b>gizledi</b>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. NotImplementedError -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="alarm-clock" style="width:14px;height:14px;"></i> Çözüm · 1</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">NotImplementedError</code>:
+                    <span style="color:#93c5fd;">Geç Ama Gürültülü</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:650px;"><code class="language-python" data-trim data-line-numbers="1-3|5-6|8|9-10">class Sekil:
+    def alan(self):
+        raise NotImplementedError("alan() yazılmalı")
+
+class Ucgen(Sekil):
+    pass                        # yine unuttuk
+
+u = Ucgen()                     # nesne kuruldu…
+u.alan()                        # …hata ancak çağrıda
+# NotImplementedError: alan() yazılmalı</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:330px;">
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(52,211,153,0.45);"><h4>✅ Artık
+                            sessiz değil</h4><p>Unutulan metot çağrılınca açık bir hata.</p></div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(244,63,94,0.45);"><h4>⏰ Ama
+                            geç</h4><p>Nesne kurulabildi; hata o metot çağrılana kadar, belki günler sonra çıkar.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. ABC -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="file-signature" style="width:14px;height:14px;"></i> Çözüm · 2</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">ABC</code> +
+                    <code style="color:#93c5fd;">@abstractmethod</code></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:620px;"><code class="language-python" data-trim data-line-numbers="1-7|9-12|14-18|20-22">from abc import ABC, abstractmethod
+
+class Sekil(ABC):               # soyut sınıf
+    @abstractmethod
+    def alan(self): ...         # söz: çocuk yazacak
+    @abstractmethod
+    def cevre(self): ...
+
+Sekil()
+# TypeError: Can't instantiate abstract class Sekil
+#   without an implementation for abstract methods
+#   'alan', 'cevre'
+
+class Kare(Sekil):
+    def __init__(self, a):
+        self.a = a
+    def alan(self):
+        return self.a ** 2      # cevre() eksik
+
+Kare(3)
+# TypeError: Can't instantiate abstract class Kare
+#   without an implementation for abstract method 'cevre'</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:320px;">
+                        <div class="concept-card fragment fade-left"><h4>📜 Söz</h4><p><code>@abstractmethod</code>: “bu metodun
+                            gövdesi çocukta olacak”.</p></div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(52,211,153,0.45);"><h4>🚪 Kurulurken
+                            denetim</h4><p>Söz tutulmamışsa nesne <b>doğmaz</b>; hata eksik metotları adıyla söyler.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. ŞABLON METOT -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="layout-template" style="width:14px;height:14px;"></i> Soyut ≠ Boş</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Soyut Sınıfın <span
+                        style="color:#93c5fd;">Somut Metotları</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:640px;"><code class="language-python" data-trim data-line-numbers="1-5|6-8|10-16|18-19">class Sekil(ABC):
+    @abstractmethod
+    def alan(self): ...
+    @abstractmethod
+    def cevre(self): ...
+    def ozet(self):             # SOMUT: sözlere güvenir
+        ad = type(self).__name__
+        return f"{ad}: alan {self.alan()}, çevre {self.cevre()}"
+
+class Kare(Sekil):
+    def __init__(self, a):
+        self.a = a
+    def alan(self):
+        return self.a ** 2
+    def cevre(self):
+        return 4 * self.a
+
+Kare(3).ozet()                  # 'Kare: alan 9, çevre 12'
+isinstance(Kare(3), Sekil)      # True</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:320px;">
+                        <h4>🧩 Şablon metot</h4>
+                        <p><code>ozet()</code> atada ve <b>somut</b>; çocukların tutacağı sözlere (<code>alan</code>,
+                            <code>cevre</code>) güvenerek yazıldı.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">H4'teki <code>paintEvent → ciz()</code> kalıbının aynısı; adı
+                            <span class="wk">H14</span>'te.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. ETKİLEŞİMLİ: SÖZ DENETÇİSİ -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="shield-check" style="width:14px;height:14px;"></i> Etkileşimli · Söz Denetçisi</span>
+                <h2 class="text-2xl font-black mb-1 tracking-tighter text-white"><code style="color:#93c5fd;">Kare</code> Hangi
+                    Metotları <span style="color:#93c5fd;">Yazdı?</span></h2>
+                <p class="code-note mb-4" style="font-size:0.5em;">Kutuları işaretle, <code>Kare()</code>'yi kurmayı dene. İletiler
+                    Python 3.12'de çalıştırılarak alındı.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <div class="run-panel" style="min-width:470px;">
+                        <div class="run-title"># class Kare(Sekil):</div>
+                        <code class="runline">def __init__(self): self.a = 3</code>
+                        <code class="runline" id="dn-l1">def alan(self): return self.a ** 2</code>
+                        <code class="runline" id="dn-l2">def cevre(self): return 4 * self.a</code>
+                        <div class="chk-row mt-4">
+                            <label><input type="checkbox" id="dn-alan"> alan()</label>
+                            <label><input type="checkbox" id="dn-cevre"> cevre()</label>
+                            <button type="button" class="qt-btn" id="dn-kur" style="background:#22c55e;font-size:19px;">Kare().ozet()</button>
+                        </div>
+                    </div>
+                    <div class="run-panel" style="min-width:500px;max-width:500px;">
+                        <div class="run-title">&gt;&gt;&gt; Kare().ozet()</div>
+                        <div class="out-ln" id="dn-out" style="min-height:6em;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. KAVRAMLAR -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="boxes" style="width:14px;height:14px;"></i> Kavramlar</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Somut, Soyut, <span
+                        style="color:#93c5fd;">Arayüz</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🧱 Somut sınıf</h4>
+                        <p>Bütün metotlarının gövdesi var; nesnesi kurulur. <code>Kare</code>, <code>QPushButton</code>.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>📐 Soyut sınıf</h4><p>Yarım kalıp: bazı metotlar söz,
+                        bazıları somut. Nesnesi kurulmaz, <b>türetilir</b>. <code>Sekil</code>,
+                        <code>QAbstractButton</code>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🔌 Arayüz</h4>
+                        <p>Yalnız sözler, hiç gövde yok: “şu metotları taşıyan her şey”. Python'da anahtar sözcüğü yok.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Elektrik prizi bir arayüzdür: fişin markası değil, <b>biçimi</b>
+                    uyuyorsa takılır.</p>
+            </section>
+
+            <!-- 10. MİNİ QUIZ 1 -->
+            <section class="qz">
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 1/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Ne Zaman Yakalanır?</h2>
+                <div class="quiz fragment" data-ok="ABC denetimi nesne kurulurken yapılır: Kare(3) → TypeError."
+                    data-no="@abstractmethod ile söz tutulmamışsa hata nesne kurulurken gelir, çağrıda değil.">
+                    <div class="quiz-q">1) <code>Sekil(ABC)</code>'nin <code>cevre</code>'sini yazmayan <code>Kare</code> için hata ne zaman?</div>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>Kare(3)</code> kurulurken</button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>cevre()</code> çağrılınca</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Hiç; Python izin verir</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+                <div class="quiz fragment" data-ok="Soyut sınıfın somut metotları olabilir: ozet() gibi."
+                    data-no="Soyut sınıf yarım kalıptır: soyut metotların yanında somut metotlar da taşır.">
+                    <div class="quiz-q">2) Soyut bir sınıfta gövdesi olan, somut bir metot olabilir mi?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">Hayır, hepsi soyut olmalı</button>
+                    <button type="button" class="quiz-opt" data-correct="1">Evet; sözlere güvenerek çalışır</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Yalnız <code>__init__</code> olabilir</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 11. QT'NİN SOYUT SINIFI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="square-dashed" style="width:14px;height:14px;"></i> Qt'de</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">QAbstractButton()</code>
+                    <span style="color:#fda4af;">Kurulamaz</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:724px;"><code class="language-python" data-trim data-line-numbers="1-3|5-6|7">QAbstractButton()
+# NotImplementedError: 'QAbstractButton' represents
+#   a C++ abstract class and cannot be instantiated
+
+[c.__name__ for c in QAbstractButton.__subclasses__()]
+# ['QPushButton', 'QCheckBox', 'QRadioButton', 'QToolButton']
+issubclass(QCheckBox, QAbstractButton)    # True</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:320px;">
+                        <h4>🧬 H2'nin sözü</h4>
+                        <p>H2'de “bu hatayı H6'da göreceğiz” demiştik. <code>QAbstractButton</code>, bütün butonların
+                            <b>soyut</b> atası: tıklama, metin, işaretlenme hazır; yalnız <b>çizim</b> eksik.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Dört somut çocuğu eksik parçayı kendince yazar.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. YUVARLAK BUTON -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="circle" style="width:14px;height:14px;"></i> Kendi Butonumuz</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Soyut Atadan <span
+                        style="color:#93c5fd;">Yuvarlak Buton</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:620px;"><code class="language-python" data-trim data-line-numbers="1-2|3-8|9-10|12-16">class YuvarlakButon(QAbstractButton):  # soyut ata
+    def paintEvent(self, olay):        # eksik parça
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing)
+        p.setPen(Qt.NoPen)
+        renk = "#22c55e" if self.isChecked() else "#6c63ff"
+        p.setBrush(QColor(renk))
+        p.drawEllipse(self.rect().adjusted(4, 4, -4, -4))
+        p.setPen(QColor("white"))
+        p.drawText(self.rect(), Qt.AlignCenter, self.text())
+
+y = YuvarlakButon()
+y.setText("Aç")
+y.setCheckable(True)          # QAbstractButton'dan hazır
+y.click()                     # tıklama da hazır
+y.isChecked()                 # True</code></pre>
+                    <div class="fragment fade-left flex flex-col items-center gap-2">
+                        <span class="arrow-cta">Sonuç ↓</span>
+                        <div class="flex gap-3">
+                            <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                                class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span></div>
+                                <img src="images/gui_yuvarlak_kapali.png" alt="Kapalı" style="width:150px;"></div>
+                            <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                                class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span></div>
+                                <img src="images/gui_yuvarlak_acik.png" alt="Açık" style="width:150px;"></div>
+                        </div>
+                        <p class="code-note" style="font-size:0.46em;max-width:320px;">Biz yalnız <code>paintEvent</code>'i yazdık;
+                            <code>click</code>, <code>setCheckable</code>, <code>clicked</code> sinyali soyut atadan geldi.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 13. CANLI: YUVARLAK BUTON -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip"><i data-lucide="play" style="width:14px;height:14px;"></i> Canlı</span>
+                    <span class="live-badge"><span class="live-dot"></span> tıkla: işaretli / işaretsiz</span>
+                </div>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Kim Ne <span
+                        style="color:#7dd3fc;">Yaptı?</span></h2>
+                <div class="flex items-center justify-center gap-10">
+                    <div class="run-panel" style="min-width:470px;">
+                        <div class="run-title"># bir tıklamada sırayla:</div>
+                        <code class="runline" id="yb-l0">QAbstractButton: fare olayını yakala</code>
+                        <code class="runline" id="yb-l1">QAbstractButton: toggle() → isChecked()</code>
+                        <code class="runline" id="yb-l2">QAbstractButton: clicked sinyalini yay</code>
+                        <code class="runline" id="yb-l3">YuvarlakButon.paintEvent: yeniden çiz</code>
+                        <div class="run-badge">isChecked(): <b id="yb-st">False</b> · tıklama: <b id="yb-n">0</b></div>
+                    </div>
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">YuvarlakButon — canlı</span></div>
+                        <div class="qt-body" style="padding:30px 60px;"><button type="button" class="yb" id="yb-btn">Aç</button></div>
+                    </div>
+                </div>
+                <p class="code-note mt-6">Dört satırdan üçü <b>soyut atanın</b>; biz yalnız sonuncuyu yazdık. Soyut sınıfın işi
+                    bu: işin çoğunu hazır vermek, eksik parçayı istemek.</p>
+            </section>
+
+            <!-- 14. paintEvent YAZMAZSAN -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="ghost" style="width:14px;height:14px;"></i> Dürüst Not</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Eksik Parçayı Yazmazsan: <span
+                        style="color:#fda4af;">Görünmez Buton</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:672px;"><code class="language-python" data-trim data-line-numbers="1-2|4|5-8|9">class BosButon(QAbstractButton):
+    pass                      # paintEvent yazmadık
+
+b = BosButon()                # kurulur: itiraz yok
+b.setText("Gör beni")
+b.setCheckable(True)
+b.click()                     # tıklanır da
+b.text(), b.isChecked()       # ('Gör beni', True)
+# b.show() → pencere açılır ama BOŞ: hiçbir şey çizilmez</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <h4>🤐 Qt sessiz</h4>
+                        <p><code>QAbstractButton()</code> doğrudan kurulamıyordu; ama <b>çocuğu</b>, eksik parça yazılmadan
+                            kurulabildi. Pencere açılır, buton tıklanır, ama ekranda hiçbir şey yok.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">PySide6 6.11.1'de olay döngüsüyle denendi: hata iletisi yok.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. ABC + QWidget ÇATIŞMASI -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="swords" style="width:14px;height:14px;"></i> Qt + ABC</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">İkisini Karıştırınca: <span
+                        style="color:#fda4af;">Metaclass Çatışması</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:620px;"><code class="language-python" data-trim data-line-numbers="1-2|3-5">class Cizim(QWidget, ABC):
+    pass
+# TypeError: metaclass conflict: the metaclass of a
+#   derived class must be a (non-strict) subclass of
+#   the metaclasses of all its bases</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:350px;">
+                        <div class="concept-card fragment fade-left"><h4>🏭 Metaclass</h4><p>Sınıfları üreten “sınıf fabrikası”.
+                            <code>ABC</code>'ninki <code>ABCMeta</code>, Qt'ninki Shiboken'in <code>ObjectType</code>'ı.</p></div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(244,63,94,0.45);"><h4>⚔️ İki
+                            fabrika</h4><p>Python bir sınıfı iki farklı fabrikaya birden ürettiremez: <code>TypeError</code>.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 16. BİRLEŞİK METACLASS -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="merge" style="width:14px;height:14px;"></i> Birleştirme Denemesi</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Çatışma Gitti, <span
+                        style="color:#fda4af;">Koruma da Gitti</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:640px;"><code class="language-python" data-trim data-line-numbers="1-2|4-6|8-9|11|12-13">class QABCMeta(ABCMeta, type(QWidget)):  # birleştir
+    pass
+
+class Cizim(QWidget, metaclass=QABCMeta):
+    @abstractmethod
+    def ciz(self, p): ...
+
+class Eksik(Cizim):           # ciz() yok
+    pass
+
+Eksik.__abstractmethods__     # frozenset({'ciz'})
+e = Eksik()                   # ⚠️ yine de kuruldu!
+isinstance(e, QWidget)        # True</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:340px;">
+                        <h4>🔍 Ne oldu?</h4>
+                        <p><code>ABCMeta</code> eksik metotları buldu (<code>__abstractmethods__</code>), ama nesneyi
+                            Shiboken'in kurucusu üretti ve bu listeye <b>bakmadı</b>.</p>
+                        <p class="mt-3" style="color:#fda4af;">PySide6 6.11.1'de denendi: soyut Qt widget'ı yine de kuruluyor.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 17. ELLE DENETİM -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="shield" style="width:14px;height:14px;"></i> Pratik Çözüm</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kurucuda <span
+                        style="color:#93c5fd;">Kendimiz Denetleyelim</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:684px;"><code class="language-python" data-trim data-line-numbers="1-3|4-6|7|8-9|11-15">class Cizim(QWidget, metaclass=QABCMeta):
+    def __init__(self):
+        eksik = type(self).__abstractmethods__
+        if eksik:             # Qt denetlemiyor, biz
+            raise TypeError(f"{type(self).__name__} soyut: "
+                            f"{', '.join(sorted(eksik))} yazılmadı")
+        super().__init__()
+    @abstractmethod
+    def ciz(self, p): ...
+
+class Eksik(Cizim):
+    pass
+
+Eksik()
+# TypeError: Eksik soyut: ciz yazılmadı</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:320px;">
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(52,211,153,0.45);"><h4>✅ Söz yine
+                            kurulurken</h4><p>Eksik metot varsa <code>super().__init__()</code>'e hiç varmadan durur.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🧭 Daha sade yol</h4><p>Widget'ı soyut yapma; soyut
+                            <b>Sekil</b>'i widget'ın <b>içine</b> koy (has-a). Projede böyle yapacağız.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 18. ARAYÜZ KAVRAMI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="plug" style="width:14px;height:14px;"></i> Arayüz</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Python'da <code
+                        style="color:#93c5fd;">interface</code> <span style="color:#93c5fd;">Yok, Üç Yolu Var</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>📐 Yalnız soyut ABC</h4><p>Bütün metotları
+                        <code>@abstractmethod</code> olan bir ABC. Uyan sınıf ondan <b>türer</b>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🔌 Protocol</h4>
+                        <p>“Şu metotları taşıyan her şey.” Türemek <b>gerekmez</b>; biçim uyması yeter.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🦆 Ördek
+                        tipleme</h4><p>Hiç yazmadan: çağır, varsa çalışır (H4). En esnek, en geç uyaran.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Java/C#'taki <code>interface</code>'e en çok <code>Protocol</code>
+                    benzer; ama sınıfın onu ilan etmesi gerekmez.</p>
+            </section>
+
+            <!-- 19. PROTOCOL -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="plug-zap" style="width:14px;height:14px;"></i> typing.Protocol</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Biçim Uyuyorsa <span
+                        style="color:#93c5fd;">Takılır</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:620px;"><code class="language-python" data-trim data-line-numbers="1|3-5|7-11|13-15">from typing import Protocol, runtime_checkable
+
+@runtime_checkable
+class Artirilabilir(Protocol):       # arayüz: yalnız söz
+    def artir(self) -&gt; None: ...
+
+class Zamanlayici:                    # H4: atası yok
+    def __init__(self):
+        self.saniye = 0
+    def artir(self):
+        self.saniye += 1
+
+isinstance(Zamanlayici(), Artirilabilir)   # True
+isinstance(QPushButton(), Artirilabilir)   # False
+isinstance(3, Artirilabilir)               # False</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:330px;">
+                        <div class="concept-card fragment fade-left"><h4>🧬 Kalıtım yok</h4><p><code>Zamanlayici</code>
+                            <code>Artirilabilir</code>'den türemedi; yine de “bir Artirilabilir”.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🔎 runtime_checkable</h4><p><code>isinstance</code>
+                            yalnız metot <b>adlarına</b> bakar, imzaya değil. Asıl denetim editörde (mypy).</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 20. collections.abc -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="library" style="width:14px;height:14px;"></i> Hazır Arayüzler</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">collections.abc</code>:
+                    <span style="color:#93c5fd;">Python'un Sözleşmeleri</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:662px;"><code class="language-python" data-trim data-line-numbers="1|3-7|9-12">from collections.abc import Sized, Iterable
+
+class Takim:                         # H5: kalıtım YOK
+    def __init__(self, uyeler):
+        self.uyeler = list(uyeler)
+    def __len__(self):
+        return len(self.uyeler)
+
+t = Takim(["Ali", "Can"])
+isinstance(t, Sized)                 # True
+isinstance(t, Iterable)              # False
+issubclass(Takim, Sized)             # True</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <h4>📏 H5'e bağ</h4>
+                        <p><code>__len__</code> yazdın: Python seni bir <code>Sized</code> sayar. <code>__iter__</code>
+                            yazmadın: <code>Iterable</code> değilsin.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Dunder metotlar Python'un örtük arayüzleri;
+                            <code>collections.abc</code> onlara ad verir.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. ETKİLEŞİMLİ: ARAYÜZ DENETÇİSİ -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="table-2" style="width:14px;height:14px;"></i> Etkileşimli · Kim Hangi Sözü Tutuyor?</span>
+                <h2 class="text-2xl font-black mb-1 tracking-tighter text-white"><code style="color:#93c5fd;">isinstance</code>,
+                    <span style="color:#93c5fd;">Arayüzlere Karşı</span></h2>
+                <p class="code-note mb-4" style="font-size:0.5em;">Bir satıra tıkla. Bütün hücreler Python'da
+                    <code>isinstance(nesne, arayüz)</code> ile hesaplandı.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <table class="ay-tab" id="ay-tab"></table>
+                    <div class="run-panel" style="min-width:400px;max-width:400px;">
+                        <div class="run-title" id="ay-head"># bir satır seç</div>
+                        <div class="out-ln" id="ay-out" style="min-height:7em;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 22. ABC'SİZ @abstractmethod -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="unlink" style="width:14px;height:14px;"></i> Tuzak</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">ABC</code>'siz
+                    <span style="color:#fda4af;">@abstractmethod Süs Olur</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:694px;"><code class="language-python" data-trim data-line-numbers="1-3|5-6">class Sekil:                         # ⚠️ ABC'den türemedi
+    @abstractmethod
+    def alan(self): ...
+
+Sekil()                              # itiraz yok
+Sekil().alan() is None               # True</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <h4>🧷 Denetimi kim yapıyor?</h4>
+                        <p>Dekoratör yalnız bir <b>işaret</b> koyar; işareti okuyup nesneyi durduran <code>ABCMeta</code>'dır.
+                            <code>ABC</code>'den türemeyen sınıfta okuyan yok.</p>
+                        <p class="mt-3" style="color:#7dd3fc;">Kural: <code>class Sekil(ABC):</code> yazmayı unutma.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 23. KARŞILAŞTIRMA -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="columns-3" style="width:14px;height:14px;"></i> Yan Yana</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Dört Yol, <span
+                        style="color:#93c5fd;">Hata Ne Zaman?</span></h2>
+                <div class="glass-card mx-auto" style="max-width:1060px;padding:16px 22px;">
+                    <table style="width:100%;font-size:0.46em;border-collapse:collapse;text-align:left;" class="code-note">
+                        <tr style="color:#93c5fd;"><th style="padding:5px 10px;"></th><th>türemek şart mı?</th><th>eksik metot ne zaman fark edilir?</th><th>Qt widget'ıyla</th></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">gövdesiz bırakmak</td><td>evet</td><td style="color:#fca5a5;">hiç (sessiz yanlış)</td><td>çalışır</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">NotImplementedError</td><td>evet</td><td style="color:#fde68a;">metot çağrılınca</td><td>çalışır</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">ABC + @abstractmethod</td><td>evet</td><td style="color:#86efac;">nesne kurulurken</td><td style="color:#fca5a5;">çatışma; birleşik metaclass korumaz</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">Protocol</td><td style="color:#86efac;">hayır</td><td>editörde (mypy); isinstance ile istersen</td><td style="color:#86efac;">sorunsuz</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">ördek tipleme</td><td style="color:#86efac;">hayır</td><td style="color:#fde68a;">çağrılınca (AttributeError)</td><td style="color:#86efac;">sorunsuz</td></tr>
+                    </table>
+                </div>
+                <p class="code-note mt-5 fragment fade-in">Erken yakalamak = ucuz düzeltmek. Kendi saf Python sınıflarında ABC, Qt
+                    tarafında Protocol ya da has-a.</p>
+            </section>
+
+            <!-- 24. MİNİ QUIZ 2 -->
+            <section class="qz">
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 2/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Qt ve Arayüzler</h2>
+                <div class="quiz fragment" data-ok="İki metaclass aynı sınıfta birleşemez: TypeError metaclass conflict."
+                    data-no="QWidget'in ve ABC'nin metaclass'ları farklı: class X(QWidget, ABC) → metaclass conflict.">
+                    <div class="quiz-q">1) <code>class Cizim(QWidget, ABC): pass</code> ne verir?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">Soyut bir widget</button>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>TypeError</code>: metaclass conflict</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Hiçbir şey; normal sınıf</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+                <div class="quiz fragment" data-ok="Protocol yapısaldır: metot adları uyuyorsa isinstance True."
+                    data-no="Protocol'de kalıtım gerekmez; Zamanlayici'nın artir()'ı olduğu için True.">
+                    <div class="quiz-q">2) <code>Zamanlayici</code> <code>Artirilabilir</code>'den türemedi. <code>isinstance(Zamanlayici(), Artirilabilir)</code>?</div>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>True</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>False</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>TypeError</code></button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 25. SIK YAPILAN HATALAR -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="triangle-alert" style="width:14px;height:14px;"></i> Dikkat</span>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Sık Yapılan Hatalar</h2>
+                <div class="grid grid-cols-2 gap-4 text-left" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🧷 <code>ABC</code>'yi unutmak</h4><p><code>@abstractmethod</code> tek başına hiçbir şey denetlemez.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🔤 Adı farklı yazmak</h4><p>Çocukta <code>Alan()</code> yazarsan <code>alan</code> hâlâ eksik; sınıf
+                        soyut kalır.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>⚔️ Qt + ABC</h4><p><code>class X(QWidget, ABC)</code> çatışır; birleşik metaclass da kurulumu
+                        engellemez. Has-a ya da elle denetim.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🤷 İki “Not”</h4><p><code>return NotImplemented</code> operatörde (H5), <code>raise
+                        NotImplementedError</code> eksik gövdede. Yer değiştirmez.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Kural: söz <b>erken</b> denetlensin; Qt'de erken denetimi kendin kur.</p>
+            </section>
+
+            <!-- 26. ÖZET -->
+            <section>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-3 text-left cards-tight" style="max-width:1060px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ Gövdesiz bırakılan metot sessizce yanlış sonuç verir</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>NotImplementedError</code>: hata çağrıda, geç</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>ABC</code> + <code>@abstractmethod</code>: söz tutulmadan nesne kurulamaz</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Soyut sınıfın somut metotları sözlere güvenir (şablon metot)</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>QAbstractButton</code> soyut; çocuğu <code>paintEvent</code>'i yazar</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Qt + ABC: metaclass çatışması; korumayı kurucuda kendin yap</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Arayüz: yalnız sözler; <code>Protocol</code> türemeden uyar</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>collections.abc</code>: <code>Sized</code>, <code>Iterable</code> = dunder sözleşmeleri</p></div>
+                </div>
+            </section>
+
+            <!-- 27. PROJE -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="dumbbell" style="width:14px;height:14px;"></i> Ders Sonu Uygulama · Proje</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Proje: Sözleşmeli Şekil Paneli</h2>
+                <p class="code-note mb-3" style="font-size:0.54em;">Sözleşme saf Python'da: soyut <code>Sekil</code> ve ilk somut
+                    şekil <code>Kare</code>. Qt bu dosyada yok.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:620px;"><code class="language-python" data-trim data-line-numbers="1-5|7-14">class Sekil(ABC):                    # arayüz: saf Python
+    @abstractmethod
+    def alan(self): ...
+    @abstractmethod
+    def ciz(self, p, w, h): ...
+
+class Kare(Sekil):
+    renk = "#7dd3fc"
+    def __init__(self, a):
+        self.a = a
+    def alan(self):
+        return self.a ** 2
+    def ciz(self, p, w, h):
+        p.drawRect(QRectF(.2*w, .2*h, .6*w, .6*h))</code></pre>
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                            class="atitle">Panel</span></div><img src="images/gui_proje_hedef.png" alt="Kare, Daire, Ucgen ve alanları"
+                            style="width:320px;"></div>
+                        <div class="concept-card" style="max-width:340px;text-align:left;">
+                            <h4>🎯 Hedef</h4>
+                            <p><code>Daire(1)</code> ve <code>Ucgen(4, 5)</code>'i ekle; üçünü yan yana çiz, altına alanlarını
+                                yaz: 9, 3.14, 10.0. Süre: ~40 dk.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 28. PROJE: KUTU -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="package" style="width:14px;height:14px;"></i> Proje · Widget Tarafı</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kutu Şekli <span
+                        style="color:#93c5fd;">İçerir</span>, Şekil Olmaz</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:660px;"><code class="language-python" data-trim data-line-numbers="1-4|5-10|12-13">class SekilKutusu(QWidget):          # has-a: Sekil'i İÇERİR
+    def __init__(self, sekil):
+        super().__init__()
+        self.sekil = sekil           # soyut türden bir nesne
+    def paintEvent(self, olay):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing)
+        p.setPen(Qt.NoPen)
+        p.setBrush(QColor(self.sekil.renk))
+        self.sekil.ciz(p, self.width(), self.height())
+
+kutu = SekilKutusu(Kare(3))
+kutu.sekil.alan()                    # 9</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:320px;">
+                        <div class="concept-card fragment fade-left"><h4>🧩 has-a</h4><p><code>SekilKutusu</code> bir
+                            <code>Sekil</code> <b>değil</b>, bir <code>Sekil</code> taşıyor. Tek metaclass, çatışma yok.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🔁 H4'le bağ</h4><p>10. satır polimorfik: kutu şeklin
+                            türünü bilmez, <code>ciz</code>'i çağırır; hangi şekilse onunki çalışır.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 28. ADIM ADIM -->
+            <section data-background-color="#020617">
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Adım Adım Nasıl İlerleyeceksin?</h2>
+                <div class="grid grid-cols-2 gap-4 text-left" style="max-width:1060px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>1 · Sözleşme</h4><p><code>Sekil(ABC)</code>:
+                        <code>alan()</code> ve <code>ciz(p, w, h)</code> soyut. Test: <code>Sekil()</code> TypeError vermeli.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · Şekiller</h4><p><code>Daire(r)</code> ve
+                        <code>Ucgen(t, h)</code>; her biri <code>renk</code> ve iki metodu yazsın.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · Kutu</h4><p><code>SekilKutusu(QWidget)</code> bir
+                        <code>Sekil</code> alır, <code>paintEvent</code>'te onun <code>ciz</code>'ini çağırır.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>4 · Panel</h4><p>Her şekil için bir kutu ve altında bir
+                        <code>QLabel</code>: <code>f"{ad}\nalan = {s.alan()}"</code>.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">✅ Kontrol: <code>alan()</code>'ı yazıp <code>ciz</code>'i unutan bir
+                    şekil kurulurken <code>TypeError</code> vermeli: “…without an implementation for abstract method 'ciz'”.</p>
+            </section>
+
+            <!-- 29. İLERİ GÖREVLER -->
+            <section>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">İleri Görevler <span
+                        style="color:#93c5fd;">Erken Bitirdiysen</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>⭐ Soyut özellik</h4><p><code>@property</code> +
+                        <code>@abstractmethod</code> ile soyut bir <code>ad</code> özelliği: her şekil adını kendisi versin.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐ Protocol paneli</h4><p><code>Cizilebilir(Protocol)</code>
+                        tanımla; <code>SekilKutusu</code> ABC yerine bunu beklesin. Şekiller ABC'den türemesin.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐⭐ Kendi butonun</h4><p><code>QAbstractButton</code>'dan
+                        kare bir <code>KutuButon</code> türet; fare üstündeyken (<code>underMouse()</code>) rengi açılsın.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Hepsinde aynı soru: sözü kim veriyor, kim tutuyor, kim denetliyor?</p>
+            </section>
+
+            <!-- 30. SONRAKİ HAFTA -->
+            <section data-background-color="#020617">
                 <div class="flex flex-col items-center">
-                    <span class="week-number text-lg mb-4">Hafta 06</span>
-                    <h1 class="text-5xl md:text-6xl mb-6 leading-tight font-extrabold tracking-tighter text-white">Soyut Sınıflar ve Arayüzler</h1>
-                    <div class="h-1 w-20 bg-gradient-to-r from-blue-700 to-rose-900 rounded-full mb-8"></div>
-                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">İleri Programlama · YPZ209</p>
+                    <span class="chip mb-6"><i data-lucide="arrow-right-circle" style="width:14px;height:14px;"></i> Sonraki Hafta</span>
+                    <h2 class="text-4xl font-black mb-4 tracking-tighter text-white">İstisna Yönetimi <span class="grad-text">&amp;
+                        Hata Ayıklama</span></h2>
+                    <p class="code-note mb-6" style="max-width:780px;">Bu hafta onlarca <code>TypeError</code> gördük. Gelecek hafta
+                        onları <b>yakalayacağız</b>: <code>try / except / finally</code>, kendi hata sınıflarımız ve bir Qt
+                        formunda kullanıcıya düzgün hata göstermek.</p>
+                    <a href="../index.html" class="nav-link">← Ders Ana Sayfası</a>
                 </div>
             </section>
-            <section data-background-color="#020617">
-                <div class="glass-card items-center text-center mx-auto p-10" style="max-width: 640px;">
-                    <i data-lucide="hammer" class="text-rose-500 mb-4" style="width: 48px; height: 48px;"></i>
-                    <h2 class="text-3xl font-black text-white mb-4">İçerik Yakında</h2>
-                    <p class="bio-text mb-6">Bu haftanın slayt içeriği hazırlanmaktadır ve dönem boyunca güncellenecektir.</p>
-                    <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
-                </div>
-            </section>
+
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
     <script src="../js/main.js"></script>
     <script>
-        if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-        Reveal.initialize({
-            hash: false, history: false, center: true, transition: 'convex',
-            backgroundTransition: 'fade', width: 1200, height: 700, margin: 0.1
+        initReveal({
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            margin: 0.06,
+            slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
         });
     </script>
+    <script>
+        // ===== CANLI ETKİLEŞİMLER (Hafta 6) =====
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+            function $(id) { return document.getElementById(id); }
+            function flash(el, ms) { if (!el) return; el.classList.add('active'); setTimeout(function () { el.classList.remove('active'); }, ms || 380); }
+            function bump(el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+
+            // ---------------------------------------------------------------- Söz denetçisi (iletiler Python'dan)
+            (function () {
+                if (!$('dn-kur')) return;
+                var DENETCI = {"00": {"ok": false, "cikti": "TypeError: Can't instantiate abstract class Kare without an implementation for abstract methods 'alan', 'cevre'"}, "01": {"ok": false, "cikti": "TypeError: Can't instantiate abstract class Kare without an implementation for abstract method 'alan'"}, "10": {"ok": false, "cikti": "TypeError: Can't instantiate abstract class Kare without an implementation for abstract method 'cevre'"}, "11": {"ok": true, "cikti": "Kare: alan 9, çevre 12"}};
+                function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+                function satir(id, var_) { var el = $(id); el.style.opacity = var_ ? '1' : '0.3'; el.style.textDecoration = var_ ? 'none' : 'line-through'; }
+                function guncelle() { satir('dn-l1', $('dn-alan').checked); satir('dn-l2', $('dn-cevre').checked); }
+                ['dn-alan', 'dn-cevre'].forEach(function (id) {
+                    $(id).addEventListener('click', stop);
+                    $(id).addEventListener('change', function () { guncelle(); $('dn-out').innerHTML = '<span class="cm"># sınıf değişti; yeniden kurmayı dene</span>'; });
+                });
+                $('dn-kur').addEventListener('click', function (e) {
+                    stop(e); this.blur(); bump(this);
+                    var k = ($('dn-alan').checked ? '1' : '0') + ($('dn-cevre').checked ? '1' : '0');
+                    var d = DENETCI[k];
+                    $('dn-out').innerHTML = d.ok ? '<span class="ok">' + esc(d.cikti) + '</span>'
+                        : '<span class="bad">' + esc(d.cikti) + '</span>\n<span class="cm"># nesne hiç oluşmadı; ozet() çağrılamadı</span>';
+                });
+                guncelle();
+                $('dn-out').innerHTML = '<span class="cm"># kutuları işaretle, sonra butona bas</span>';
+            })();
+
+            // ---------------------------------------------------------------- Canlı YuvarlakButon: kim ne yaptı?
+            (function () {
+                if (!$('yb-btn')) return;
+                var acik = false, n = 0, timers = [];
+                function sifirla() { for (var i = 0; i < 4; i++) $('yb-l' + i).classList.remove('active'); }
+                $('yb-btn').addEventListener('click', function (e) {
+                    stop(e); this.blur();
+                    timers.forEach(clearTimeout); timers = []; sifirla();
+                    acik = !acik; n += 1;
+                    var btn = this;
+                    [0, 1, 2, 3].forEach(function (i) {
+                        timers.push(setTimeout(function () {
+                            sifirla(); $('yb-l' + i).classList.add('active');
+                            if (i === 1) $('yb-st').textContent = acik ? 'True' : 'False';
+                            if (i === 2) $('yb-n').textContent = n;
+                            if (i === 3) btn.classList.toggle('on', acik);
+                        }, 320 * i));
+                    });
+                    timers.push(setTimeout(sifirla, 320 * 4 + 500));
+                });
+            })();
+
+            // ---------------------------------------------------------------- Arayüz tablosu (isinstance sonuçları Python'dan)
+            (function () {
+                if (!$('ay-tab')) return;
+                var ARAYUZ = {"Zamanlayici()": {"Artirilabilir": true, "Sized": false, "Iterable": false}, "SayacButonu()": {"Artirilabilir": true, "Sized": false, "Iterable": false}, "QPushButton()": {"Artirilabilir": false, "Sized": false, "Iterable": false}, "Takim([...])": {"Artirilabilir": false, "Sized": true, "Iterable": false}, "[1, 2, 3]": {"Artirilabilir": false, "Sized": true, "Iterable": true}, "\"abc\"": {"Artirilabilir": false, "Sized": true, "Iterable": true}, "42": {"Artirilabilir": false, "Sized": false, "Iterable": false}};
+                var NEDEN = {
+                    'Zamanlayici()': 'artir() var, atası yok: biçim uyuyor.\n__len__ / __iter__ yok.',
+                    'SayacButonu()': 'class SayacButonu(QPushButton) + artir():\nQt widget\'ı da olsa biçim uyuyor.',
+                    'QPushButton()': 'artir() yok; __len__ / __iter__ de yok.',
+                    'Takim([...])': '__len__ var → Sized.\n__iter__ yok → Iterable değil.',
+                    '[1, 2, 3]': 'list: __len__ ve __iter__ var.',
+                    '"abc"': 'str: __len__ ve __iter__ var.',
+                    '42': 'int: üç sözün hiçbirini tutmuyor.'
+                };
+                var ad = ['Artirilabilir', 'Sized', 'Iterable'];
+                function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+                var h = '<tr><th style="text-align:left;">nesne</th>' + ad.map(function (a) { return '<th>' + a + '</th>'; }).join('') + '</tr>';
+                ['Zamanlayici()', 'SayacButonu()', 'QPushButton()', 'Takim([...])', '[1, 2, 3]', '"abc"', '42'].forEach(function (k) {
+                    h += '<tr data-k="' + esc(k).replace(/"/g, '&quot;') + '" style="cursor:pointer;"><td>' + esc(k) + '</td>' + ad.map(function (a) {
+                        return ARAYUZ[k][a] ? '<td class="t">✓</td>' : '<td class="f">✗</td>';
+                    }).join('') + '</tr>';
+                });
+                $('ay-tab').innerHTML = h;
+                $('ay-tab').querySelectorAll('tr[data-k]').forEach(function (tr) {
+                    tr.addEventListener('click', function (e) {
+                        stop(e);
+                        var k = tr.getAttribute('data-k');
+                        $('ay-tab').querySelectorAll('tr').forEach(function (r) { r.classList.toggle('sel', r === tr); });
+                        $('ay-head').textContent = '>>> x = ' + k;
+                        $('ay-out').innerHTML = ad.map(function (a) {
+                            var v = ARAYUZ[k][a];
+                            return ('isinstance(x, ' + a + ')').padEnd(29) + ' → ' + (v ? '<span class="ok">True</span>' : '<span class="bad">False</span>');
+                        }).join('\n') + '\n\n<span class="cm">' + esc(NEDEN[k] || '') + '</span>';
+                    });
+                });
+            })();
+
+            // Mini quizler
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) { if (o.dataset.correct === '1') o.classList.add('correct'); });
+                        if (opt.dataset.correct === '1') { fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!'); fb.style.color = '#86efac'; }
+                        else { opt.classList.add('wrong'); fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil işaretlendi.'); fb.style.color = '#fca5a5'; }
+                    });
+                });
+            });
+        })();
+    </script>
 </body>
+
 </html>
