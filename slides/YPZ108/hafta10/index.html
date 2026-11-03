@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 10. Hafta - Yapay Zeka Etiği ve Karar Mekanizmaları</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Twitter Embed -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 10 — Emerald & Cyan & Teal Theme */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Inter', sans-serif;
+            text-transform: none;
+        }
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .ai-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+        @keyframes brain-pulse {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.2)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.6)); transform: scale(1.03); }
+        }
+        @keyframes neural-flow {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #34d399 0%, #22d3ee 50%, #34d399 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .brain-glow { animation: brain-pulse 4s infinite ease-in-out; }
+
+        /* Black box effect */
+        .black-box {
+            background: #000;
+            border: 2px solid #1f2937;
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .black-box::before {
+            content: '?';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(16, 185, 129, 0.15);
+        }
+
+        /* Bias meter */
+        @keyframes bias-fill { 0%{width:0} 100%{width:var(--bias-width)} }
+        .bias-bar { animation: bias-fill 1.5s ease-out forwards; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 1: KAPAK                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 30% 50%, #064e3b 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-emerald-600 top-0 left-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <!-- Badge -->
+                    <div class="px-4 py-2 bg-emerald-500/10 rounded-full text-xs font-bold tracking-widest mb-6 border border-emerald-500/30">
+                        <span class="text-emerald-400">HAFTA 10</span>
+                        <span class="text-slate-600 mx-2">•</span>
+                        <span class="text-slate-400">BİLİŞİM ETİĞİ</span>
+                    </div>
+
+                    <!-- İkon -->
+                    <div class="relative mb-8 group">
+                        <div class="absolute inset-0 bg-emerald-600 rounded-full blur-[60px] opacity-30 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+                        <div class="absolute inset-[-20px] rounded-full border border-emerald-500/20 animate-[spin_15s_linear_infinite]"></div>
+                        <div class="absolute inset-[-40px] rounded-full border border-cyan-500/10 border-dashed animate-[spin_25s_linear_infinite_reverse]"></div>
+                        <div class="p-8 bg-emerald-500/10 rounded-full border border-emerald-500/20 relative z-10 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 brain-glow">
+                            <i data-lucide="brain-circuit" style="width: 80px; height: 80px;" class="text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.8)]"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl mb-4 leading-tight">Yapay Zeka Etiği ve<br>
+                        <span class="shimmer-text">Karar Mekanizmaları</span>
+                    </h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">10. Hafta: Algoritmalar Adil mi?</p>
+                    <div class="mt-8 flex gap-6 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span class="flex items-center gap-2"><i data-lucide="cpu" size="12" class="text-emerald-500"></i> ALGORİTMA</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="scan-face" size="12" class="text-emerald-500"></i> ÖNYARGI</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="scale" size="12" class="text-emerald-500"></i> SORUMLULUK</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 2: YAPAY ZEKA ETİĞİ NEDİR?           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-emerald-600 bottom-0 left-0"></div>
+                    <div class="grid grid-cols-2 gap-10 items-center text-left">
+                        <div>
+                            <div class="ai-badge mb-6">Tanım & Kapsam</div>
+                            <h2 class="text-4xl mb-4">Makineler <span class="text-emerald-400">Düşünürken…</span></h2>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-5">
+                                Yapay Zeka Etiği; akıllı sistemlerin tasarımı, yaygınlaştırılması ve kullanımı sırasında ortaya çıkan <strong class="text-white">ahlaki sorunları</strong> inceleyen disiplindir.
+                            </p>
+                            <div class="space-y-3">
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-emerald-500/5 rounded-xl border border-emerald-500/10 hover:bg-emerald-500/10 transition-all">
+                                    <div class="p-1.5 bg-emerald-500/20 rounded-lg"><i data-lucide="cpu" class="text-emerald-400" size="18"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Algoritmik Adalet (Fairness)</h4>
+                                        <p class="text-slate-500 text-[9px] m-0">AI kararları toplumun tamamı için eşit mi?</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-emerald-500/5 rounded-xl border border-emerald-500/10 hover:bg-emerald-500/10 transition-all">
+                                    <div class="p-1.5 bg-emerald-500/20 rounded-lg"><i data-lucide="eye" class="text-emerald-400" size="18"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">Şeffaflık ve Açıklanabilirlik</h4>
+                                        <p class="text-slate-500 text-[9px] m-0">AI neden bu kararı verdi, anlayabiliyor muyuz?</p>
+                                    </div>
+                                </div>
+                                <div class="fragment flex items-center gap-3 p-2.5 bg-emerald-500/5 rounded-xl border border-emerald-500/10 hover:bg-emerald-500/10 transition-all">
+                                    <div class="p-1.5 bg-emerald-500/20 rounded-lg"><i data-lucide="user-cog" class="text-emerald-400" size="18"></i></div>
+                                    <div>
+                                        <h4 class="text-white text-xs font-bold m-0">İnsan Denetimi</h4>
+                                        <p class="text-slate-500 text-[9px] m-0">Human-in-the-loop: Kritik kararlarda insan onayı</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Görsel -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-emerald-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <!-- GÖRSEL: AI / Robot düşünce -> images/ai_thinking.png -->
+                            <img src="images/ai_thinking.png" alt="Yapay Zeka Etiği" class="w-full rounded-2xl border border-emerald-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:460px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-emerald-500/20 items-center justify-center flex-col" style="height:400px;">
+                                <i data-lucide="brain-circuit" class="text-emerald-400 mb-4" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/ai_thinking.png</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.1: AI Zaman Çizelgesi + Tweet -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-5"><i data-lucide="clock" class="text-emerald-400 inline mr-2" size="24"></i>Yapay Zeka <span class="text-emerald-400">Dönüm Noktaları</span></h2>
+                    <div class="grid grid-cols-2 gap-6 items-start">
+                        <!-- SOL: Kompakt Timeline -->
+                        <div class="space-y-3">
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-emerald-500/5 rounded-xl border border-emerald-500/10 hover:bg-emerald-500/10 transition-all">
+                                <div class="text-lg font-black text-emerald-400 w-14 shrink-0 text-center">1950</div>
+                                <div class="h-8 w-px bg-emerald-500/20"></div>
+                                <div>
+                                    <h4 class="text-white text-xs font-bold m-0">Turing Testi</h4>
+                                    <p class="text-slate-500 text-[9px] m-0">"Makineler düşünebilir mi?"</p>
+                                </div>
+                            </div>
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-cyan-500/5 rounded-xl border border-cyan-500/10 hover:bg-cyan-500/10 transition-all">
+                                <div class="text-lg font-black text-cyan-400 w-14 shrink-0 text-center">1997</div>
+                                <div class="h-8 w-px bg-cyan-500/20"></div>
+                                <div>
+                                    <h4 class="text-white text-xs font-bold m-0">Deep Blue</h4>
+                                    <p class="text-slate-500 text-[9px] m-0">IBM satranç şampiyonunu yendi</p>
+                                </div>
+                            </div>
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-blue-500/5 rounded-xl border border-blue-500/10 hover:bg-blue-500/10 transition-all">
+                                <div class="text-lg font-black text-blue-400 w-14 shrink-0 text-center">2016</div>
+                                <div class="h-8 w-px bg-blue-500/20"></div>
+                                <div>
+                                    <h4 class="text-white text-xs font-bold m-0">AlphaGo</h4>
+                                    <p class="text-slate-500 text-[9px] m-0">Go oyununda insanı geçti</p>
+                                </div>
+                            </div>
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-purple-500/5 rounded-xl border border-purple-500/10 hover:bg-purple-500/10 transition-all">
+                                <div class="text-lg font-black text-purple-400 w-14 shrink-0 text-center">2022</div>
+                                <div class="h-8 w-px bg-purple-500/20"></div>
+                                <div>
+                                    <h4 class="text-white text-xs font-bold m-0">ChatGPT</h4>
+                                    <p class="text-slate-500 text-[9px] m-0">Jeneratif AI herkesin elinde — 100M kullanıcı (2 ay)</p>
+                                </div>
+                            </div>
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-rose-500/5 rounded-xl border border-rose-500/10 hover:bg-rose-500/10 transition-all">
+                                <div class="text-lg font-black text-rose-400 w-14 shrink-0 text-center">2025</div>
+                                <div class="h-8 w-px bg-rose-500/20"></div>
+                                <div>
+                                    <h4 class="text-white text-xs font-bold m-0">AI Act (AB)</h4>
+                                    <p class="text-slate-500 text-[9px] m-0">İlk kapsamlı AI düzenleme yasası</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Tweet Embed -->
+                        <div class="glass-card p-4 border-purple-500/30">
+                            <p class="text-[9px] text-purple-400 font-bold uppercase tracking-widest mb-3 m-0 text-center">her şeyi değiştiren tweet</p>
+                            <div class="flex justify-center" style="max-height:340px; overflow:hidden;">
+                                <blockquote class="twitter-tweet" data-theme="dark" data-width="400"><p lang="en" dir="ltr">today we launched ChatGPT. try talking with it here: <a href="https://t.co/uWra8LKFMN">https://t.co/uWra8LKFMN</a></p>&mdash; Sam Altman (@sama) <a href="https://twitter.com/sama/status/1598038815599661056?ref_src=twsrc%5Etfw">November 30, 2022</a></blockquote>
+                            </div>
+                            <div class="mt-3 p-2 bg-purple-500/5 rounded-lg border border-purple-500/10">
+                                <p class="text-[8px] text-purple-400 italic m-0 text-center">2 ay içinde 100 milyon kullanıcıya ulaştı — tarihin en hızlı büyüyen uygulaması.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 3: ALGORİTMİK ÖNYARGI                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-rose-500/20 rounded-xl"><i data-lucide="scan-face" class="text-rose-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Algoritmik <span class="text-rose-400">Önyargı</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-5 mb-6">
+                        <div class="fragment glass-card p-5 text-center border-emerald-500/10 hover:border-emerald-500/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all group">
+                            <div class="p-3 bg-emerald-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-emerald-500/20">
+                                <i data-lucide="database" class="text-emerald-400" size="32"></i>
+                            </div>
+                            <h4 class="text-emerald-400 font-bold text-sm m-0 mb-2">Kirli Veri</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-2">Eğitim verisi geçmişteki ayrımcılıkları içeriyorsa, AI hataları <strong class="text-white">öğrenir ve pekiştirir.</strong></p>
+                            <div class="p-1.5 bg-emerald-500/5 rounded-lg border border-emerald-500/10">
+                                <p class="text-[8px] text-emerald-400 m-0 italic">Garbage In → Garbage Out</p>
+                            </div>
+                        </div>
+                        <div class="fragment glass-card p-5 text-center border-pink-500/10 hover:border-pink-500/40 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all group">
+                            <div class="p-3 bg-pink-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-pink-500/20">
+                                <i data-lucide="scan-face" class="text-pink-400" size="32"></i>
+                            </div>
+                            <h4 class="text-pink-400 font-bold text-sm m-0 mb-2">Temsiliyet Sorunu</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-2">Yüz tanıma sistemleri <strong class="text-white">azınlık gruplarda</strong> %35'e varan hata verebilir.</p>
+                            <div class="p-1.5 bg-pink-500/5 rounded-lg border border-pink-500/10">
+                                <p class="text-[8px] text-pink-400 m-0 italic">MIT: "Gender Shades" araştırması (2018)</p>
+                            </div>
+                        </div>
+                        <div class="fragment glass-card p-5 text-center border-blue-500/10 hover:border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-all group">
+                            <div class="p-3 bg-blue-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform group-hover:bg-blue-500/20">
+                                <i data-lucide="refresh-cw" class="text-blue-400" size="32"></i>
+                            </div>
+                            <h4 class="text-blue-400 font-bold text-sm m-0 mb-2">Geri Besleme Döngüsü</h4>
+                            <p class="text-[10px] text-slate-400 m-0 mb-2">AI kararları gerçeği değiştirir, değişen gerçek AI'yı <strong class="text-white">daha da önyargılı</strong> yapar.</p>
+                            <div class="p-1.5 bg-blue-500/5 rounded-lg border border-blue-500/10">
+                                <p class="text-[8px] text-blue-400 m-0 italic">Prediktif polislik: Suç var diye daha çok devriye → daha çok suç kaydı</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-rose-500/5 rounded-xl border border-rose-500/10 max-w-3xl mx-auto">
+                        <p class="text-[10px] text-slate-400 italic m-0"><i data-lucide="quote" size="12" class="text-rose-400 inline mr-1"></i> "Yapay zeka tarafsız değildir; <strong class="text-rose-400">yaratıcısının ve verisinin dijital bir yansımasıdır.</strong>"</p>
+                    </div>
+                </section>
+
+                <!-- 3.1: Gerçek Vaka — Amazon İşe Alım AI -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-5"><i data-lucide="briefcase" class="text-emerald-400 inline mr-2" size="24"></i>Vaka: <span class="text-emerald-400">Amazon İşe Alım AI</span></h2>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="text-left">
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                                Amazon, 2014'te bir AI işe alım sistemi geliştirdi. Sistem, son 10 yılda işe alınan (çoğunluğu erkek) başvurulardan öğrenerek <strong class="text-white">kadın adayları sistematik olarak eledi.</strong>
+                            </p>
+                            <div class="space-y-3">
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-rose-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-rose-400 mb-0.5 m-0">❌ Ne oldu?</p>
+                                    <p class="text-[10px] text-slate-400 m-0">"Kadın" kelimesini içeren CV'lere puan düşürdü. "Kadın satranç kulübü" bile olumsuz sinyal oldu.</p>
+                                </div>
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-amber-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-amber-400 mb-0.5 m-0">⚠ Neden?</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Eğitim verisi 10 yıllık erkek-ağırlıklı başvurulardan oluşuyordu. AI geçmişin bias'ını öğrendi.</p>
+                                </div>
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-emerald-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-emerald-400 mb-0.5 m-0">✓ Sonuç</p>
+                                    <p class="text-[10px] text-slate-400 m-0">2018'de proje iptal edildi. "AI önyargıyı yok etmez, pekiştirir" dersi alındı.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sağ: Bias Metre -->
+                        <div class="glass-card p-5 border-rose-500/30 text-center">
+                            <div class="text-[9px] text-rose-400 font-bold uppercase tracking-widest mb-4">Önyargı Göstergesi — Yüz Tanıma Hata Oranları</div>
+                            <div class="space-y-4 text-left">
+                                <div>
+                                    <div class="flex justify-between text-[9px] mb-1"><span class="text-slate-300">Beyaz Erkek</span><span class="text-emerald-400">%0.8</span></div>
+                                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-400 bias-bar" style="--bias-width:3%;width:3%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[9px] mb-1"><span class="text-slate-300">Beyaz Kadın</span><span class="text-cyan-400">%3.5</span></div>
+                                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden"><div class="h-full rounded-full bg-cyan-400 bias-bar" style="--bias-width:14%;width:14%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[9px] mb-1"><span class="text-slate-300">Siyahi Erkek</span><span class="text-amber-400">%12.0</span></div>
+                                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden"><div class="h-full rounded-full bg-amber-400 bias-bar" style="--bias-width:48%;width:48%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[9px] mb-1"><span class="text-slate-300">Siyahi Kadın</span><span class="text-rose-400 font-bold">%34.7</span></div>
+                                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-rose-500 to-red-500 bias-bar" style="--bias-width:100%;width:100%"></div></div>
+                                </div>
+                            </div>
+                            <p class="text-[8px] text-slate-500 italic text-center mt-4 m-0">Kaynak: MIT Media Lab — "Gender Shades" (Joy Buolamwini, 2018)</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 4: KARA KUTU PROBLEMİ                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-cyan-600 bottom-0 left-0"></div>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-cyan-500/20 rounded-xl"><i data-lucide="box" class="text-cyan-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Kara Kutu: <span class="text-cyan-400">"Neden?" Sorusu</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="fragment glass-card p-5 text-left border-cyan-500/20 hover:border-cyan-500/40 transition-all">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="p-2 bg-cyan-500/20 rounded-lg"><i data-lucide="help-circle" class="text-cyan-400" size="24"></i></div>
+                                <h3 class="text-lg text-cyan-400 font-bold m-0">Açıklanabilirlik Eksikliği</h3>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-3 m-0 leading-relaxed">Derin öğrenme modelleri <strong class="text-white">milyarlarca parametre</strong> ile karar verir. Kararın arkasındaki mantığı açıklamak bazen imkansızdır.</p>
+                            <!-- Nöral Ağ Terminal Simülasyonu -->
+                            <div class="bg-black rounded-xl p-3 border border-slate-800 overflow-hidden">
+                                <div class="flex items-center gap-1.5 mb-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-red-500/70"></div>
+                                    <div class="w-1.5 h-1.5 rounded-full bg-yellow-500/70"></div>
+                                    <div class="w-1.5 h-1.5 rounded-full bg-green-500/70"></div>
+                                    <span class="text-[7px] text-slate-600 ml-1.5">neural_network.predict()</span>
+                                </div>
+                                <div class="font-mono text-[8px] space-y-0.5">
+                                    <p class="text-cyan-400/60 m-0">> input: {cv: ★★★★, age: 28, exp: 5yr}</p>
+                                    <p class="text-slate-600 m-0">> layer_1: [0.82, 0.15, 0.93, ..., 0.44] <span class="text-slate-700">// 768 neurons</span></p>
+                                    <p class="text-slate-600 m-0">> layer_2: [0.33, 0.71, ..., 0.28] <span class="text-slate-700">// 1024 neurons</span></p>
+                                    <p class="text-slate-700 m-0">> ...48 hidden layers...</p>
+                                    <p class="text-slate-600 m-0">> layer_50: [0.91, 0.02]</p>
+                                    <p class="text-rose-400/80 m-0">> output: <span class="text-rose-400 font-bold">REJECT</span> (confidence: 94.7%)</p>
+                                    <p class="text-amber-400/60 m-0">> explain(): <span class="text-amber-400">ERROR — EXPLAINABILITY: NULL</span></p>
+                                    <p class="text-slate-700 m-0"><span class="inline-block w-1.5 h-2.5 bg-cyan-400 animate-pulse"></span></p>
+                                </div>
+                            </div>
+                            <p class="text-[9px] text-slate-500 italic mt-2 m-0">"Neden reddedildi?" → "94.7% emin ama <strong class="text-cyan-400">neden olduğunu bilmiyoruz.</strong>"</p>
+                        </div>
+
+                        <div class="fragment glass-card p-5 text-left border-emerald-500/20 hover:border-emerald-500/40 transition-all">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-2 bg-emerald-500/20 rounded-lg"><i data-lucide="scale" class="text-emerald-400" size="24"></i></div>
+                                <h3 class="text-lg text-emerald-400 font-bold m-0">Açıklama Hakkı</h3>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mb-3 m-0 leading-relaxed">GDPR Md. 22: Bireylerin, otomatize kararların <strong class="text-white">mantığına dair açıklama alma hakkı</strong> vardır.</p>
+                            <div class="space-y-2 mb-3">
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="circle-help" class="text-emerald-400 shrink-0 mt-0.5" size="12"></i> Karar hangi verilere dayandı?</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="circle-help" class="text-emerald-400 shrink-0 mt-0.5" size="12"></i> Hangi kriterler etkili oldu?</div>
+                                <div class="flex items-start gap-2 text-[10px] text-slate-300"><i data-lucide="circle-help" class="text-emerald-400 shrink-0 mt-0.5" size="12"></i> İtiraz mekanizması var mı?</div>
+                            </div>
+                            <div class="p-2 bg-emerald-500/5 rounded-lg border border-emerald-500/10">
+                                <p class="text-[9px] text-emerald-400 m-0">✦ XAI (Explainable AI) — Model kararlarını anlaşılır kılan araştırma alanı.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4.1: Trolley Problem — Otonom Araçlar -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-5"><i data-lucide="car" class="text-emerald-400 inline mr-2" size="24"></i>Otonom Araçlar: <span class="text-emerald-400">Trolley Problemi</span></h2>
+                    <div class="grid grid-cols-2 gap-6 items-center">
+                        <div class="text-left">
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                                Bir otonom araç kaçınılmaz bir kazayla karşı karşıya. <strong class="text-white">Sola kırsa yayaya, düz gitse yolcuya</strong> zarar verecek. Arabanın algoritması nasıl karar vermeli?
+                            </p>
+                            <div class="space-y-3">
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-blue-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-blue-400 mb-0.5 m-0">🔵 Faydacı Yaklaşım</p>
+                                    <p class="text-[10px] text-slate-400 m-0">En az zararı verecek seçenek: kayıp sayısını minimize et.</p>
+                                </div>
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-purple-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-purple-400 mb-0.5 m-0">🟣 Deontolojik Yaklaşım</p>
+                                    <p class="text-[10px] text-slate-400 m-0">İnsan hayatına son vermek her durumda yanlış: "öldürmemelisin."</p>
+                                </div>
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-rose-500 rounded-r-xl hover:bg-slate-800/80 transition-all">
+                                    <p class="text-[10px] font-bold text-rose-400 mb-0.5 m-0">🔴 Gerçek Soru</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Bu kararı kim programlayacak? Yaşa, sayıya göre mi? Hukuki sorumluluk kimde?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sağ: Görsel -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-emerald-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <!-- GÖRSEL: Trolley problem / otonom araç ikilemi -> images/trolley_ai.png -->
+                            <img src="images/trolley_ai.png" alt="Trolley Problemi" class="w-full rounded-2xl border border-emerald-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:380px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-10 border-emerald-500/20 items-center justify-center flex-col" style="height:350px;">
+                                <i data-lucide="car" class="text-emerald-400 mb-4" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/trolley_ai.png</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 5: KİM SORUMLU?                      -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(135deg, #020617 0%, #064e3b 100%)">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="p-3 bg-amber-500/20 rounded-xl"><i data-lucide="users" class="text-amber-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">AI Hata Yaparsa <span class="text-amber-400">Kim Sorumlu?</span></h2>
+                </div>
+
+                <div class="grid grid-cols-3 gap-5 mb-6">
+                    <div class="fragment glass-card p-5 text-center border-emerald-500/10 hover:border-emerald-500/40 transition-all group">
+                        <div class="p-3 bg-emerald-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="code-2" class="text-emerald-400" size="32"></i>
+                        </div>
+                        <h4 class="text-emerald-400 font-bold text-sm m-0 mb-2">Geliştirici</h4>
+                        <p class="text-[10px] text-slate-400 mb-2 m-0">"Kodu ben yazdım ama sistemi <strong class="text-white">veri eğitti.</strong>"</p>
+                        <div class="p-1.5 bg-emerald-500/5 rounded-lg border border-emerald-500/10">
+                            <p class="text-[8px] text-emerald-400 italic m-0">Test & doğrulama sorumluluğu</p>
+                        </div>
+                    </div>
+                    <div class="fragment glass-card p-5 text-center border-cyan-500/10 hover:border-cyan-500/40 transition-all group">
+                        <div class="p-3 bg-cyan-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="building-2" class="text-cyan-400" size="32"></i>
+                        </div>
+                        <h4 class="text-cyan-400 font-bold text-sm m-0 mb-2">Şirket</h4>
+                        <p class="text-[10px] text-slate-400 mb-2 m-0">"Biz sadece aracı kullandık, <strong class="text-white">hata algoritmik.</strong>"</p>
+                        <div class="p-1.5 bg-cyan-500/5 rounded-lg border border-cyan-500/10">
+                            <p class="text-[8px] text-cyan-400 italic m-0">Dağıtım ve kullanım sorumluluğu</p>
+                        </div>
+                    </div>
+                    <div class="fragment glass-card p-5 text-center border-purple-500/10 hover:border-purple-500/40 transition-all group">
+                        <div class="p-3 bg-purple-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="binary" class="text-purple-400" size="32"></i>
+                        </div>
+                        <h4 class="text-purple-400 font-bold text-sm m-0 mb-2">Algoritma</h4>
+                        <p class="text-[10px] text-slate-400 mb-2 m-0">"Ben sadece istatistiksel bir <strong class="text-white">çıkarım yaptım.</strong>"</p>
+                        <div class="p-1.5 bg-purple-500/5 rounded-lg border border-purple-500/10">
+                            <p class="text-[8px] text-purple-400 italic m-0">Tüzel kişilik yok — sorumluluk boşluğu</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 max-w-3xl mx-auto">
+                    <p class="text-[10px] text-amber-400 font-bold m-0 text-center"><i data-lucide="alert-triangle" size="12" class="inline mr-1"></i> Accountability Gap: Kimsenin suçlu olmadığı bir suç mümkün mü? AB AI Act, "yüksek riskli" AI sistemleri için zorunlu insan denetimi getiriyor.</p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 6: İNTERAKTİF SENARYO                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-emerald-600 top-0 right-0"></div>
+                <div class="grid grid-cols-2 gap-8 items-center">
+                    <!-- SOL: Görsel -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-emerald-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                        <!-- GÖRSEL: İşe alım robotu / AI yargılama -> images/ai_hiring.png -->
+                        <img src="images/ai_hiring.png" alt="AI İşe Alım" class="w-full rounded-2xl border border-emerald-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="max-height:480px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden glass-card p-12 border-emerald-500/20 items-center justify-center flex-col" style="height:400px;">
+                            <i data-lucide="briefcase" class="text-emerald-400 mb-4" size="80"></i>
+                            <p class="text-slate-500 text-sm">images/ai_hiring.png</p>
+                        </div>
+                    </div>
+
+                    <!-- SAĞ: İçerik -->
+                    <div class="text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="p-1.5 bg-emerald-500/20 rounded-lg animate-pulse"><i data-lucide="mouse-pointer-click" class="text-emerald-400" size="16"></i></div>
+                            <span class="ai-badge" style="margin-bottom:0;">ETİK İKİLEM</span>
+                        </div>
+
+                        <h2 class="text-2xl mb-4 m-0"><span class="text-emerald-400">Senaryo:</span> İşe Alım Botu</h2>
+
+                        <div class="glass-card p-4 border-emerald-400/30 mb-4">
+                            <p class="text-[11px] text-slate-200 mb-2 m-0 leading-relaxed">
+                                AI sisteminiz binlerce başvuruyu filtreler. "Kariyerinde <span class="bg-rose-500/20 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/30 font-bold text-[10px]">1+ yıl boşluk</span> bırakan" adayları otomatik eliyor. Ancak bu, <strong class="text-white">çocuk sahibi kadınları</strong> orantısız etkiliyor.
+                            </p>
+                            <div class="bg-black/60 p-2.5 rounded-lg border border-slate-700">
+                                <p class="text-[10px] text-slate-400 italic m-0 pl-2">Yönetim: <strong class="text-white">"Sistem verimliliği %40 artırdı. Devam."</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-emerald-500 hover:bg-emerald-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-emerald-900/50 transition-colors"><i data-lucide="shield-check" class="text-slate-400 group-hover:text-emerald-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-emerald-400 m-0">Durdur & Düzelt</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Verimlilik, ayrımcılığın bahanesi olamaz."</p>
+                            </div>
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-red-500 hover:bg-red-950/40 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(220,38,38,0.2)]">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-red-900/50 transition-colors"><i data-lucide="trending-up" class="text-slate-400 group-hover:text-red-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-red-400 m-0">Devam Et</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Boşluk riski gerçek. İstisnalar için manuel kontrol eklerim."</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 p-2 bg-rose-500/5 rounded-lg border border-rose-500/10">
+                            <p class="text-[9px] text-rose-400/80 m-0"><i data-lucide="alert-triangle" size="10" class="inline mr-1"></i> AB AI Act: İşe alım AI'ı "yüksek riskli" kategorisinde — bias testleri zorunlu!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 7: KAPANIŞ                           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 100%, #064e3b 0%, #000 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2 class="text-4xl mb-4">Haftaya Bakış</h2>
+                    <p class="text-xl text-slate-400 mb-8">Sıradaki Konu: <span class="text-emerald-400 border-b border-emerald-400">Bilişim Suçları ve Siber Zorbalık</span></p>
+
+                    <div class="glass-card p-6 max-w-3xl mb-6 border-emerald-500/30">
+                        <h4 class="text-white text-sm font-bold mb-5 text-center tracking-widest">BU HAFTA NE ÖĞRENDİK?</h4>
+                        <div class="grid grid-cols-4 gap-6 text-center">
+                            <div>
+                                <i data-lucide="brain-circuit" class="text-emerald-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-emerald-400 text-xs font-bold m-0">AI Etiği</p>
+                                <p class="text-slate-500 text-[10px] m-0">Adalet & Şeffaflık</p>
+                            </div>
+                            <div>
+                                <i data-lucide="scan-face" class="text-rose-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-rose-400 text-xs font-bold m-0">Önyargı</p>
+                                <p class="text-slate-500 text-[10px] m-0">Bias & Ayrımcılık</p>
+                            </div>
+                            <div>
+                                <i data-lucide="box" class="text-cyan-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-cyan-400 text-xs font-bold m-0">Kara Kutu</p>
+                                <p class="text-slate-500 text-[10px] m-0">Açıklanabilirlik</p>
+                            </div>
+                            <div>
+                                <i data-lucide="scale" class="text-amber-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-amber-400 text-xs font-bold m-0">Sorumluluk</p>
+                                <p class="text-slate-500 text-[10px] m-0">AI Act & Denetim</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-4 max-w-2xl border-emerald-500/20">
+                        <p class="text-sm italic text-slate-300 m-0">
+                            <i data-lucide="quote" class="inline text-emerald-400" size="14"></i>
+                            "AI ne iyi ne kötüdür — onu tasarlayanların ve kullananların <strong class="text-emerald-400">değerlerinin yansımasıdır.</strong>"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false,
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+</html>

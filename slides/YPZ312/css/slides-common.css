@@ -1,0 +1,482 @@
+/* Hafta slaytlari icin ortak bilesen CSS'i (hafta01 <style>'indan cikarildi) */
+.reveal pre {
+            width: 100%;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            font-size: 0.42em;
+            line-height: 1.5;
+        }
+
+        .reveal pre code {
+            border-radius: 14px;
+            padding: 18px 22px;
+            max-height: 560px;
+        }
+
+        .code-note {
+            font-family: 'JetBrains Mono', monospace;
+            color: #94a3b8;
+            font-size: 0.62em;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: rgba(108, 99, 255, 0.12);
+            border: 1px solid rgba(96, 125, 255, 0.35);
+            color: #93c5fd;
+        }
+
+        .concept-card {
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+        }
+
+        .concept-card h4 {
+            font-size: 0.8em;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .concept-card p {
+            font-size: 0.62em;
+            color: #a3accb;
+            line-height: 1.5;
+        }
+
+        .kw {
+            color: #f0abfc;
+            font-weight: 700;
+        }
+
+        /* Mock uygulama penceresi cercevesi */
+        .app-frame {
+            display: inline-block;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #12121f;
+        }
+
+        .app-frame .titlebar,
+        .qt-app .titlebar {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 13px;
+            background: #1a1a2e;
+        }
+
+        .app-frame .adot,
+        .qt-app .adot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .app-frame .atitle,
+        .qt-app .atitle {
+            margin-left: 8px;
+            font-size: 11px;
+            color: #8a8aac;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .app-frame img {
+            display: block;
+            width: 300px;
+            height: auto;
+        }
+
+        .arrow-cta {
+            color: #7dd3fc;
+            font-weight: 800;
+            font-size: 0.7em;
+        }
+
+        /* GUI uzerine ok cekerek nesneleri isaretleme */
+        .gui-annot {
+            position: relative;
+            width: 900px;
+            height: 340px;
+            margin: 0 auto;
+        }
+
+        .annot-chip {
+            position: absolute;
+            width: 168px;
+            padding: 9px 13px;
+            border-radius: 13px;
+            background: rgba(2, 6, 23, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: left;
+            font-size: 0.5em;
+            line-height: 1.45;
+            color: #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .annot-chip b { font-weight: 800; }
+        .annot-chip span { color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
+        .annot-chip { z-index: 3; }
+
+        /* ===== CANLI QT WIDGET (guidemo.py QSS ile birebir) ===== */
+        .qt-app {
+            display: inline-block;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #12121f;
+            font-family: 'DejaVu Sans', 'Segoe UI', sans-serif;
+        }
+
+        .qt-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 26px 34px 30px;
+            min-width: 220px;
+        }
+
+        .qt-deger {
+            font-size: 30px;
+            font-weight: 800;
+            color: #7dd3fc;
+        }
+
+        .qt-deger.bump {
+            animation: qtpulse 0.36s ease;
+        }
+
+        @keyframes qtpulse {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.32); color: #a5f3fc; }
+            100% { transform: scale(1); }
+        }
+
+        .qt-deger.warn { color: #fbbf24; }
+        .qt-deger.warn.bump { animation: qtpulsewarn 0.36s ease; }
+
+        @keyframes qtpulsewarn {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.28); color: #fde68a; }
+            100% { transform: scale(1); }
+        }
+
+        /* Hareket duyarliligi olan kullanicilar icin */
+        @media (prefers-reduced-motion: reduce) {
+            .live-dot { animation: none; }
+            .qt-deger.bump,
+            .qt-deger.warn.bump { animation: none; }
+            .runline { transition: none; }
+            .glow-sphere,
+            .cover-icon,
+            .oop-tok,
+            .code-tagline .blink { animation: none; }
+        }
+
+        .qt-btn {
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 11px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: filter 0.12s, transform 0.06s;
+            font-family: inherit;
+        }
+
+        .qt-btn:hover { filter: brightness(1.13); }
+        .qt-btn:active { transform: translateY(1px); }
+
+        .qt-btn.reset {
+            background: rgba(255, 255, 255, 0.09);
+            color: #cbd5e1;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.55em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #86efac;
+        }
+
+        .live-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+            animation: livepulse 1.6s infinite;
+        }
+
+        @keyframes livepulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* Calisan kod paneli */
+        .run-panel {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px 20px;
+            min-width: 340px;
+        }
+
+        .run-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55em;
+            color: #8a8aac;
+            margin-bottom: 10px;
+        }
+
+        .runline {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.56em;
+            color: #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border-left: 3px solid transparent;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .runline.active {
+            background: rgba(125, 211, 252, 0.14);
+            border-left-color: #7dd3fc;
+            color: #fff;
+        }
+
+        .run-badge {
+            margin-top: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55em;
+            color: #8a8aac;
+        }
+
+        .run-badge b { color: #7dd3fc; }
+
+        /* ===== MINI QUIZ ===== */
+        .quiz {
+            text-align: left;
+            max-width: 760px;
+            margin: 0 auto 9px;
+        }
+
+        .quiz-q {
+            font-size: 0.66em;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .quiz-opt {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 9px 15px;
+            margin-bottom: 5px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: #e2e8f0;
+            font-size: 0.6em;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .quiz-opt code {
+            color: #93c5fd;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .quiz-opt:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(147, 197, 253, 0.5);
+        }
+
+        .quiz.answered .quiz-opt { cursor: default; }
+
+        .quiz-opt.correct {
+            background: rgba(34, 197, 94, 0.16);
+            border-color: #22c55e;
+            color: #dcfce7;
+        }
+
+        .quiz-opt.wrong {
+            background: rgba(244, 63, 94, 0.16);
+            border-color: #f43f5e;
+            color: #fee2e2;
+        }
+
+        .quiz-fb {
+            font-size: 0.58em;
+            min-height: 1.4em;
+            margin-top: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #94a3b8;
+        }
+
+        /* ===== TIKLANABILIR KOD HOTSPOT ===== */
+        .manual-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5em;
+            line-height: 1.9;
+            text-align: left;
+            background: #1e1e1e;
+            color: #e2e8f0;
+            padding: 20px 24px;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            white-space: pre;
+            margin: 0;
+        }
+
+        .manual-code .tk { color: #f92672; }
+        .manual-code .ty { color: #66d9ef; font-style: italic; }
+        .manual-code .st { color: #e6db74; }
+        .manual-code .fn { color: #a6e22e; }
+
+        .hotspot {
+            cursor: pointer;
+            border-bottom: 1.5px dashed rgba(240, 171, 252, 0.6);
+            border-radius: 3px;
+            padding: 0 2px;
+            transition: background 0.15s;
+        }
+
+        .hotspot:hover { background: rgba(240, 171, 252, 0.18); }
+        .hotspot.on { background: rgba(240, 171, 252, 0.28); color: #fff; }
+        .hotspot:focus-visible { outline: 2px solid #f0abfc; outline-offset: 2px; }
+
+        .hs-panel {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(96, 125, 255, 0.35);
+            border-radius: 18px;
+            padding: 22px 24px;
+            min-width: 340px;
+            max-width: 380px;
+        }
+
+        .hs-panel h4 {
+            font-size: 0.8em;
+            font-weight: 800;
+            color: #93c5fd;
+            margin-bottom: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .hs-panel p {
+            font-size: 0.66em;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .hint-legend {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.5em;
+            color: #64748b;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px dashed rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            padding: 5px 14px;
+        }
+
+        /* ===== KAPAK (haftaya özgü, karizmatik) ===== */
+        .cover-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 116px;
+            height: 116px;
+            border-radius: 50%;
+            background: rgba(96, 125, 255, 0.12);
+            border: 1px solid rgba(147, 197, 253, 0.4);
+            color: #93c5fd;
+            box-shadow: 0 0 55px rgba(96, 125, 255, 0.35);
+            animation: coverpulse 2.6s ease-in-out infinite;
+        }
+
+        @keyframes coverpulse {
+            0%, 100% { box-shadow: 0 0 45px rgba(96, 125, 255, 0.30); transform: scale(1); }
+            50% { box-shadow: 0 0 85px rgba(167, 139, 250, 0.55); transform: scale(1.06); }
+        }
+
+        .grad-text {
+            background: linear-gradient(90deg, #7dd3fc 0%, #a78bfa 50%, #fb7185 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .code-tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62em;
+            color: #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 10px;
+            padding: 7px 16px;
+        }
+
+        .code-tagline .blink {
+            color: #7dd3fc;
+            font-weight: 700;
+            animation: blink 1.05s steps(1) infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .oop-field {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .oop-tok {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: rgba(147, 197, 253, 0.16);
+            animation: oopdrift 13s ease-in-out infinite alternate;
+        }
+
+        @keyframes oopdrift {
+            from { transform: translateY(-12px); opacity: 0.09; }
+            to { transform: translateY(12px); opacity: 0.22; }
+        }

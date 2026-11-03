@@ -1,0 +1,114 @@
+{
+  "basics": {
+    "name": "Ramazan Özgür Doğan",
+    "title": "Assistant Professor",
+    "email": "dogan@trabzon.edu.tr",
+    "website": "https://doganr.com",
+    "summary": "Assistant Professor at Trabzon University. My research focuses on deep learning, medical image and signal processing, and AI-based pharmacological applications."
+  },
+  "work": [
+    {
+      "date": "2024.04 - Present",
+      "logo": "tru.png",
+      "role": "Assistant Professor",
+      "institution": "Trabzon University",
+      "url": "https://www.trabzon.edu.tr",
+      "description": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis."
+    },
+    {
+      "date": "2024.05 - 2025.05",
+      "logo": "osu.png",
+      "role": "Visiting Research Scholar",
+      "institution": "The Ohio State University",
+      "url": "https://www.osu.edu",
+      "description": "Postdoctoral research in multimodal AI models for clinical and pharmacological data analysis."
+    },
+    {
+      "date": "2020.08 - 2024.04",
+      "logo": "ghu.png",
+      "role": "Assistant Professor",
+      "institution": "Gumushane University",
+      "url": "https://www.gumushane.edu.tr",
+      "description": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis."
+    },
+    {
+      "date": "2019.09 - 2020.09",
+      "logo": "ysu.png",
+      "role": "Visiting Research Scholar",
+      "institution": "Youngstown State University",
+      "url": "",
+      "description": "Conducted research on deep learning-based medical image segmentation, including the development of a two-phase approach using Mask R-CNN and 3D U-Net for high-accuracy automatic segmentation of the pancreas in CT imaging."
+    },
+    {
+      "date": "2011.07 - 2020.08",
+      "logo": "ghu.png",
+      "role": "Lecturer",
+      "institution": "Gumushane University",
+      "url": "https://www.gumushane.edu.tr",
+      "description": "Conducting research and teaching in the fields of Artificial Intelligence, Computer Vision, and Biomedical Data Analysis."
+    }
+  ],
+  "education": [
+    {
+      "date": "2015.02 - 2021.12",
+      "location": "Trabzon, Türkiye",
+      "logo": "ktu.png",
+      "degree": "Ph.D.",
+      "institution": "Karadeniz Technical University",
+      "field": "Computer Engineering",
+      "details": [
+        {"label": "Thesis", "text": "Investigation of different deep learning techniques in pancreas cancer tissues segmentation"},
+        {"label": "Advisor", "text": "Prof. Dr. Temel KAYIKÇIOĞLU"}
+      ]
+    },
+    {
+      "date": "2012.09 - 2015.01",
+      "location": "Trabzon, Türkiye",
+      "logo": "ktu.png",
+      "degree": "M.Sc.",
+      "institution": "Karadeniz Technical University",
+      "field": "Computer Engineering",
+      "details": [
+        {"label": "Thesis", "text": "Virtual mouse control with hand shape, gesture and pozition informations"},
+        {"label": "Advisor", "text": "Prof. Dr. Cemal KÖSE"}
+      ]
+    },
+    {
+      "date": "2005.09 - 2010.07",
+      "location": "Trabzon, Türkiye",
+      "logo": "ktu.png",
+      "degree": "B.Sc.",
+      "institution": "Karadeniz Technical University",
+      "field": "Computer Engineering",
+      "details": []
+    }
+  ],
+  "skills": [
+    {
+      "category": "Artificial Intelligence",
+      "icon": "fa-microchip",
+      "color": "var(--accent-1)",
+      "badge_bg": "rgba(108, 99, 255, 0.15)",
+      "tags": ["Deep Learning", "Vision Transformers", "Multimodal Learning", "Domain Generalization"]
+    },
+    {
+      "category": "Medical Imaging",
+      "icon": "fa-staff-snake",
+      "color": "var(--accent-2)",
+      "badge_bg": "rgba(0, 212, 255, 0.15)",
+      "tags": ["Ultrasound", "Image Fusion", "EDOF", "Breast Cancer Classification"]
+    }
+  ],
+  "languages": [
+    { "name": "Turkish", "level": "Native Speaker" },
+    { "name": "English", "level": "Professional Working Proficiency" }
+  ],
+  "awards": [
+    {
+      "date": "2024.01.01",
+      "title": "TÜBİTAK 2219 Postdoctoral Research Fellowship",
+      "institution": "The Scientific and Technological Research Council of Türkiye",
+      "description": "Awarded for postdoctoral research at The Ohio State University."
+    }
+  ]
+}
