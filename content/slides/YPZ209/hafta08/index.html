@@ -1,47 +1,978 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İleri Programlama 8. Hafta - Reveal.js</title>
+    <title>İleri Programlama 8. Hafta — Düzenli İfadeler (Regex)</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+    <style>
+        /* Hafta 4'e özel bileşenler */
+        .wk { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.82em; color: #0b1020;
+            background: #93c5fd; border-radius: 6px; padding: 0 7px; margin-right: 6px; }
+        .err { color: #fca5a5; font-family: 'JetBrains Mono', monospace; }
+        .cards-tight .concept-card { padding: 11px 16px; border-radius: 14px; }
+        .cards-tight .concept-card h4 { font-size: 0.66em; margin-bottom: 3px; }
+        .cards-tight .concept-card p { font-size: 0.54em; line-height: 1.45; }
+        .sec-tag { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.4em; color: #64748b; line-height: 1.5; }
+        .reveal pre.two, .reveal pre.long { font-size: 0.35em; }
+        .qt-btn.mini { padding: 5px 11px; font-size: 13px; border-radius: 8px; font-weight: 700;
+            font-family: 'JetBrains Mono', ui-monospace, monospace; }
+        .qt-btn.sel { outline: 2px solid #fbbf24; outline-offset: 1px; }
+        .qt-btn:disabled { opacity: 0.45; cursor: default; filter: none; }
+        .qt-btn.red { background: #ef4444; }
+        .qt-btn.ghost { background: #2a2a44; color: #cbd5e1; }
+        .qt-btn.flash { animation: qtflash 0.45s ease; }
+        @keyframes qtflash { 0% { transform: scale(1); } 40% { transform: scale(1.06); filter: brightness(1.35); } 100% { transform: scale(1); } }
+        /* metot arama gezgini (H2'deki gibi) */
+        .mro-box { display: flex; justify-content: space-between; align-items: center; width: 300px; padding: 3px 14px;
+            border-radius: 9px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03);
+            transition: background .15s, border-color .15s, opacity .2s; }
+        .mro-box code { font-size: 14px; color: #cbd5e1; background: none; padding: 0; }
+        .mro-box span { font-size: 11px; color: #64748b; }
+        .mro-box.ours { border-color: rgba(167, 139, 250, 0.55); }
+        .mro-box.look { border-color: #fbbf24; background: rgba(251, 191, 36, 0.13); }
+        .mro-box.hit { border-color: #22c55e; background: rgba(34, 197, 94, 0.22); }
+        .mro-box.hit code { color: #bbf7d0; }
+        .mro-box.off { opacity: 0.22; }
+        .mro-arrow { font-size: 9px; color: #475569; line-height: 1.1; }
+        .mro-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+        .out-ln { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 20px; color: #e2e8f0;
+            line-height: 1.7; white-space: pre-wrap; }
+        .out-ln .ok { color: #86efac; } .out-ln .bad { color: #fca5a5; } .out-ln .str { color: #fde68a; } .out-ln .cm { color: #64748b; }
+        /* canlı panel düzenleri */
+        .qt-body.wide { min-width: 300px; gap: 10px; padding: 20px 28px 24px; }
+        .qt-body.wide .qt-btn { min-width: 230px; border-radius: 12px; }
+        .qt-row { display: flex; gap: 10px; justify-content: center; }
+        .qt-field { background: #1e1e33; color: #f0f0f8; border: 2px solid #33335a; border-radius: 6px; padding: 6px 10px;
+            font-size: 14px; width: 230px; font-family: inherit; }
+        .qt-check { color: #f0f0f8; font-size: 14px; font-weight: 700; display: flex; gap: 8px; align-items: center; }
+        .qt-lbl { color: #f0f0f8; font-size: 17px; font-weight: 800; align-self: flex-start; }
+        .qt-off .qt-lbl, .qt-off .qt-check { color: #5b5b7a; }
+        .qt-off .qt-field { color: #6b6b8a; border-color: #26263f; background: #17172a; }
+        .qt-off .qt-btn.target { background: #3b3a5c; color: #8a8aac; }
+        .shape-canvas { display: block; border-radius: 10px; background: #12121f; }
+        /* yan kartlar (kodun yanındaki sütun) ve sıkı quiz */
+        .flex > .concept-card h4, .flex > .grid .concept-card h4 { font-size: 0.64em; margin-bottom: 4px; }
+        .flex > .concept-card p, .flex > .grid .concept-card p { font-size: 0.5em; line-height: 1.5; }
+        .flex > .concept-card, .flex > .grid .concept-card { padding: 13px 16px; }
+        .qz .quiz { margin-bottom: 6px; }
+        .qz .quiz-q { font-size: 0.6em; margin-bottom: 6px; }
+        .qz .quiz-opt { padding: 7px 14px; font-size: 0.54em; margin-bottom: 4px; }
+        .qz .quiz-fb { font-size: 0.52em; min-height: 1.3em; margin-top: 4px; }
+        /* Hafta 7–8: terminal, seçiciler, tablolar */
+        .term-win { border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.09); background: #0b0b14;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.45); text-align: left; }
+        .term-bar { display: flex; gap: 6px; align-items: center; padding: 7px 12px; background: #1a1a2a;
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8a8aac; }
+        .term-bar .adot { width: 10px; height: 10px; }
+        .term { font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.5; white-space: pre; color: #cbd5e1;
+            padding: 12px 16px; margin: 0; }
+        .term.sm { font-size: 12.5px; }
+        .term.xs { font-size: 11.5px; }
+        .cards-xs .concept-card { padding: 12px 16px; }
+        .cards-xs .concept-card h4 { font-size: 0.6em; margin-bottom: 4px; }
+        .cards-xs .concept-card p { font-size: 0.46em; line-height: 1.5; }
+        .term .tp { color: #86efac; } .term .tc { color: #f8fafc; font-weight: 700; } .term .tg { color: #94a3b8; }
+        .term .tf { color: #7dd3fc; } .term .tk { color: #f472b6; } .term .te { color: #fca5a5; font-weight: 700; }
+        .term .ty { color: #fde047; font-weight: 700; } .term .tl { color: #fde68a; }
+        .runline.sm { font-size: 0.42em; padding: 2px 10px; }
+        .runline .ln { display: inline-block; width: 2.2em; color: #475569; text-align: right; margin-right: 0.8em; }
+        .runline.done { background: rgba(134,239,172,0.07); border-left-color: rgba(134,239,172,0.45); }
+        .runline.miss { opacity: 0.45; }
+        .runline.hit { background: rgba(134,239,172,0.16); border-left-color: #86efac; color: #fff; }
+        .runline.over { opacity: 0.35; text-decoration: line-through; }
+        .pick { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .pick .qt-btn.mini { font-family: 'JetBrains Mono', monospace; font-size: 15px; }
+        .mro { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; }
+        .mro span.c { padding: 3px 9px; border-radius: 7px; background: rgba(148,163,184,0.12); color: #cbd5e1; }
+        .mro span.c.hit { background: rgba(134,239,172,0.2); color: #86efac; font-weight: 800; outline: 1px solid #86efac; }
+        .mro span.ok { color: #475569; }
+        .chk-row { display: flex; gap: 18px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #e2e8f0; }
+        .chk-row label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+        .chk-row input { width: 18px; height: 18px; accent-color: #6c63ff; }
+        .ea-tab { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 17px; }
+        .reveal .ea-tab th, .reveal .ea-tab td { padding: 5px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; text-align: left; }
+        .reveal .ea-tab th { color: #93c5fd; font-weight: 700; }
+        .reveal .ea-tab td { white-space: nowrap; }
+        .reveal .ea-tab td.t { color: #86efac; } .reveal .ea-tab td.f { color: #94a3b8; } .reveal .ea-tab td.bad { color: #fca5a5; font-weight: 800; }
+        .fm-field { min-width: 240px; padding: 8px 12px; border-radius: 8px; border: 2px solid #2d2d4a; background: #1e1e33; color: #f0f0f8;
+            font-family: 'JetBrains Mono', monospace; font-size: 17px; white-space: pre; min-height: 1.6em; text-align: left; }
+        .fm-durum { font-weight: 800; font-size: 19px; min-height: 1.5em; text-align: left; }
+        /* Hafta 8: desen laboratuvarı, doğrulayıcı */
+        .rx-text { font-family: 'JetBrains Mono', monospace; font-size: 22px; line-height: 1.9; white-space: pre-wrap; text-align: left;
+            background: #0b0b14; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; }
+        .rx-text mark { background: rgba(250,204,21,0.22); color: #fde68a; border-radius: 4px; outline: 1px solid rgba(250,204,21,0.55); }
+        .rx-text mark.b { background: rgba(56,189,248,0.2); color: #bae6fd; outline-color: rgba(56,189,248,0.55); }
+        .pick .qt-btn.mini.rx { font-size: 16px; text-transform: none; }
+        .dil-tab { border-collapse: collapse; font-size: 15px; }
+        .reveal .dil-tab th, .reveal .dil-tab td { padding: 4px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); color: #cbd5e1; text-align: left; white-space: pre; }
+        .reveal .dil-tab th { color: #93c5fd; font-weight: 700; }
+        .reveal .dil-tab td.k { font-family: 'JetBrains Mono', monospace; color: #f0abfc; font-weight: 700; }
+        .reveal .dil-tab td.r { font-family: 'JetBrains Mono', monospace; color: #86efac; }
+        .reveal .dil-tab td:nth-child(4) { font-family: 'JetBrains Mono', monospace; color: #fde68a; }
+        .vl-field { min-width: 300px; padding: 8px 12px; border-radius: 8px; border: 2px solid #33335a; background: #1e1e33; color: #f0f0f8;
+            font-family: 'JetBrains Mono', monospace; font-size: 19px; white-space: pre; min-height: 1.6em; text-align: left; transition: border-color .2s; }
+        .st-badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 800; }
+    </style>
 </head>
+
 <body>
+
     <div class="reveal">
         <img src="../images/logo.png" class="watermark" alt="Logo">
         <div class="slides">
+
+                        <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere"
+                    style="width: 620px; height: 620px; top: -12%; left: -12%; background: #14532d;"></div>
+                <div class="glow-sphere"
+                    style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #581c87; animation-delay: -5s;">
+                </div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">\d+</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">(?P&lt;yil&gt;\d{4})</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">[a-zçğış]</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">re.sub</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">^…$</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">.*?</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">\b</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">QRegularExpression</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">İleri Programlama · Hafta 08</span>
+                    <div class="cover-icon mb-6"><i data-lucide="regex" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Desen Yaz,<br><span
+                            class="grad-text">Python Bulsun</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Düzenli İfadeler (Regular Expressions)</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span>re.<span style="color:#a6e22e;">fullmatch</span>(<span
+                            style="color:#e6db74;">r"\d{9}"</span>, no) &nbsp;<span style="color:#475569;"># tam 9 rakam, fazlası değil</span></span></div>
+                </div>
+            </section>
+
+            <!-- 2. YOL HARİTASI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Hafta</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Biçimi <span
+                        style="color:#93c5fd;">Bir Kez Tarif Et</span></h2>
+                <p class="code-note mb-6">H7'de “bu metin sayı mı?” sorusunu tek tek <code>if</code>'lerle cevapladık. Bu hafta
+                    biçimi küçük bir dille, <b>desenle</b>, tarif edeceğiz; Python o deseni metinde arayacak.</p>
+                <div class="grid grid-cols-4 gap-3 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · Desen dili</h4><p><code>\d \w [ ] + * {n,m} ^ $</code>:
+                        bir avuç işaret.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · <code>re</code></h4><p><code>search</code>,
+                        <code>fullmatch</code>, <code>findall</code>, <code>sub</code>, <code>split</code>.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · Gruplar</h4><p><code>( )</code>, adlı gruplar,
+                        açgözlü <code>.+</code> ile tembel <code>.+?</code>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>4 · Qt'de</h4>
+                        <p>Yanlış tuşu yazdırmayan doğrulayıcı ve yazarken renk değiştiren kutu.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Sonunda: H7'deki kayıt formuna öğrenci no, e-posta ve telefon desenleri.</p>
+            </section>
+
+            <!-- 3. HATIRLA -->
             <section data-background-color="#020617">
-                <div class="glow-sphere" style="width: 600px; height: 600px; top: -10%; left: -10%; background: #1e3a8a;"></div>
-                <div class="glow-sphere" style="width: 500px; height: 500px; bottom: -10%; right: -10%; background: #881337; animation-delay: -5s;"></div>
+                <span class="chip mb-3"><i data-lucide="history" style="width:14px;height:14px;"></i> Hatırla · Hafta 7</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Girdiyi <span
+                        style="color:#93c5fd;">Tek Tek</span> Yakalamıştık</h2>
+                <div class="grid grid-cols-3 gap-4 text-left" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>🧮 <code>int()</code> sürprizleri</h4><p><code>'1_000'</code>
+                        → 1000, <code>'١٢'</code> → 12. Aralık denetimi ekledik.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>⚖️
+                        <code>isdigit()</code> tuzağı</h4><p><code>'²'</code> rakam sayıldı ama okunamadı;
+                        <code>'-3'</code> okundu ama rakam sayılmadı.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🏷️
+                        <code>FormHatasi(alan, mesaj)</code></h4><p>Hata hangi kutudan geldiğini söylüyordu. Bu hafta yine
+                        kullanacağız.</p></div>
+                </div>
+                <div class="glass-card mx-auto p-6 mt-6 fragment fade-in" style="max-width:860px;text-align:left;">
+                    <p style="font-size:0.62em;line-height:1.5;color:#cbd5e1;">Hep aynı soru: “bu metin <b>şu biçimde</b> mi?”
+                        Biçim karmaşıklaştıkça <code>if</code>'ler çoğalır. Biçimi tarif eden bir dil işimizi kısaltır.</p>
+                </div>
+            </section>
+
+            <!-- 4. SORUN -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="circle-alert" style="width:14px;height:14px;"></i> Sorun</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Bir Telefon Numarası <span
+                        style="color:#fda4af;">Sekiz Satır</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="1-4|5-7|8|10-12">def telefon_mu(s):                  # "0532 123 45 67" mi?
+    parca = s.split(" ")
+    if len(parca) != 4:
+        return False
+    for p, n in zip(parca, [4, 3, 2, 2]):
+        if len(p) != n or not p.isdigit():
+            return False
+    return s[0] == "0"
+
+telefon_mu("0532 123 45 67")        # True
+telefon_mu("0532 123 4567")         # False
+telefon_mu("0532 ١٢٣ 45 67")        # True</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>😬 Son satır</h4><p>Arap-Hint rakamları
+                            <code>isdigit()</code>'ten geçti (H7): <code>True</code>.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🔁 Yeni biçim?</h4><p><code>0532-123-45-67</code> de
+                            kabul edilecekse fonksiyonu baştan yaz.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. İLK DESEN -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> İlk Desen</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Aynı Kural, <span
+                        style="color:#93c5fd;">Tek Satır</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="1-2|4-6|7-8">import re
+desen = r"0\d{3} \d{3} \d{2} \d{2}"
+
+re.fullmatch(desen, "0532 123 45 67")
+# &lt;re.Match object; span=(0, 14), match='0532 123 45 67'&gt;
+re.fullmatch(desen, "0532 123 4567")            # None
+bool(re.fullmatch(desen, "0532 ١٢٣ 45 67"))     # True
+re.fullmatch(desen, "0532 ١٢٣ 45 67", re.ASCII) # None</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>🧩 <code>r"…"</code> · <code>\d{3}</code></h4><p>Ham dize:
+                            ters bölü regex'e gider. <code>\d{3}</code> = tam 3 rakam.</p></div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(244,63,94,0.4);"><h4>⚠️ Dürüst not</h4>
+                            <p>Python'da <code>\d</code> her Unicode rakamını sayar. Yalnız 0–9: <code>re.ASCII</code> ya da
+                                <code>[0-9]</code>.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. DESEN DİLİ -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="book-a" style="width:14px;height:14px;"></i> Desen Dili</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Bir Avuç <span
+                        style="color:#93c5fd;">İşaret</span></h2>
+                <div class="glass-card mx-auto" style="max-width:1100px;padding:12px 20px;">
+                    <table class="dil-tab" style="width:100%;">
+                        <tr><th>işaret</th><th>anlamı</th><th>örnek desen</th><th>metin</th><th>re.findall</th></tr>
+                        <tr><td class="k">.</td><td>herhangi bir karakter</td><td class="k">a.c</td><td>&#x27;abc a-c ac&#x27;</td><td class="r">[&#x27;abc&#x27;, &#x27;a-c&#x27;]</td></tr><tr><td class="k">\d</td><td>rakam</td><td class="k">\d\d</td><td>&#x27;a42b7&#x27;</td><td class="r">[&#x27;42&#x27;]</td></tr><tr><td class="k">\w</td><td>harf, rakam ya da _</td><td class="k">\w+</td><td>&#x27;çay_2 !&#x27;</td><td class="r">[&#x27;çay_2&#x27;]</td></tr><tr><td class="k">\s</td><td>boşluk, sekme, satır sonu</td><td class="k">\s+</td><td>&#x27;a \t b&#x27;</td><td class="r">[&#x27; \t &#x27;]</td></tr><tr><td class="k">[ … ]</td><td>bunlardan biri</td><td class="k">[aeıioöuü]</td><td>&#x27;kitap&#x27;</td><td class="r">[&#x27;i&#x27;, &#x27;a&#x27;]</td></tr><tr><td class="k">[^ … ]</td><td>bunlar dışında</td><td class="k">[^0-9]+</td><td>&#x27;ab12c&#x27;</td><td class="r">[&#x27;ab&#x27;, &#x27;c&#x27;]</td></tr><tr><td class="k">*  +  ?</td><td>0+, 1+, 0 ya da 1 kez</td><td class="k">ab+</td><td>&#x27;a ab abbb&#x27;</td><td class="r">[&#x27;ab&#x27;, &#x27;abbb&#x27;]</td></tr><tr><td class="k">{n,m}</td><td>n ile m kez arası</td><td class="k">\d{2,3}</td><td>&#x27;1 12 1234&#x27;</td><td class="r">[&#x27;12&#x27;, &#x27;123&#x27;]</td></tr><tr><td class="k">^  $</td><td>başta / sonda</td><td class="k">^\w+</td><td>&#x27;ilk son&#x27;</td><td class="r">[&#x27;ilk&#x27;]</td></tr><tr><td class="k">\b</td><td>kelime sınırı</td><td class="k">\bev\b</td><td>&#x27;ev evler ev&#x27;</td><td class="r">[&#x27;ev&#x27;, &#x27;ev&#x27;]</td></tr><tr><td class="k">|</td><td>ya da</td><td class="k">kedi|köpek</td><td>&#x27;kedi ve köpek&#x27;</td><td class="r">[&#x27;kedi&#x27;, &#x27;köpek&#x27;]</td></tr><tr><td class="k">\.</td><td>gerçek nokta (kaçış)</td><td class="k">\d\.\d</td><td>&#x27;3.5 ve 3x5&#x27;</td><td class="r">[&#x27;3.5&#x27;]</td></tr>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 7. ETKİLEŞİMLİ: DESEN LABORATUVARI -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="flask-conical" style="width:14px;height:14px;"></i> Etkileşimli · Desen Laboratuvarı</span>
+                <h2 class="text-2xl font-black mb-1 tracking-tighter text-white">Bir Desen Seç, <span style="color:#93c5fd;">Ne Yakaladığını Gör</span></h2>
+                <p class="code-note mb-3" style="font-size:0.5em;">Vurgular Python'un <code>re.finditer</code>'ından, liste
+                    <code>re.findall</code>'dan alındı.</p>
+                <div class="flex flex-col items-center gap-4" style="max-width:1080px;margin:0 auto;">
+                    <div class="pick" id="lab-pick"></div>
+                    <div class="rx-text" id="lab-text" style="width:960px;"></div>
+                    <div class="run-panel" style="width:960px;min-width:0;text-align:left;">
+                        <div class="run-title" id="lab-head">&gt;&gt;&gt; re.findall(…, metin)</div>
+                        <div class="out-ln" id="lab-out" style="min-height:1.7em;"></div>
+                        <div class="run-badge" id="lab-oku">—</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. FONKSİYONLAR 1 -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="search" style="width:14px;height:14px;"></i> re · 1</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">search</code>,
+                    <code style="color:#93c5fd;">match</code>, <code style="color:#93c5fd;">fullmatch</code></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:640px;"><code class="language-python" data-trim data-line-numbers="2-3|4-6|7-9|11-12">metin = "Sipariş 42: 3 kalem, toplam 129 TL"
+re.search(r"\d+", metin)          # her yerde ara
+# &lt;re.Match object; span=(8, 10), match='42'&gt;
+re.match(r"\d+", metin)           # None
+re.match(r"Sipariş", metin)       # yalnız BAŞTA
+# &lt;re.Match object; span=(0, 7), match='Sipariş'&gt;
+re.fullmatch(r"\d+", "129")       # TAMAMI uymalı
+# &lt;re.Match object; span=(0, 3), match='129'&gt;
+re.fullmatch(r"\d+", "129 TL")    # None
+
+m = re.search(r"\d+", metin)
+m.group(), m.start(), m.end()     # ('42', 8, 10)</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:340px;">
+                        <div class="concept-card fragment fade-left"><h4>🔍 <code>search</code></h4><p>Metnin <b>herhangi</b> bir
+                            yerinde ilk eşleşme.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🚪 <code>match</code></h4><p>Yalnız <b>baştan</b>;
+                            sonu serbest.</p></div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(52,211,153,0.45);"><h4>✅
+                            <code>fullmatch</code></h4><p>Metnin <b>tamamı</b>. Doğrulamada doğru seçim bu. Sonuç <code>None</code> ya da <code>Match</code>.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. FONKSİYONLAR 2 -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="scissors" style="width:14px;height:14px;"></i> re · 2</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Hepsini Bul, <span
+                        style="color:#93c5fd;">Değiştir, Böl</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="2|3-4|5-6|7-8|9-10">metin = "Sipariş 42: 3 kalem, toplam 129 TL"
+re.findall(r"\d+", metin)         # ['42', '3', '129']
+[m.span() for m in re.finditer(r"\d+", metin)]
+# [(8, 10), (12, 13), (28, 31)]
+re.sub(r"\d+", "#", metin)
+# 'Sipariş #: # kalem, toplam # TL'
+re.split(r"[,:]\s*", metin)
+# ['Sipariş 42', '3 kalem', 'toplam 129 TL']
+re.sub(r"\s+", " ", "çok    fazla \t boşluk")
+# 'çok fazla boşluk'</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>📋 <code>findall</code> / <code>finditer</code></h4>
+                            <p>Bütün eşleşmeler: liste ya da <code>Match</code>'ler.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>✏️ <code>sub</code> · ✂️ <code>split</code></h4><p>Eşleşeni
+                            değiştir; desenle böl (virgül <b>ya da</b> iki nokta).</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. MİNİ QUIZ 1 -->
+            <section class="qz">
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 1/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Desen Okuma</h2>
+                <div class="quiz fragment" data-ok="match yalnız baştan arar; metin “yaş” ile başladığı için None."
+                    data-no="match baştan arar: “yaş 42” rakamla başlamıyor → None. Her yerde aramak için search.">
+                    <div class="quiz-q">1) <code>re.match(r"\d+", "yaş 42")</code> ne döndürür?</div>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>'42'</code> eşleşmesi</button>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>None</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>['42']</code></button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+                <div class="quiz fragment" data-ok="Nicelik açgözlü: önce 3 rakam (202) alınır; kalan tek “4”, {2,3}'e uymaz."
+                    data-no="Nicelik açgözlüdür: önce 3 rakam (202) alınır, kalan “4” 2'den az olduğu için eşleşmez → ['202'].">
+                    <div class="quiz-q">2) <code>re.findall(r"\d{2,3}", "2024")</code>?</div>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>['20', '24']</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>['2024']</code></button>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>['202']</code></button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 11. GRUPLAR -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="brackets" style="width:14px;height:14px;"></i> Gruplar</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">( )</code>:
+                    <span style="color:#93c5fd;">Parçayı Ayrıca Al</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="2|3-5|6-7">tarih = "Teslim: 2026-11-03, sınav: 2026-11-17"
+m = re.search(r"(\d{4})-(\d{2})-(\d{2})", tarih)
+m.group(0)                        # '2026-11-03'
+m.group(1), m.group(3)            # ('2026', '03')
+m.groups()                        # ('2026', '11', '03')
+re.findall(r"(\d{4})-(\d{2})-(\d{2})", tarih)
+# [('2026', '11', '03'), ('2026', '11', '17')]</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>🔢 Numara</h4><p><code>group(0)</code> bütün eşleşme;
+                            <code>group(1)</code> ilk parantez, soldan sayılır.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>📋 <code>findall</code> + grup</h4><p>Grup varsa
+                            eşleşmenin tamamını değil, grupların <b>demetini</b> verir.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. ADLI GRUPLAR -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="tag" style="width:14px;height:14px;"></i> Adlı Gruplar</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">(?P&lt;ad&gt;…)</code>:
+                    <span style="color:#93c5fd;">Numara Yerine Ad</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="1|2-5|6-8">desen = r"(?P&lt;yil&gt;\d{4})-(?P&lt;ay&gt;\d{2})-(?P&lt;gun&gt;\d{2})"
+m = re.search(desen, "Teslim: 2026-11-03")
+m["yil"], m["gun"]                # ('2026', '03')
+m.groupdict()
+# {'yil': '2026', 'ay': '11', 'gun': '03'}
+yeni = r"\g&lt;gun&gt;.\g&lt;ay&gt;.\g&lt;yil&gt;"          # adla geri çağır
+re.sub(desen, yeni, "Teslim: 2026-11-03")
+# 'Teslim: 03.11.2026'</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>🏷️ Okunur</h4><p><code>m["yil"]</code>, 3 ay sonra da
+                            ne olduğunu söyler; <code>m.group(1)</code> söylemez.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🔁 <code>\g&lt;ad&gt;</code></h4><p><code>sub</code>'da
+                            grubu adıyla geri koy: ISO tarihten Türk biçimine.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 13. AÇGÖZLÜ / TEMBEL -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="utensils" style="width:14px;height:14px;"></i> Açgözlülük</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">.+</code> ile
+                    <code style="color:#93c5fd;">.+?</code> <span style="color:#93c5fd;">Arasındaki Fark</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:740px;"><code class="language-python" data-trim data-line-numbers="2-3|4-5|6-7">html_ = "&lt;b&gt;kalın&lt;/b&gt; ve &lt;i&gt;eğik&lt;/i&gt;"
+re.findall(r"&lt;.+&gt;", html_)        # açgözlü: olabildiğince ÇOK
+# ['&lt;b&gt;kalın&lt;/b&gt; ve &lt;i&gt;eğik&lt;/i&gt;']
+re.findall(r"&lt;.+?&gt;", html_)       # tembel: olabildiğince AZ
+# ['&lt;b&gt;', '&lt;/b&gt;', '&lt;i&gt;', '&lt;/i&gt;']
+re.findall(r"&lt;[^&gt;]+&gt;", html_)     # açık: '&gt;' olmayan her şey
+# ['&lt;b&gt;', '&lt;/b&gt;', '&lt;i&gt;', '&lt;/i&gt;']</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>🍔 Açgözlü</h4><p><code>+ *</code> olabildiğince
+                            <b>çok</b> yer, son <code>&gt;</code>'ye kadar gider.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🥄 Tembel</h4><p><code>+? *?</code> olabildiğince
+                            <b>az</b>; ilk <code>&gt;</code>'de durur.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 14. ETKİLEŞİMLİ: AÇGÖZLÜ -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="utensils" style="width:14px;height:14px;"></i> Etkileşimli · Ne Kadar Yer?</span>
+                <h2 class="text-2xl font-black mb-1 tracking-tighter text-white">Aynı Metin, <span style="color:#93c5fd;">Yedi Desen</span></h2>
+                <p class="code-note mb-4" style="font-size:0.5em;">Eşleşmeler Python'un <code>re.finditer</code>'ından alındı;
+                    ardışık eşleşmeler iki renkle.</p>
+                <div class="flex flex-col items-center gap-4" style="max-width:1000px;margin:0 auto;">
+                    <div class="pick" id="ac-pick"></div>
+                    <div class="rx-text" id="ac-text" style="width:760px;font-size:26px;"></div>
+                    <div class="run-panel" style="width:760px;min-width:0;text-align:left;">
+                        <div class="run-title" id="ac-head">&gt;&gt;&gt; re.findall(…, html_)</div>
+                        <div class="out-ln" id="ac-out" style="min-height:1.7em;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. BAYRAKLAR -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="flag" style="width:14px;height:14px;"></i> Bayraklar</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">re.M</code>,
+                    <code style="color:#93c5fd;">re.I</code>, <code style="color:#93c5fd;">re.A</code></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="1-4|5-6|7-8|9">liste = "elma\narmut\nkiraz"
+re.findall(r"^\w+", liste)                 # ['elma']
+re.findall(r"^\w+", liste, re.M)
+# ['elma', 'armut', 'kiraz']
+bool(re.fullmatch("istanbul", "İSTANBUL", re.I)) # True
+bool(re.fullmatch("ılık", "İLİK", re.I))         # True
+"İSTANBUL".lower() == "istanbul"                 # False
+len("İ".lower())                                 # 2
+re.findall(r"\d", "4٢", re.A)                    # ['4']</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>📄 <code>re.M</code></h4><p><code>^</code> ve
+                            <code>$</code> her <b>satırda</b> çalışır.</p></div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(250,204,21,0.4);"><h4>🔠
+                            <code>re.I</code> ve Türkçe</h4><p><code>i ı İ I</code>'yı birbirine denk sayar: “ılık” ile
+                            “İLİK” bile eşleşir. <code>lower()</code> ise “İ”yi iki karaktere çevirir.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🔤 <code>re.A</code></h4><p><code>\d \w \s</code>
+                            yalnız ASCII.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 16. VERBOSE + COMPILE -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="file-code-2" style="width:14px;height:14px;"></i> Okunur Desen</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">re.compile</code>
+                    + <code style="color:#93c5fd;">re.X</code>: <span style="color:#93c5fd;">Desene Yorum Yaz</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:680px;"><code class="language-python" data-trim data-line-numbers="1-6|8-9|10|11">eposta = re.compile(r"""
+    [\w.+-]+        # kullanıcı adı: harf, rakam, . + -
+    @
+    [\w-]+          # alan adı
+    (\.[\w-]+)+     # .edu .tr …  en az bir nokta
+""", re.X)
+
+bool(eposta.fullmatch("ali.veli@ktu.edu.tr"))   # True
+bool(eposta.fullmatch("ali@localhost"))         # False
+bool(eposta.fullmatch("çağrı@ktu.edu.tr"))      # True
+bool(eposta.fullmatch("ali@@ktu.edu.tr"))       # False</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:320px;">
+                        <div class="concept-card fragment fade-left"><h4>📦 <code>compile</code> + 📝 <code>re.X</code></h4><p>Bir kez
+                            derle, sakla. <code>re.X</code>'te boşluk yok sayılır, <code>#</code> yorum olur.</p></div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(250,204,21,0.4);"><h4>🤏 Sınır</h4>
+                            <p>Bu desen e-postanın <b>biçimine</b> bakar, adresin var olup olmadığına değil.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 17. TÜRKÇE: PYTHON / QT / JS -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="scale" style="width:14px;height:14px;"></i> Dürüst Karşılaştırma</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Aynı <code style="color:#93c5fd;">\w</code>,
+                    <span style="color:#93c5fd;">Üç Farklı Cevap</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <pre class="two" style="flex:1;max-width:625px;"><code class="language-python" data-trim data-line-numbers="1-7|9-10|11|12-13">Q = QRegularExpression
+def qt_bul(desen, metin, sec=Q.NoPatternOption):
+    it = Q(desen, sec).globalMatch(metin)
+    bulunan = []
+    while it.hasNext():
+        bulunan.append(it.next().captured())
+    return bulunan
+
+metin = "Çağrı ışığı söndü"
+re.findall(r"\w+", metin)       # ['Çağrı', 'ışığı', 'söndü']
+qt_bul(r"\w+", metin)           # ['a', 'r', 's', 'nd']
+U = Q.UseUnicodePropertiesOption
+qt_bul(r"\w+", metin, U)        # ['Çağrı', 'ışığı', 'söndü']</code></pre>
+                    <div class="flex flex-col gap-3" style="max-width:540px;">
+                        <table class="ea-tab" style="font-size:14px;"><tr><th>motor</th><th>\w+ · "Çağrı ışığı söndü"</th><th>\d+ · "٤٢ ve 42"</th></tr><tr><td>Python</td><td>[&#x27;Çağrı&#x27;, &#x27;ışığı&#x27;, &#x27;söndü&#x27;]</td><td>[&#x27;٤٢&#x27;, &#x27;42&#x27;]</td></tr><tr><td>Python + re.A</td><td>[&#x27;a&#x27;, &#x27;r&#x27;, &#x27;s&#x27;, &#x27;nd&#x27;]</td><td>[&#x27;42&#x27;]</td></tr><tr><td>Qt</td><td>[&#x27;a&#x27;, &#x27;r&#x27;, &#x27;s&#x27;, &#x27;nd&#x27;]</td><td>[&#x27;42&#x27;]</td></tr><tr><td>Qt + Unicode</td><td>[&#x27;Çağrı&#x27;, &#x27;ışığı&#x27;, &#x27;söndü&#x27;]</td><td>[&#x27;٤٢&#x27;, &#x27;42&#x27;]</td></tr><tr><td>JS /g</td><td>[&#x27;a&#x27;, &#x27;r&#x27;, &#x27;s&#x27;, &#x27;nd&#x27;]</td><td>[&#x27;42&#x27;]</td></tr><tr><td>JS /gu</td><td>[&#x27;a&#x27;, &#x27;r&#x27;, &#x27;s&#x27;, &#x27;nd&#x27;]</td><td>[&#x27;42&#x27;]</td></tr></table>
+                        <p class="code-note fragment fade-in" style="font-size:0.44em;text-align:left;">Python (<code>str</code>
+                            deseni) Unicode'u varsayar; Qt ve JavaScript ASCII'yi. Desen bir dilden ötekine taşınırken
+                            <code>\w</code> ve <code>\d</code> anlam değiştirir.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 18. QT VALIDATOR -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="shield-check" style="width:14px;height:14px;"></i> Qt'de</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">QRegularExpressionValidator</code></h2>
+                <pre style="max-width:760px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1-2|3|4|5|7-9">desen = QRegularExpression(r"0\d{3} \d{3} \d{2} \d{2}")
+v = QRegularExpressionValidator(desen)
+v.validate("0532 ", 5)[0]            # &lt;State.Intermediate: 1&gt;
+v.validate("0532 12a", 8)[0]         # &lt;State.Invalid: 0&gt;
+v.validate("0532 123 45 67", 14)[0]  # &lt;State.Acceptable: 2&gt;
+
+kutu = QLineEdit()
+kutu.setValidator(v)          # Invalid tuşu yazdırmaz
+kutu.setPlaceholderText("0532 123 45 67")</code></pre>
+                <div class="grid grid-cols-3 gap-3 text-left mt-4 cards-xs" style="max-width:1000px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(250,204,21,0.4);"><h4>🟡 Intermediate</h4>
+                        <p>Eksik ama tamamlanabilir: yazmaya devam.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🔴 Invalid</h4>
+                        <p>Qt o tuşu <b>yazdırmaz</b>: <code>"05a32"</code> yazınca kutuda <code>"0532"</code> kalır.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🟢 Acceptable</h4>
+                        <p>Tam uydu: <code>hasAcceptableInput()</code> → <code>True</code>.</p></div>
+                </div>
+            </section>
+
+            <!-- 19. ETKİLEŞİMLİ: DOĞRULAYICI -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip"><i data-lucide="play" style="width:14px;height:14px;"></i> Canlı</span>
+                    <span class="live-badge"><span class="live-dot"></span> bir girdi seç</span>
+                </div>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Qt Bu Girdiye <span
+                        style="color:#7dd3fc;">Ne Der?</span></h2>
+                <p class="code-note mb-4" style="font-size:0.5em;">Her durum <code>v.validate(metin, len(metin))</code> ile Qt'de
+                    alındı; desen <code>0\d{3} \d{3} \d{2} \d{2}</code>.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <div class="pick" id="vl-pick" style="width:420px;"></div>
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">Telefon — canlı</span></div>
+                        <div class="qt-body" style="padding:22px 26px;gap:14px;min-width:420px;align-items:flex-start;">
+                            <div class="vl-field" id="vl-in"></div>
+                            <div><span class="st-badge" id="vl-st">—</span></div>
+                            <div class="out-ln" id="vl-not" style="font-size:17px;min-height:3em;max-width:380px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 20. CANLI RENK -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="palette" style="width:14px;height:14px;"></i> Yazarken Renk</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">textChanged</code>
+                    + <code style="color:#93c5fd;">fullmatch</code></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <pre class="long" style="flex:1;max-width:680px;"><code class="language-python" data-trim data-line-numbers="2|6|7-14|16-18">class TelefonKutusu(QLineEdit):
+    DESEN = re.compile(r"0[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}")
+    def __init__(self):
+        super().__init__()
+        self.setPlaceholderText("0532 123 45 67")
+        self.textChanged.connect(self.denetle)
+    def denetle(self, metin):
+        if self.DESEN.fullmatch(metin):
+            renk = "#22c55e"            # tam ve doğru
+        elif metin:
+            renk = "#f59e0b"            # eksik ya da yanlış
+        else:
+            renk = "#33335a"            # boş
+        self.setStyleSheet(f"border: 2px solid {renk}")
+
+k = TelefonKutusu()
+k.setText("0532 123")
+k.styleSheet()                  # 'border: 2px solid #f59e0b'</code></pre>
+                    <div class="fragment fade-left flex flex-col items-center gap-2" style="max-width:300px;">
+                        <span class="arrow-cta">Sonuç ↓</span>
+                        <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                            class="atitle">"0532 123"</span></div><img src="images/gui_tel_eksik.png" alt="turuncu kenar"
+                            style="width:250px;"></div>
+                        <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                            class="atitle">"0532 123 45 67"</span></div><img src="images/gui_tel_tam.png" alt="yeşil kenar"
+                            style="width:250px;"></div>
+                        <p class="code-note" style="font-size:0.42em;text-align:left;"><code>[0-9]</code> bilerek: <code>\d</code>
+                            olsaydı Arap-Hint rakamları da yeşil yanardı.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. TEMİZLEME -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="eraser" style="width:14px;height:14px;"></i> Temizle, Biçimle</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kullanıcı Nasıl Yazarsa <span
+                        style="color:#93c5fd;">Yazsın</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:720px;"><code class="language-python" data-trim data-line-numbers="2|3|4-5|7-10">def normalle(s):
+    rakam = re.sub(r"[^0-9]", "", s)      # rakam dışını sil
+    rakam = rakam[-10:]                   # son 10 hane
+    return re.sub(r"(\d{3})(\d{3})(\d{2})(\d{2})",
+                  r"0\1 \2 \3 \4", rakam)
+
+girdiler = ["+90 (532) 123-45-67", "0532.123.45.67",
+            "5321234567"]
+[normalle(s) for s in girdiler]
+# ['0532 123 45 67', '0532 123 45 67', '0532 123 45 67']</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>🧽 Önce temizle</h4><p><code>[^0-9]</code>: rakam
+                            olmayan her şeyi sil; parantez, tire, nokta, <code>+</code>.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🧩 Sonra biçimle</h4><p>Dört grup, <code>\1 \2 \3
+                            \4</code> ile tek bir düzgün biçime.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 22. REDOS -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="timer" style="width:14px;height:14px;"></i> Dürüst Not</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Masum Görünen <span
+                        style="color:#fda4af;">Yavaş Desen</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <div class="flex flex-col gap-3" style="max-width:625px;">
+                        <pre class="two" style="margin:0;width:625px;"><code class="language-python" data-trim data-line-numbers="1-2|4-5">kotu = re.compile(r"(a+)+$")   # iç içe nicelik: tehlikeli
+iyi = re.compile(r"a+$")       # aynı işi yapan sade desen
+
+s = "a" * 24 + "!"                # sonda uymayan tek karakter
+kotu.match(s), iyi.match(s)       # (None, None)</code></pre>
+                        <div class="concept-card fragment fade-up text-left" style="padding:12px 16px;">
+                            <h4 style="font-size:0.6em;">🌀 Neden?</h4>
+                            <p style="font-size:0.46em;line-height:1.55;">Sonda <code>!</code> olduğu için eşleşme yok; ama
+                                <code>(a+)+</code> “a”ları gruplara bölmenin <b>her yolunu</b> dener. Bu yollar her ek “a” ile
+                                ikiye katlanır.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3" style="max-width:420px;">
+                        <table class="ea-tab"><tr><th>n (a sayısı)</th><th>(a+)+$</th><th>a+$</th></tr><tr><td>16</td><td>1.2 ms</td><td>0.000 ms</td></tr><tr><td>18</td><td>4.5 ms</td><td>0.000 ms</td></tr><tr><td>20</td><td>18.4 ms</td><td>0.001 ms</td></tr><tr><td>22</td><td>73.7 ms</td><td>0.001 ms</td></tr><tr><td>24</td><td>292.2 ms</td><td>0.001 ms</td></tr></table>
+                        <p class="code-note fragment fade-in" style="font-size:0.44em;text-align:left;">Süreler bu derste
+                            kullanılan bilgisayarda ölçüldü; sizinkinde sayılar farklı, <b>büyüme</b> aynı. İç içe nicelikten
+                            (<code>(…+)+</code>) kaçının; kullanıcıdan gelen deseni hiç çalıştırmayın.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 23. KARŞILAŞTIRMA -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="columns-3" style="width:14px;height:14px;"></i> Yan Yana</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Ne Zaman <span
+                        style="color:#93c5fd;">Regex, Ne Zaman Değil?</span></h2>
+                <div class="glass-card mx-auto" style="max-width:1080px;padding:14px 22px;">
+                    <table style="width:100%;font-size:0.45em;border-collapse:collapse;text-align:left;" class="code-note">
+                        <tr style="color:#93c5fd;"><th style="padding:5px 10px;">iş</th><th>en iyi araç</th><th>neden</th></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">“.pdf ile bitiyor mu?”</td><td><code>str.endswith</code></td><td>sabit metin: regex gereksiz</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">sayıya çevir</td><td><code>int()</code> + <code>try</code> (H7)</td><td>aralık ve tür denetimi birlikte</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">no, telefon, tarih biçimi</td><td><code>re.fullmatch</code></td><td>biçim tek satırda, okunur</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">metinden parça çek</td><td><code>finditer</code> + gruplar</td><td>hepsini bir geçişte bulur</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">yanlış tuşu hiç yazdırma</td><td><code>QRegularExpressionValidator</code></td><td>kullanıcı yazarken süzer</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:6px 10px;color:#e2e8f0;">HTML, JSON, CSV oku</td><td><code>html.parser</code>, <code>json</code>, <code>csv</code></td><td style="color:#fca5a5;">iç içe yapı: regex kırılır</td></tr>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 24. MİNİ QUIZ 2 -->
+            <section class="qz">
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 2/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Qt ve Türkçe</h2>
+                <div class="quiz fragment" data-ok="Qt'nin \w'si varsayılan olarak ASCII: “ç” atlanır, ilk eşleşme “a”."
+                    data-no="Qt (PCRE2) varsayılanda ASCII'dir: “ç” \w değil, ilk eşleşme “a”. Unicode için UseUnicodePropertiesOption.">
+                    <div class="quiz-q">1) <code>QRegularExpression(r"\w+").match("çağrı").captured()</code>?</div>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>'çağrı'</code></button>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>'a'</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>''</code></button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+                <div class="quiz fragment" data-ok="Validator yalnız kullanıcının yazdığını süzer; setText onu atlar."
+                    data-no="setText doğrudan yazar: validator yalnız klavyeden gelen girişi süzer. Programın verdiği metni sen denetle.">
+                    <div class="quiz-q">2) Validator'lı kutuda <code>kutu.setText("0532 12a")</code> ne yapar?</div>
+                    <button type="button" class="quiz-opt" data-correct="1">Metin olduğu gibi yazılır</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Kutuda <code>"0532 12"</code> kalır</button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>ValueError</code> fırlatır</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 25. SIK YAPILAN HATALAR -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="triangle-alert" style="width:14px;height:14px;"></i> Dikkat</span>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Sık Yapılan Hatalar</h2>
+                <div class="grid grid-cols-2 gap-4 text-left" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🔙 <code>r</code>'yi unutmak</h4><p><code>"\bev\b"</code>'de <code>\b</code> geri silme karakteri
+                        olur: sonuç <code>[]</code>. Desenler hep <code>r"…"</code>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🚪 <code>match</code> ile doğrulamak</h4><p><code>re.match(r"\d{9}", "2025123456")</code> 10 haneyi
+                        kabul eder; sonu serbest. Doğrulamada <code>fullmatch</code>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>⚫ Kaçışsız nokta</h4><p><code>r"3.5"</code>, <code>"3x5"</code>'e de uyar. Gerçek nokta
+                        <code>\.</code>.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🇹🇷 <code>[a-z]</code> ile Türkçe</h4><p><code>"çağrı"</code>'dan yalnız <code>['a', 'r']</code>
+                        kalır. <code>\w</code> ya da <code>[a-zçğıöşü]</code>.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Kural: deseni küçük örneklerle <b>dene</b>; bir uyan, bir uymayan,
+                    bir de sınırda olan.</p>
+            </section>
+
+            <!-- 26. ÖZET -->
+            <section>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-3 text-left cards-tight" style="max-width:1060px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ Desen = biçimin tarifi; hep ham dize <code>r"…"</code></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>\d \w \s [ ]</code> ve <code>* + ? {n,m}</code>, <code>^ $ \b</code></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>search</code> her yerde, <code>match</code> baştan, <code>fullmatch</code> tamamı</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>findall</code>, <code>finditer</code>, <code>sub</code>, <code>split</code></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Gruplar <code>( )</code>, adlı gruplar <code>(?P&lt;ad&gt;…)</code>, <code>\g&lt;ad&gt;</code></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Açgözlü <code>.+</code> çok, tembel <code>.+?</code> az yer</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Python Unicode, Qt ve JS ASCII: <code>\w</code>, <code>\d</code> taşınırken değişir</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>QRegularExpressionValidator</code>: Invalid tuş yazılmaz</p></div>
+                </div>
+            </section>
+
+            <!-- 27. PROJE -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="dumbbell" style="width:14px;height:14px;"></i> Ders Sonu Uygulama · Proje</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Proje: Desenli Kayıt Formu</h2>
+                <p class="code-note mb-3" style="font-size:0.54em;">H7'deki form, bu kez her kutunun biçimi bir <b>desen</b>.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:640px;"><code class="language-python" data-trim data-line-numbers="1-4|6-10|12-15|17-19">class FormHatasi(Exception):                # H7'deki gibi
+    def __init__(self, alan, mesaj):
+        super().__init__(mesaj)
+        self.alan = alan
+
+DESENLER = {
+    "no":     r"\d{9}",                     # 9 rakam
+    "eposta": r"[\w.+-]+@[\w-]+(\.[\w-]+)+",
+    "tel":    r"0\d{3} \d{3} \d{2} \d{2}",
+}
+
+def denetle(alan, metin):
+    if not re.fullmatch(DESENLER[alan], metin, re.A):
+        raise FormHatasi(alan, "biçim yanlış")
+    return metin
+
+denetle("no", "202512345")      # '202512345'
+denetle("no", "2025١٢٣٤٥")
+# FormHatasi: biçim yanlış</code></pre>
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                            class="atitle">KayitFormu</span></div><img src="images/gui_proje_hedef.png" alt="Üç kutu, e-posta turuncu"
+                            style="width:310px;"></div>
+                        <div class="concept-card" style="max-width:320px;text-align:left;">
+                            <h4>🎯 Hedef</h4>
+                            <p>“ali@ktu” → e-posta turuncu, “⚠ eposta: biçim yanlış”. “ali@ktu.edu.tr” → “✓ Kaydedildi”. Süre: ~40 dk.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 28. PROJE: FORM -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="layout-panel-top" style="width:14px;height:14px;"></i> Proje · Form Tarafı</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Üç Kutu, <span
+                        style="color:#93c5fd;">Tek Döngü</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:680px;"><code class="language-python" data-trim data-line-numbers="2-3|8-13|10-11|14-17">class KayitFormu(QWidget):
+    ALANLAR = {"no": "Öğrenci No", "eposta": "E-posta",
+               "tel": "Telefon"}
+    def __init__(self):
+        super().__init__()
+        form = QFormLayout(self)
+        self.kutular = {}
+        for alan, etiket in self.ALANLAR.items():
+            kutu = QLineEdit()
+            kutu.textChanged.connect(
+                lambda metin, a=alan: self.boya(a, metin))
+            self.kutular[alan] = kutu
+            form.addRow(etiket, kutu)
+        ...             # GÖREV 2: tel'e validator, Kaydet + durum
+
+    def boya(self, alan, metin):
+        ...             # GÖREV 1: tam uyan yeşil, eksik turuncu</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:320px;">
+                        <div class="concept-card fragment fade-left"><h4>🪤 <code>a=alan</code></h4><p>Döngüdeki
+                            <code>lambda</code>, <code>alan</code>'ı çağrıldığı anda okur: varsayılan değer olmadan üç kutu da
+                            <code>"tel"</code>'i boyardı.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🗂️ Sözlük yine</h4><p><code>DESENLER[alan]</code> ve
+                            <code>self.kutular[alan]</code> aynı anahtarla eşleşir.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 29. ADIM ADIM -->
+            <section data-background-color="#020617">
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Adım Adım Nasıl İlerleyeceksin?</h2>
+                <div class="grid grid-cols-2 gap-4 text-left" style="max-width:1060px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>1 · Desenleri dene</h4><p>Her desen için bir uyan, bir uymayan:
+                        <code>denetle("no", "2025١٢٣٤٥")</code> hata vermeli.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · <code>boya</code></h4><p><code>fullmatch</code> (re.A)
+                        → yeşil; boş değilse turuncu; boşsa gri kenar.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · Validator</h4><p>Telefona
+                        <code>QRegularExpressionValidator</code>: yanlış tuş hiç yazılmasın.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>4 · Kaydet</h4><p>H7'deki gibi: <code>try</code>'da üç
+                        <code>denetle</code>, <code>except FormHatasi as e</code> → <code>⚠ {e.alan}: {e}</code>.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">✅ Kontrol: “ali@ktu” → <code>⚠ eposta: biçim yanlış</code>;
+                    “ali@ktu.edu.tr” → <code>✓ Kaydedildi</code>.</p>
+            </section>
+
+            <!-- 30. İLERİ GÖREVLER -->
+            <section>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">İleri Görevler <span
+                        style="color:#93c5fd;">Erken Bitirdiysen</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>⭐ Normalle</h4><p>Telefonu “+90 (532)…” gibi de kabul et:
+                        kaydetmeden önce <code>normalle()</code> ile tek biçime çevir.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐ Desen test aracı</h4><p>İki kutu: desen ve metin.
+                        <code>finditer</code> sonuçlarını bir <code>QLabel</code>'da renkli göster (HTML ile).</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐⭐ Log çözücü</h4><p>H7'nin <code>kayit.log</code>'unu oku;
+                        adlı gruplarla seviye, ileti ayır, kaç <code>ERROR</code> olduğunu say.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Hepsinde aynı alışkanlık: önce küçük örnekle dene, sonra koda koy.</p>
+            </section>
+
+            <!-- 31. SONRAKİ -->
+            <section data-background-color="#020617">
                 <div class="flex flex-col items-center">
-                    <span class="week-number text-lg mb-4">Hafta 08</span>
-                    <h1 class="text-5xl md:text-6xl mb-6 leading-tight font-extrabold tracking-tighter text-white">Regular Expressions — Metin İşleme</h1>
-                    <div class="h-1 w-20 bg-gradient-to-r from-blue-700 to-rose-900 rounded-full mb-8"></div>
-                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">İleri Programlama · YPZ209</p>
+                    <span class="chip mb-6"><i data-lucide="arrow-right-circle" style="width:14px;height:14px;"></i> Sonraki Konu · Hafta 10</span>
+                    <h2 class="text-4xl font-black mb-4 tracking-tighter text-white">Thread <span class="grad-text">Programlama</span></h2>
+                    <p class="code-note mb-6" style="max-width:780px;">Şimdiye kadar her iş anında bitti. Ya bir iş 10 saniye
+                        sürerse? Pencere donar. Sıradaki konu: işi arka plana almak, Qt'nin <code>QThread</code>'i ve
+                        sinyallerle güvenli haberleşme.</p>
+                    <a href="../index.html" class="nav-link">← Ders Ana Sayfası</a>
                 </div>
             </section>
-            <section data-background-color="#020617">
-                <div class="glass-card items-center text-center mx-auto p-10" style="max-width: 640px;">
-                    <i data-lucide="hammer" class="text-rose-500 mb-4" style="width: 48px; height: 48px;"></i>
-                    <h2 class="text-3xl font-black text-white mb-4">İçerik Yakında</h2>
-                    <p class="bio-text mb-6">Bu haftanın slayt içeriği hazırlanmaktadır ve dönem boyunca güncellenecektir.</p>
-                    <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
-                </div>
-            </section>
+
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
     <script src="../js/main.js"></script>
     <script>
-        if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-        Reveal.initialize({
-            hash: false, history: false, center: true, transition: 'convex',
-            backgroundTransition: 'fade', width: 1200, height: 700, margin: 0.1
+        initReveal({
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            margin: 0.06,
+            slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
         });
     </script>
+    <script>
+        // ===== CANLI ETKİLEŞİMLER (Hafta 8) =====
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+            function $(id) { return document.getElementById(id); }
+            function flash(el, ms) { if (!el) return; el.classList.add('active'); setTimeout(function () { el.classList.remove('active'); }, ms || 380); }
+            function bump(el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+
+            function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+            function pyrepr(s) { return "'" + s + "'"; }
+            function vurgula(metin, spans) {          // Python'un verdiği [başlangıç, bitiş] aralıklarıyla <mark>
+                var h = '', i = 0;
+                spans.forEach(function (s, k) {
+                    h += esc(metin.slice(i, s[0])) + '<mark' + (k % 2 ? ' class="b"' : '') + '>' + esc(metin.slice(s[0], s[1])) + '</mark>';
+                    i = s[1];
+                });
+                return h + esc(metin.slice(i));
+            }
+
+            // ---------------------------------------------------------------- Desen laboratuvarı (eşleşmeler Python'dan)
+            (function () {
+                if (!$('lab-pick')) return;
+                var LAB = {"metin": "Ali 42 yaşında, 2024'te İzmir'e taşındı.", "desen": [{"d": "\\d+", "o": "bir ya da daha çok rakam", "s": [[4, 6], [16, 20]], "f": ["42", "2024"], "r": "['42', '2024']"}, {"d": "\\d{2,3}", "o": "2 ya da 3 rakam", "s": [[4, 6], [16, 19]], "f": ["42", "202"], "r": "['42', '202']"}, {"d": "\\w+", "o": "kelime karakterleri", "s": [[0, 3], [4, 6], [7, 14], [16, 20], [21, 23], [24, 29], [30, 31], [32, 39]], "f": ["Ali", "42", "yaşında", "2024", "te", "İzmir", "e", "taşındı"], "r": "['Ali', '42', 'yaşında', '2024', 'te', 'İzmir', 'e', 'taşındı']"}, {"d": "[A-ZÇĞİÖŞÜ]\\w*", "o": "büyük harfle başlayan", "s": [[0, 3], [24, 29]], "f": ["Ali", "İzmir"], "r": "['Ali', 'İzmir']"}, {"d": "\\b\\w{3}\\b", "o": "tam 3 harflik kelime", "s": [[0, 3]], "f": ["Ali"], "r": "['Ali']"}, {"d": "^\\w+", "o": "metnin başındaki kelime", "s": [[0, 3]], "f": ["Ali"], "r": "['Ali']"}, {"d": "\\w+\\.$", "o": "sondaki kelime ve nokta", "s": [[32, 40]], "f": ["taşındı."], "r": "['taşındı.']"}, {"d": "[^\\w\\s]", "o": "harf, rakam, boşluk dışı", "s": [[14, 15], [20, 21], [29, 30], [39, 40]], "f": [",", "'", "'", "."], "r": "[',', \"'\", \"'\", '.']"}, {"d": "'\\w+", "o": "kesme işaretli ek", "s": [[20, 23], [29, 31]], "f": ["'te", "'e"], "r": "[\"'te\", \"'e\"]"}, {"d": "ı\\w*", "o": "ı ile başlayan parça", "s": [[10, 14], [35, 39]], "f": ["ında", "ındı"], "r": "['ında', 'ındı']"}]};
+                function sec(d, btn) {
+                    $('lab-pick').querySelectorAll('button').forEach(function (b) { b.classList.toggle('sel', b === btn); });
+                    $('lab-text').innerHTML = vurgula(LAB.metin, d.s);
+                    $('lab-head').textContent = '>>> re.findall(r"' + d.d + '", metin)';
+                    $('lab-out').innerHTML = '<span class="ok">' + esc(d.r) + '</span>';
+                    $('lab-oku').textContent = d.o + ' · ' + d.f.length + ' eşleşme';
+                }
+                LAB.desen.forEach(function (d) {
+                    var b = document.createElement('button'); b.type = 'button'; b.className = 'qt-btn mini rx'; b.textContent = d.d;
+                    b.addEventListener('click', function (e) { stop(e); this.blur(); sec(d, b); });
+                    $('lab-pick').appendChild(b);
+                });
+                $('lab-text').innerHTML = esc(LAB.metin);
+                $('lab-out').innerHTML = '<span class="cm"># bir desen seç</span>';
+            })();
+
+            // ---------------------------------------------------------------- Açgözlü / tembel (eşleşmeler Python'dan)
+            (function () {
+                if (!$('ac-pick')) return;
+                var AC = {"metin": "<b>kalın</b> ve <i>eğik</i>", "desen": [{"d": "<.+>", "s": [[0, 27]], "f": ["<b>kalın</b> ve <i>eğik</i>"], "r": "['<b>kalın</b> ve <i>eğik</i>']"}, {"d": "<.+?>", "s": [[0, 3], [8, 12], [16, 19], [23, 27]], "f": ["<b>", "</b>", "<i>", "</i>"], "r": "['<b>', '</b>', '<i>', '</i>']"}, {"d": "<.*>", "s": [[0, 27]], "f": ["<b>kalın</b> ve <i>eğik</i>"], "r": "['<b>kalın</b> ve <i>eğik</i>']"}, {"d": "<.*?>", "s": [[0, 3], [8, 12], [16, 19], [23, 27]], "f": ["<b>", "</b>", "<i>", "</i>"], "r": "['<b>', '</b>', '<i>', '</i>']"}, {"d": "<[^>]+>", "s": [[0, 3], [8, 12], [16, 19], [23, 27]], "f": ["<b>", "</b>", "<i>", "</i>"], "r": "['<b>', '</b>', '<i>', '</i>']"}, {"d": "</?\\w+>", "s": [[0, 3], [8, 12], [16, 19], [23, 27]], "f": ["<b>", "</b>", "<i>", "</i>"], "r": "['<b>', '</b>', '<i>', '</i>']"}, {"d": "<\\w>.*?</\\w>", "s": [[0, 12], [16, 27]], "f": ["<b>kalın</b>", "<i>eğik</i>"], "r": "['<b>kalın</b>', '<i>eğik</i>']"}]};
+                AC.desen.forEach(function (d) {
+                    var b = document.createElement('button'); b.type = 'button'; b.className = 'qt-btn mini rx'; b.textContent = d.d;
+                    b.addEventListener('click', function (e) {
+                        stop(e); this.blur();
+                        $('ac-pick').querySelectorAll('button').forEach(function (x) { x.classList.toggle('sel', x === b); });
+                        $('ac-text').innerHTML = vurgula(AC.metin, d.s);
+                        $('ac-head').textContent = '>>> re.findall(r"' + d.d + '", html_)';
+                        $('ac-out').innerHTML = '<span class="ok">' + esc(d.r) + '</span>  <span class="cm"># ' + d.f.length + ' eşleşme</span>';
+                    });
+                    $('ac-pick').appendChild(b);
+                });
+                $('ac-text').innerHTML = esc(AC.metin);
+                $('ac-out').innerHTML = '<span class="cm"># bir desen seç</span>';
+            })();
+
+            // ---------------------------------------------------------------- Doğrulayıcı (durumlar Qt'den)
+            (function () {
+                if (!$('vl-pick')) return;
+                var VAL = [{"g": "", "d": "Intermediate"}, {"g": "0", "d": "Intermediate"}, {"g": "05", "d": "Intermediate"}, {"g": "1", "d": "Invalid"}, {"g": "0532", "d": "Intermediate"}, {"g": "0532 ", "d": "Intermediate"}, {"g": "0532 12a", "d": "Invalid"}, {"g": "0532 123 45 67", "d": "Acceptable"}, {"g": "0532 123 45 678", "d": "Invalid"}, {"g": "0532 ١٢٣ 45 67", "d": "Invalid"}];
+                var RENK = { Invalid: '#ef4444', Intermediate: '#f59e0b', Acceptable: '#22c55e' };
+                var NOT = { Invalid: 'Hiçbir devam bunu kurtarmaz: Qt bu tuşu yazdırmazdı.',
+                            Intermediate: 'Eksik ama tamamlanabilir: yazmaya devam.',
+                            Acceptable: 'Tam uydu: hasAcceptableInput() → True' };
+                VAL.forEach(function (v) {
+                    var b = document.createElement('button'); b.type = 'button'; b.className = 'qt-btn mini rx'; b.textContent = pyrepr(v.g);
+                    b.addEventListener('click', function (e) {
+                        stop(e); this.blur();
+                        $('vl-pick').querySelectorAll('button').forEach(function (x) { x.classList.toggle('sel', x === b); });
+                        $('vl-in').textContent = v.g; $('vl-in').style.borderColor = RENK[v.d];
+                        $('vl-st').textContent = 'State.' + v.d; $('vl-st').style.background = RENK[v.d] + '33'; $('vl-st').style.color = RENK[v.d];
+                        $('vl-not').textContent = NOT[v.d];
+                    });
+                    $('vl-pick').appendChild(b);
+                });
+            })();
+
+            // Mini quizler
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) { if (o.dataset.correct === '1') o.classList.add('correct'); });
+                        if (opt.dataset.correct === '1') { fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!'); fb.style.color = '#86efac'; }
+                        else { opt.classList.add('wrong'); fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil işaretlendi.'); fb.style.color = '#fca5a5'; }
+                    });
+                });
+            });
+        })();
+    </script>
 </body>
+
 </html>
