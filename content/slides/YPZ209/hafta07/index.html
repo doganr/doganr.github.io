@@ -1,47 +1,1234 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İleri Programlama 7. Hafta - Reveal.js</title>
+    <title>İleri Programlama 7. Hafta — İstisna Yönetimi &amp; Hata Ayıklama</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+    <style>
+        /* Hafta 4'e özel bileşenler */
+        .wk { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.82em; color: #0b1020;
+            background: #93c5fd; border-radius: 6px; padding: 0 7px; margin-right: 6px; }
+        .err { color: #fca5a5; font-family: 'JetBrains Mono', monospace; }
+        .cards-tight .concept-card { padding: 11px 16px; border-radius: 14px; }
+        .cards-tight .concept-card h4 { font-size: 0.66em; margin-bottom: 3px; }
+        .cards-tight .concept-card p { font-size: 0.54em; line-height: 1.45; }
+        .sec-tag { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.4em; color: #64748b; line-height: 1.5; }
+        .reveal pre.two, .reveal pre.long { font-size: 0.35em; }
+        .qt-btn.mini { padding: 5px 11px; font-size: 13px; border-radius: 8px; font-weight: 700;
+            font-family: 'JetBrains Mono', ui-monospace, monospace; }
+        .qt-btn.sel { outline: 2px solid #fbbf24; outline-offset: 1px; }
+        .qt-btn:disabled { opacity: 0.45; cursor: default; filter: none; }
+        .qt-btn.red { background: #ef4444; }
+        .qt-btn.ghost { background: #2a2a44; color: #cbd5e1; }
+        .qt-btn.flash { animation: qtflash 0.45s ease; }
+        @keyframes qtflash { 0% { transform: scale(1); } 40% { transform: scale(1.06); filter: brightness(1.35); } 100% { transform: scale(1); } }
+        /* metot arama gezgini (H2'deki gibi) */
+        .mro-box { display: flex; justify-content: space-between; align-items: center; width: 300px; padding: 3px 14px;
+            border-radius: 9px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03);
+            transition: background .15s, border-color .15s, opacity .2s; }
+        .mro-box code { font-size: 14px; color: #cbd5e1; background: none; padding: 0; }
+        .mro-box span { font-size: 11px; color: #64748b; }
+        .mro-box.ours { border-color: rgba(167, 139, 250, 0.55); }
+        .mro-box.look { border-color: #fbbf24; background: rgba(251, 191, 36, 0.13); }
+        .mro-box.hit { border-color: #22c55e; background: rgba(34, 197, 94, 0.22); }
+        .mro-box.hit code { color: #bbf7d0; }
+        .mro-box.off { opacity: 0.22; }
+        .mro-arrow { font-size: 9px; color: #475569; line-height: 1.1; }
+        .mro-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+        .out-ln { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 20px; color: #e2e8f0;
+            line-height: 1.7; white-space: pre-wrap; }
+        .out-ln .ok { color: #86efac; } .out-ln .bad { color: #fca5a5; } .out-ln .str { color: #fde68a; } .out-ln .cm { color: #64748b; }
+        /* canlı panel düzenleri */
+        .qt-body.wide { min-width: 300px; gap: 10px; padding: 20px 28px 24px; }
+        .qt-body.wide .qt-btn { min-width: 230px; border-radius: 12px; }
+        .qt-row { display: flex; gap: 10px; justify-content: center; }
+        .qt-field { background: #1e1e33; color: #f0f0f8; border: 2px solid #33335a; border-radius: 6px; padding: 6px 10px;
+            font-size: 14px; width: 230px; font-family: inherit; }
+        .qt-check { color: #f0f0f8; font-size: 14px; font-weight: 700; display: flex; gap: 8px; align-items: center; }
+        .qt-lbl { color: #f0f0f8; font-size: 17px; font-weight: 800; align-self: flex-start; }
+        .qt-off .qt-lbl, .qt-off .qt-check { color: #5b5b7a; }
+        .qt-off .qt-field { color: #6b6b8a; border-color: #26263f; background: #17172a; }
+        .qt-off .qt-btn.target { background: #3b3a5c; color: #8a8aac; }
+        .shape-canvas { display: block; border-radius: 10px; background: #12121f; }
+        /* yan kartlar (kodun yanındaki sütun) ve sıkı quiz */
+        .flex > .concept-card h4, .flex > .grid .concept-card h4 { font-size: 0.64em; margin-bottom: 4px; }
+        .flex > .concept-card p, .flex > .grid .concept-card p { font-size: 0.5em; line-height: 1.5; }
+        .flex > .concept-card, .flex > .grid .concept-card { padding: 13px 16px; }
+        .qz .quiz { margin-bottom: 6px; }
+        .qz .quiz-q { font-size: 0.6em; margin-bottom: 6px; }
+        .qz .quiz-opt { padding: 7px 14px; font-size: 0.54em; margin-bottom: 4px; }
+        .qz .quiz-fb { font-size: 0.52em; min-height: 1.3em; margin-top: 4px; }
+        /* Hafta 7: terminal, akış izleyici, except seçici, canlı form */
+        .term-win { border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.09); background: #0b0b14;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.45); text-align: left; }
+        .term-bar { display: flex; gap: 6px; align-items: center; padding: 7px 12px; background: #1a1a2a;
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8a8aac; }
+        .term-bar .adot { width: 10px; height: 10px; }
+        .term { font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.5; white-space: pre; color: #cbd5e1;
+            padding: 12px 16px; margin: 0; }
+        .term.sm { font-size: 12.5px; }
+        .term.xs { font-size: 11.5px; }
+        .cards-xs .concept-card { padding: 12px 16px; }
+        .cards-xs .concept-card h4 { font-size: 0.6em; margin-bottom: 4px; }
+        .cards-xs .concept-card p { font-size: 0.46em; line-height: 1.5; }
+        .term .tp { color: #86efac; } .term .tc { color: #f8fafc; font-weight: 700; } .term .tg { color: #94a3b8; }
+        .term .tf { color: #7dd3fc; } .term .tk { color: #f472b6; } .term .te { color: #fca5a5; font-weight: 700; }
+        .term .ty { color: #fde047; font-weight: 700; } .term .tl { color: #fde68a; }
+        .runline.sm { font-size: 0.42em; padding: 2px 10px; }
+        .runline .ln { display: inline-block; width: 2.2em; color: #475569; text-align: right; margin-right: 0.8em; }
+        .runline.done { background: rgba(134,239,172,0.07); border-left-color: rgba(134,239,172,0.45); }
+        .runline.miss { opacity: 0.45; }
+        .runline.hit { background: rgba(134,239,172,0.16); border-left-color: #86efac; color: #fff; }
+        .runline.over { opacity: 0.35; text-decoration: line-through; }
+        .pick { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .pick .qt-btn.mini { font-family: 'JetBrains Mono', monospace; font-size: 15px; }
+        .mro { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; }
+        .mro span.c { padding: 3px 9px; border-radius: 7px; background: rgba(148,163,184,0.12); color: #cbd5e1; }
+        .mro span.c.hit { background: rgba(134,239,172,0.2); color: #86efac; font-weight: 800; outline: 1px solid #86efac; }
+        .mro span.ok { color: #475569; }
+        .chk-row { display: flex; gap: 18px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #e2e8f0; }
+        .chk-row label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+        .chk-row input { width: 18px; height: 18px; accent-color: #6c63ff; }
+        .ea-tab { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 17px; }
+        .reveal .ea-tab th, .reveal .ea-tab td { padding: 5px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; text-align: left; }
+        .reveal .ea-tab th { color: #93c5fd; font-weight: 700; }
+        .reveal .ea-tab td { white-space: nowrap; }
+        .reveal .ea-tab td.t { color: #86efac; } .reveal .ea-tab td.f { color: #94a3b8; } .reveal .ea-tab td.bad { color: #fca5a5; font-weight: 800; }
+        .fm-field { min-width: 240px; padding: 8px 12px; border-radius: 8px; border: 2px solid #2d2d4a; background: #1e1e33; color: #f0f0f8;
+            font-family: 'JetBrains Mono', monospace; font-size: 17px; white-space: pre; min-height: 1.6em; text-align: left; }
+        .fm-durum { font-weight: 800; font-size: 19px; min-height: 1.5em; text-align: left; }
+    </style>
 </head>
+
 <body>
+
     <div class="reveal">
         <img src="../images/logo.png" class="watermark" alt="Logo">
         <div class="slides">
+
+                        <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere"
+                    style="width: 620px; height: 620px; top: -12%; left: -12%; background: #7f1d1d;"></div>
+                <div class="glow-sphere"
+                    style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #581c87; animation-delay: -5s;">
+                </div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">try</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">except ValueError</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">finally</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">Traceback</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">raise</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">logging</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">breakpoint()</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">QMessageBox</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">İleri Programlama · Hafta 07</span>
+                    <div class="cover-icon mb-6"><i data-lucide="shield-alert" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Hata Olur,<br><span
+                            class="grad-text">Program Ayakta Kalır</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">İstisna Yönetimi &amp; Hata Ayıklama</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span><span style="color:#f92672;">except</span>
+                            <span style="color:#a6e22e;">ValueError</span> <span style="color:#f92672;">as</span> e:
+                            &nbsp;<span style="color:#475569;"># yakala, anlat, devam et</span></span></div>
+                </div>
+            </section>
+
+            <!-- 2. YOL HARİTASI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Hafta</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Hatayı Görmekten <span
+                        style="color:#93c5fd;">Yönetmeye</span></h2>
+                <p class="code-note mb-6">H6'da Python bize onlarca <code>TypeError</code> fırlattı, biz yalnız okuduk. Bu hafta
+                    hatayı <b>yakalayıp</b> kullanıcıya düzgünce anlatacağız, gerekirse kendimiz <b>fırlatacağız</b>.</p>
+                <div class="grid grid-cols-4 gap-3 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · Okumak</h4><p>Traceback'i en alttan oku: tür, ileti,
+                        yer, çağıranlar.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · Yakalamak</h4><p><code>try / except / else /
+                        finally</code>; istisnalar da bir sınıf ağacı.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · Fırlatmak</h4><p><code>raise</code>, kendi hata
+                        sınıflarımız ve <code>raise … from</code> zinciri.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>4 · Qt + Ayıklama</h4>
+                        <p>Formda hata mesajı, <code>QMessageBox</code>; <code>logging</code>, <code>pdb</code>,
+                            <code>assert</code>.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Sonunda: hatalı kutuyu kırmızıyla gösteren güvenli bir kayıt formu.</p>
+            </section>
+
+            <!-- 3. HATIRLA -->
             <section data-background-color="#020617">
-                <div class="glow-sphere" style="width: 600px; height: 600px; top: -10%; left: -10%; background: #1e3a8a;"></div>
-                <div class="glow-sphere" style="width: 500px; height: 500px; bottom: -10%; right: -10%; background: #881337; animation-delay: -5s;"></div>
+                <span class="chip mb-3"><i data-lucide="history" style="width:14px;height:14px;"></i> Hatırla · Hafta 4–6</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Hatalarla Zaten <span
+                        style="color:#93c5fd;">Tanıştık</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>📐 H6 · TypeError</h4>
+                        <p>“Can't instantiate abstract class…”. Python sözü tutulmayan sınıfı <b>hatayla</b> durdurdu.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🧬 H4 · <code>isinstance</code></h4><p>Bir nesne atasının
+                        türünden de sayılır. Bu hafta <code>except</code> da tam böyle eşleşecek.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🤷 H5 · İki “Not”</h4>
+                        <p><code>NotImplemented</code> bir <b>değer</b>, <code>NotImplementedError</code> bir <b>hata</b>.
+                            İkincisi bu haftanın konusu.</p></div>
+                </div>
+                <div class="glass-card mx-auto p-6 mt-6 fragment fade-in" style="max-width:860px;text-align:left;">
+                    <p style="font-size:0.62em;line-height:1.5;color:#cbd5e1;">Hata bir <b>nesnedir</b>: türü (sınıfı) ve iletisi
+                        vardır. Ona sınıf gibi davranabiliriz: yakalarız, türetiriz, kendimiz üretiriz.</p>
+                </div>
+            </section>
+
+            <!-- 4. SORUN -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="circle-alert" style="width:14px;height:14px;"></i> Sorun</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kullanıcı <span
+                        style="color:#fda4af;">“on iki”</span> Yazarsa?</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="4-13|15-17|19-22">from PySide6.QtWidgets import (QApplication, QWidget, QLineEdit,
+                               QPushButton, QLabel, QVBoxLayout)
+
+class Form(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.giris = QLineEdit()
+        dugme = QPushButton("Kaydet")
+        self.durum = QLabel("—")
+        L = QVBoxLayout(self)
+        for w in (self.giris, dugme, self.durum):
+            L.addWidget(w)
+        dugme.clicked.connect(self.kaydet)
+
+    def kaydet(self):
+        yas = int(self.giris.text())          # "on iki" → ?
+        self.durum.setText(f"Kaydedildi: {yas}")
+
+app = QApplication([])
+pencere = Form()
+pencere.show()
+app.exec()</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>🧮 16. satır</h4><p><code>int("12")</code> → 12. Peki
+                            <code>int("on iki")</code>?</p></div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(250,204,21,0.4);"><h4>🤔 Tahmin et</h4>
+                            <p>Pencere kapanır mı? Etikette ne yazar? Terminalde ne görünür?</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. SORUN: SONUÇ -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="ghost" style="width:14px;height:14px;"></i> Dürüst Not</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Çökmedi, Ama <span
+                        style="color:#fda4af;">Kimse Bir Şey Görmedi</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <div class="flex flex-col items-center gap-2">
+                        <span class="arrow-cta">Kaydet'ten sonra ↓</span>
+                        <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                            class="atitle">Form</span></div><img src="images/gui_sorun.png" alt="on iki yazılı, etiket değişmemiş"
+                            style="width:240px;"></div>
+                    </div>
+                    <div class="term-win" style="max-width:680px;"><div class="term-bar"><span class="adot" style="background:#ff5f56"></span><span
+                        class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span>&nbsp;terminal</div><div
+                        class="term" style="font-size:16px;"><span class="tp">$</span> <span class="tc">python form.py</span>
+<span class="tg">Traceback (most recent call last):</span>
+<span class="tf">  File "…/form.py", line 16, in kaydet</span>
+    yas = int(self.giris.text())          # "on iki" → ?
+<span class="tk">          ^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="te">ValueError: invalid literal for int() with base 10: 'on iki'</span></div></div>
+                </div>
+                <div class="grid grid-cols-3 gap-3 text-left mt-5 cards-xs" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up"><h4>😶 Kullanıcı</h4><p>Hiçbir şey olmadı sanır; etiket hâlâ
+                        “—”.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🖥️ Terminal</h4><p>Hatanın izi orada: türü, iletisi,
+                        satırı. Kullanıcı terminale bakmaz.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🧯 PySide6</h4><p>Slottaki hatayı yazdırdı, olay
+                        döngüsü sürdü; sonraki <code>"12"</code> tıklaması çalışır.</p></div>
+                </div>
+            </section>
+
+            <!-- 6. TRACEBACK OKUMA -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="footprints" style="width:14px;height:14px;"></i> Traceback</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Hata İzini <span
+                        style="color:#93c5fd;">Alttan Oku</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <pre style="flex:1;max-width:560px;"><code class="language-python" data-trim data-line-numbers="1-2|4-6|8-10">def yas_oku(metin):
+    return int(metin)
+
+def kaydet(metin):
+    yas = yas_oku(metin)
+    return f"{yas} yaş kaydedildi"
+
+print(kaydet("12"))       # 12 yaş kaydedildi
+print(kaydet("on iki"))
+# ValueError: invalid literal for int()…</code></pre>
+                    <div class="term-win" style="max-width:520px;"><div class="term-bar"><span class="adot" style="background:#ff5f56"></span><span
+                        class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span>&nbsp;terminal</div><div
+                        class="term sm"><span class="tp">$</span> <span class="tc">python form.py</span>
+12 yaş kaydedildi
+<span class="tg">Traceback (most recent call last):</span>
+<span class="tf">  File "…/form.py", line 9, in &lt;module&gt;</span>
+    print(kaydet("on iki"))
+<span class="tk">          ^^^^^^^^^^^^^^^^</span>
+<span class="tf">  File "…/form.py", line 5, in kaydet</span>
+    yas = yas_oku(metin)
+<span class="tk">          ^^^^^^^^^^^^^^</span>
+<span class="tf">  File "…/form.py", line 2, in yas_oku</span>
+    return int(metin)
+<span class="tk">           ^^^^^^^^^^</span>
+<span class="te">ValueError: invalid literal for int() with base 10: 'on iki'</span></div></div>
+                </div>
+                <div class="grid grid-cols-3 gap-3 text-left mt-5 cards-xs" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up"><h4>1 · En alt satır</h4><p>Tür ve ileti:
+                        <code>ValueError</code>, “invalid literal…”. Önce bunu oku.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · Son <code>File</code></h4><p>Hatanın doğduğu yer:
+                        <code>line 2, in yas_oku</code>. <code>^^^</code> ifadeyi gösterir.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · Yukarı doğru</h4><p>Oraya kim getirdi:
+                        <code>&lt;module&gt;</code> → <code>kaydet</code> → <code>yas_oku</code>.</p></div>
+                </div>
+            </section>
+
+            <!-- 7. TRY / EXCEPT -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="hand" style="width:14px;height:14px;"></i> Yakalamak</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">try</code> /
+                    <code style="color:#93c5fd;">except</code>: <span style="color:#93c5fd;">Düşmeden Tut</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:660px;"><code class="language-python" data-trim data-line-numbers="1-4|5-7|8|10-14">metin = "on iki"
+try:
+    yas = int(metin)                # hata burada
+    print("dönüştü:", yas)          # atlanır
+except ValueError as e:
+    print("yakalandı:", e)
+# yakalandı: invalid literal for int()…
+print("program devam ediyor")  # program devam ediyor
+
+try:
+    sonuc = 10 / int("0")
+except (ValueError, ZeroDivisionError) as e:
+    print(type(e).__name__, "→", e)
+# ZeroDivisionError → division by zero</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:340px;">
+                        <div class="concept-card fragment fade-left"><h4>🪤 <code>except Tür as e</code></h4><p>Yalnız o türü yakalar;
+                            <code>e</code> hata nesnesidir, <code>str(e)</code> iletisi.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>↪️ Atlama</h4><p>Hata satırından sonrası (4. satır)
+                            çalışmaz; program <code>except</code>'ten sonra sürer.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>📦 Demet</h4><p><code>(A, B)</code>: iki türü tek blokta
+                            yakala.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. AKIŞ: ELSE / FINALLY -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="git-fork" style="width:14px;height:14px;"></i> Dört Blok</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">else</code> ve
+                    <code style="color:#93c5fd;">finally</code> <span style="color:#93c5fd;">Ne Zaman Çalışır?</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:560px;"><code class="language-python" data-trim data-line-numbers="2-4|5-8|9-10|11-12|14-22">def bol(girdi):
+    try:
+        n = int(girdi)
+        sonuc = 100 / n
+    except ValueError:
+        print("sayı değil")
+    except ZeroDivisionError:
+        print("sıfıra bölünmez")
+    else:                       # hata OLMAZSA
+        print("sonuç:", sonuc)
+    finally:                    # HER durumda
+        print("bitti")
+
+bol("4")
+# sonuç: 25.0
+# bitti
+bol("abc")
+# sayı değil
+# bitti
+bol("0")
+# sıfıra bölünmez
+# bitti</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:340px;">
+                        <div class="concept-card fragment fade-left"><h4>✅ <code>else</code></h4><p>Yalnız <code>try</code> hatasız
+                            biterse. <code>try</code>'ı kısa tutmaya yarar: “riskli kısım” ile “devamı” ayrılır.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🧹 <code>finally</code></h4><p><b>Her</b> durumda: hata olsa
+                            da, olmasa da. Dosyayı kapat, düğmeyi geri aç.</p></div>
+                        <p class="code-note fragment fade-in" style="font-size:0.46em;">Sıra: <code>try</code> → (<code>except</code>
+                            ya da <code>else</code>) → <code>finally</code>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. ETKİLEŞİMLİ: AKIŞ İZLEYİCİ -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="footprints" style="width:14px;height:14px;"></i> Etkileşimli · Akış İzleyici</span>
+                <h2 class="text-2xl font-black mb-1 tracking-tighter text-white">Hangi Satırlar <span style="color:#93c5fd;">Çalıştı?</span></h2>
+                <p class="code-note mb-3" style="font-size:0.5em;">Bir girdi seç. Satır izi Python'da <code>sys.settrace</code> ile,
+                    çıktılar gerçek çalıştırmayla alındı.</p>
+                <div class="flex items-start justify-center gap-6">
+                    <div class="run-panel" style="min-width:500px;padding:12px 14px;" id="ak-kod">
+                        <code class="runline sm" id="ak-l1"><span class="ln">1</span>def bol(girdi):</code>
+                        <code class="runline sm" id="ak-l2"><span class="ln">2</span>    try:</code>
+                        <code class="runline sm" id="ak-l3"><span class="ln">3</span>        n = int(girdi)</code>
+                        <code class="runline sm" id="ak-l4"><span class="ln">4</span>        sonuc = 100 / n</code>
+                        <code class="runline sm" id="ak-l5"><span class="ln">5</span>    except ValueError:</code>
+                        <code class="runline sm" id="ak-l6"><span class="ln">6</span>        print("sayı değil")</code>
+                        <code class="runline sm" id="ak-l7"><span class="ln">7</span>    except ZeroDivisionError:</code>
+                        <code class="runline sm" id="ak-l8"><span class="ln">8</span>        print("sıfıra bölünmez")</code>
+                        <code class="runline sm" id="ak-l9"><span class="ln">9</span>    else:</code>
+                        <code class="runline sm" id="ak-l10"><span class="ln">10</span>        print("sonuç:", sonuc)</code>
+                        <code class="runline sm" id="ak-l11"><span class="ln">11</span>    finally:</code>
+                        <code class="runline sm" id="ak-l12"><span class="ln">12</span>        print("bitti")</code>
+                    </div>
+                    <div class="flex flex-col gap-3" style="width:420px;">
+                        <div class="pick" id="ak-pick"></div>
+                        <div class="run-panel" style="min-width:0;">
+                            <div class="run-title" id="ak-head">&gt;&gt;&gt; bol(…)</div>
+                            <div class="out-ln" id="ak-out" style="min-height:3.6em;"></div>
+                            <div class="run-badge">çalışan satırlar: <b id="ak-iz">—</b></div>
+                        </div>
+                        <p class="code-note" style="font-size:0.42em;text-align:left;">Not: <code>else:</code> ve
+                            <code>finally:</code> satırları kendileri iz bırakmaz; altlarındaki gövde çalışır.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. HİYERARŞİ -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="network" style="width:14px;height:14px;"></i> İstisnalar da Sınıf</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">except</code>,
+                    <span style="color:#93c5fd;">isinstance Gibi Eşleşir</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="1-3|5-9|11-13">[c.__name__ for c in ZeroDivisionError.__mro__]
+# ['ZeroDivisionError', 'ArithmeticError',
+#   'Exception', 'BaseException', 'object']
+
+try:
+    1 / 0
+except ArithmeticError as e:        # atası yakaladı
+    print("yakalandı:", type(e).__name__)
+# yakalandı: ZeroDivisionError
+
+isinstance(ZeroDivisionError(), ArithmeticError)  # True
+issubclass(KeyError, LookupError)                 # True
+issubclass(KeyboardInterrupt, Exception)          # False</code></pre>
+                    <div class="concept-card fragment fade-left" style="max-width:330px;">
+                        <h4>🌳 Ağacın bir parçası</h4>
+<pre style="margin:6px 0 0;box-shadow:none;background:none;width:auto;font-size:0.4em;line-height:1.5;color:#cbd5e1;">BaseException
+├─ KeyboardInterrupt
+├─ SystemExit
+└─ Exception
+   ├─ ArithmeticError
+   │  ├─ ZeroDivisionError
+   │  └─ OverflowError
+   ├─ LookupError
+   │  ├─ KeyError
+   │  └─ IndexError
+   ├─ ValueError
+   └─ TypeError</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 11. ETKİLEŞİMLİ: HANGİ EXCEPT? -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="filter" style="width:14px;height:14px;"></i> Etkileşimli · Hangi except Yakalar?</span>
+                <h2 class="text-2xl font-black mb-1 tracking-tighter text-white">Yukarıdan Aşağı, <span style="color:#93c5fd;">İlk Uyan Kazanır</span></h2>
+                <p class="code-note mb-3" style="font-size:0.5em;">Bir hata seç. Sonuçlar her satır Python'da gerçekten
+                    çalıştırılarak alındı.</p>
+                <div class="flex items-start justify-center gap-6">
+                    <div class="flex flex-col gap-3" style="width:470px;">
+                        <div class="run-panel" style="min-width:0;">
+                            <code class="runline" id="hx-try">try:</code>
+                            <code class="runline" id="hx-ifade">    …</code>
+                            <code class="runline" id="hx-h0"></code>
+                            <code class="runline" id="hx-h1"></code>
+                            <code class="runline" id="hx-h2"></code>
+                        </div>
+                        <div class="chk-row"><label><input type="checkbox" id="hx-sira"> <code>except Exception</code> en başta</label></div>
+                    </div>
+                    <div class="flex flex-col gap-3" style="width:460px;">
+                        <div class="pick" id="hx-pick"></div>
+                        <div class="run-panel" style="min-width:0;">
+                            <div class="run-title">__mro__ (yukarıdan aşağı aranır)</div>
+                            <div class="mro" id="hx-mro"></div>
+                            <div class="out-ln mt-3" id="hx-out" style="min-height:2.6em;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. MİNİ QUIZ 1 -->
+            <section class="qz">
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 1/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Akış ve Eşleşme</h2>
+                <div class="quiz fragment" data-ok="int(&quot;x&quot;) hata verdi: except çalıştı, else atlandı, finally her durumda."
+                    data-no="Hata oldu: except (A) çalışır, else (B) atlanır, finally (C) her zaman çalışır → A, C.">
+                    <div class="quiz-q">1) <code>try: int("x")</code> · <code>except ValueError: print("A")</code> ·
+                        <code>else: print("B")</code> · <code>finally: print("C")</code> ne yazar?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">A, B, C</button>
+                    <button type="button" class="quiz-opt" data-correct="1">A, C</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Yalnız A</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+                <div class="quiz fragment" data-ok="KeyboardInterrupt, Exception'dan değil BaseException'dan türer."
+                    data-no="issubclass(KeyboardInterrupt, Exception) → False. Ctrl+C, except Exception'dan kaçar.">
+                    <div class="quiz-q">2) <code>except Exception:</code> bloğu Ctrl+C'yi (<code>KeyboardInterrupt</code>) yakalar mı?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">Evet, her hatayı yakalar</button>
+                    <button type="button" class="quiz-opt" data-correct="1">Hayır, o <code>BaseException</code>'dan türer</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Yalnız Windows'ta</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 13. RAISE -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="megaphone" style="width:14px;height:14px;"></i> Fırlatmak</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">raise</code>:
+                    <span style="color:#93c5fd;">Hatayı Biz Başlatalım</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:660px;"><code class="language-python" data-trim data-line-numbers="1-4|6-8|10-16">def yas_dogrula(yas):
+    if yas &lt; 0:
+        raise ValueError(f"yaş negatif olamaz: {yas}")
+    return yas
+
+yas_dogrula(20)                 # 20
+yas_dogrula(-3)
+# ValueError: yaş negatif olamaz: -3
+
+try:
+    yas_dogrula(-3)
+except ValueError:
+    print("kaydedilmedi")
+    raise              # aynı hatayı yukarı geçir
+# kaydedilmedi
+# ValueError: yaş negatif olamaz: -3</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:320px;">
+                        <div class="concept-card fragment fade-left"><h4>📣 <code>raise Tür(ileti)</code></h4><p>Yanlış girdiyi
+                            <b>sessizce</b> kabul etme; ne olduğunu söyleyen bir hata fırlat.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>↩️ Tek başına <code>raise</code></h4><p>Yakaladığın hatayı
+                            aynen yukarı geçir: önce not al, sonra bırak.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 14. ÖZEL İSTİSNALAR -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="git-branch-plus" style="width:14px;height:14px;"></i> Kendi Hatalarımız</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Bir <span style="color:#93c5fd;">Hata
+                        Ailesi</span> Kuralım</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:720px;"><code class="language-python" data-trim data-line-numbers="1-5|7-13|15">class FormHatasi(Exception):    # bizim kök hatamız
+    pass
+
+class BosAlan(FormHatasi): pass
+class AralikDisi(FormHatasi): pass
+
+for hata in (BosAlan("yaş boş"), AralikDisi("yaş 150")):
+    try:
+        raise hata
+    except FormHatasi as e:     # ikisini de yakalar
+        print(type(e).__name__, "→", e)
+# BosAlan → yaş boş
+# AralikDisi → yaş 150
+
+issubclass(AralikDisi, Exception)   # True</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>🌳 Kalıtım (H3)</h4><p><code>Exception</code>'dan türet,
+                            gövde gerekmez; adı zaten anlatır.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🎯 Tek kapı</h4><p><code>except FormHatasi</code> bütün
+                            alt türleri yakalar, ama <code>TypeError</code> gibi <b>programcı</b> hatalarını gizlemez.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. RAISE FROM -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="link" style="width:14px;height:14px;"></i> Zincir</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">raise … from e</code>:
+                    <span style="color:#93c5fd;">Asıl Nedeni Sakla</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <pre class="two" style="flex:1;max-width:590px;"><code class="language-python" data-trim data-line-numbers="2-4|5-8|9-11|13-15">def yas_dogrula(metin):
+    metin = metin.strip()
+    if not metin:
+        raise BosAlan("yaş boş bırakılamaz")
+    try:
+        yas = int(metin)
+    except ValueError as e:
+        raise FormHatasi(f"sayı değil: {metin!r}") from e
+    if not 0 &lt;= yas &lt;= 130:
+        raise AralikDisi(f"0–130 olmalı, {yas} geldi")
+    return yas
+
+yas_dogrula(" 42 ")             # 42
+yas_dogrula("on iki")
+# FormHatasi: sayı değil: 'on iki'</code></pre>
+                    <div class="term-win" style="max-width:560px;"><div class="term-bar"><span class="adot" style="background:#ff5f56"></span><span
+                        class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span>&nbsp;terminal</div><div
+                        class="term xs"><span class="tp">$</span> <span class="tc">python dogrula.py</span>
+<span class="tg">Traceback (most recent call last):</span>
+<span class="tf">  File "…/dogrula.py", line 6, in yas_dogrula</span>
+    yas = int(metin)
+<span class="tk">          ^^^^^^^^^^</span>
+<span class="te">ValueError: invalid literal for int() with base 10: 'on iki'</span>
+
+<span class="tg">The above exception was the direct cause of the following exception:</span>
+
+<span class="tg">Traceback (most recent call last):</span>
+<span class="tf">  File "…/dogrula.py", line 14, in &lt;module&gt;</span>
+    yas_dogrula("on iki")
+<span class="tf">  File "…/dogrula.py", line 8, in yas_dogrula</span>
+    raise FormHatasi(f"sayı değil: {metin!r}") from e
+<span class="te">FormHatasi: sayı değil: 'on iki'</span></div></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in">Kullanıcıya bizim iletimiz (“sayı değil”), geliştiriciye asıl neden
+                    (<code>ValueError</code>): ikisi de <code>e.__cause__</code> ile birbirine bağlı.</p>
+            </section>
+
+            <!-- 16. WITH -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="door-open" style="width:14px;height:14px;"></i> Bağlam Yöneticisi</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">with</code>:
+                    <span style="color:#93c5fd;">Nesneye Gömülü finally</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:660px;"><code class="language-python" data-trim data-line-numbers="1-6|7-10|12-16|17-21">class Islem:                            # bağlam yöneticisi
+    def __init__(self, ad):
+        self.ad = ad
+    def __enter__(self):                # with'e girerken
+        print(f"{self.ad}: başladı")
+        return self
+    def __exit__(self, tur, deger, iz): # çıkarken, HER durumda
+        durum = f" (hata: {tur.__name__})" if tur else ""
+        print(f"{self.ad}: bitti{durum}")
+        return False                    # hatayı yutma
+
+with Islem("kayıt"):
+    print("yazılıyor…")
+# kayıt: başladı
+# yazılıyor…
+# kayıt: bitti
+with Islem("kayıt"):
+    1 / 0
+# kayıt: başladı
+# kayıt: bitti (hata: ZeroDivisionError)
+# ZeroDivisionError: division by zero</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:320px;">
+                        <div class="concept-card fragment fade-left"><h4>🚪 İki dunder (H5)</h4><p><code>with</code> girerken
+                            <code>__enter__</code>'ı, çıkarken <code>__exit__</code>'i çağırır.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🧹 Hata olsa da</h4><p><code>__exit__</code> hatanın türünü
+                            alır; <code>False</code> döndürürse hata yoluna devam eder.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>📄 Tanıdık örnek</h4><p><code>with open(…) as f:</code>
+                            dosya her durumda kapanır.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 17. QT FORMU: GÜVENLİ -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="shield-check" style="width:14px;height:14px;"></i> Qt'de</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Slotta Yakala, <span
+                        style="color:#93c5fd;">Formda Anlat</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <pre class="long" style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="1-2|3-7|8-10|12-15">class GuvenliForm(Form):                # Form: (Slayt 4)
+    def kaydet(self):                   # yalnız bunu eziyoruz (H3)
+        try:
+            yas = yas_dogrula(self.giris.text())
+        except FormHatasi as e:         # yalnız bizim hatalarımız
+            self.durum.setText(f"⚠ {e}")
+            self.durum.setStyleSheet("color: #fca5a5")
+        else:
+            self.durum.setText(f"✓ Kaydedildi: {yas}")
+            self.durum.setStyleSheet("color: #86efac")
+
+f = GuvenliForm()
+f.giris.setText("on iki")
+f.findChild(QPushButton).click()
+f.durum.text()                  # "⚠ sayı değil: 'on iki'"</code></pre>
+                    <div class="fragment fade-left flex flex-col items-center gap-2">
+                        <span class="arrow-cta">Sonuç ↓</span>
+                        <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                            class="atitle">"on iki"</span></div><img src="images/gui_form_hata.png" alt="sayı değil uyarısı"
+                            style="width:230px;"></div>
+                        <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                            class="atitle">" 42 "</span></div><img src="images/gui_form_ok.png" alt="Kaydedildi 42"
+                            style="width:230px;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 18. CANLI FORM -->
+            <section data-prevent-swipe>
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip"><i data-lucide="play" style="width:14px;height:14px;"></i> Canlı</span>
+                    <span class="live-badge"><span class="live-dot"></span> bir girdi seç, Kaydet'e bas</span>
+                </div>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Hangi Girdi <span
+                        style="color:#7dd3fc;">Hangi Hata?</span></h2>
+                <p class="code-note mb-4" style="font-size:0.5em;">Her sonuç <code>GuvenliForm</code>'a o metin yazılıp
+                    düğmeye basılarak Qt'de alındı.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <div class="flex flex-col gap-3" style="width:400px;">
+                        <div class="pick" id="fm-pick"></div>
+                        <div class="concept-card text-left" style="padding:12px 16px;">
+                            <h4 style="font-size:0.6em;">😮 Şaşırtanlar</h4>
+                            <p style="font-size:0.46em;line-height:1.5;"><code>'1_000'</code> → 1000: <code>int()</code> alt
+                                çizgiyi kabul eder. <code>'١٢'</code> → 12: Arap-Hint rakamlarını da okur. Aralık denetimi bu
+                                yüzden şart.</p>
+                        </div>
+                    </div>
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">GuvenliForm — canlı</span></div>
+                        <div class="qt-body" style="padding:22px 26px;gap:12px;min-width:380px;">
+                            <div class="fm-field" id="fm-in"></div>
+                            <button type="button" class="qt-btn" id="fm-btn" style="width:100%;">Kaydet</button>
+                            <div class="fm-durum" id="fm-durum">—</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 19. QMESSAGEBOX -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="message-square-warning" style="width:14px;height:14px;"></i> Mesaj Kutusu</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">QMessageBox</code>:
+                    <span style="color:#93c5fd;">Kaçırılamayan Uyarı</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:700px;"><code class="language-python" data-trim data-line-numbers="3-4|5-6|7-9|10">class MesajliForm(Form):        # Form: (Slayt 4)
+    def kaydet(self):
+        try:
+            yas = yas_dogrula(self.giris.text())
+        except FormHatasi as e:
+            QMessageBox.warning(self, "Geçersiz giriş", str(e))
+            self.giris.selectAll()          # düzeltmeye hazır
+            self.giris.setFocus()
+            return
+        self.durum.setText(f"✓ Kaydedildi: {yas}")</code></pre>
+                    <div class="fragment fade-left flex flex-col items-center gap-3" style="max-width:300px;">
+                        <span class="arrow-cta">Sonuç ↓</span>
+                        <div class="app-frame"><img src="images/gui_mesaj.png" alt="Uyarı kutusu: sayı değil 'on iki'"
+                            style="width:200px;"></div>
+                        <p class="code-note" style="font-size:0.44em;text-align:left;">Kutu <b>modal</b>: OK'e basılana kadar form
+                            bekler; sonra metin seçili gelir. Başlık macOS'ta gösterilmez, Windows/Linux'ta pencere çubuğundadır.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 20. EAFP vs LBYL -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="scale" style="width:14px;height:14px;"></i> Dürüst Karşılaştırma</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Önce Bak mı, <span
+                        style="color:#93c5fd;">Önce Dene mi?</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <pre style="flex:1;max-width:620px;"><code class="language-python" data-trim data-line-numbers="1-4|6-10|12-15">def oku_lbyl(metin):     # önce bak, sonra atla
+    if metin.isdigit():
+        return int(metin)
+    return None
+
+def oku_eafp(metin):     # dene, olmazsa yakala
+    try:
+        return int(metin)
+    except ValueError:
+        return None
+
+oku_lbyl("-3"), oku_eafp("-3")    # (None, -3)
+oku_eafp("²")                     # None
+oku_lbyl("²")
+# ValueError: invalid literal for int()…</code></pre>
+                    <div class="flex flex-col gap-3" style="max-width:420px;">
+                        <table class="ea-tab"><tr><th>girdi</th><th>isdigit()</th><th>lbyl</th><th>eafp</th></tr><tr><td>&#x27;12&#x27;</td><td class="t">True</td><td class="">12</td><td>12</td></tr><tr><td>&#x27; 12 &#x27;</td><td class="f">False</td><td class="">None</td><td>12</td></tr><tr><td>&#x27;-3&#x27;</td><td class="f">False</td><td class="">None</td><td>-3</td></tr><tr><td>&#x27;1_000&#x27;</td><td class="f">False</td><td class="">None</td><td>1000</td></tr><tr><td>&#x27;²&#x27;</td><td class="t">True</td><td class="bad">ValueError</td><td>None</td></tr><tr><td>&#x27;١٢&#x27;</td><td class="t">True</td><td class="">12</td><td>12</td></tr><tr><td>&#x27;on iki&#x27;</td><td class="f">False</td><td class="">None</td><td>None</td></tr></table>
+                        <p class="code-note fragment fade-in" style="font-size:0.44em;text-align:left;"><code>isdigit()</code>
+                            “rakam karakteri mi?” diye sorar, “<code>int()</code> okur mu?” diye değil: <code>'²'</code> rakam
+                            sayılır ama okunamaz, <code>'-3'</code> okunur ama rakam değildir. Python'un tercihi: <b>dene,
+                            olmazsa yakala</b>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. LOGGING -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="scroll-text" style="width:14px;height:14px;"></i> Hata Ayıklama · 1</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">print</code>
+                    Yerine <code style="color:#93c5fd;">logging</code></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <pre class="two" style="flex:1;max-width:560px;"><code class="language-python" data-trim data-line-numbers="1-3|6|9-11|12|15-16">import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("form")
+
+def yas_oku(metin):
+    log.debug("ham girdi: %r", metin)   # INFO'da gizli
+    try:
+        yas = int(metin)
+    except ValueError:
+        log.exception("yaş okunamadı: %r", metin)
+        return None
+    log.info("yaş = %d", yas)
+    return yas
+
+yas_oku("12")                   # 12
+yas_oku("on iki")               # None</code></pre>
+                    <div class="flex flex-col gap-3" style="max-width:520px;">
+                        <div class="term-win"><div class="term-bar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span>&nbsp;terminal</div><div
+                            class="term sm"><span class="tp">$</span> <span class="tc">python form.py</span>
+<span class="tl">INFO:form:yaş = 12</span>
+<span class="tl">ERROR:form:yaş okunamadı: 'on iki'</span>
+<span class="tg">Traceback (most recent call last):</span>
+<span class="tf">  File "…/form.py", line 8, in yas_oku</span>
+    yas = int(metin)
+<span class="tk">          ^^^^^^^^^^</span>
+<span class="te">ValueError: invalid literal for int() with base 10: 'on iki'</span></div></div>
+                        <div class="concept-card fragment fade-up text-left" style="padding:12px 16px;">
+                            <h4 style="font-size:0.6em;">🎚️ Seviyeler</h4>
+                            <p style="font-size:0.46em;line-height:1.5;"><code>DEBUG &lt; INFO &lt; WARNING &lt; ERROR</code>.
+                                <code>level=INFO</code>: <code>debug</code> satırı susar, silmene gerek yok.
+                                <code>log.exception</code> izi de yazar.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 22. PDB -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="bug" style="width:14px;height:14px;"></i> Hata Ayıklama · 2</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">breakpoint()</code>:
+                    <span style="color:#93c5fd;">Programı Durdur, İçine Bak</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <div class="flex flex-col gap-3" style="max-width:540px;">
+                        <pre class="two" style="margin:0;width:540px;"><code class="language-python" data-trim data-line-numbers="3|6|7">def ortalama(notlar):
+    toplam = sum(notlar)
+    breakpoint()            # burada durur
+    return toplam / len(notlar)
+
+print(ortalama([70, 85, 90]))  # 81.66666666666667
+print(ortalama([]))
+# ZeroDivisionError: division by zero</code></pre>
+                        <div class="concept-card fragment fade-up text-left" style="padding:12px 16px;">
+                            <h4 style="font-size:0.6em;">⌨️ Beş komut yeter</h4>
+                            <p style="font-size:0.46em;line-height:1.6;"><code>p ifade</code> yazdır · <code>n</code> sonraki satır ·
+                                <code>s</code> fonksiyonun içine gir · <code>c</code> devam et · <code>q</code> çık.
+                                VS Code / PyCharm'daki kırmızı nokta aynı işi yapar.</p>
+                        </div>
+                    </div>
+                    <div class="term-win" style="max-width:480px;"><div class="term-bar"><span class="adot" style="background:#ff5f56"></span><span
+                        class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span>&nbsp;terminal</div><div
+                        class="term sm"><span class="tp">$</span> <span class="tc">python ort.py</span>
+<span class="tf">&gt; …/ort.py(4)ortalama()</span>
+-&gt; return toplam / len(notlar)
+<span class="ty">(Pdb)</span> <span class="tc">p toplam, len(notlar)</span>
+(245, 3)
+<span class="ty">(Pdb)</span> <span class="tc">c</span>
+81.66666666666667
+<span class="tf">&gt; …/ort.py(4)ortalama()</span>
+-&gt; return toplam / len(notlar)
+<span class="ty">(Pdb)</span> <span class="tc">p notlar</span>
+[]
+<span class="ty">(Pdb)</span> <span class="tc">n</span>
+<span class="te">ZeroDivisionError: division by zero</span>
+<span class="tf">&gt; …/ort.py(4)ortalama()</span>
+-&gt; return toplam / len(notlar)
+<span class="ty">(Pdb)</span> <span class="tc">q</span></div></div>
+                </div>
+            </section>
+
+            <!-- 23. ASSERT -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="badge-check" style="width:14px;height:14px;"></i> Hata Ayıklama · 3</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white"><code style="color:#93c5fd;">assert</code>:
+                    <span style="color:#93c5fd;">Geliştiricinin Sözü</span></h2>
+                <div class="flex items-start justify-center gap-6">
+                    <div class="flex flex-col gap-3" style="max-width:560px;">
+                        <pre class="two" style="margin:0;width:560px;"><code class="language-python" data-trim data-line-numbers="2|5-7">def ortalama(notlar):
+    assert notlar, "boş liste geldi"  # iç denetim
+    return sum(notlar) / len(notlar)
+
+print(ortalama([70, 85, 90]))  # 81.66666666666667
+print(ortalama([]))
+# AssertionError: boş liste geldi</code></pre>
+                        <div class="concept-card fragment fade-up text-left" style="padding:12px 16px;border-color:rgba(244,63,94,0.4);">
+                            <h4 style="font-size:0.6em;">⚠️ Kullanıcı girdisi için değil</h4>
+                            <p style="font-size:0.46em;line-height:1.6;"><code>python -O</code> bütün <code>assert</code>'leri siler:
+                                denetim kaybolur, hata başka yerde patlar. Girdi denetimi <code>if</code> + <code>raise</code> ile
+                                yapılır; <code>assert</code> “bu asla olmamalı” notudur.</p>
+                        </div>
+                    </div>
+                    <div class="term-win" style="max-width:480px;"><div class="term-bar"><span class="adot" style="background:#ff5f56"></span><span
+                        class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span>&nbsp;terminal</div><div
+                        class="term sm"><span class="tp">$</span> <span class="tc">python ort.py</span>
+81.66666666666667
+<span class="tg">Traceback (most recent call last):</span>
+<span class="tf">  File "…/ort.py", line 6, in &lt;module&gt;</span>
+    print(ortalama([]))
+<span class="tk">          ^^^^^^^^^^^^</span>
+<span class="tf">  File "…/ort.py", line 2, in ortalama</span>
+    assert notlar, "boş liste geldi"  # iç denetim
+<span class="tk">           ^^^^^^</span>
+<span class="te">AssertionError: boş liste geldi</span>
+
+<span class="tp">$</span> <span class="tc">python -O ort.py</span>
+81.66666666666667
+<span class="tg">Traceback (most recent call last):</span>
+<span class="tf">  File "…/ort.py", line 6, in &lt;module&gt;</span>
+    print(ortalama([]))
+<span class="tk">          ^^^^^^^^^^^^</span>
+<span class="tf">  File "…/ort.py", line 3, in ortalama</span>
+    return sum(notlar) / len(notlar)
+           ~~~~~~~~~~~~^~~~~~~~~~~~~
+<span class="te">ZeroDivisionError: division by zero</span></div></div>
+                </div>
+            </section>
+
+            <!-- 24. KARŞILAŞTIRMA -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="columns-3" style="width:14px;height:14px;"></i> Yan Yana</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Hangi Araç, <span
+                        style="color:#93c5fd;">Ne Zaman?</span></h2>
+                <div class="glass-card mx-auto" style="max-width:1080px;padding:14px 22px;">
+                    <table style="width:100%;font-size:0.44em;border-collapse:collapse;text-align:left;" class="code-note">
+                        <tr style="color:#93c5fd;"><th style="padding:5px 10px;">araç</th><th>ne için?</th><th>yanlış kullanım</th></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:5px 10px;color:#e2e8f0;">try / except Tür</td><td>beklenen, kurtarılabilir hata (girdi, dosya, ağ)</td><td style="color:#fca5a5;">çıplak <code>except:</code>, her şeyi yutmak</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:5px 10px;color:#e2e8f0;">else / finally</td><td>başarı yolu / her durumda temizlik</td><td style="color:#fca5a5;">temizliği <code>try</code>'ın sonuna koymak</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:5px 10px;color:#e2e8f0;">raise / özel sınıf</td><td>kuralı bozan girdiyi adıyla bildirmek</td><td style="color:#fca5a5;">hata yerine <code>None</code> ya da <code>-1</code> döndürmek</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:5px 10px;color:#e2e8f0;">with</td><td>açılan her şeyi kapatmak</td><td style="color:#fca5a5;"><code>open</code> edip <code>close</code>'u unutmak</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:5px 10px;color:#e2e8f0;">logging</td><td>kalıcı, seviyeli kayıt</td><td style="color:#fca5a5;">her yere <code>print</code>, sonra silmek</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:5px 10px;color:#e2e8f0;">breakpoint()</td><td>durup değişkenlere bakmak</td><td style="color:#fca5a5;">teslim edilen kodda bırakmak</td></tr>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.1);"><td style="padding:5px 10px;color:#e2e8f0;">assert</td><td>“asla olmamalı” iç denetimi</td><td style="color:#fca5a5;">kullanıcı girdisini denetlemek</td></tr>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 25. MİNİ QUIZ 2 -->
+            <section class="qz" data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 2/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Qt ve Ayıklama</h2>
+                <div class="quiz fragment" data-ok="PySide6 izi terminale yazar, olay döngüsü sürer; etiket güncellenmez."
+                    data-no="Uygulama çökmez: PySide6 traceback'i yazdırır, olay döngüsü devam eder (Slayt 5).">
+                    <div class="quiz-q">1) Slotta yakalanmayan <code>ValueError</code> olursa (PySide6)?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">Pencere kapanır, program biter</button>
+                    <button type="button" class="quiz-opt" data-correct="1">Traceback terminale yazılır, pencere çalışmaya devam eder</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Qt kendiliğinden bir hata kutusu açar</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+                <div class="quiz fragment" data-ok="-O ile assert satırı hiç çalışmaz; boş listede ZeroDivisionError patlar."
+                    data-no="python -O assert'leri siler: denetim yok, len([]) = 0 ile bölme → ZeroDivisionError.">
+                    <div class="quiz-q">2) <code>python -O ort.py</code> ile <code>ortalama([])</code> ne verir?</div>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>AssertionError: boş liste geldi</code></button>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>ZeroDivisionError: division by zero</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>0</code></button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 26. SIK YAPILAN HATALAR -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="triangle-alert" style="width:14px;height:14px;"></i> Dikkat</span>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Sık Yapılan Hatalar</h2>
+                <div class="grid grid-cols-2 gap-4 text-left" style="max-width:1080px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🕳️ <code>except: pass</code></h4><p>Çıplak <code>except</code> Ctrl+C dahil her şeyi yakalar,
+                        <code>pass</code> izini siler. Hata kaybolur, sen aramaya devam edersin.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>📏 Kocaman <code>try</code></h4><p>Yirmi satırı sarınca hangisinin patladığı bilinmez. Yalnız riskli
+                        satırı sar, devamını <code>else</code>'e koy.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🔢 Yanlış sıra</h4><p><code>except Exception</code> en üstteyse altındakiler hiç çalışmaz
+                        (Slayt 11). Özelden genele sırala.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.35);">
+                        <h4>🙈 Slotu sarmamak</h4><p>Qt'de yakalanmayan hata kullanıcıya hiçbir şey göstermez. Girdi okuyan her
+                        slotta <code>try</code>, sonuç formda.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Kural: beklediğin hatayı <b>adıyla</b> yakala, beklemediğini
+                    <b>gizleme</b>.</p>
+            </section>
+
+            <!-- 27. ÖZET -->
+            <section data-background-color="#020617">
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-3 text-left cards-tight" style="max-width:1060px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ Traceback en alttan okunur: tür, ileti, yer, çağıranlar</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>try / except Tür as e</code>: düşmeden tut, programı sürdür</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>else</code> başarıda, <code>finally</code> her durumda çalışır</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>except</code>, <code>isinstance</code> gibi eşleşir; ilk uyan kazanır</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>raise</code>, özel hata ailesi ve <code>raise … from e</code></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>with</code>: <code>__enter__</code> / <code>__exit__</code> ile her durumda temizlik</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Qt: slotta yakala, formda ya da <code>QMessageBox</code>'ta anlat</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>logging</code>, <code>breakpoint()</code>, <code>assert</code>: her biri kendi işine</p></div>
+                </div>
+            </section>
+
+            <!-- 28. PROJE -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="dumbbell" style="width:14px;height:14px;"></i> Ders Sonu Uygulama · Proje</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Proje: Güvenli Kayıt Formu</h2>
+                <p class="code-note mb-3" style="font-size:0.54em;">Hata, hangi kutudan geldiğini <b>kendisi</b> söylesin:
+                    <code>e.alan</code>.</p>
+                <div class="flex items-start justify-center gap-8">
+                    <pre class="long" style="flex:1;max-width:640px;"><code class="language-python" data-trim data-line-numbers="1-4|6-10|12-13|15-16">class FormHatasi(Exception):
+    def __init__(self, alan, mesaj):
+        super().__init__(mesaj)
+        self.alan = alan            # hangi kutu hatalı?
+
+def ad_dogrula(metin):
+    metin = metin.strip()
+    if len(metin) &lt; 2:
+        raise FormHatasi("ad", "en az 2 harf")
+    return metin
+
+def yas_dogrula(metin):
+    ...                             # GÖREV 1: H7'deki gibi
+
+e = FormHatasi("ad", "en az 2 harf")
+e.alan, str(e)                  # ('ad', 'en az 2 harf')</code></pre>
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="app-frame"><div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span
+                            class="adot" style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                            class="atitle">KayitFormu</span></div><img src="images/gui_proje_hedef.png" alt="Yaş kutusu kırmızı, uyarı"
+                            style="width:300px;"></div>
+                        <div class="concept-card" style="max-width:320px;text-align:left;">
+                            <h4>🎯 Hedef</h4>
+                            <p>Ad “Ayşe”, yaş “abc” → yaş kutusu kırmızı, altta uyarı. Yaş 21 → “✓ Ayşe, 21 yaş”. Süre: ~40 dk.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 29. PROJE: FORM -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;">
+                    <i data-lucide="layout-panel-top" style="width:14px;height:14px;"></i> Proje · Form Tarafı</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kutular Sözlükte, <span
+                        style="color:#93c5fd;">Hata Adresi Biliyor</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:720px;"><code class="language-python" data-trim data-line-numbers="4|5-7|10-13">class KayitFormu(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.kutular = {"ad": QLineEdit(),
+                        "yas": QLineEdit()}
+        form = QFormLayout(self)
+        form.addRow("Ad", self.kutular["ad"])
+        form.addRow("Yaş", self.kutular["yas"])
+        ...          # GÖREV 2: Kaydet + durum
+
+    def kaydet(self):
+        for kutu in self.kutular.values():
+            kutu.setStyleSheet("")   # eski kırmızıyı sil
+        ...          # GÖREV 3: try / except / else</code></pre>
+                    <div class="grid gap-3 text-left" style="max-width:300px;">
+                        <div class="concept-card fragment fade-left"><h4>🗂️ Sözlük</h4><p><code>self.kutular[e.alan]</code>: hangi
+                            kutu hatalıysa onu kırmızı yap, tek satır.</p></div>
+                        <div class="concept-card fragment fade-left"><h4>🧹 Önce temizle</h4><p>Her denemede eski kırmızıyı sil;
+                            yoksa düzeltilen kutu kırmızı kalır.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 30. ADIM ADIM -->
+            <section>
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">Adım Adım Nasıl İlerleyeceksin?</h2>
+                <div class="grid grid-cols-2 gap-4 text-left" style="max-width:1060px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>1 · Hata sınıfı</h4><p><code>FormHatasi(alan, mesaj)</code>
+                        hazır. Dene: <code>str(e)</code> ileti, <code>e.alan</code> kutunun adı.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · Doğrulayıcılar</h4><p><code>yas_dogrula</code>: boş, sayı
+                        değil (<code>from e</code>), 0–130 dışı. Her biri <code>FormHatasi("yas", …)</code>.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · Düğme ve durum</h4><p><code>QPushButton("Kaydet")</code>,
+                        bir <code>QLabel</code>; <code>form.addRow(…)</code> ile ekle, <code>clicked</code>'i bağla.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>4 · <code>kaydet</code></h4><p><code>try</code>: iki doğrulayıcı.
+                        <code>except FormHatasi as e</code>: kutuyu kırmızı yap. <code>else</code>: yeşil onay.</p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">✅ Kontrol: ad “A” → <code>⚠ ad: en az 2 harf</code>; yaş “abc” →
+                    <code>⚠ yas: sayı değil: 'abc'</code>; ikisi düzgün → yeşil.</p>
+            </section>
+
+            <!-- 31. İLERİ GÖREVLER -->
+            <section data-background-color="#020617">
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-white">İleri Görevler <span
+                        style="color:#93c5fd;">Erken Bitirdiysen</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>⭐ Kayıt dosyası</h4><p><code>basicConfig</code>'e <code>filename="kayit.log"</code> ver: her kaydı
+                        <code>info</code>, her hatayı <code>warning</code> olarak yaz.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐ Meşgul düğme</h4><p><code>with Mesgul(dugme):</code> bir
+                        bağlam yöneticisi; içerideyken düğme kapalı, hata olsa da çıkışta açılsın.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⭐⭐⭐ Son çare</h4><p><code>sys.excepthook</code>'u ez:
+                        yakalanmayan her hata bir <code>QMessageBox</code>'ta görünsün, izi log dosyasına gitsin.</p></div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Hepsinde aynı soru: hata nerede doğuyor, kim yakalıyor, kullanıcı ne görüyor?</p>
+            </section>
+
+            <!-- 32. SONRAKİ HAFTA -->
+            <section>
                 <div class="flex flex-col items-center">
-                    <span class="week-number text-lg mb-4">Hafta 07</span>
-                    <h1 class="text-5xl md:text-6xl mb-6 leading-tight font-extrabold tracking-tighter text-white">İstisna Yönetimi ve Hata Ayıklama</h1>
-                    <div class="h-1 w-20 bg-gradient-to-r from-blue-700 to-rose-900 rounded-full mb-8"></div>
-                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">İleri Programlama · YPZ209</p>
+                    <span class="chip mb-6"><i data-lucide="arrow-right-circle" style="width:14px;height:14px;"></i> Sonraki Hafta</span>
+                    <h2 class="text-4xl font-black mb-4 tracking-tighter text-white">Düzenli İfadeler <span class="grad-text">(Regex)</span></h2>
+                    <p class="code-note mb-6" style="max-width:780px;">Bu hafta <code>'12.5'</code>, <code>'1_000'</code> gibi
+                        girdileri tek tek yakaladık. Gelecek hafta biçimi bir <b>desenle</b> anlatacağız: <code>re</code>
+                        modülü ve yanlış girdiyi daha yazarken durduran <code>QRegularExpressionValidator</code>.</p>
+                    <a href="../index.html" class="nav-link">← Ders Ana Sayfası</a>
                 </div>
             </section>
-            <section data-background-color="#020617">
-                <div class="glass-card items-center text-center mx-auto p-10" style="max-width: 640px;">
-                    <i data-lucide="hammer" class="text-rose-500 mb-4" style="width: 48px; height: 48px;"></i>
-                    <h2 class="text-3xl font-black text-white mb-4">İçerik Yakında</h2>
-                    <p class="bio-text mb-6">Bu haftanın slayt içeriği hazırlanmaktadır ve dönem boyunca güncellenecektir.</p>
-                    <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
-                </div>
-            </section>
+
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
     <script src="../js/main.js"></script>
     <script>
-        if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-        Reveal.initialize({
-            hash: false, history: false, center: true, transition: 'convex',
-            backgroundTransition: 'fade', width: 1200, height: 700, margin: 0.1
+        initReveal({
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            margin: 0.06,
+            slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
         });
     </script>
+    <script>
+        // ===== CANLI ETKİLEŞİMLER (Hafta 7) =====
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+            function $(id) { return document.getElementById(id); }
+            function flash(el, ms) { if (!el) return; el.classList.add('active'); setTimeout(function () { el.classList.remove('active'); }, ms || 380); }
+            function bump(el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+
+            function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+            function pyrepr(s) { return "'" + s + "'"; }
+
+            // ---------------------------------------------------------------- Akış izleyici (satır izi Python'dan)
+            (function () {
+                if (!$('ak-pick')) return;
+                var AKIS = [{"girdi": "4", "satir": [2, 3, 4, 10, 12], "cikti": ["sonuç: 25.0", "bitti"]}, {"girdi": "abc", "satir": [2, 3, 5, 6, 12], "cikti": ["sayı değil", "bitti"]}, {"girdi": "0", "satir": [2, 3, 4, 5, 7, 8, 12], "cikti": ["sıfıra bölünmez", "bitti"]}, {"girdi": "4.5", "satir": [2, 3, 5, 6, 12], "cikti": ["sayı değil", "bitti"]}, {"girdi": " 8 ", "satir": [2, 3, 4, 10, 12], "cikti": ["sonuç: 12.5", "bitti"]}];
+                var timers = [], YAZAN = { 6: 1, 8: 1, 10: 1, 12: 1 };
+                function temizle() { for (var i = 1; i <= 12; i++) $('ak-l' + i).classList.remove('active', 'done', 'miss'); }
+                function oynat(a, btn) {
+                    timers.forEach(clearTimeout); timers = []; temizle();
+                    $('ak-pick').querySelectorAll('button').forEach(function (b) { b.classList.toggle('sel', b === btn); });
+                    $('ak-head').textContent = '>>> bol(' + pyrepr(a.girdi) + ')';
+                    $('ak-out').innerHTML = ''; $('ak-iz').textContent = '…';
+                    var yazilan = 0;
+                    a.satir.forEach(function (n, k) {
+                        timers.push(setTimeout(function () {
+                            for (var i = 1; i <= 12; i++) if ($('ak-l' + i).classList.contains('active')) { $('ak-l' + i).classList.remove('active'); $('ak-l' + i).classList.add('done'); }
+                            $('ak-l' + n).classList.add('active');
+                            if (YAZAN[n] && yazilan < a.cikti.length) {
+                                var s = a.cikti[yazilan++];
+                                $('ak-out').innerHTML += (yazilan > 1 ? '\n' : '') + (s === 'bitti' ? '<span class="cm">' + esc(s) + '</span>'
+                                    : (s.indexOf('sonuç') === 0 ? '<span class="ok">' : '<span class="bad">') + esc(s) + '</span>');
+                            }
+                        }, 380 * (k + 1)));
+                    });
+                    timers.push(setTimeout(function () {
+                        for (var i = 1; i <= 12; i++) {
+                            var el = $('ak-l' + i); el.classList.remove('active');
+                            if (a.satir.indexOf(i) >= 0) el.classList.add('done'); else if (i > 1) el.classList.add('miss');
+                        }
+                        $('ak-iz').textContent = a.satir.join(' → ');
+                    }, 380 * (a.satir.length + 1)));
+                }
+                AKIS.forEach(function (a) {
+                    var b = document.createElement('button'); b.type = 'button'; b.className = 'qt-btn mini'; b.textContent = pyrepr(a.girdi);
+                    b.addEventListener('click', function (e) { stop(e); this.blur(); oynat(a, b); });
+                    $('ak-pick').appendChild(b);
+                });
+                $('ak-out').innerHTML = '<span class="cm"># bir girdi seç</span>';
+            })();
+
+            // ---------------------------------------------------------------- Hangi except yakalar? (eşleşmeler Python'dan)
+            (function () {
+                if (!$('hx-pick')) return;
+                var HANGI = {"olay": [{"ad": "1 / 0", "kod": "1 / 0", "tur": "ZeroDivisionError", "mesaj": "division by zero", "mro": ["ZeroDivisionError", "ArithmeticError", "Exception", "BaseException", "object"], "a": 0, "b": 0}, {"ad": "math.exp(1000)", "kod": "math.exp(1000)", "tur": "OverflowError", "mesaj": "math range error", "mro": ["OverflowError", "ArithmeticError", "Exception", "BaseException", "object"], "a": 0, "b": 0}, {"ad": "{}[\"x\"]", "kod": "{}[\"x\"]", "tur": "KeyError", "mesaj": "'x'", "mro": ["KeyError", "LookupError", "Exception", "BaseException", "object"], "a": 1, "b": 0}, {"ad": "[][0]", "kod": "[][0]", "tur": "IndexError", "mesaj": "list index out of range", "mro": ["IndexError", "LookupError", "Exception", "BaseException", "object"], "a": 1, "b": 0}, {"ad": "int(\"a\")", "kod": "int(\"a\")", "tur": "ValueError", "mesaj": "invalid literal for int() with base 10: 'a'", "mro": ["ValueError", "Exception", "BaseException", "object"], "a": 2, "b": 0}, {"ad": "\"a\" + 1", "kod": "\"a\" + 1", "tur": "TypeError", "mesaj": "can only concatenate str (not \"int\") to str", "mro": ["TypeError", "Exception", "BaseException", "object"], "a": 2, "b": 0}, {"ad": "Ctrl+C", "kod": "raise KeyboardInterrupt", "tur": "KeyboardInterrupt", "mesaj": "", "mro": ["KeyboardInterrupt", "BaseException", "object"], "a": null, "b": null}], "A": ["ArithmeticError", "LookupError", "Exception"], "B": ["Exception", "ArithmeticError", "LookupError"]};
+                var secili = null;
+                function sira() { return $('hx-sira').checked ? HANGI.B : HANGI.A; }
+                function ciz() {
+                    var S = sira(), B = $('hx-sira').checked;
+                    S.forEach(function (ad, i) { var el = $('hx-h' + i); el.textContent = 'except ' + ad + ':'; el.classList.remove('hit', 'miss', 'over'); });
+                    if (!secili) { $('hx-mro').innerHTML = ''; $('hx-out').innerHTML = '<span class="cm"># bir hata seç</span>'; return; }
+                    var h = secili, idx = B ? h.b : h.a;
+                    $('hx-ifade').textContent = '    ' + h.kod;
+                    S.forEach(function (ad, i) {
+                        var el = $('hx-h' + i);
+                        if (idx === null) el.classList.add('miss');
+                        else if (i < idx) el.classList.add('miss');
+                        else if (i === idx) el.classList.add('hit');
+                        else el.classList.add('over');
+                    });
+                    var hedef = idx === null ? null : S[idx];
+                    $('hx-mro').innerHTML = h.mro.map(function (c) { return '<span class="c' + (c === hedef ? ' hit' : '') + '">' + c + '</span>'; }).join('<span class="ok">→</span>');
+                    var ileti = h.tur + (h.mesaj ? ': ' + h.mesaj : '');
+                    if (idx === null) $('hx-out').innerHTML = '<span class="bad">' + esc(ileti) + '</span>\n<span class="cm"># hiçbiri yakalamadı: ' + h.tur + ', Exception değil BaseException ailesinden</span>';
+                    else {
+                        var not_ = (B && h.a !== null && HANGI.A[h.a] !== 'Exception') ? '\n<span class="cm"># except ' + HANGI.A[h.a] + ' satırına hiç sıra gelmedi</span>' : '';
+                        $('hx-out').innerHTML = '<span class="str">' + esc(ileti) + '</span>\n<span class="ok">yakalayan: except ' + hedef + '</span>' + not_;
+                    }
+                }
+                HANGI.olay.forEach(function (h) {
+                    var b = document.createElement('button'); b.type = 'button'; b.className = 'qt-btn mini'; b.textContent = h.ad;
+                    b.addEventListener('click', function (e) {
+                        stop(e); this.blur(); secili = h;
+                        $('hx-pick').querySelectorAll('button').forEach(function (x) { x.classList.toggle('sel', x === b); });
+                        ciz();
+                    });
+                    $('hx-pick').appendChild(b);
+                });
+                $('hx-sira').addEventListener('click', stop);
+                $('hx-sira').addEventListener('change', ciz);
+                ciz();
+            })();
+
+            // ---------------------------------------------------------------- Canlı form (sonuçlar Qt'den)
+            (function () {
+                if (!$('fm-pick')) return;
+                var FORM = [{"girdi": "12", "metin": "✓ Kaydedildi: 12", "ok": true}, {"girdi": " 12 ", "metin": "✓ Kaydedildi: 12", "ok": true}, {"girdi": "on iki", "metin": "⚠ sayı değil: 'on iki'", "ok": false}, {"girdi": "", "metin": "⚠ yaş boş bırakılamaz", "ok": false}, {"girdi": "12.5", "metin": "⚠ sayı değil: '12.5'", "ok": false}, {"girdi": "-3", "metin": "⚠ 0–130 olmalı, -3 geldi", "ok": false}, {"girdi": "150", "metin": "⚠ 0–130 olmalı, 150 geldi", "ok": false}, {"girdi": "1_000", "metin": "⚠ 0–130 olmalı, 1000 geldi", "ok": false}, {"girdi": "١٢", "metin": "✓ Kaydedildi: 12", "ok": true}];
+                var secili = null;
+                FORM.forEach(function (f) {
+                    var b = document.createElement('button'); b.type = 'button'; b.className = 'qt-btn mini'; b.textContent = pyrepr(f.girdi);
+                    b.addEventListener('click', function (e) {
+                        stop(e); this.blur(); secili = f;
+                        $('fm-pick').querySelectorAll('button').forEach(function (x) { x.classList.toggle('sel', x === b); });
+                        $('fm-in').textContent = f.girdi; $('fm-durum').textContent = '—'; $('fm-durum').style.color = '#f0f0f8';
+                    });
+                    $('fm-pick').appendChild(b);
+                });
+                $('fm-btn').addEventListener('click', function (e) {
+                    stop(e); this.blur(); bump(this);
+                    if (!secili) return;
+                    $('fm-durum').textContent = secili.metin; $('fm-durum').style.color = secili.ok ? '#86efac' : '#fca5a5';
+                });
+            })();
+
+            // Mini quizler
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) { if (o.dataset.correct === '1') o.classList.add('correct'); });
+                        if (opt.dataset.correct === '1') { fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!'); fb.style.color = '#86efac'; }
+                        else { opt.classList.add('wrong'); fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil işaretlendi.'); fb.style.color = '#fca5a5'; }
+                    });
+                });
+            });
+        })();
+    </script>
 </body>
+
 </html>
