@@ -1,44 +1,1696 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yapay Sinir Ağları 8. Hafta - Reveal.js</title>
+    <title>Yapay Sinir Ağları 8. Hafta — Genelleme ve Başarım Değerlendirme</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/slides-common.css">
+    <style>
+        .math-box { background: rgba(147, 197, 253, 0.06); border: 1px solid rgba(147, 197, 253, 0.22);
+            border-radius: 16px; padding: 12px 22px; margin: 0 auto; }
+        .katex { color: #e8eefc; }
+        .math-box { font-size: 0.6em; }
+        .math-box .katex-display { margin: 0.2em 0; }
+        .svg-wrap { max-width: 940px; margin: 0 auto; }
+        .svg-wrap svg { width: 100%; height: auto; }
+        .dtab { border-collapse: collapse; margin: 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 0.5em; }
+        .dtab th, .dtab td { border: 1px solid rgba(255,255,255,0.12); padding: 5px 14px; color: #e2e8f0; text-align: left; }
+        .dtab th { color: #93c5fd; background: rgba(96,165,250,0.08); }
+        .dtab td.ok { color: #86efac; font-weight: 800; }
+        .dtab td.bad { color: #fca5a5; }
+        .dtab.nowrap-t td, .dtab.nowrap-t th { white-space: nowrap; padding: 4px 12px; }
+        .reveal pre code .hljs-comment { color: #a8b3c7; font-style: normal; }
+        .runbtn { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.5em; cursor: pointer;
+            background: rgba(108,99,255,0.16); color: #c7d2fe; border: 1px solid #6c63ff; border-radius: 999px;
+            padding: 6px 16px; transition: background 0.15s; }
+        .runbtn:hover { background: rgba(108,99,255,0.32); }
+        .runbtn.on { background: #6c63ff; color: #fff; }
+        .play-row { display: grid; grid-template-columns: 74px 1fr 58px; align-items: center; gap: 10px; margin: 5px 0; }
+        .play-row label { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.52em;
+            color: #c4b5fd; text-align: left; }
+        .play-row input[type=range] { width: 100%; accent-color: #6c63ff; }
+        .play-row .val { font-family: 'JetBrains Mono', monospace; font-size: 0.52em; color: #e2e8f0; text-align: right; }
+        .wk { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #0b1020;
+            background: #93c5fd; border-radius: 6px; padding: 0 6px; font-weight: 800; }
+        .cite { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; color: #64748b; line-height: 1.5; }
+        .cards-tight .concept-card { padding: 12px 16px; }
+        .cards-tight .concept-card h4 { font-size: 0.66em; margin-bottom: 3px; }
+        .cards-tight .concept-card p { font-size: 0.54em; line-height: 1.45; }
+        .cards-mini .concept-card { padding: 10px 14px; }
+        .cards-mini .concept-card h4 { font-size: 0.6em; }
+        .cards-mini .concept-card p { font-size: 0.48em; line-height: 1.45; }
+        .cards-xs .concept-card { padding: 8px 14px; }
+        .cards-xs .concept-card h4 { font-size: 0.52em; margin-bottom: 2px; }
+        .cards-xs .concept-card p { font-size: 0.43em; line-height: 1.42; }
+        .w8quiz .quiz { margin-bottom: 4px; }
+        .w8quiz .quiz-q { font-size: 0.56em; margin-bottom: 5px; }
+        .w8quiz .quiz-opt { padding: 6px 13px; margin-bottom: 4px; font-size: 0.52em; }
+        .w8quiz .quiz-fb { font-size: 0.48em; min-height: 1.2em; margin-top: 4px; }
+        #w8sum .concept-card { padding: 6px 14px; min-height: 0; }
+        #w8sum .concept-card p { font-size: 0.5em; line-height: 1.4; margin: 8px 0; }
+        /* okunuş notu: özel karakteri ilk gördükleri yerde */
+        .say { font-family: 'JetBrains Mono', monospace; font-size: 0.42em; color: #94a3b8; margin: -4px auto 10px; }
+        .say b { color: #fde047; font-size: 1.2em; font-weight: 700; } .say i { color: #e2e8f0; font-style: normal; }
+        .say .sp { color: #475569; margin: 0 6px; }
+        /* sembol ↔ sayı renkleri: w mavi, x mor, d yeşil, y sarı, η turuncu, r pembe, net camgöbeği */
+        .cw { color: #93c5fd; } .cx { color: #c4b5fd; } .cd { color: #86efac; } .cy { color: #fde047; }
+        .ce { color: #fdba74; } .cr { color: #f9a8d4; } .cn { color: #67e8f9; }
+        /* gizli katman çıktısı h: açık turkuaz */
+        .ch { color: #5eead4; }
+        /* adım adım paneli */
+        .st-math { font-family: 'JetBrains Mono', monospace; font-size: 0.37em; line-height: 1.55; color: #cbd5e1;
+            background: rgba(147,197,253,0.06); border: 1px solid rgba(147,197,253,0.22); border-radius: 12px;
+            padding: 8px 12px; min-height: 9.6em; }
+        .st-math b { color: #fff; } .st-math .g { color: #86efac; } .st-math .r { color: #fca5a5; }
+        .st-math .y { color: #fbbf24; } .st-math .m { color: #64748b; }
+        .reveal .st-eq { width: 100%; border-collapse: collapse; margin: 5px 0; font-size: 1em; }
+        .reveal .st-eq th { text-align: left; font-weight: 600; color: #64748b; padding: 0 6px 2px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+        .reveal .st-eq td { padding: 1px 6px; vertical-align: top; border-bottom: 1px dashed rgba(255,255,255,0.07); white-space: nowrap; }
+        .reveal .st-eq td:first-child { color: #e2e8f0; border-right: 1px solid rgba(255,255,255,0.12); }
+        .reveal .st-eq td:nth-child(2) { white-space: normal; }
+        .reveal .st-eq td:last-child { border-left: 1px solid rgba(255,255,255,0.12); }
+        .reveal .wro .dtab th, .reveal .wro .dtab td { padding: 3px 8px; }
+        /* sıkı kart: Reveal'in p / h4 boşluklarını daralt (yalnız gereken slaytlarda) */
+        .cmp .concept-card h4 { margin: 0 0 3px; } .cmp .concept-card p { margin: 0; }
+        /* karışıklık matrisi */
+        .cmx { border-collapse: collapse; margin: 0 auto; font-family: "JetBrains Mono", monospace; }
+        .cmx th, .cmx td { border: 1px solid rgba(255,255,255,0.14); padding: 6px 14px; text-align: center; color: #e2e8f0; }
+        .cmx th { color: #94a3b8; font-weight: 600; background: rgba(148,163,184,0.06); }
+        .cmx td.tp { background: rgba(52,211,153,0.16); color: #86efac; font-weight: 800; }
+        .cmx td.tn { background: rgba(52,211,153,0.08); color: #86efac; font-weight: 800; }
+        .cmx td.fp, .cmx td.fn { background: rgba(244,63,94,0.12); color: #fca5a5; font-weight: 800; }
+        .cmx small { display: block; font-size: 0.7em; font-weight: 400; color: #94a3b8; }
+        .reveal .st-eq tr.now td { background: rgba(251,191,36,0.08); }
+        /* elle hesap tablosu: ileri geçiş sütunları */
+        .hf { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 auto 10px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.48em; color: #e2e8f0; }
+        .hf .seg { padding: 5px 12px; border-radius: 10px; }
+        .hf .seg.fwd { border: 1px solid rgba(103,232,249,0.45); background: rgba(103,232,249,0.06); }
+        .hf .seg.out { border: 1px solid rgba(253,224,71,0.45); background: rgba(253,224,71,0.06); }
+        .hf .ar { color: #64748b; } .hf .ar.big { font-size: 1.3em; color: #94a3b8; }
+        .htab tr.grp th { font-size: 0.85em; letter-spacing: 0.04em; border-bottom: none; padding-bottom: 2px; }
+        .htab th.fwd { color: #67e8f9; border-bottom: 2px solid rgba(103,232,249,0.5) !important; }
+        .htab th.out { color: #fde047; border-bottom: 2px solid rgba(253,224,71,0.5) !important; }
+        .htab td.out { background: rgba(253,224,71,0.05); }
+        .htab tr.sum td { color: #86efac; font-weight: 700; background: rgba(34,197,94,0.06); }
+        /* etkileşimli tuval + panel düzeni */
+        .wbox { display: flex; gap: 22px; align-items: flex-start; justify-content: center; }
+        .wcv { border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); display: block; touch-action: none; }
+        .wpanel { text-align: left; }
+        .wbtns { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+        .wbtns .runbtn { font-size: 0.4em; padding: 5px 12px; }
+        .wbtns .lbl { font-family: 'JetBrains Mono', monospace; font-size: 0.36em; color: #64748b; align-self: center; margin-right: 2px; }
+        .wro { font-family: 'JetBrains Mono', monospace; font-size: 0.4em; color: #cbd5e1; line-height: 1.6;
+            background: rgba(147,197,253,0.06); border: 1px solid rgba(147,197,253,0.22); border-radius: 12px; padding: 8px 12px; }
+        .wro b { color: #fff; } .wro .g { color: #86efac; } .wro .r { color: #fca5a5; } .wro .y { color: #fde047; } .wro .m { color: #64748b; }
+        .wleg { font-family: 'JetBrains Mono', monospace; font-size: 0.34em; color: #94a3b8; margin-top: 6px; }
+        .wpanel .play-row { grid-template-columns: 150px 1fr 54px; }
+        .wpanel .play-row label { font-size: 0.42em; }
+        .wpanel .play-row .val { font-size: 0.42em; }
+        .wpanel .dtab { margin: 6px 0 0; }
+        /* widget altı not: sol alttaki slayt numarasına binmesin */
+        .reveal .slides section > p.wnote { max-width: 1010px; margin-left: auto; margin-right: auto; }
+        /* zaman çizelgesi kartları */
+        .yr { display: block; font-family: 'JetBrains Mono', monospace; font-weight: 800; color: #fde047; font-size: 1.15em; margin-bottom: 2px; }
+        .duo { display: flex; gap: 14px; justify-content: center; align-items: flex-start; }
+        .duo .ttl { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.42em; margin-bottom: 4px; }
+        .nnsvg text { font-family: 'JetBrains Mono', monospace; }
+    </style>
 </head>
+
 <body>
+
     <div class="reveal">
         <img src="../images/logo.png" class="watermark" alt="Logo">
         <div class="slides">
-            <section data-background-color="#020617">
-                <div class="glow-sphere" style="width: 600px; height: 600px; top: -10%; left: -10%; background: #1e3a8a;"></div>
-                <div class="glow-sphere" style="width: 500px; height: 500px; bottom: -10%; right: -10%; background: #881337; animation-delay: -5s;"></div>
-                <div class="flex flex-col items-center">
-                    <span class="week-number text-lg mb-4">Hafta 08</span>
-                    <h1 class="text-5xl md:text-6xl mb-6 leading-tight font-extrabold tracking-tighter text-white">Genelleme ve Başarım Değerlendirme</h1>
-                    <div class="h-1 w-20 bg-gradient-to-r from-blue-700 to-rose-900 rounded-full mb-8"></div>
-                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Yapay Sinir Ağları · YPZ312</p>
+            <!-- 1. KAPAK -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere" style="width: 620px; height: 620px; top: -12%; left: -12%; background: #1e3a8a;"></div>
+                <div class="glow-sphere" style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #065f46; animation-delay: -5s;"></div>
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">%99 → %79</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">doğrulama ↑</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">λ‖W‖²</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">k-katlı</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">TP · FN</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">AUC</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">sabır</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">1947</span>
+                </div>
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">Yapay Sinir Ağları · Hafta 08</span>
+                    <div class="cover-icon mb-6"><i data-lucide="scale" style="width:54px;height:54px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Genelleme <span
+                            class="grad-text">ve Ölçme</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Aşırı Öğrenme · Erken Durdurma · L2 ·
+                        Çapraz Doğrulama · ROC</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span>açık = <span
+                            style="color:#fca5a5;">E<sub>test</sub></span> − <span style="color:#86efac;">E<sub>eğitim</sub></span>
+                        &nbsp;<span style="color:#475569;"># asıl soru bu</span></span></div>
                 </div>
             </section>
+
+
+            <!-- 2. BU HAFTA -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Hafta</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Ezber mi, <span
+                        class="code-note">Öğrenme mi?</span></h2>
+                <p class="code-note mb-4">H7'de ağ eğitim verisinde hatasızlaştı. Ama asıl soru, hiç görmediği bir noktada ne
+                    diyeceği. Bu hafta hatayı doğru yerde ölçüyor, ezberi frenliyor ve “iyi model”in ne demek olduğunu sayılarla
+                    tanımlıyoruz.</p>
+                <div class="grid grid-cols-4 gap-3 text-left cards-tight">
+                    <div class="concept-card fragment fade-up"><h4>🔭 1 · Genelleme</h4><p>Eğitim–test açığı, kapasite, eksik ve
+                        aşırı öğrenme, gürültü.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🛑 2 · Frenler</h4><p>Erken durdurma ve L2 (H5'teki frenin
+                        ayrıntısı).</p></div>
+                    <div class="concept-card fragment fade-up"><h4>✂️ 3 · Bölmek</h4><p>Eğitim / doğrulama / test, k-katlı çapraz
+                        doğrulama, sızıntı.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><h4>🩺 4 · Ölçmek</h4>
+                        <p>Karışıklık matrisi, duyarlılık, kesinlik, eşik, ROC, yaygınlık.</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.5em;">🗺️ H6 çok katmanlı ağ → H7 geri yayılım →
+                    <b>H8 genelleme</b> → H10 RBF. Bugünkü ölçütlerin çoğu tıbbın tanı testlerinden geliyor.</p>
+            </section>
+
+
+            <!-- 3. HATIRLA -->
             <section data-background-color="#020617">
-                <div class="glass-card items-center text-center mx-auto p-10" style="max-width: 640px;">
-                    <i data-lucide="hammer" class="text-rose-500 mb-4" style="width: 48px; height: 48px;"></i>
-                    <h2 class="text-3xl font-black text-white mb-4">İçerik Yakında</h2>
-                    <p class="bio-text mb-6">Bu haftanın slayt içeriği hazırlanmaktadır ve dönem boyunca güncellenecektir.</p>
+                <span class="chip mb-3"><i data-lucide="history" style="width:14px;height:14px;"></i> Hatırla · Hafta 5–7</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Bütün Sayılar <span
+                        class="code-note">Eğitim Verisinde</span></h2>
+                <div class="grid grid-cols-3 gap-4 text-left cards-mini" style="max-width:1100px;margin:0 auto;">
+                    <div class="concept-card" style="border-color:rgba(52,211,153,0.45);"><h4>⭕ H7 · Çember</h4>
+                        <p>N = 6 gizli nöron, 300 epoch: 120/120. Ama ağ bu 120 noktayla eğitildi ve aynı 120 noktada ölçüldü.</p></div>
+                    <div class="concept-card" style="border-color:rgba(147,197,253,0.45);"><h4>🌸 H5 · Iris</h4>
+                        <p>Sürekli perceptron 100 çiçekte 6 hata. Yine aynı 100 çiçekle eğitildi, aynı 100 çiçekte sayıldı.</p></div>
+                    <div class="concept-card" style="border-color:rgba(251,191,36,0.45);"><h4>🛑 H5 · Söz verilenler</h4>
+                        <p>L2 freni ‖w‖'nin büyümesini durdurdu; eşik 0.3'e inince duyarlılık ↑, kesinlik ↓. “Ayrıntısı H8.”</p></div>
+                </div>
+                <div class="math-box mt-4 fragment fade-in" style="max-width:900px;border-color:rgba(52,211,153,0.5);">
+                    \[ E_{\text{eğitim}} = \frac{1}{n}\sum_{i=1}^{n} \ell\big(y(\mathbf{x}_i), d_i\big)\;\;\checkmark \qquad\qquad
+                    E_{\text{gerçek}} = \;\textbf{?} \]
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.5em;">Eğitim hatası, ağın kendi ödevinden aldığı not.
+                    Asıl merak ettiğimiz sınav notu: <b>hiç görmediği</b> veride ne yapacağı.</p>
+            </section>
+
+
+            <!-- 4. GENELLEME -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="telescope" style="width:14px;height:14px;"></i> Tanım</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Genelleme <span
+                        class="code-note">Açığı</span></h2>
+                <div class="math-box mb-1" style="max-width:1040px;font-size:0.52em;">
+                    \[ E_{\text{gerçek}} = \mathbb{E}_{(\mathbf{x},d)\sim p}\big[\ell(y(\mathbf{x}), d)\big] \;\approx\;
+                    E_{\text{test}} = \frac{1}{m}\sum_{j=1}^{m} \ell\big(y(\mathbf{x}'_j), d'_j\big), \qquad
+                    \text{açık} = E_{\text{test}} - E_{\text{eğitim}} \]
+                </div>
+                <p class="say">🔈 okunuş: <b>𝔼</b> “<i>beklenen değer</i>”: verinin geldiği dağılımdaki bütün (x, d) çiftleri
+                    üzerinden ortalama<span class="sp">·</span><b>p</b> veriyi üreten dağılım<span class="sp">·</span><b>x′</b>
+                    “<i>x üssü</i>”: hiç görülmemiş nokta</p>
+                <div class="grid grid-cols-3 gap-3 text-left cards-mini mt-3" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>📒 Ezber tablosu</h4>
+                        <p>120 noktayı kelimesi kelimesine saklayan bir sözlük eğitimde %100 alır; 121. noktada hiçbir şey bilmez.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🎯 Asıl hedef</h4><p>Dağılımın kendisi. Eğitim verisi ondan
+                        çekilmiş bir örneklem; ağ örneklemi değil, kuralı öğrenmeli.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🧪 Tek yol</h4>
+                        <p>Görmediği veride ölçmek. Test kümesi E<sub>gerçek</sub>'in tahmini; m büyüdükçe tahmin sıkılaşır.</p></div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.5em;">Genelleme: eğitim verisinden öğrenilen kuralın
+                    aynı dağılımdan gelen <b>yeni</b> veride de geçerli olması. Açık küçükse ağ ezberlememiş demektir.</p>
+            </section>
+
+
+            <!-- 5. ETKİLEŞİMLİ: GÖRMEDİĞİ NOKTALAR -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="scan-eye" style="width:14px;height:14px;"></i> Etkileşimli · H7'ye Dönüş</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Hiç Görmediği <span
+                        class="code-note">1000 Nokta</span></h2>
+                <div class="wbox">
+                    <div style="width:330px;flex:0 0 auto;">
+                        <canvas id="gr-cv" class="wcv" width="350" height="350" style="width:330px;height:330px;"
+                            aria-label="H7'nin çember ağının karar bölgesi, eğitim ya da test noktalarıyla"></canvas>
+                        <p class="wleg">● içi (1) · ○ dışı (0) · yeşil kesikli = gerçek çember · <span
+                            style="color:#fca5a5;">kırmızı halka</span> = yanlış</p>
+                    </div>
+                    <div class="wpanel" style="width:640px;">
+                        <div class="wbtns" id="gr-n"><span class="lbl">gizli nöron N</span>
+                            <button type="button" class="runbtn" data-v="2">2</button><button type="button" class="runbtn" data-v="3">3</button>
+                            <button type="button" class="runbtn" data-v="4">4</button><button type="button" class="runbtn on" data-v="6">6</button>
+                            <button type="button" class="runbtn" data-v="8">8</button></div>
+                        <div class="wbtns"><span class="lbl">epoch</span>
+                            <span id="gr-e" style="display:flex;gap:6px;"><button type="button" class="runbtn" data-v="100">100</button><button
+                                type="button" class="runbtn on" data-v="300">300</button><button type="button" class="runbtn" data-v="500">500</button></span>
+                            <span class="lbl" style="margin-left:10px;">göster</span>
+                            <span id="gr-v" style="display:flex;gap:6px;"><button type="button" class="runbtn" data-v="tr">eğitim (120)</button><button
+                                type="button" class="runbtn on" data-v="te">test (1000)</button></span>
+                        </div>
+                        <div class="wro" id="gr-out"></div>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.44em;">H7'nin ağı (H7 · Slayt 27): 120 noktada örnek örnek CE, η = 0.5,
+                    mulberry32(1). Test: aynı kuralla (‖x‖ &lt; 0.7) üretilmiş, hiç görmediği 1000 temiz nokta (torch.manual_seed(2)).</p>
+            </section>
+
+
+            <!-- 6. GÜRÜLTÜLÜ VERİ -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="waves" style="width:14px;height:14px;"></i> Gerçek Veri</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Etiketler <span
+                        class="code-note">Gürültülü</span></h2>
+                <div class="wbox" style="align-items:center;">
+                    <div style="width:300px;flex:0 0 auto;">
+                        <canvas id="gu-cv" class="wcv" width="330" height="330" style="width:300px;height:300px;"
+                            aria-label="Gürültülü çember verisinin 100 eğitim noktası; etiketi ters çevrilmiş olanlar halkalı"></canvas>
+                        <p class="wleg">100 eğitim noktası · <span style="color:#fdba74;">turuncu halka</span> = etiketi ters</p>
+                    </div>
+                    <div style="width:700px;" class="text-left">
+                        <table class="dtab nowrap-t" style="font-size:0.44em;">
+                            <tr><th>küme</th><th>nokta</th><th>ters etiket</th><th>hep “dışarıda”</th><th>gerçek çember</th></tr>
+                            <tr><td>eğitim</td><td>100</td><td>7</td><td>%52.0</td><td class="ok">%93.0</td></tr>
+                            <tr><td>doğrulama</td><td>200</td><td>16</td><td>%67.0</td><td class="ok">%92.0</td></tr>
+                            <tr><td>test</td><td>1000</td><td>121</td><td>%57.7</td><td class="ok">%87.9</td></tr>
+                        </table>
+                        <div class="grid grid-cols-2 gap-3 text-left cards-xs mt-3">
+                            <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🎯 Tavan</h4>
+                                <p>Gerçek sınırı bilen model bile testte %87.9 alır: kalan %12.1 gürültü, indirgenemez hata.</p></div>
+                            <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🪙 Taban</h4>
+                                <p>Hiç öğrenmeden “dışarıda” demek testte %57.7. Her model bu ikisinin arasında bir yerde.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.46em;">Aynı çember kuralı, ama her etiket %10
+                    olasılıkla ters: yanlış tanı, okuyucular arası uyuşmazlık, ölçüm hatası. Ağ hangi etiketin yanlış olduğunu
+                    bilmez; hepsini öğrenmeye çalışır. Veri: torch.manual_seed(1), 1300 nokta (Slayt 24).</p>
+            </section>
+
+
+            <!-- 7. ETKİLEŞİMLİ: KAPASİTE -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="sliders-horizontal" style="width:14px;height:14px;"></i> Etkileşimli ·
+                    Kapasite</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Kaç Gizli <span
+                        class="code-note">Nöron?</span></h2>
+                <div class="wbox">
+                    <div style="width:320px;flex:0 0 auto;">
+                        <canvas id="kp-cv" class="wcv" width="340" height="340" style="width:320px;height:320px;"
+                            aria-label="Gürültülü çember verisinde 2-N-1 ağın karar bölgesi"></canvas>
+                        <p class="wleg">renk = y · yeşil kesikli = gerçek çember · <span style="color:#fdba74;">turuncu</span> =
+                            ters etiket · <span style="color:#fca5a5;">kırmızı</span> = yanlış</p>
+                    </div>
+                    <div class="wpanel" style="width:650px;">
+                        <div class="wbtns" id="kp-n"><span class="lbl">gizli nöron N</span>
+                            <button type="button" class="runbtn" data-v="1">1</button><button type="button" class="runbtn" data-v="2">2</button>
+                            <button type="button" class="runbtn" data-v="4">4</button><button type="button" class="runbtn" data-v="8">8</button>
+                            <button type="button" class="runbtn" data-v="16">16</button><button type="button" class="runbtn on" data-v="32">32</button>
+                            <span class="lbl" style="margin-left:10px;">noktalar</span>
+                            <span id="kp-v" style="display:flex;gap:6px;"><button type="button" class="runbtn on" data-v="tr">eğitim</button><button
+                                type="button" class="runbtn" data-v="te">test</button></span></div>
+                        <div class="wro" id="kp-out"></div>
+                        <svg id="kp-chart" viewBox="0 0 650 150" style="width:100%;height:auto;margin-top:6px;"
+                            aria-label="Gizli nöron sayısına göre eğitim, doğrulama ve test doğruluğu"></svg>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.44em;">2-N-1 ağ, σ, ort. CE, toplu gradyan inişi (100 noktanın
+                    ortalama gradyanı), η = 2, 16000 epoch; başlangıç torch.manual_seed(0). Kod: Slayt 24.</p>
+            </section>
+
+
+            <!-- 8. EKSİK VE AŞIRI ÖĞRENME -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="git-compare" style="width:14px;height:14px;"></i> Kuram</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Eksik ve <span
+                        class="code-note">Aşırı Öğrenme</span></h2>
+                <div class="math-box mb-1" style="max-width:1060px;font-size:0.42em;">
+                    \[ \text{MSE:}\quad \mathbb{E}\big[(d - y(\mathbf{x}))^2\big] \;=\; \underbrace{\sigma^2}_{\text{gürültü}} \;+\;
+                    \underbrace{\big(\bar{y}(\mathbf{x}) - f(\mathbf{x})\big)^2}_{\text{önyargı}^2} \;+\;
+                    \underbrace{\mathbb{E}\big[(y(\mathbf{x}) - \bar{y}(\mathbf{x}))^2\big]}_{\text{varyans}} \]
+                </div>
+                <p class="say">🔈 okunuş: <b>ȳ</b> “<i>y bar</i>”: başka eğitim kümeleriyle eğitilmiş ağların ortalaması<span
+                    class="sp">·</span><b>f</b> gerçek kural</p>
+                <div class="wbox" style="align-items:center;gap:18px;">
+                    <svg id="oy-chart" viewBox="0 0 470 250" style="width:440px;height:auto;flex:0 0 auto;"
+                        aria-label="Gizli nöron sayısına göre eğitim ve test doğruluğu"></svg>
+                    <div class="grid grid-cols-1 gap-2 text-left cards-xs cmp" style="width:560px;">
+                        <div class="concept-card fragment fade-up" style="border-color:rgba(147,197,253,0.45);"><h4>📉 Eksik öğrenme
+                            (önyargı)</h4><p>N = 1: tek doğru, eğitimde bile %69. Uzun eğitim düzeltmez; model yetersiz.</p></div>
+                        <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>📈 Aşırı öğrenme
+                            (varyans)</h4><p>N = 32: eğitim %99, oysa gerçek sınır eğitimde %93 alıyor. Ağ 7 ters etiketin çoğunu
+                            ezberledi; test %79.</p></div>
+                        <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>🎲 Dürüst not</h4>
+                            <p>Test eğrisi düzgün bir U değil (78.8 · 78.0 · 75.3 · 79.1); SH ≈ ±1.3. Güvenilir sinyal: açık ve
+                                test CE'si (1.01 → 1.62).</p></div>
+                    </div>
+                </div>
+                <p class="cite mt-1">Geman, S., Bienenstock, E. &amp; Doursat, R. (1992). Neural networks and the bias/variance
+                    dilemma. Neural Computation, 4(1), 1–58.</p>
+            </section>
+
+
+            <!-- 9. ETKİLEŞİMLİ: ERKEN DURDURMA -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="timer" style="width:14px;height:14px;"></i> Etkileşimli · Fren 1</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Erken <span
+                        class="code-note">Durdurma</span></h2>
+                <div class="wbox">
+                    <div style="width:300px;flex:0 0 auto;">
+                        <canvas id="es-cv" class="wcv" width="330" height="330" style="width:300px;height:300px;"
+                            aria-label="Seçilen epoch'taki ağın karar bölgesi ve eğitim noktaları"></canvas>
+                        <p class="wleg">renk = y · yeşil kesikli = gerçek çember · <span style="color:#fdba74;">turuncu</span> =
+                            ters etiket</p>
+                    </div>
+                    <div class="wpanel" style="width:680px;">
+                        <div class="play-row"><label for="es-s">epoch</label><input type="range" id="es-s" min="0" max="160"
+                                step="1" value="0"><span class="val" id="es-sv">0</span></div>
+                        <div class="wbtns">
+                            <button type="button" class="runbtn" id="es-best">★ en iyi doğrulama</button>
+                            <button type="button" class="runbtn" id="es-stop">⏹ sabırla dur</button>
+                            <button type="button" class="runbtn" id="es-end">16000</button>
+                            <button type="button" class="runbtn on" id="es-play">⏵ oynat</button>
+                        </div>
+                        <svg id="es-chart" viewBox="0 0 680 170" style="width:100%;height:auto;"
+                            aria-label="Epoch'a göre eğitim, doğrulama ve test CE eğrileri, logaritmik epoch ekseni"></svg>
+                        <div class="wro" id="es-out" style="margin-top:4px;"></div>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.44em;">N = 32, fren yok: kapasite widget'ındaki ağ (Slayt 7). Eğitim CE'si
+                    hep düşer; doğrulama CE'si önce düşer, sonra yükselir. Yükselmeye başladığı an, ağın gürültüyü ezberlemeye
+                    başladığı an.</p>
+            </section>
+
+
+            <!-- 10. ERKEN DURDURMA ALGORİTMASI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="list-ordered" style="width:14px;height:14px;"></i> Algoritma</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Sabır ve <span
+                        class="code-note">En İyi Kopya</span></h2>
+                <pre style="max-width:980px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1|2-3|4|5-6|7|8" style="font-size:0.74em;">en_iyi, sabir = (sonsuz, 0, None), 1000
+for epoch in range(1, max_epoch + 1):
+    egit_bir_adim()                       # yalnız eğitim kümesiyle
+    v = dogrulama_hatasi()                # ölç, ağırlıklara dokunma
+    if v &lt; en_iyi.hata: en_iyi = (v, epoch, kopya(agirliklar))
+    elif epoch - en_iyi.epoch &gt;= sabir: break    # 1000 epoch iyileşme yok
+agirliklar = en_iyi.agirliklar            # 1732'de dur, 732'ye dön
+test_hatasi()                             # en sonda, bir kez</code></pre>
+                <div class="grid grid-cols-3 gap-3 text-left cards-mini mt-3" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>⏳ Sabır küçükse</h4>
+                        <p>Platoda pes eder. Sabır 100: 135. epoch'ta durur, 35'e döner, test %57.5. Sabır 300 ve 3000: ikisi de
+                            732'yi bulur.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>📏 Neyi izlemeli?</h4><p>Doğrulama CE'si → 732 (test %84.6);
+                        doğrulama doğruluğu → 1572 (test %85.5). Fark, testin ±1.1'lik belirsizliği içinde.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>💸 Bedava değil</h4>
+                        <p>200 nokta eğitime girmedi. Az veride bu pahalı; çapraz doğrulama (Slayt 16) bir çare.</p></div>
+                </div>
+                <p class="cite mt-2">Morgan, N. &amp; Bourlard, H. (1990). Generalization and parameter estimation in feedforward
+                    nets. NIPS 2, 630–637. · Prechelt, L. (1998). Early stopping — but when? Neural Networks: Tricks of the Trade,
+                    LNCS 1524, 55–69.</p>
+            </section>
+
+
+            <!-- 11. ETKİLEŞİMLİ: L2 -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="magnet" style="width:14px;height:14px;"></i> Etkileşimli · Fren 2</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">L2: <span
+                        class="code-note">Ağırlık Sönümü</span></h2>
+                <div class="wbox">
+                    <div style="width:320px;flex:0 0 auto;">
+                        <canvas id="l2-cv" class="wcv" width="340" height="340" style="width:320px;height:320px;"
+                            aria-label="L2 cezasıyla eğitilmiş ağın karar bölgesi"></canvas>
+                        <p class="wleg">renk = y · yeşil kesikli = gerçek çember · <span style="color:#fdba74;">turuncu</span> =
+                            ters etiket · <span style="color:#fca5a5;">kırmızı</span> = yanlış</p>
+                    </div>
+                    <div class="wpanel" style="width:650px;">
+                        <div class="wbtns" id="l2-l"><span class="lbl">λ</span>
+                            <button type="button" class="runbtn" data-v="0">0 (yok)</button><button type="button" class="runbtn on" data-v="0.0001">0.0001</button>
+                            <button type="button" class="runbtn" data-v="0.001">0.001</button><button type="button" class="runbtn" data-v="0.01">0.01</button>
+                            <span class="lbl" style="margin-left:10px;">noktalar</span>
+                            <span id="l2-v" style="display:flex;gap:6px;"><button type="button" class="runbtn on" data-v="tr">eğitim</button><button
+                                type="button" class="runbtn" data-v="te">test</button></span></div>
+                        <div class="wro" id="l2-out"></div>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.44em;">N = 32, 16000 epoch, kayba λ/2·‖W‖² eklendi (bias'lar hariç,
+                    H5'teki gibi). Az λ ezberi frenliyor; fazlası ağı “bilmiyorum”a itiyor.</p>
+            </section>
+
+
+            <!-- 12. L2 KURAMI -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="sigma" style="width:14px;height:14px;"></i> Türetme</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Neden <span
+                        class="code-note">İşe Yarıyor?</span></h2>
+                <div class="math-box mb-1" style="max-width:1060px;font-size:0.5em;">
+                    \[ E_\lambda = E + \frac{\lambda}{2}\lVert W\rVert^2 \;\Rightarrow\; \frac{\partial E_\lambda}{\partial w} =
+                    \frac{\partial E}{\partial w} + \lambda w \;\Rightarrow\; w \leftarrow \underbrace{(1 - \eta\lambda)}_{\text{sönüm}}\,w
+                    - \eta\,\frac{\partial E}{\partial w} \]
+                </div>
+                <p class="say">🔈 okunuş: <b>λ</b> “<i>lambda</i>”: ceza katsayısı (H5'te α; momentumla karışmasın)<span
+                    class="sp">·</span><b>‖W‖²</b> ağırlık kareleri toplamı, bias hariç</p>
+                <div class="grid grid-cols-2 gap-3 text-left cards-mini cmp mt-2" style="max-width:1040px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up"><h4>🧲 Her adımda sönüm</h4><p>η = 2, λ = 0.0001: her epoch ağırlık
+                        0.9998 ile çarpılır. Veri itmeyen ağırlık sıfıra doğru erir.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>〰️ Küçük ağırlık, yumuşak sınır</h4><p>σ'lar doğrusal bölgede
+                        kalır; tek bir ters etiket için keskin bir kıvrım pahalıya gelir.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>⏱️ Erken durdurma
+                        da benzer</h4><p>‖W‖ başlangıçta 3.1, 732. epoch'ta 18.8, 16000'de 79.8. Eğitimi kesmek, ağırlıkların
+                        büyümesini de keser.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>🧰 PyTorch</h4>
+                        <p><code>SGD(weight_decay=λ)</code> aynı terimi ekler, ama bias'lara da. Bias hariç tutmak için parametre
+                            grupları (Uygulama 2).</p></div>
+                </div>
+                <p class="cite mt-2">Krogh, A. &amp; Hertz, J. A. (1992). A simple weight decay can improve generalization. NIPS 4,
+                    950–957.</p>
+            </section>
+
+
+            <!-- 13. ÜÇ KÜME -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="split" style="width:14px;height:14px;"></i> Veriyi Bölmek</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Üç Küme, <span
+                        class="code-note">Üç Görev</span></h2>
+                <table class="dtab" style="font-size:0.44em;">
+                    <tr><th>küme</th><th>ne için</th><th>ne sıklıkla bakılır</th><th>bizde</th></tr>
+                    <tr><td class="ok">eğitim</td><td>ağırlıkları öğrenmek (gradyan)</td><td>her adımda</td><td>100</td></tr>
+                    <tr><td style="color:#fde047;">doğrulama</td><td>ayar seçmek: N, λ, epoch, eşik</td><td>her denemede</td><td>200</td></tr>
+                    <tr><td style="color:#fca5a5;">test</td><td>son raporu vermek</td><td><b>bir kez</b>, en sonda</td><td>1000</td></tr>
+                </table>
+                <div class="math-box mt-3 fragment fade-in" style="max-width:900px;font-size:0.46em;">
+                    \[ \text{SH} = \sqrt{\frac{p\,(1-p)}{n}}:\quad p = 0.85,\ n = 1000 \Rightarrow \pm 1.1;\quad n = 200 \Rightarrow
+                    \pm 2.5 \ \text{puan} \]
+                </div>
+                <div class="grid grid-cols-3 gap-3 text-left cards-mini mt-3" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🙈 Teste bir kez
+                        bak</h4><p>Teste bakıp ayar değiştirirsen test, doğrulamaya dönüşür; artık tarafsız değildir.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⚖️ Katmanlı bölme</h4><p>Sınıf oranları her kümede aynı kalsın
+                        (stratified). Bizim rastgele bölmede doğrulama %67 “dışarıda”, test %58.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>📏 Sayı ± ile</h4>
+                        <p>Doğruluk da bir tahmin. 84.6 ile 83.2'yi bu testle ayırt edemeyiz; raporlarken standart hatayı ver.</p></div>
+                </div>
+                <p class="say mt-2" style="margin-bottom:0;">🔈 okunuş: <b>SH</b> “<i>standart hata</i>”: aynı boyda başka bir
+                    test kümesiyle ölçseydik doğruluk tipik olarak bu kadar oynardı</p>
+            </section>
+
+
+            <!-- 14. SIZINTI -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="droplets" style="width:14px;height:14px;"></i> Tuzak</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Veri <span
+                        class="code-note">Sızıntısı</span></h2>
+                <p class="code-note mb-4">Test bilgisi eğitime herhangi bir yoldan sızarsa sonuç gerçek olamayacak kadar iyi çıkar.
+                    Dört yaygın yol:</p>
+                <div class="grid grid-cols-2 gap-3 text-left cards-tight" style="max-width:1060px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><h4>🧮 Ölçek bütün veriden</h4><p>Standartlaştırmanın μ ve σ'sı testi
+                        de görür. Doğrusu: yalnız eğitim katından hesapla, teste aynısını uygula (Slayt 25).</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🏥 Aynı hasta iki
+                        kümede</h4><p>Bir hastanın görüntüleri hem eğitimde hem testte: model hastalığı değil hastayı tanır.
+                        Bölmeyi hasta düzeyinde yap.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⏱️ Gelecekten bilgi</h4><p>Zaman sıralı veride geleceği eğitime
+                        koymak. Test, eğitimden hep sonra gelmeli.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>🎯 Testle ayar
+                        seçmek</h4><p>En iyi epoch'u, N'yi ya da eşiği testle seçmek: rapor iyimser olur (Slayt
+                        15).</p></div>
+                </div>
+                <p class="cite mt-4">Kaufman, S., Rosset, S., Perlich, C. &amp; Stitelman, O. (2012). Leakage in data mining:
+                    formulation, detection, and avoidance. ACM TKDD, 6(4), 15.</p>
+            </section>
+
+
+            <!-- 15. DÜRÜST KARŞILAŞTIRMA: TESTLE SEÇİM -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="scale" style="width:14px;height:14px;"></i> Dürüst Karşılaştırma</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Testle Seçersen <span
+                        class="code-note">Rapor İyimser</span></h2>
+                <p class="code-note mb-3" style="font-size:0.48em;">N = 32, fren yok; 16000 epoch'tan birini seç. Sonra hiç
+                    kullanılmamış yeni bir 1000 noktalık kümede (torch.manual_seed(3), %10 ters) ölç.</p>
+                <table class="dtab nowrap-t" style="font-size:0.44em;">
+                    <tr><th>seçim ölçütü</th><th>seçilen epoch</th><th>doğrulama</th><th>test (rapor)</th><th>yeni 1000 nokta</th></tr>
+                    <tr><td>doğrulama CE'si en düşük</td><td>732</td><td>%87.0</td><td>%84.6</td><td>%83.0</td></tr>
+                    <tr><td>doğrulama doğruluğu en yüksek</td><td>1572</td><td>%90.0</td><td>%85.5</td><td>%83.3</td></tr>
+                    <tr><td style="color:#fca5a5;">test doğruluğu en yüksek (hile)</td><td>1384</td><td>%89.5</td><td class="bad">%85.9</td><td>%83.5</td></tr>
+                    <tr><td>seçim yok (son epoch)</td><td>16000</td><td>%83.0</td><td>%79.1</td><td>%79.4</td></tr>
+                    <tr><td>gerçek çember (tavan)</td><td>—</td><td>%92.0</td><td>%87.9</td><td>%87.0</td></tr>
+                </table>
+                <div class="grid grid-cols-3 gap-3 text-left cards-mini mt-3" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🎯 Hile %85.9
+                        diyor</h4><p>16000 adayın en iyisini testle seçtik; yeni veride %83.5: rapor 2.4 puan iyimser.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>📏 Dürüstler de düşüyor</h4><p>Doğrulamayla seçilenler yeni veride
+                        1.6 ve 2.2 puan düşük: bu test şans eseri biraz kolay (tavan 87.9 ↔ 87.0). SH ±1.1.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>✅ Ders</h4><p>Burada
+                        fark küçük: adaylar aynı eğitimin epoch'ları. Çok farklı model testle seçilince iyimserlik büyür. Kural:
+                        doğrulamayla seç, testi bir kez ölç, ± ile ver.</p></div>
+                </div>
+            </section>
+
+            <!-- 16. k-KATLI ÇAPRAZ DOĞRULAMA -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="layers" style="width:14px;height:14px;"></i> Az Veride Ölçmek</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">k-Katlı <span
+                        class="code-note">Çapraz Doğrulama</span></h2>
+                <div class="wbox" style="align-items:center;gap:26px;">
+                    <svg viewBox="0 0 470 236" style="width:430px;height:auto;flex:0 0 auto;" role="img"
+                        aria-label="Beş katlı çapraz doğrulama: her turda bir kat test, kalan dördü eğitim">
+                        <g font-family="JetBrains Mono, monospace" font-size="13">
+                            <text x="0" y="22" fill="#94a3b8">tur</text>
+                            <text x="70" y="22" fill="#86efac">eğitim</text><text x="140" y="22" fill="#94a3b8">·</text>
+                            <text x="156" y="22" fill="#f9a8d4">test</text>
+                            <text x="360" y="22" fill="#94a3b8">hata</text>
+                        </g>
+                        <g id="kk-rows"></g>
+                    </svg>
+                    <div style="width:620px;" class="text-left">
+                        <div class="math-box" style="font-size:0.44em;">
+                            \[ E_{\text{ÇD}} = \frac{1}{k}\sum_{f=1}^{k} E_f \qquad (k = n:\ \text{LOO}) \]
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-left cards-xs cmp mt-3">
+                            <div class="concept-card fragment fade-up"><h4>🔁 Her örnek bir kez test</h4><p>Her turda bir kat test,
+                                kalanlar eğitim. Hiçbir örnek boşa gitmez.</p></div>
+                            <div class="concept-card fragment fade-up"><h4>⚖️ Katmanlı</h4><p>Her katta sınıf oranı aynı:
+                                Iris'te her katta 10 versicolor, 10 virginica (k = 5).</p></div>
+                            <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>🩺 Az veride
+                                şart</h4><p>100 hastada tek bir 80/20 bölme şansa bağlı; k-katlı ortalama daha kararlı. LOO: birini dışarıda bırak.</p></div>
+                            <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🧮 Her katta yeniden</h4><p>Ölçek, model, erken durdurma: hepsi o turun eğitim katından.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="cite mt-3">Stone, M. (1974). Cross-validatory choice and assessment of statistical predictions. J. Royal
+                    Statistical Society B, 36(2), 111–147.</p>
+            </section>
+
+
+            <!-- 17. ETKİLEŞİMLİ: IRIS ÇAPRAZ DOĞRULAMA -->
+            <section data-prevent-swipe data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="flower-2" style="width:14px;height:14px;"></i> Etkileşimli · Iris</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Iris'te <span
+                        class="code-note">Çapraz Doğrulama</span></h2>
+                <div class="wbox">
+                    <div style="width:330px;flex:0 0 auto;">
+                        <canvas id="cv-cv" class="wcv" width="360" height="320" style="width:330px;height:293px;"
+                            aria-label="Iris versicolor ve virginica, petal ölçüleri; renk kat numarası"></canvas>
+                        <p class="wleg">○ versicolor (0) · ● virginica (1) · renk = kat · <span style="color:#fca5a5;">kırmızı
+                            halka</span> = test katındayken yanlış</p>
+                    </div>
+                    <div class="wpanel" style="width:640px;">
+                        <div class="wbtns" id="cv-k"><span class="lbl">k</span>
+                            <button type="button" class="runbtn" data-v="2">2</button><button type="button" class="runbtn on" data-v="5">5</button>
+                            <button type="button" class="runbtn" data-v="10">10</button><button type="button" class="runbtn" data-v="100">100 (LOO)</button></div>
+                        <div class="play-row"><label for="cv-rs">random_state</label><input type="range" id="cv-rs" min="0" max="9"
+                                step="1" value="0"><span class="val" id="cv-rsv">0</span></div>
+                        <svg id="cv-strip" viewBox="0 0 640 56" style="width:100%;height:auto;margin:2px 0 6px;"
+                            aria-label="100 çiçeğin kat numaraları ve yanlışlar"></svg>
+                        <div class="wro" id="cv-out"></div>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.44em;">H5'in ayarı: petal ölçüleri, dönüşümlü sıra, η = 0.1, 200
+                    epoch, w₀ = 0. Katlar sklearn StratifiedKFold(shuffle=True); ölçek her turda yalnız eğitim katından
+                    (Slayt 25).</p>
+            </section>
+
+
+            <!-- 18. KARIŞIKLIK MATRİSİ -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="grid-2x2" style="width:14px;height:14px;"></i> Ölçmek</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Karışıklık <span
+                        class="code-note">Matrisi</span></h2>
+                <p class="code-note mb-2" style="font-size:0.46em;">Erken durdurulan ağ (732. epoch), 1000 test noktası, eşik 0.5;
+                    pozitif = içeride (1). Tıp diliyle okumak için pozitif = hasta diye düşün.</p>
+                <div class="wbox" style="align-items:center;gap:26px;">
+                    <table class="cmx" style="font-size:0.46em;flex:0 0 auto;">
+                        <tr><th></th><th>tahmin 1</th><th>tahmin 0</th><th>toplam</th></tr>
+                        <tr><th>gerçek 1</th><td class="tp">TP 331<small>doğru pozitif</small></td><td class="fn">FN 92<small>yanlış
+                            negatif</small></td><td>423</td></tr>
+                        <tr><th>gerçek 0</th><td class="fp">FP 62<small>yanlış pozitif</small></td><td class="tn">TN 515<small>doğru
+                            negatif</small></td><td>577</td></tr>
+                    </table>
+                    <div class="math-box" style="font-size:0.42em;max-width:600px;margin:0;">
+                        \[ \begin{aligned} \text{duyarlılık} &= \tfrac{TP}{TP + FN} = \tfrac{331}{423} = 0.783 \\ \text{özgüllük} &=
+                        \tfrac{TN}{TN + FP} = \tfrac{515}{577} = 0.893 \\ \text{kesinlik} &= \tfrac{TP}{TP + FP} = \tfrac{331}{393} = 0.842 \\
+                        \text{doğruluk} &= \tfrac{TP + TN}{n} = \tfrac{846}{1000} = 0.846 \\ F_1 &= \tfrac{2\,P\,R}{P + R} = 0.811 \quad
+                        (P\text{: kesinlik},\ R\text{: duyarlılık}) \end{aligned} \]
+                    </div>
+                </div>
+                <p class="say mt-3">🔈 okunuş: <b>duyarlılık</b> (sensitivity, recall): hastaların kaçını yakaladık<span
+                    class="sp">·</span><b>özgüllük</b> (specificity): sağlamların kaçına “sağlam” dedik<span
+                    class="sp">·</span><b>kesinlik</b> (precision, PPV): “hasta” dediklerimizin kaçı hasta</p>
+                <div class="grid grid-cols-3 gap-3 text-left cards-mini mt-1" style="max-width:1060px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🚨 FN: kaçan hasta</h4>
+                        <p>92 içerideki noktaya “dışarıda” dedik. Taramada en pahalı hata çoğu zaman bu.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>📣 FP: boşuna
+                        alarm</h4><p>62 sağlama “hasta” dedik: gereksiz tetkik, kaygı, maliyet.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🔗 Satırlar ve sütunlar</h4><p>Duyarlılık ve özgüllük satırlardan
+                        (gerçek), kesinlik sütundan (tahmin) hesaplanır.</p></div>
+                </div>
+            </section>
+
+
+            <!-- 19. DOĞRULUK PARADOKSU -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="alert-triangle" style="width:14px;height:14px;"></i> Tuzak</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Doğruluk <span
+                        class="code-note">Yanıltır</span></h2>
+                <p class="code-note mb-3" style="font-size:0.48em;">1000 kişi, 20'si hasta (yaygınlık %2). İki model; tarama testinin
+                    duyarlılığı 0.90, özgüllüğü 0.95. Dengeli = dengeli doğruluk.</p>
+                <table class="dtab nowrap-t" style="font-size:0.42em;">
+                    <tr><th>model</th><th>TP</th><th>FN</th><th>FP</th><th>TN</th><th>doğruluk</th><th>duyarlılık</th><th>kesinlik</th><th>F₁</th><th>dengeli</th></tr>
+                    <tr><td>“herkes sağlam”</td><td>0</td><td>20</td><td>0</td><td>980</td><td class="ok">%98.0</td><td class="bad">0</td><td>—</td><td class="bad">0</td><td class="bad">0.500</td></tr>
+                    <tr><td>tarama testi (0.90 / 0.95)</td><td>18</td><td>2</td><td>49</td><td>931</td><td>%94.9</td><td class="ok">0.90</td><td>0.269</td><td>0.414</td><td class="ok">0.925</td></tr>
+                </table>
+                <div class="grid grid-cols-3 gap-3 text-left cards-mini mt-4" style="max-width:1080px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>🤡 İşe yaramayan
+                        kazanıyor</h4><p>Hiç hasta bulmayan model doğrulukta önde: %98 &gt; %94.9. Dengesiz veride doğruluk
+                        çoğunluk sınıfını ölçer.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>⚖️ Dengeli doğruluk</h4><p>(duyarlılık + özgüllük) / 2: 0.500 ↔
+                        0.925. Her sınıfa eşit ağırlık verir.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>🩺 Kesinlik düşük
+                        ama</h4><p>Testin 67 pozitifinden yalnız 18'i hasta (0.269): yaygınlık düşükken bu kaçınılmaz (Slayt
+                        22).</p></div>
+                </div>
+            </section>
+
+
+            <!-- 20. ETKİLEŞİMLİ: EŞİK VE ROC -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="activity" style="width:14px;height:14px;"></i> Etkileşimli · Eşik</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Eşik ve <span
+                        class="code-note">ROC Eğrisi</span></h2>
+                <div class="wbox">
+                    <div style="width:310px;flex:0 0 auto;">
+                        <canvas id="th-cv" class="wcv" width="330" height="330" style="width:310px;height:310px;"
+                            aria-label="ROC eğrisi: yanlış pozitif oranına karşı duyarlılık; seçilen eşik işaretli"></canvas>
+                        <p class="wleg">x = 1 − özgüllük · y = duyarlılık · <span style="color:#fde047;">sarı</span> = seçilen eşik ·
+                            kesikli = yazı tura</p>
+                    </div>
+                    <div class="wpanel" style="width:640px;">
+                        <div class="play-row"><label for="th-t">eşik t</label><input type="range" id="th-t" min="0.01" max="0.99"
+                                step="0.01" value="0.5"><span class="val" id="th-tv">0.50</span></div>
+                        <div class="wbtns" id="th-pre"><span class="lbl">hazır</span>
+                            <button type="button" class="runbtn" data-v="0.1">0.1</button><button type="button" class="runbtn" data-v="0.3">0.3 (H5)</button>
+                            <button type="button" class="runbtn on" data-v="0.5">0.5</button><button type="button" class="runbtn" data-v="0.7">0.7</button>
+                            <button type="button" class="runbtn" data-v="0.9">0.9</button></div>
+                        <div class="wro" id="th-out"></div>
+                    </div>
+                </div>
+                <p class="code-note wnote mt-2" style="font-size:0.44em;">Erken durdurulan ağın 1000 test noktasına verdiği olasılıklar
+                    (Slayt 24). Eşik düşünce “içeride” demek kolaylaşır: duyarlılık artar, kesinlik ve özgüllük düşer.</p>
+            </section>
+
+
+            <!-- 21. AUC -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="area-chart" style="width:14px;height:14px;"></i> Tek Sayıda</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Eğrinin Altındaki <span
+                        class="code-note">Alan</span></h2>
+                <div class="math-box mb-1" style="max-width:940px;font-size:0.5em;">
+                    \[ \text{AUC} = P\big(p(\mathbf{x}^{+}) > p(\mathbf{x}^{-})\big) = \frac{\#\{(i, j):\ p_i^{+} > p_j^{-}\} +
+                    \tfrac{1}{2}\#\{\text{eşit}\}}{n^{+}\, n^{-}} \]
+                </div>
+                <p class="say">🔈 okunuş: <b>x⁺</b> “<i>x artı</i>”: rastgele seçilmiş bir pozitif<span class="sp">·</span><b>x⁻</b>
+                    rastgele bir negatif<span class="sp">·</span><b>#</b> “<i>sayısı</i>”</p>
+                <div class="grid grid-cols-2 gap-3 text-left cards-mini cmp mt-3" style="max-width:1040px;margin-left:auto;margin-right:auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4>🎚️ Eşikten
+                        bağımsız</h4><p>423 × 577 = 244 071 (pozitif, negatif) çiftinin %86.2'sinde pozitif nokta daha yüksek
+                        olasılık alıyor: AUC = 0.862.</p></div>
+                    <div class="concept-card fragment fade-up"><h4>🪙 Ölçek</h4><p>0.5 = yazı tura, 1 = kusursuz sıralama. Iris
+                        (k = 5): 0.990; tavan modeli (gerçek çember) olasılık vermediği için AUC'si tanımsız.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4>🧭 Sıralama ≠
+                        kalibrasyon</h4><p>AUC sıralamayı ölçer. “p = 0.9” dediği noktaların gerçekten %90'ı mı pozitif? Bu ayrı
+                        bir soru.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(244,63,94,0.45);"><h4>⚠️ Dengesiz
+                        veride</h4><p>Negatifler çok fazlaysa ROC iyi görünür ama kesinlik düşük olabilir: kesinlik–duyarlılık
+                        eğrisine de bak.</p></div>
+                </div>
+                <p class="cite mt-3">Hanley, J. A. &amp; McNeil, B. J. (1982). The meaning and use of the area under a receiver
+                    operating characteristic (ROC) curve. Radiology, 143(1), 29–36.</p>
+            </section>
+
+
+            <!-- 22. ETKİLEŞİMLİ: YAYGINLIK -->
+            <section data-prevent-swipe>
+                <span class="chip mb-2"><i data-lucide="users" style="width:14px;height:14px;"></i> Etkileşimli · Yaygınlık</span>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Pozitif Sonuç <span
+                        class="code-note">Ne Demek?</span></h2>
+                <div class="wbox">
+                    <div style="width:300px;flex:0 0 auto;">
+                        <canvas id="pv-cv" class="wcv" width="300" height="300" style="width:300px;height:300px;"
+                            aria-label="10000 kişilik kare: doğru pozitif, yanlış negatif, yanlış pozitif ve doğru negatifler"></canvas>
+                        <p class="wleg">10 000 kişi · <span style="color:#34d399;">TP</span> · <span style="color:#f43f5e;">FN</span>
+                            · <span style="color:#fbbf24;">FP</span> · <span style="color:#334155;">TN</span></p>
+                    </div>
+                    <div class="wpanel" style="width:660px;">
+                        <div class="play-row"><label for="pv-s">duyarlılık</label><input type="range" id="pv-s" min="0.5" max="1"
+                                step="0.01" value="0.95"><span class="val" id="pv-sv">0.95</span></div>
+                        <div class="play-row"><label for="pv-c">özgüllük</label><input type="range" id="pv-c" min="0.5" max="1"
+                                step="0.01" value="0.95"><span class="val" id="pv-cv2">0.95</span></div>
+                        <div class="play-row"><label for="pv-p">yaygınlık</label><input type="range" id="pv-p" min="0" max="10"
+                                step="1" value="3"><span class="val" id="pv-pv">%1</span></div>
+                        <div class="wbtns" id="pv-pre"><span class="lbl">hazır</span>
+                            <button type="button" class="runbtn on" data-v="tarama">tarama testi (%1)</button>
+                            <button type="button" class="runbtn" data-v="ag">bizim ağ (%42.3)</button></div>
+                        <div class="wro" id="pv-out"></div>
+                    </div>
+                </div>
+                <div class="math-box mt-2" style="max-width:820px;font-size:0.44em;">
+                    \[ \text{PPV} = P(\text{hasta} \mid +) = \frac{\text{duy.}\cdot\pi}{\text{duy.}\cdot\pi + (1 - \text{özg.})(1 -
+                    \pi)} \qquad (\text{Bayes, } \pi = \text{yaygınlık}) \]
+                </div>
+            </section>
+
+
+            <!-- 23. TARİH -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="landmark" style="width:14px;height:14px;"></i> Tarih · 1947 → 1992</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Ölçütler <span
+                        class="code-note">Nereden Geldi?</span></h2>
+                <div class="grid grid-cols-5 gap-3 text-left cards-mini cmp" style="max-width:1140px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(52,211,153,0.45);"><h4><span
+                        class="yr">1947</span>🩻 Yerushalmy</h4><p>Akciğer röntgeni okumalarını değerlendirirken
+                        “duyarlılık” ve “özgüllük” terimlerini önerdi.</p></div>
+                    <div class="concept-card fragment fade-up"><h4><span class="yr">1954</span>📡 Peterson · Birdsall · Fox</h4>
+                        <p>Sinyal tespit kuramı: radar alıcısının isabet / yanlış alarm ödünleşimi, yani ROC eğrisi.</p></div>
+                    <div class="concept-card fragment fade-up"><h4><span class="yr">1974</span>🔁 Stone</h4><p>Çapraz doğrulamayla
+                        hem model seçimi hem başarım tahmini.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(251,191,36,0.45);"><h4><span
+                        class="yr">1982</span>📐 Hanley · McNeil</h4><p>AUC'nin anlamı: rastgele bir hasta, rastgele bir
+                        sağlamdan daha yüksek puan alır mı? Radyolojide standart oldu.</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(147,197,253,0.45);"><h4><span
+                        class="yr">1992</span>🧠 Geman vd. · Krogh–Hertz</h4><p>Sinir ağlarında önyargı–varyans ikilemi;
+                        ağırlık sönümünün genellemeye etkisi.</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.5em;">Ölçütlerin çoğu tıptan ve sinyal işlemeden geldi;
+                    sinir ağları onları devraldı. Bir tanı modelini bugün de aynı dille raporluyoruz.</p>
+                <p class="cite mt-2">Yerushalmy, J. (1947). Statistical problems in assessing methods of medical diagnosis, with special
+                    reference to X-ray techniques. Public Health Reports, 62(40), 1432–1449. · Peterson, W. W., Birdsall, T. G.
+                    &amp; Fox, W. C. (1954). The theory of signal detectability. Trans. IRE PGIT, 4(4), 171–212.</p>
+            </section>
+
+
+            <!-- 24. KOD 1: ERKEN DURDURMA -->
+            <section>
+                <span class="chip mb-2"><i data-lucide="code-2" style="width:14px;height:14px;"></i> PyTorch</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Erken Durdurma, <span
+                        class="code-note">Kodda</span></h2>
+                <pre style="max-width:1100px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1-4|5-8|9-12|13-17|18-22" style="font-size:0.6em;">import copy, torch, torch.nn as nn
+from torch.nn.functional import binary_cross_entropy_with_logits as bce
+from sklearn.metrics import confusion_matrix, roc_auc_score
+torch.set_default_dtype(torch.float64); torch.manual_seed(1)
+X = (torch.rand(1300, 2) * 2 - 1).round(decimals=2)
+d = (X.norm(dim=1) &lt; 0.7).double()
+ters = torch.rand(1300) &lt; 0.1; d[ters] = 1 - d[ters]            # %10 etiket gürültüsü
+Xtr, dtr, Xva, dva, Xte, dte = X[:100], d[:100], X[100:300], d[100:300], X[300:], d[300:]
+torch.manual_seed(0)
+ag = nn.Sequential(nn.Linear(2, 32), nn.Sigmoid(), nn.Linear(32, 1))
+opt = torch.optim.SGD(ag.parameters(), lr=2.0)                 # toplu GD: epoch başına 1 adım
+en_iyi, sabir = (float('inf'), 0, None), 1000
+for epoch in range(1, 16001):
+    opt.zero_grad(); bce(ag(Xtr).squeeze(1), dtr).backward(); opt.step()
+    with torch.no_grad(): v = bce(ag(Xva).squeeze(1), dva).item()   # doğrulama: yalnız ölç
+    if v &lt; en_iyi[0]: en_iyi = (v, epoch, copy.deepcopy(ag.state_dict()))
+    elif epoch - en_iyi[1] &gt;= sabir: break                      # 1000 epoch iyileşme yok
+ag.load_state_dict(en_iyi[2]); p = torch.sigmoid(ag(Xte).squeeze(1)).detach()
+print(epoch, en_iyi[1], round(en_iyi[0], 4))                    # 1732 732 0.3709
+print(((p &gt;= 0.5).double() == dte).double().mean().item())      # 0.846
+print(confusion_matrix(dte, p &gt;= 0.5).tolist(), round(roc_auc_score(dte, p), 4))
+# [[515, 62], [92, 331]] 0.8618</code></pre>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.46em;">Widget'lardaki her sayı bu kodun aynısı: veri
+                    (Slayt 6), erken durdurma (Slayt 9), karışıklık matrisi (Slayt 18) ve
+                    ROC (Slayt 20). sklearn satır sırası: [[TN, FP], [FN, TP]].</p>
+            </section>
+
+
+            <!-- 25. KOD 2: IRIS ÇAPRAZ DOĞRULAMA -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="code-2" style="width:14px;height:14px;"></i> NumPy · scikit-learn</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Çapraz Doğrulama, <span
+                        class="code-note">Kodda</span></h2>
+                <pre style="max-width:1100px;margin:0 auto;"><code class="language-python" data-trim data-line-numbers="1-4|5-7|8-10|11-15|16-18|19-20" style="font-size:0.62em;">import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import confusion_matrix, roc_auc_score
+iris = load_iris().data[:, 2:]                                   # petal uzunluğu, genişliği
+X = np.empty((100, 2)); X[0::2] = iris[50:100]; X[1::2] = iris[100:]   # dönüşümlü (H4)
+d = np.tile([0., 1.], 50)                                        # 0 versicolor, 1 virginica
+p, hata = np.zeros(100), []
+for tr, te in StratifiedKFold(5, shuffle=True, random_state=0).split(X, d):
+    mu, sd = X[tr].mean(0), X[tr].std(0)                         # ölçek YALNIZ eğitim katından
+    Z = (X - mu) / sd; w = np.zeros(2); b = 0.0
+    for epoch in range(200):                                     # H5'in sürekli perceptronu
+        for i in tr:
+            y = 1 / (1 + np.exp(-(w @ Z[i] + b)))
+            w += 0.1 * (d[i] - y) * Z[i]; b += 0.1 * (d[i] - y)
+    p[te] = 1 / (1 + np.exp(-(Z[te] @ w + b)))                    # katman dışı olasılık
+    hata.append(int(np.sum((p[te] &gt;= 0.5) != (d[te] == 1))))
+print(hata, sum(hata))                                           # [2, 1, 0, 0, 3] 6
+print(confusion_matrix(d, p &gt;= 0.5).tolist(), round(roc_auc_score(d, p), 4))
+# [[47, 3], [3, 47]] 0.99</code></pre>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.46em;">Toplam 6 hata: H5'in aynı veride saydığı 6 ile
+                    aynı. Üç parametreli doğrusal model ezberleyemez; açık ≈ 0. Kapasite düşükken eğitim hatası dürüst bir
+                    tahmin, yüksekken değil (Slayt 7).</p>
+            </section>
+
+
+            <!-- 26. KARŞILAŞTIRMA -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="table" style="width:14px;height:14px;"></i> Yan Yana</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Ezbere Karşı <span
+                        class="code-note">Frenler</span></h2>
+                <table class="dtab" style="font-size:0.42em;">
+                    <tr><th>fren</th><th>nasıl çalışır</th><th>doğrulamayla seçilen</th><th>bizde test</th><th>bedeli</th></tr>
+                    <tr><td>yok (N = 32, 16000 epoch)</td><td>—</td><td>—</td><td class="bad">%79.1</td><td>ezber: eğitim %99</td></tr>
+                    <tr><td>erken durdurma</td><td>en iyi doğrulama anına döner</td><td>sabır, izlenen ölçü</td><td class="ok">%84.6</td><td>doğrulama kümesi</td></tr>
+                    <tr><td>L2 (ağırlık sönümü)</td><td>büyük ağırlığı cezalar</td><td>λ</td><td class="ok">%83.2 (λ = 10⁻⁴)</td><td>fazlası eksik öğrenme (%46.2)</td></tr>
+                    <tr><td>küçük ağ</td><td>kapasiteyi sınırlar</td><td>N</td><td>%78.8 (N = 4)</td><td>uzun eğitimde yine açık</td></tr>
+                    <tr><td>daha çok veri</td><td>gürültü ortalamada kaybolur</td><td>—</td><td class="ok">%87.0 (1000 eğitim; Uygulama 3)</td><td>veri toplamak pahalı</td></tr>
+                    <tr><td>dropout</td><td>eğitimde rastgele nöron kapatır</td><td>oran</td><td><span class="wk">H14</span></td><td>daha yavaş eğitim</td></tr>
+                </table>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.5em;">Frenlerin ortak noktası: ağın veriyi değil kuralı
+                    öğrenmesi için esnekliğini kısmak. Hangisi ne kadar, her zaman doğrulama kümesiyle seçilir; test en sonda.</p>
+            </section>
+
+
+            <!-- 27. MİNİ QUIZ -->
+            <section class="w8quiz" data-background-color="#020617">
+                <span class="chip mb-2" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · Haftayı Yokla</span>
+                <h2 class="text-2xl font-black mb-3 uppercase tracking-tighter text-white">Kendini Test Et</h2>
+                <div class="grid grid-cols-2 gap-x-8 gap-y-0 text-left" style="max-width:1000px;margin:0 auto;">
+                    <div class="quiz fragment" data-ok="Eğitimde iyi, görmediği veride kötü: aşırı öğrenme (varyans)."
+                        data-no="Eğitim %99, test %79: açık büyük. Bu aşırı öğrenme; eksik öğrenmede eğitim de kötü olurdu.">
+                        <div class="quiz-q">1) Eğitim %99, test %79. Ne oldu?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">eksik öğrenme</button>
+                        <button type="button" class="quiz-opt" data-correct="1">aşırı öğrenme</button>
+                        <button type="button" class="quiz-opt" data-correct="0">test kümesi bozuk</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="Doğrulama: ayar seçmek onun işi; test en sonda bir kez."
+                        data-no="Erken durdurma doğrulama hatasını izler. Testle durdurmak sızıntıdır.">
+                        <div class="quiz-q">2) Erken durdurmada hangi hata izlenir?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">eğitim</button>
+                        <button type="button" class="quiz-opt" data-correct="1">doğrulama</button>
+                        <button type="button" class="quiz-opt" data-correct="0">test</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="0.95·0.01 / (0.95·0.01 + 0.05·0.99) = 0.161: pozitiflerin çoğu sağlam."
+                        data-no="Bayes: 0.0095 / (0.0095 + 0.0495) ≈ 0.16. Yaygınlık düşükken pozitiflerin çoğu yanlış alarm.">
+                        <div class="quiz-q">3) Yaygınlık %1, duyarlılık = özgüllük = 0.95. Pozitif çıkanın hasta olma olasılığı?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">≈ 0.95</button>
+                        <button type="button" class="quiz-opt" data-correct="0">≈ 0.50</button>
+                        <button type="button" class="quiz-opt" data-correct="1">≈ 0.16</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="quiz fragment" data-ok="Yalnız eğitim katından; teste aynı μ, σ uygulanır."
+                        data-no="μ ve σ test katını görürse sızıntı olur: yalnız eğitim katından hesaplanır.">
+                        <div class="quiz-q">4) Çapraz doğrulamada standartlaştırmanın μ, σ'sı?</div>
+                        <button type="button" class="quiz-opt" data-correct="0">bütün veriden</button>
+                        <button type="button" class="quiz-opt" data-correct="1">o turun eğitim katından</button>
+                        <button type="button" class="quiz-opt" data-correct="0">test katından</button>
+                        <div class="quiz-fb" role="status" aria-live="polite"></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 28. ÖZET -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="list-checks" style="width:14px;height:14px;"></i> Toparlayalım</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-2 text-left cards-tight" id="w8sum" style="max-width:1040px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ Asıl hedef görmediği veri: <code>açık = E_test − E_eğitim</code></p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Kapasite ↑ → eğitim hatası ↓; açık ve test CE'si büyür</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Gürültüde tavan var (%87.9); N = 32 ters etiketleri ezberledi</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Erken durdurma: doğrulama CE'si en düşük ana dön (%79.1 → %84.6)</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ L2: <code>w ← (1 − ηλ)w − η∂E/∂w</code>; fazlası eksik öğrenme</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Eğitim öğrenir, doğrulama seçer, test bir kez raporlar (± SH)</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ k-katlı: her örnek bir kez test; ölçek yalnız eğitim katından</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ Doğruluk yetmez: duyarlılık, özgüllük, kesinlik, ROC; PPV yaygınlığa bağlı</p></div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in" style="font-size:0.5em;">🗺️ Gizli nöronlarımız hep doğru çizdi. Çember
+                    gibi kapalı bir bölgeyi tek bir “tümsek” anlatamaz mı? Sıradaki konu: <b>RBF ağları</b>.</p>
+            </section>
+
+
+            <!-- 29. UYGULAMA -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.4);color:#6ee7b7;">
+                    <i data-lucide="rocket" style="width:14px;height:14px;"></i> Uygulama · ~40 dk</span>
+                <h2 class="text-2xl font-black mb-5 uppercase tracking-tighter text-white">Genellemeyi Kendin Ölç</h2>
+                <div class="grid grid-cols-2 gap-3 text-left cards-tight" style="max-width:1050px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p><b>1 · Elle ölçütler.</b> 1000 kişide 50 hasta. Test 45'ini
+                        yakalıyor, 95 sağlama “hasta” diyor. Duyarlılık, özgüllük, kesinlik, doğruluk? “Herkes sağlam” kaç alır?
+                        (cevap: 0.90, 0.90, 0.321, 0.90; 0.95)</p></div>
+                    <div class="concept-card fragment fade-up"><p><b>2 · L2, bias hariç.</b> Kod 1'de erken durdurmayı kaldır;
+                        SGD'ye iki parametre grubu ver: ağırlıklara <code>weight_decay=1e-4</code>, bias'lara 0. 16000 epoch
+                        sonra test? (cevap: %83.2, Slayt 11)</p></div>
+                    <div class="concept-card fragment fade-up"><p><b>3 · Daha çok veri.</b> Kod 1'de 1300'leri 2200 yap; eğitim
+                        ilk 1000, doğrulama sonraki 200, test son 1000. N = 32, fren yok, 16000 epoch: açık ne oldu?
+                        (cevap: eğitim %87.8, test %87.0, tavan %88.7: açık 20 puandan 1'e indi)</p></div>
+                    <div class="concept-card fragment fade-up" style="border-color:rgba(96,125,255,0.35);"><p><b>4 · Bölme
+                        şansı.</b> Kod 2'de <code>random_state</code>'i 0–9 dolaş; k = 2, 5, 10 için toplam hata? (cevap: k = 2:
+                        5–10, k = 5: 6–7, k = 10: hep 6; Slayt 17)</p></div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" style="font-size:0.54em;color:#7dd3fc;">İpucu: test kümesine yalnız en
+                    sonda, <code>torch.no_grad()</code> içinde ve bir kez bak.</p>
+            </section>
+
+
+            <!-- 30. SONRAKİ -->
+            <section>
+                <div class="flex flex-col items-center">
+                    <span class="chip mb-6"><i data-lucide="arrow-right-circle" style="width:14px;height:14px;"></i>
+                        Sonraki Konu · Hafta 10</span>
+                    <h2 class="text-4xl font-black mb-4 tracking-tighter text-white">RBF <span class="grad-text">Ağları</span></h2>
+                    <p class="code-note mb-6" style="max-width:800px;">Şimdiye kadar her gizli nöron bir doğru çizdi: σ(wᵀx + b).
+                        Çemberi anlatmak için birkaç doğru gerekti. RBF'de gizli nöron bir merkezin çevresinde tümsek çizer:
+                        çember tek bir tümsekle anlatılabilir mi?</p>
+                    <div class="math-box mb-8" style="max-width:560px;">\[ \varphi_j(\mathbf{x}) = \exp\!\Big(-\frac{\lVert
+                        \mathbf{x} - \mathbf{c}_j\rVert^2}{2 s_j^2}\Big) \]</div>
                     <a href="../index.html" class="nav-link">← Ders Ana Sayfasına Dön</a>
                 </div>
             </section>
+
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
     <script src="../js/main.js"></script>
     <script>
-        if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-        Reveal.initialize({ hash: false, history: false, center: true, transition: 'convex', backgroundTransition: 'fade', width: 1200, height: 700, margin: 0.1 });
+        initReveal({
+            transition: 'slide', backgroundTransition: 'fade', margin: 0.06, slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
+        });
+        function renderMath() {
+            if (typeof renderMathInElement === 'undefined') return;
+            renderMathInElement(document.querySelector('.reveal .slides'), {
+                delimiters: [{ left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }],
+                throwOnError: false
+            });
+        }
+        if (typeof Reveal !== 'undefined' && Reveal.on) { Reveal.on('ready', renderMath); }
+        else { window.addEventListener('load', renderMath); }
+    </script>
+    <script>
+        (function () {
+            function stop(e) { e.stopPropagation(); }
+            function $(id) { return document.getElementById(id); }
+            function mn(s) { return String(s).replace(/-/g, '−'); }
+            function fx(v, n) { var s = v.toFixed(n === undefined ? 2 : n); if (/^-0\.?0*$/.test(s)) s = s.slice(1); return mn(s); }
+            function nf(v, n) { var r = Math.round(v); return Math.abs(v - r) < 1e-9 ? mn(String(r === 0 ? 0 : r)) : fx(v, n === undefined ? 2 : n); }
+            function vec(a, n) { return '[' + a.map(function (v) { return nf(v, n); }).join(', ') + ']'; }
+            function mat(M, n) { return '[' + M.map(function (r) { return vec(r, n); }).join(', ') + ']'; }
+            function C(c, t) { return '<span class="' + c + '">' + t + '</span>'; }
+            function onLeave(fn) { if (typeof Reveal !== 'undefined' && Reveal.on) Reveal.on('slidechanged', fn); }
+            function pickButtons(box, onPick) {
+                if (!box) return;
+                box.querySelectorAll('button').forEach(function (b) {
+                    b.addEventListener('click', function (e) {
+                        stop(e); b.blur();
+                        box.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
+                        onPick(b.getAttribute('data-v'));
+                    });
+                });
+            }
+            function setOn(box, v) { box.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-v') === v); }); }
+            function canvasPoint(cv, e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * cv.width / r.width, (e.clientY - r.top) * cv.height / r.height]; }
+
+            // Dünya koordinatlı 2B tuval yardımcısı: bölge boyama, eksen, doğru, nokta
+            function Plane(cv, xr, yr) {
+                var ctx = cv.getContext('2d'), W = cv.width, H = cv.height, P = { ctx: ctx, W: W, H: H };
+                P.px = function (x) { return (x - xr[0]) / (xr[1] - xr[0]) * W; };
+                P.py = function (y) { return H - (y - yr[0]) / (yr[1] - yr[0]) * H; };
+                P.ix = function (X) { return xr[0] + X / W * (xr[1] - xr[0]); };
+                P.iy = function (Y) { return yr[0] + (H - Y) / H * (yr[1] - yr[0]); };
+                P.axes = function () {
+                    ctx.strokeStyle = 'rgba(148,163,184,0.35)'; ctx.lineWidth = 1; ctx.beginPath();
+                    ctx.moveTo(P.px(0), 0); ctx.lineTo(P.px(0), H); ctx.moveTo(0, P.py(0)); ctx.lineTo(W, P.py(0)); ctx.stroke();
+                };
+                P.line = function (w, style, width, dash) {   // w₁x + w₂y + b = 0
+                    if (Math.abs(w[0]) < 1e-12 && Math.abs(w[1]) < 1e-12) return;
+                    ctx.save(); ctx.strokeStyle = style; ctx.lineWidth = width; ctx.setLineDash(dash || []); ctx.beginPath();
+                    if (Math.abs(w[1]) >= Math.abs(w[0])) {
+                        ctx.moveTo(P.px(xr[0]), P.py(-(w[0] * xr[0] + w[2]) / w[1])); ctx.lineTo(P.px(xr[1]), P.py(-(w[0] * xr[1] + w[2]) / w[1]));
+                    } else {
+                        ctx.moveTo(P.px(-(w[1] * yr[0] + w[2]) / w[0]), P.py(yr[0])); ctx.lineTo(P.px(-(w[1] * yr[1] + w[2]) / w[0]), P.py(yr[1]));
+                    }
+                    ctx.stroke(); ctx.restore();
+                };
+                P.dot = function (x, y, d, r) {
+                    ctx.beginPath(); ctx.arc(P.px(x), P.py(y), r, 0, 6.283);
+                    if (d > 0) { ctx.fillStyle = '#34d399'; ctx.fill(); }
+                    else { ctx.fillStyle = '#0b1020'; ctx.fill(); ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = Math.max(1.5, r / 4); ctx.stroke(); }
+                };
+                P.ring = function (x, y, r, col, lw) { ctx.beginPath(); ctx.arc(P.px(x), P.py(y), r, 0, 6.283); ctx.strokeStyle = col; ctx.lineWidth = lw || 2.5; ctx.stroke(); };
+                P.text = function (x, y, s, col, font, align) {
+                    ctx.fillStyle = col; ctx.font = font || 'bold 12px monospace'; ctx.textAlign = align || 'center'; ctx.fillText(s, P.px(x), P.py(y));
+                };
+                return P;
+            }
+            function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+            function rgb(c) { return 'rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'; }
+            var Y1 = [37, 84, 156], Y0 = [128, 30, 58], YM = [12, 17, 30];
+            function ycol(y) { return y >= 0.5 ? mix(YM, Y1, Math.min(1, (y - 0.5) * 2)) : mix(YM, Y0, Math.min(1, (0.5 - y) * 2)); }
+            function PlaneY(cv, xr, yr) {
+                var P = Plane(cv, xr, yr);
+                P.shadeY = function (f, S) {
+                    var ctx = P.ctx; S = S || 5;
+                    for (var i = 0; i < P.W; i += S) for (var j = 0; j < P.H; j += S) {
+                        ctx.fillStyle = rgb(ycol(f(P.ix(i + S / 2), P.iy(j + S / 2)))); ctx.fillRect(i, j, S, S);
+                    }
+                };
+                return P;
+            }
+
+
+            // Gürültülü çember: torch.manual_seed(1); X = (rand(1300, 2)·2 − 1).round(2); d = (‖x‖ < 0.7); %10 ters
+            var NC = {"X":[[-0.88,-0.55],[-0.53,-0.65],[0.11,-0.78],[-0.08,0.42],[0.16,-0.01],[0.02,-0.34],[0.44,-0.23],[-0.82,-0.77],[0.28,-0.61],[0.02,0.42],[0.85,1],[0.79,0.75],[0.69,-0.69],[-0.66,0.97],[0.63,-0.13],[-0.17,-0.14],[0.52,0.85],[0.93,-0.65],[0.91,-0.37],[-0.09,-0.41],[-0.62,-0.51],[-0.3,-0.11],[-0.19,-0.43],[0.61,-0.36],[-0.27,-0.4],[0.33,-0.49],[-0.17,0.68],[0.48,-0.43],[0.59,0],[0.8,-0.79],[0.16,0.97],[-0.74,-0.52],[-0.39,0.03],[-0.1,-0.01],[0.06,-0.47],[-0.67,0.1],[-0.52,0.07],[-0.12,0.29],[0.08,-0.55],[0.33,0.69],[-0.98,-0.44],[0.86,0.09],[0.62,0.55],[0.46,0.98],[0.46,-0.53],[1,0.11],[-0.16,0.08],[0.73,-0.14],[-0.76,0.79],[0.76,0.83],[0.94,-0.17],[-0.18,0.38],[0.36,0.28],[-0.2,-0.03],[0.91,0.03],[0.91,0.71],[0.91,-0.83],[-0.66,-0.62],[0.88,-0.29],[-0.59,0.01],[0.43,0.36],[0.94,-0.52],[-0.33,0.05],[-0.64,-0.04],[-0.39,0.54],[0.27,0.46],[0.98,-0.62],[0.39,-0.74],[0.9,-0.32],[0.07,-0.79],[-0.64,-0.08],[0.42,0.02],[-0.52,-0.7],[-0.49,-0.6],[-0.4,0.43],[-0.19,0.96],[-0.06,-0.31],[0.53,-0.29],[-0.52,0.25],[0.2,-0.39],[-0.58,-0.52],[0.34,0.51],[-0.78,-0.91],[-0.19,-0.93],[0.53,-0.98],[0.92,0.37],[-0.36,0.06],[-0.32,-0.11],[0.18,0.11],[0.71,0.86],[0.32,-0.13],[0.29,-0.47],[-0.75,-0.73],[-0.69,0.23],[0.05,-0.99],[-0.54,-0.82],[-0.17,-0.16],[-0.59,0.36],[0.15,0.95],[-0.68,0.17],[0.92,-0.95],[-0.68,0.86],[0.47,-0.38],[0.26,-0.05],[0.64,0.13],[0.41,0.52],[-0.48,0.45],[0.28,0.19],[-0.83,-0.11],[0.86,0.52],[0.7,-0.87],[-0.44,0.67],[-0.96,-0.32],[0.93,0.7],[-0.97,-0.51],[0.67,0.84],[0.08,-0.7],[-0.92,0.96],[0.62,-0.1],[-0.66,-0.05],[0.24,0.27],[-0.1,0.71],[0.36,-0.12],[-0.19,0.11],[0.47,-0.41],[0.65,-0.19],[-0.53,-0.38],[-0.08,-0.05],[-0.98,-0.4],[0.72,0.67],[-0.91,0.65],[-0.18,0.24],[-0.09,0.7],[0.55,-0.22],[0.09,-0.32],[-0.54,-1],[0.38,-0.71],[-0.31,-0.73],[0.34,0.77],[-0.65,0.13],[-0.53,-0.86],[-0.5,-0.23],[0.69,0.66],[0.52,0.65],[-0.09,-0.05],[0.87,0.54],[-0.96,0.55],[0.65,0.39],[0.98,-0.85],[0.62,0.89],[0.37,0.84],[0.74,-0.35],[0.34,-0.66],[0.82,0.76],[-0.07,0.06],[0.19,0.87],[0.16,-0.79],[-0.62,-0.7],[-0.71,-0.24],[0.95,-0.55],[0.32,0.94],[0.1,0.66],[-0.05,-0.63],[0.34,-0.08],[-0.73,0.35],[-0.94,-0.74],[0.51,0.27],[-0.43,0.47],[-0.41,0.49],[0.93,0.45],[0.63,-0.59],[-0.04,-0.54],[-0.55,0.74],[0.61,0.55],[0.22,0.6],[-0.1,0.16],[0.72,-0.04],[0.91,-0.66],[-0.17,0.41],[-0.86,-0.03],[0.82,0.75],[0.76,-0.77],[-0.46,0.53],[0.07,-0.29],[-0.76,-0.29],[-0.03,0.39],[-0.02,-0.87],[-0.48,0.36],[-0.83,0.21],[-0.9,-0.34],[-0.96,-0.86],[-0.98,0.2],[-0.29,0.86],[-0.29,0.77],[0.18,-0.12],[-0.81,0.08],[0.87,0.07],[-0.3,-0.63],[-0.36,0.42],[0.64,0.74],[0.84,0.02],[-0.6,0.65],[-0.35,0.16],[-0.01,0.93],[0.72,0.62],[-0.46,0.99],[-0.06,-0.91],[-0.6,-0.31],[-0.39,-0.76],[0.14,-0.87],[0.46,0.07],[0.09,0.31],[-0.64,-0.75],[0.8,0.91],[0.31,0.46],[0.05,0.56],[-0.82,0.52],[0.76,-0.8],[0.59,0.8],[0.79,-0.37],[0.43,-0.55],[-0.78,-0.64],[-0.91,-0.47],[-0.72,-0.04],[-0.79,-0.94],[-0.46,0.74],[-0.8,-0.14],[-0.24,0.45],[-0.54,0.98],[0.39,-0.63],[0.3,-0.55],[0.26,-0.44],[-0.01,-0.83],[0.98,-0.85],[0.84,-0.94],[-0.47,0.42],[0.99,-0.65],[0.68,-0.23],[-0.66,0.61],[0.77,-0.68],[0.25,-0.53],[0.68,0.17],[-0.11,0.55],[-0.76,-0.71],[-0.61,0.68],[-0.27,0.6],[-0.16,0.33],[-0.18,-0.1],[0.41,-0.62],[0.17,0.48],[-0.67,0.06],[0.69,0.84],[-0.34,-0.95],[0.78,-0.71],[-0.11,-0.5],[-1,0.45],[0.33,0.22],[-0.84,-0.26],[0.89,0.65],[0.65,-0.3],[0.76,-0.45],[0.65,-0.2],[0.61,-0.18],[0.29,0.76],[-0.7,0.78],[0.03,-0.94],[-0.46,0.58],[-0.92,0.19],[0.13,0.31],[0.81,0.91],[0.53,-0.55],[0.5,0.53],[0.87,-0.4],[0.91,-0.47],[-0.97,-0.92],[0.35,0.88],[-0.96,0.96],[0.27,-0.99],[-0.49,-0.91],[-0.47,0.86],[0.86,-0.84],[0.71,0.63],[-0.56,0.17],[-0.89,-0.03],[0.3,0.46],[-0.78,0.77],[0.32,-0.06],[0.47,0.53],[-0.21,0.93],[0.41,0.55],[0.47,-0.13],[0.03,-0.79],[0.48,-0.99],[-0.67,-0.92],[0.29,-0.2],[-0.8,0.37],[0.36,-0.16],[0,-0.11],[0.76,-0.47],[0.07,-0.67],[0.01,0.88],[0.85,0.05],[-0.57,0.4],[0.54,-0.29],[0.31,0.56],[0.01,-0.52],[0.99,-0.98],[-0.04,0.87],[-0.32,0.86],[-0.88,0.61],[0.09,0.29],[0.1,0.4],[0.64,0.16],[0.51,0.61],[-0.86,0.83],[-0.7,-0.34],[0.98,0.1],[0.82,0.95],[0.27,0.46],[-0.68,0.13],[-0.9,0.37],[-0.85,0.74],[0.9,0.33],[0.64,-0.93],[-0.55,0.31],[-0.48,-0.36],[0.81,-0.43],[0.46,0.65],[-0.43,0.69],[-0.97,-0.37],[-0.71,0.36],[-0.88,0.25],[0.26,0.67],[0.06,0.14],[-0.38,0],[0.53,0.27],[0.59,0.83],[-0.46,-0.91],[0.04,0.54],[0.27,0.95],[0.37,-0.64],[0.69,0.05],[0.49,0.24],[-0.44,0.71],[-0.96,-0.83],[-0.25,0.98],[0.72,-0.76],[-0.34,-0.72],[0.39,-0.12],[-0.19,-0.63],[-0.3,-0.57],[-0.58,0.67],[0.35,0.1],[-0.96,-0.68],[0.98,-0.32],[0.19,0.84],[0.28,0.6],[0.67,0.73],[0.14,0.73],[0.92,-0.98],[0.49,-0.46],[-0.96,-0.29],[0.25,-0.96],[-0.48,0.74],[-0.88,0.56],[0.15,-0.47],[0.16,-0.29],[-0.83,-0.09],[-0.57,0.28],[-0.64,-0.51],[-0.66,-0.68],[0.44,0.44],[-0.39,0.9],[0.52,0.55],[0.53,0.82],[0.32,-0.75],[-0.53,0.89],[0.37,0.05],[-0.5,0.47],[-0.83,0.52],[-0.6,-0.41],[0.11,0.77],[0.12,0.72],[-0.49,-0.81],[-0.41,0],[0.3,0.85],[-0.93,-0.05],[0.27,-0.56],[-0.83,-0.01],[0.78,-0.15],[-0.25,-0.49],[-0.97,-0.72],[-0.69,-0.63],[-0.74,0.83],[-0.67,0.54],[0.32,-0.63],[-0.19,-0.58],[-0.61,-0.29],[0.5,-0.28],[-0.47,0.54],[-0.17,0.24],[0.59,0.05],[0.3,0.97],[-0.25,0.77],[0.33,-0.27],[-0.61,-0.1],[-0.98,0.04],[0.83,0.72],[-0.36,-0.73],[0.89,-0.64],[-0.91,0.91],[0.91,0.01],[0.36,0.39],[0.34,-0.85],[0.22,0.17],[0.26,0.49],[-0.92,-0.87],[-0.94,0.36],[0.47,0.79],[-0.09,-0.1],[0.55,-0.36],[-0.34,0.18],[-0.84,0.51],[-0.66,0.83],[0.38,-0.7],[0.13,-0.13],[-0.29,-0.02],[0.53,0],[-0.77,-0.73],[0.47,0.86],[-0.05,0.66],[0.24,-0.39],[0.48,-0.41],[0.06,0.59],[0.17,-0.44],[0.07,0.13],[0.59,-0.64],[-0.45,-0.42],[0.82,-0.99],[0.62,1],[-0.33,-0.16],[0.73,-0.81],[0.55,-0.56],[0.14,-0.3],[-0.23,-0.71],[-0.18,0.19],[-0.41,-0.74],[0.96,-0.51],[0.98,-0.86],[0.88,0.89],[0.64,0.53],[-0.68,-0.71],[0.04,0.58],[0.73,0.05],[-0.57,0.37],[0.54,0.2],[-0.59,0.86],[0.6,-0.28],[0.86,-0.49],[-0.12,-0.13],[0.61,0.06],[-0.46,0.36],[0.85,-0.39],[0.05,0.13],[0.64,0.38],[-0.04,-0.31],[0.49,-0.43],[-0.63,-0.54],[-0.97,-0.22],[0.72,-0.01],[-0.79,-0.2],[0.2,-0.64],[0.1,-0.18],[0.06,-0.61],[-0.53,-0.09],[-0.09,-0.32],[-0.52,0.07],[0.89,-0.89],[0.73,0.28],[-0.08,0.21],[0.21,-0.94],[0.66,0.19],[-0.27,-0.91],[0.53,-0.81],[-0.02,0.26],[-0.6,-0.01],[0.42,-0.67],[-0.33,0.52],[-0.03,-0.18],[0.65,-0.83],[-0.12,0.43],[-0.69,-0.79],[0.07,0.04],[0.68,0.39],[-0.58,0.85],[-0.97,-0.55],[-0.94,-0.75],[0.92,0.16],[-0.26,0.39],[0.16,-0.74],[-0.48,-0.27],[-0.01,0.74],[-0.01,0.29],[0.88,-0.79],[-0.99,-0.97],[0.75,0.21],[-0.14,0.49],[0.27,-0.89],[-0.77,-0.12],[-0.73,-0.44],[0.4,0.12],[-0.07,-0.82],[0.83,0.09],[-0.91,0.8],[0.02,-0.53],[-0.46,-0.15],[0.45,0.11],[-0.76,-0.67],[0.87,-0.78],[0.74,-0.53],[0.32,-0.54],[-0.37,0.33],[-0.82,-0.33],[0.4,-0.45],[0.6,-0.9],[0.9,0.63],[-0.44,0.88],[0.26,-0.15],[0.78,0.81],[-0.91,0.6],[-0.32,0.65],[-0.43,-0.34],[-0.26,-0.85],[0,-0.36],[-0.48,0.14],[0.91,-0.95],[0.05,-0.77],[0.73,0.73],[0.31,0.69],[0.27,-0.75],[0.64,0.86],[0.26,0.46],[0.8,0.14],[-0.23,-0.72],[-0.07,-0.4],[-0.46,-0.23],[0.9,0.68],[0.44,0.92],[-0.61,0.3],[0.87,-0.95],[-0.29,0.98],[0.98,-0.46],[-0.48,0.95],[-0.14,-0.26],[0.28,-0.64],[-0.24,0.62],[-0.54,0.66],[0.11,0.92],[0.74,0.95],[-0.12,0.55],[-0.5,0.56],[0.7,0.99],[0.67,-0.02],[0.16,-0.58],[0.92,0.91],[-0.54,-0.7],[0.26,-0.69],[-0.81,-0.3],[0.56,-0.42],[-0.96,-0.28],[0.93,0.03],[0.48,-0.55],[-0.97,-0.13],[-0.98,0.52],[0.79,-0.58],[-0.75,0.16],[0.21,0.52],[0.68,0.94],[0.03,-0.81],[0,-0.03],[0.72,0.31],[0.18,0.48],[-1,0.78],[-0.89,0.51],[0.59,0.16],[-0.12,-0.28],[0.43,-0.65],[0.61,0.26],[0.28,-0.05],[-0.1,0.75],[0.34,0.92],[-0.82,0.02],[0.6,0.26],[0.39,-0.78],[0.04,0.87],[0.21,-0.95],[-0.3,0.68],[-0.35,-0.48],[-0.59,-0.97],[-0.52,-0.46],[-0.7,0.27],[0.01,-0.67],[-0.68,-0.46],[0.31,0.01],[0.45,-0.9],[0.02,0.66],[0.46,-0.23],[0.52,-0.01],[0.42,-0.21],[0.1,0.27],[0.44,-0.37],[0.65,-0.63],[0.55,-0.71],[0.15,-0.34],[0.22,0.32],[0.97,-0.14],[-0.06,-0.63],[-0.13,-0.71],[0.16,0.63],[-0.33,0.13],[-0.76,0.57],[0.26,0.34],[-0.81,-0.61],[0.16,0.95],[-0.1,-0.15],[-0.13,0.74],[0.11,-0.16],[-0.82,-0.18],[0.85,-0.13],[0.27,0.8],[-0.88,-0.66],[0.98,-0.23],[-0.12,-0.18],[-0.3,0.72],[-0.56,-0.31],[0.98,-0.18],[0.93,-0.68],[-0.66,0.08],[0.02,-0.48],[-0.02,-0.49],[-0.98,0.1],[-0.8,-0.66],[-0.37,0.03],[0.8,-0.62],[0.69,-0.91],[-0.31,-0.32],[-0.17,0.8],[-0.72,-0.85],[0.35,-0.56],[-0.37,-0.44],[0.58,0.07],[0.24,0.26],[0,0.62],[-0.55,-0.76],[0.35,0.96],[-0.21,0.52],[0.83,0.78],[-0.2,0.97],[-0.24,-0.23],[-0.69,0.91],[0.38,0.57],[0.28,0.84],[0.82,0.32],[-0.36,-0.77],[0.81,0.13],[0.32,0.57],[0.89,-0.17],[0.6,0.38],[-0.03,-0.4],[0.94,0.92],[0.06,0.19],[0.87,-0.3],[0.31,-0.22],[-0.14,-0.6],[-0.64,0.45],[-0.97,-0.68],[-0.12,0.78],[0.41,-0.33],[0.58,0.47],[-0.08,-0.13],[-0.31,0.21],[-0.9,0.8],[0.2,0.46],[-0.46,0.84],[-0.81,-0.74],[0.94,-1],[-0.06,-0.08],[-0.61,-0.42],[-0.83,0.75],[-0.53,0.03],[-0.94,-0.46],[0.72,0.53],[-0.77,-0.81],[-0.61,-0.79],[-0.35,0.66],[-0.96,-0.41],[-0.3,0.72],[0.09,0.53],[0.45,-0.52],[0.13,0.23],[0.86,-0.22],[0.61,-0.68],[-0.05,-0.3],[0.96,0.2],[-0.46,0.37],[0.99,-0.55],[0.5,-0.6],[-0.47,-0.17],[0.49,0.99],[0.09,0.86],[0.75,-0.26],[-0.86,0.66],[-0.76,-0.74],[0.59,0.66],[-0.69,0.19],[0.66,0.02],[0.57,-0.95],[0.52,-0.97],[0.83,-0.92],[-0.09,-0.47],[0.82,-0.31],[0.7,-0.42],[0.59,0.34],[-0.35,-0.27],[0.59,0.03],[-0.95,0.14],[0.14,0.72],[-0.55,-0.7],[0.13,-0.98],[-0.13,0.03],[-0.65,0.78],[-0.02,-0.56],[0.64,-0.11],[-0.29,0.67],[0.84,-0.71],[-0.97,0.34],[0.06,-0.49],[-0.12,-0.33],[0.53,-0.88],[0.63,0.5],[0.73,0.62],[-0.72,-0.39],[-0.84,0.32],[-0.79,-0.15],[0.4,-0.1],[-0.34,-0.06],[-0.15,0.06],[-0.55,-0.29],[-0.79,0.68],[0.76,0.68],[-0.49,-0.98],[0.09,0.01],[0.13,-0.81],[0.19,-0.57],[0.28,0.3],[0.75,0.67],[-0.44,-0.25],[-0.35,-0.87],[0.47,-0.41],[-0.61,0.47],[-0.19,-0.96],[0.32,-0.65],[0.13,0.88],[0.3,-0.45],[0.54,0.26],[-0.25,-0.18],[0.47,0.71],[0.14,0.03],[0.32,-0.46],[-0.8,0.42],[0.22,-0.52],[0.16,0.82],[-0.43,0.52],[-0.57,-0.7],[0.24,-0.68],[0.31,0.33],[-0.13,-0.34],[-0.85,-0.11],[-0.15,0.11],[-0.63,0.19],[0.2,0.41],[0.67,-0.38],[-0.56,0.11],[-0.41,-0.02],[-0.89,-0.26],[-0.25,-0.23],[-0.84,0.98],[0.53,-0.81],[0.15,-0.29],[0.61,0.22],[-0.5,-0.74],[0.39,0.88],[0.1,-0.45],[-0.09,-0.43],[-0.4,-0.58],[-0.84,-0.6],[0.59,0.85],[0.75,-0.51],[0,-0.16],[-0.69,-0.61],[-0.77,-0.94],[0.24,-0.75],[-0.4,-0.17],[-0.56,-0.25],[0.51,0.76],[0.86,-0.48],[-0.38,0.1],[1,0.45],[-0.63,-0.03],[-0.92,0.8],[0.44,0.37],[0.23,-0.8],[0.14,0.24],[0.11,-0.72],[0.91,-0.39],[0.74,-0.42],[0.05,-0.26],[0.47,-0.87],[0.31,0.44],[0.01,0.59],[-0.14,0.35],[0.29,-0.04],[0.48,0.67],[-0.82,-0.31],[-0.97,-0.78],[-0.93,-0.74],[-0.74,0.64],[0.43,-0.33],[-0.75,-0.85],[0.78,0.3],[-0.47,-0.78],[0.59,-0.42],[-0.52,0.1],[-0.54,0.86],[0.86,-0.54],[0.21,-0.68],[0.43,0.12],[0.19,-0.2],[-0.48,-0.76],[-0.57,-0.93],[-0.68,-0.71],[0.16,0.49],[0.86,0.92],[0.43,0.42],[-0.34,0.53],[0.81,-0.33],[0.98,0.35],[0.07,-0.41],[-0.66,-0.45],[-0.78,0.92],[-0.67,0.49],[0.91,-0.62],[0.71,-0.72],[-0.49,-0.03],[0.76,-0.3],[0.8,-0.88],[0.41,0.81],[-0.25,-0.47],[0.83,-0.47],[0.05,-0.82],[0.67,0.68],[-0.4,-0.22],[0.2,-0.55],[-0.7,-0.03],[0.94,-0.89],[0.14,0.59],[-0.65,-0.08],[-0.81,0.97],[0.33,-0.61],[0.55,-0.71],[0.84,-0.82],[-0.14,-0.25],[0.79,0.35],[-0.49,-0.66],[-0.03,-0.8],[-0.21,-0.61],[0.91,-0.62],[0.39,-0.91],[0.84,0.53],[-0.67,-0.74],[0.36,0.28],[0.82,-0.62],[0.14,-0.12],[0.82,0.55],[0.49,0.12],[-0.87,0.68],[-0.22,-0.54],[-0.01,0.88],[0.41,0.69],[-0.74,-0.1],[-0.08,0.28],[0.58,0.31],[0.65,-0.81],[-0.9,0.94],[-0.74,-0.76],[0.34,0.22],[0.8,0.08],[0.25,0.32],[0.47,0.61],[0.33,0.24],[0.4,0.17],[-0.53,-0.59],[-0.5,0.79],[0.47,0.52],[-0.3,-0.85],[-0.17,0.85],[0.53,-0.84],[-0.1,-0.93],[0.17,-0.01],[-0.42,-0.04],[-0.07,1],[0.79,-0.44],[-0.11,-0.56],[0.35,0.85],[0.11,0.1],[-0.01,0.02],[-0.54,-0.84],[-0.8,-0.06],[0.71,-0.79],[-0.78,-0.97],[0.06,0.21],[0.25,0.57],[-0.78,0.72],[-0.04,-0.03],[0.21,0.49],[0.24,-0.52],[0.23,0.24],[0.55,0.3],[0.94,-0.83],[0.13,-0.14],[0.75,0.59],[-0.3,-0.5],[-0.13,-0.47],[0.37,-0.87],[-1,0.17],[0.07,-0.99],[0.09,0.8],[0.03,0.31],[0.49,-0.82],[0.85,0.34],[0.44,-0.12],[0.83,-0.45],[0.47,0.53],[-0.61,-0.07],[0.04,0.96],[-0.03,0.23],[0.67,0.5],[-0.22,0.37],[-0.34,0.5],[0.85,0.71],[-0.59,0.81],[-0.65,-0.77],[0,0.81],[-0.36,0.55],[-0.18,-0.2],[0.43,0],[-0.66,-0.73],[-0.05,-0.53],[0.77,0.82],[-0.55,-0.29],[0.97,0.15],[0.58,-0.66],[-0.67,-0.04],[-0.77,-0.17],[-0.96,0.92],[0.37,0.56],[0.65,-0.63],[0.02,-0.24],[0.48,-0.43],[0.03,-0.06],[0.62,-0.64],[-0.27,0.14],[0.82,-0.68],[-0.22,0.31],[-0.15,0.8],[-0.77,0.15],[-0.56,-0.73],[0.36,-0.22],[-0.84,0.21],[0.59,-0.28],[0.99,0.94],[0.42,0.47],[-0.15,-0.31],[-0.59,0.77],[0.84,-0.79],[-0.15,0.1],[0.47,0.7],[-0.84,0.34],[0.5,0.38],[0.46,0.43],[-0.2,-0.76],[-0.39,0.85],[0.9,-0.28],[-0.95,0.02],[0.34,-0.58],[0.53,-0.41],[0.08,0.57],[-0.58,-0.01],[-0.81,-0.51],[-0.03,0.8],[0.3,0.59],[-0.32,-0.2],[-0.05,-0.15],[-0.33,0.69],[-0.46,-0.84],[-0.2,-0.46],[0,-0.91],[-0.2,0.66],[0.75,-0.36],[-0.85,0.23],[-0.26,-0.73],[0.09,0.88],[-0.65,0.37],[-0.94,-0.26],[0.16,0.66],[0.08,0.22],[-0.35,-0.75],[-0.87,-0.32],[-0.87,0.21],[-0.05,-0.96],[0.83,0.43],[-0.83,-0.11],[0.02,0.38],[-0.62,0.55],[0.55,-0.01],[0.87,-0.48],[0.75,0.87],[-0.07,0.63],[0.75,0.05],[-0.09,-0.24],[-0.24,-0.56],[0.49,-0.41],[-0.95,-0.83],[-0.64,0.06],[-0.93,-0.42],[0.08,-0.5],[0.26,0.96],[-0.11,-0.51],[1,0.9],[0.93,-0.07],[-0.76,-0.15],[-0.4,0.57],[-0.24,0.62],[-0.91,0.07],[0.44,-0.46],[0.1,-0.51],[-0.43,0.55],[-0.62,0.06],[0.43,-0.07],[0.79,-0.2],[-0.89,0.01],[-0.59,0.5],[0.83,-0.32],[0.75,0.78],[0.03,0.14],[0.27,-0.58],[-0.34,0.51],[-0.79,0.09],[0.87,-0.86],[-1,0.52],[-0.94,0.81],[-0.77,0.62],[0.67,-0.22],[-0.76,0.65],[-0.36,-0.67],[1,0.71],[-0.73,0.04],[0.53,-0.85],[-0.71,0.4],[0.33,-0.3],[0.72,0.42],[-0.42,0.44],[0.67,-0.55],[-0.62,-0.26],[0.57,-0.98],[-0.87,-0.3],[-0.62,-0.8],[0.74,0.4],[-0.91,-0.68],[-0.41,-0.64],[0.94,-0.51],[-0.27,-0.2],[0.14,-0.86],[0.39,-0.77],[-0.49,0.47],[-0.54,-0.37],[-0.31,0.78],[-0.64,0.18],[-0.48,-0.45],[-0.61,-0.35],[0.81,-0.82],[0.56,-0.2],[-0.68,0.26],[0.72,0.73],[-0.34,0.95],[-0.29,-0.88],[-0.28,-0.48],[-0.75,0.43],[0.9,0.64],[-0.88,0.4],[0.43,0.62],[-0.71,-0.42],[-0.74,-0.17],[0.63,0.73],[-0.98,0.54],[0.14,-0.94],[-0.96,0.1],[-0.87,0.78],[-0.45,-0.52],[-0.39,0.81],[-0.52,-0.16],[-0.26,-0.75],[-0.63,0.99],[0.08,0.2],[0.96,-0.13],[-0.42,-0.62],[-0.2,-0.99],[0.74,-0.87],[-0.05,-0.45],[0.74,0.54],[0.01,-0.59],[0.01,-0.56],[-0.93,0.98],[0.47,0.38],[-0.21,-0.87],[0.84,-0.17],[0.69,0.01],[-0.52,0.48],[-0.43,0.38],[-0.48,-0.69],[0.02,-0.73],[-0.24,-0.07],[-0.62,-0.81],[-0.28,0.63],[-0.44,0.29],[-0.2,0.47],[0.25,0.36],[0.98,0.01],[-0.8,0.85],[-0.13,0.13],[-0.01,0.04],[0.64,-0.79],[0.61,-0.38],[-0.1,-0.01],[-0.85,0.93],[0.46,-0.66],[0.92,0.01],[-0.87,0.86],[0.32,-0.66],[-0.4,-0.77],[-0.71,-0.46],[-0.67,0.43],[-0.74,0.89],[0.88,0.37],[0.68,-0.14],[-0.44,0.09],[-0.38,-0.36],[0.45,0.34],[-0.77,0.38],[0.57,-0.93],[0.36,-0.83],[-0.16,0.29],[-0.92,0.17],[-0.88,0.62],[-0.65,0.17],[-0.47,0.16],[0.33,0.08],[-0.59,-0.81],[-0.03,0.55],[0.59,-0.21],[-0.31,-0.94],[-0.71,1],[0.13,0.43],[0.5,0.42],[0.67,-0.84],[-0.49,-0.36],[-0.9,0.44],[0.96,-0.71],[0.19,0.28],[0.88,0.31],[-0.57,0.01],[0.08,-0.33],[-0.31,-0.24],[-0.84,-0.32],[0.42,-0.62],[-0.21,-0.47],[0.68,-0.59],[-0.05,0.7],[0.94,-0.08],[-0.57,-0.82],[-0.66,-0.25],[0.01,0.74],[-0.34,-0.22],[0.68,0.39],[-0.25,-0.85],[-0.47,0.7],[0.61,0.51],[0.59,-0.68],[-0.26,-0.14],[0.83,0.82],[0.68,0.16],[0.33,-0.9],[0.04,-0.64],[-0.42,0.12],[0.04,-0.1],[-0.83,-0.05],[0.21,-0.99],[-0.44,0.06],[-0.57,-0.2],[0.16,-0.83],[0.81,0.87],[0.71,-0.19],[0.64,-0.75],[0.38,0.99],[-0.61,0.74],[0.3,-0.77],[-0.76,-0.63],[0.56,-0.65],[-0.61,0.02],[-0.03,-0.93],[-0.39,0.31],[-0.62,0.77],[0.26,0.72],[-0.98,-0.11],[0.39,-0.76],[-0.7,0.94],[0.05,-0.73],[-0.84,-0.9],[0.1,0.79],[-0.63,0.56],[-0.31,-0.12],[0.83,-0.53],[0.42,0.35],[0,0.45],[-0.32,0.81],[-0.6,0.7],[0.87,-0.46],[0.16,0.05],[0.78,-0.04],[0.64,-0.02],[-0.25,0.24],[0.88,0.83],[-0.14,-0.62],[0.92,-0.47],[0.06,0.95],[-0.33,0.97],[0.94,0],[-0.24,-0.59],[0.56,0.1],[-0.35,-0.87],[-0.48,-0.5],[0.59,-0.93],[-0.32,0.11],[-0.37,-0.15],[0.94,0.56],[0.15,-0.53],[0.37,-0.32],[-0.07,0.91],[0.83,-0.21],[-0.73,0.88],[0.24,-0.68],[0.2,0.41],[0.73,0.1],[0.43,-0.54],[0.22,0.51],[-0.14,0.8],[-0.51,0.71],[0.65,0.44],[-0.23,0.24],[0.72,1],[-0.76,-0.34],[-0.78,0.91],[0.91,0.3],[0.69,-0.69],[-0.57,0.71],[-0.84,0.82],[0.97,-0.48],[0.24,0.79],[-0.52,-0.54],[-0.98,0.63],[-0.3,-0.56],[0.49,0.75],[-0.69,0.52],[0.13,-0.67],[-0.02,0.49],[0.47,-0.68],[-0.7,-0.55],[0.54,-0.14],[0.54,-0.46],[0.75,0.48],[-0.3,-0.83],[0.23,0.39],[-0.45,-0.55],[-0.9,-0.62],[0.47,-0.77],[-0.94,-0.3],[-0.83,-0.44],[0.77,0.83],[0.25,0.97],[0.15,-0.96]],"d":[0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,0,0,0,1,0,0,1,0,1,1,0,1,1,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,1,0,0,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,1,1,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,1,1,1,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,1,1,1,0,0,0,1,0,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,0,1,0,1,0,1,1,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,0,1,1,1,0,0,1,0,1,0,0,1,1,0,0,0,0,0,0,0,1,1,1,0,0,1,0,0,1,1,0,0,0,0,1,1,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,1,0,1,1,0,0,0,0,0,1,1,0,0,1,0,0,1,0,0,1,0,1,1,1,0,0,0,0,1,1,0,0,0,1,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,0,1,0,1,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1,0,0,1,1,1,1,1,0,0,1,0,1,0,1,1,1,0,1,1,0,1,1,1,1,0,0,0,0,1,0,1,0,1,1,0,0,1,0,0,0,1,1,0,0,1,1,1,0,0,0,1,1,0,1,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,1,1,1,1,0,0,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,1,0,0,1,0,1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,1,1,1,0,1,0,1,1,0,0,1,1,1,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,0,1,0,1,1,0,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,0,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,1,1,0,0,0,1,0,1,1,0,1,0,1,0,0,0,0,1,1,1,0,1,1,0,1,1,1,0,0,0,1,0,1,1,1,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,0,0,1,1,0,0,1,1,1,0,1,0,1,0,1,0,1,0,0,1,1,0,1,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,1,0,0,1,0,1,1,0,0,0,0,0,1,0,1,0,1,1,0,0,1,1,1,0,1,1,0,1,1,0,1,0,0,0,1,0,0,0,0,1,0,1,0,0,0,1,0,0,1,1,1,0,0,0,1,0,1,0,1,1,1,0,0,0,0,0,0,1,1,0,1,1,0,1,1,0,0,0,0,1,0,0,1,1,1,1,1,0,1,0,1,1,0,0,0,0,1,1,0,1,0,0,1,0,1,0,1,1,0,0,1,1,1,1,1,1,1,0,1,0,0,1,0,0,0,1,1,0,1,1,1,0,1,0,0,0,1,0,1,0,1,1,0,1,1,0,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1,0,1,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,1,1,0,1,0,1,0,0,0,0,0,1,1,0,1,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,1,0,1,1,1,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,1,0,1,0,0,1,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1,0,0,1,0,1,1,0,1,1,0,0,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,0,0,1,0,1,1,1,1,0,0,1,1,0,1,0,0,1,0,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,1,1,1,1,0,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,1,0,1,1,0,1,0,0,0,0,1,1,0,1,0,1,1,0,1,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],"ters":[0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0]};
+            // nn.Linear başlangıçları (torch.manual_seed(0)): [W₁, b₁, w₂, b₂]
+            var NINIT = {"1":[[[0.6647553301890121,0.29390167076471757]],[-0.0574411926928383],[[0.8414953682439205]],[0.29004824024552955]],"2":[[[0.6647553301890121,0.29390167076471757],[-0.05744119269283829,0.595027081222347]],[0.20509507754883882,0.411745297777725],[[-0.45451950589406026,-0.21056561691605538]],[0.1150334319677742]],"4":[[[0.6647553301890121,0.29390167076471757],[-0.05744119269283829,0.595027081222347],[0.2050950775488388,0.41174529777772495],[-0.45451950589406026,-0.21056561691605538]],[0.1150334319677742,-0.29947967336489534,-0.06665351312258412,-0.4570744934081176],[[-0.14473324166069354,0.12190524867952766,-0.018151599218291455,-0.05919950095564052]],[-0.09271842563555843]],"8":[[[0.6647553301890121,0.29390167076471757],[-0.05744119269283829,0.595027081222347],[0.2050950775488388,0.41174529777772495],[-0.45451950589406026,-0.21056561691605538],[0.11503343196777419,-0.2994796733648953],[-0.06665351312258412,-0.45707449340811757],[-0.20468371328277546,0.17240005600705283],[-0.025670237793268644,-0.08372073713718581]],[-0.13112365501568798,-0.41657273607831835,0.23339922645517577,0.4028725335897505,-0.4096036592883485,0.2499468618036801,-0.5519176878882103,0.03359048454094408],[[-0.19373297241037812,0.04118407355851689,0.06189232246477009,0.12865502815211144,0.17350714708593049,-0.1925765461802786,0.2191269230313162,0.09234129615929458]],[-0.21503955440823436]],"16":[[[0.6647553301890121,0.29390167076471757],[-0.05744119269283829,0.595027081222347],[0.2050950775488388,0.41174529777772495],[-0.45451950589406026,-0.21056561691605538],[0.11503343196777419,-0.2994796733648953],[-0.06665351312258412,-0.45707449340811757],[-0.20468371328277546,0.17240005600705283],[-0.025670237793268644,-0.08372073713718581],[-0.13112365501568796,-0.4165727360783183],[0.23339922645517575,0.4028725335897504],[-0.40960365928834847,0.24994686180368006],[-0.5519176878882102,0.03359048454094407],[-0.38746594482075625,0.08236814711703377],[0.12378464492954018,0.2573100563042229],[0.34701429417186097,-0.3851530923605572],[0.4382538460626324,0.18468259231858916]],[-0.4300791088164687,-0.49111926424936164,-0.026153755377995472,0.5904423823928452,0.10187953519159366,-0.02711128973183319,0.4186900991724226,-0.18671832767458987,-0.32218088619140706,-0.6485024971203144,0.3516983218588812,-0.22379101940759882,0.05405832551956466,-0.04756648080179994,0.5140474825433701,-0.649040056006027],[[0.24863019176260628,0.1898320496194905,0.13149858437190662,-0.12205013411663694,-0.15519596124904886,0.24388233489759417,0.13980093838188098,-0.06906032674322947,0.032921929800589604,0.12059984549727153,-0.24776852734148377,0.041802316548849576,0.03485663843336522,-0.22585733538810673,-0.16849772520023706,0.24934048136364975]],[0.050333487885248995]],"32":[[[0.6647553301890121,0.29390167076471757],[-0.05744119269283829,0.595027081222347],[0.2050950775488388,0.41174529777772495],[-0.45451950589406026,-0.21056561691605538],[0.11503343196777419,-0.2994796733648953],[-0.06665351312258412,-0.45707449340811757],[-0.20468371328277546,0.17240005600705283],[-0.025670237793268644,-0.08372073713718581],[-0.13112365501568796,-0.4165727360783183],[0.23339922645517575,0.4028725335897504],[-0.40960365928834847,0.24994686180368006],[-0.5519176878882102,0.03359048454094407],[-0.38746594482075625,0.08236814711703377],[0.12378464492954018,0.2573100563042229],[0.34701429417186097,-0.3851530923605572],[0.4382538460626324,0.18468259231858916],[-0.43007910881646866,-0.4911192642493616],[-0.02615375537799547,0.5904423823928452],[0.10187953519159365,-0.027111289731833185],[0.41869009917242256,-0.18671832767458985],[-0.322180886191407,-0.6485024971203144],[0.35169832185888117,-0.2237910194075988],[0.05405832551956465,-0.04756648080179993],[0.51404748254337,-0.649040056006027],[0.7032323784122023,0.5369261182899315],[0.3719341629032261,-0.34520990991440625],[-0.43896046644786835,0.6898034112707896],[0.3954167661842829,-0.19533210140438495],[0.09311727924697756,0.3411078742446824],[-0.7007952233910707,0.11823480600399268],[0.09858946162240073,-0.6388210137346185],[-0.4765835364143801,0.7052413807862188]],[0.142364602417722,-0.49619136617094994,-0.14971301460400255,0.5139303242133505,-0.5498898154143358,0.437735801016115,0.40868678110194967,0.42094688220196047,-0.13192634176368048,0.31624800192875974,-0.6903984082589983,-0.34423088418466746,-0.4403105003825062,-0.4772059325868259,-0.006889505329420522,-0.4888099180864796,-0.38248913715836774,-0.1264298110773375,-0.17807467201685878,-0.4484461331184975,-0.1417510692781723,0.025000505060513097,0.15841005408211456,-0.15534187283569137,0.054337121846267065,-0.4262251597398779,-0.10009842172889737,0.504097781060178,0.596828808367641,-0.653222985263541,0.2880391590894618,-0.45832883902194865],[[-0.11367198028387632,-0.11304388904552091,0.0598135210524916,0.041135011660079726,-0.11728328801993475,0.16840459536227306,0.06270410679926959,0.02196987647648226,-0.018939654726374783,0.16624932225276223,0.0006596649462754845,0.16683992483096027,0.13123194957623863,-0.09546957789892795,0.07522747987398765,-0.019463586842396997,0.011865368970358111,-0.12343349146199364,0.05583840597103949,-0.16130750791086657,-0.0002278880442438625,-0.018791372485010786,0.10395064416209135,-0.06904908270760278,-0.06336784411174433,0.07507239363424498,-0.1558129825697506,0.13856558606967506,-0.15728519082357204,0.1390555145234587,-0.06799711731820526,0.044273362033105196]],[-0.16425852697506638]]};
+            // H7 çemberi için temiz test kümesi: torch.manual_seed(2), 1000 nokta
+            var CT = {"X":[[0.84,-0.81],[0.42,0.08],[0.83,0.05],[-0.76,-0.47],[0.39,-0.08],[-0.84,0.37],[0.24,0.62],[0.47,-0.27],[0.88,-0.61],[0.52,-0.77],[0.49,0.41],[0.59,0.39],[-0.15,-0.73],[0.75,-0.95],[-0.63,-0.11],[-0.94,-0.66],[0.11,-0.35],[0.45,-0.29],[-0.26,0.7],[-0.22,-0.72],[-0.2,-0.97],[0.47,0.25],[0.02,0.23],[-0.08,-0.21],[0.83,-0.47],[0.08,-0.74],[-0.46,0.08],[-0.9,0.42],[-0.56,0.02],[-0.18,0.5],[0.86,0.04],[0.28,0.15],[-0.78,-0.42],[-0.27,0.1],[0,0.79],[-0.61,0.23],[0.91,-0.3],[0.94,0.72],[0.25,0.32],[-0.83,0.42],[-0.32,-0.34],[-0.62,0.3],[-0.99,0.45],[0.17,-0.19],[0.04,0.93],[0.11,0.2],[-0.51,0.17],[0.15,0.02],[0.18,0.43],[-0.73,0.25],[-0.28,-0.32],[0.08,-0.01],[0.01,0.54],[-0.45,-0.99],[0.18,-0.81],[-0.56,0.4],[0.24,-0.38],[-0.82,-0.68],[-0.89,0.81],[0.79,-0.97],[-0.77,0.24],[-0.16,-0.58],[-0.05,-0.45],[0.98,0.86],[0.03,0.13],[-0.7,-0.74],[-0.67,0.83],[-0.11,-0.26],[0.58,-0.06],[-0.84,-0.24],[0,0.37],[-0.88,-0.52],[-0.77,-0.23],[-0.76,0.99],[-0.66,-0.85],[-0.34,0.29],[-0.18,0.75],[0.9,-0.04],[-0.82,-0.46],[0.88,0.12],[0.19,0.07],[-0.95,0.59],[-0.92,-0.81],[0.07,-0.92],[-0.7,-0.02],[0.2,0.4],[0.79,0.46],[-0.87,0.85],[0,0.01],[0.38,-0.16],[0.35,-0.95],[0.34,0.71],[0.63,-0.79],[-0.04,0.7],[-0.4,0.23],[-0.91,-0.64],[0.42,-0.77],[-0.35,-0.38],[-0.51,0.84],[-0.14,-0.53],[-0.02,-0.07],[-0.71,0.1],[0.46,0.59],[-0.6,0.39],[-0.8,0.56],[-0.19,-0.59],[-0.81,0.8],[-0.97,-0.21],[0.38,0.51],[0.2,0.82],[-0.37,-0.07],[-0.13,-0.22],[-0.34,0.04],[-0.9,-0.27],[0.03,0.84],[-0.52,0.35],[-0.26,-0.61],[0.5,0.71],[0.06,0.49],[-0.26,-0.43],[0.73,-0.64],[0.68,-0.83],[-0.17,-0.93],[-0.93,-0.35],[-0.16,-0.47],[0.68,-0.85],[0.28,0.2],[-0.14,-0.48],[0.77,-0.44],[-0.31,0.59],[-0.14,0.91],[0.63,-0.25],[0.25,0.77],[-0.96,-0.07],[-0.69,-0.19],[0.58,0.46],[0.99,-0.01],[-0.82,-0.16],[-0.92,-0.62],[0.32,0.91],[0.25,0.11],[0.1,0.39],[-0.13,0.28],[0.05,0.38],[-0.24,-0.07],[-0.59,-0.25],[0.11,-0.71],[-0.82,0.91],[0.2,-0.4],[0.67,0.34],[0.4,0.37],[-0.3,-0.23],[-0.85,-0.27],[0.99,-0.25],[0.25,0.54],[0.9,-0.85],[0.3,-0.47],[-0.68,-0.7],[0.86,0.44],[0.9,0.68],[-0.87,0.97],[0.23,-0.1],[-0.61,-0.29],[-0.47,0.31],[0.13,0.04],[-0.95,0.64],[0.25,-0.4],[0.33,-0.61],[-0.82,0.41],[-0.52,0.32],[0.17,-0.3],[0.98,0.66],[0.18,0.98],[-0.98,0.7],[-0.41,0.02],[-0.1,0.43],[-0.58,-0.77],[0.24,-0.23],[-0.83,0.72],[0.69,-0.39],[0.5,-0.27],[-0.19,-0.02],[-0.13,0.67],[-0.43,-0.37],[0.3,-0.58],[0.74,0.33],[-0.85,-0.81],[0.56,0.88],[0.25,-0.94],[0.23,-0.21],[0.71,-0.69],[0.01,-0.95],[0.59,-0.7],[0.6,-0.53],[-0.9,0.81],[0.31,0.38],[-0.76,0.26],[-0.18,-0.49],[0.85,-0.17],[0.34,0.6],[-0.64,0.46],[0.63,0],[0.88,-0.11],[-0.61,-0.98],[-0.48,-0.25],[-0.61,0.05],[-0.43,-0.57],[-0.89,-0.05],[0.43,0.43],[0.03,0.28],[-0.18,0.63],[-0.32,-0.93],[-0.8,0.64],[-0.58,-0.7],[0.66,-0.74],[0.79,0.92],[0.51,0.08],[0.07,0.43],[0.85,0.34],[0.71,0.37],[-0.99,-0.1],[-0.02,-0.48],[-0.41,0.87],[0.75,0.65],[0.3,-0.85],[-0.51,-0.13],[-0.89,-0.04],[0.82,0.23],[-0.25,-0.86],[-0.42,0.87],[-0.26,-0.51],[0.19,0.56],[0.66,0.93],[-0.5,-0.38],[0.15,0.59],[-0.56,-0.16],[-0.74,-0.67],[-0.38,-0.78],[0.93,-0.5],[-0.41,0.87],[-0.27,-0.08],[0.36,-0.24],[-0.59,0.77],[0.96,0.89],[-0.66,-0.97],[0.93,-0.25],[0.68,0.66],[0.36,0.77],[0.13,-0.73],[0.75,-0.81],[0.95,0.08],[0.26,-0.71],[-0.23,-0.72],[0.1,-0.03],[-0.65,-0.53],[0.55,0.4],[-0.01,-0.72],[-0.76,0.66],[0.27,-0.52],[0.04,0.55],[0.98,0.45],[0.98,0.24],[0.26,0.84],[-0.93,-0.81],[0.35,-0.05],[0.62,0.42],[-0.8,0.72],[-0.14,-0.25],[0.72,0.29],[0.16,-0.68],[0.79,-0.36],[-0.41,-0.99],[0.35,0.87],[-0.94,0.4],[-0.97,1],[0,-0.46],[0.7,0.4],[0.02,-0.99],[-0.13,0.64],[-0.98,-0.3],[0.87,0.73],[0.49,0.27],[-0.08,0.42],[-0.88,0.9],[-0.38,0.54],[0.6,-0.14],[-0.69,-0.52],[-0.05,0.97],[-0.32,0.51],[0.56,0.92],[-0.18,0.79],[-0.92,-0.82],[0.88,0.2],[0.75,0.05],[-0.27,0.73],[0.57,-0.72],[-0.75,-0.07],[-0.59,0.07],[0.75,0.35],[-0.21,-0.07],[0.6,-0.26],[-0.18,-0.35],[-0.87,-0.2],[-0.94,0.42],[0.74,0.24],[0.07,0.35],[0.88,0.32],[-0.05,-0.93],[0.55,-0.45],[-0.95,-0.05],[-0.92,0.45],[0.4,0.06],[-0.11,0.05],[0.89,-0.96],[-0.98,0.22],[0.74,0.57],[-0.28,-0.81],[0.44,-0.74],[-0.86,-0.39],[0.6,-0.59],[0.89,0.22],[0.51,0.53],[-0.19,-0.48],[-0.85,-0.9],[0.6,0.69],[-0.51,-0.82],[0.07,0.03],[-0.9,-0.69],[-0.03,-0.95],[-0.59,0.68],[-0.7,-1],[-0.88,0.86],[-0.67,-0.3],[-0.2,0.97],[0.5,-0.34],[0.69,-0.17],[-0.3,0.32],[0.71,-0.47],[0.88,-0.93],[0.5,-0.61],[-1,0.21],[0.89,-0.38],[0.17,-0.7],[0.58,-0.91],[-0.53,-0.27],[0.24,-0.01],[-0.64,0.38],[0.92,-0.86],[0.27,0.41],[-0.05,0.24],[0.36,-0.77],[-0.98,-0.18],[0.34,0.33],[0.28,0.11],[-0.79,0.81],[0.84,0.62],[-0.47,0.99],[0.13,0.12],[0.81,-0.52],[-0.77,-0.01],[0.04,0.14],[0.98,0.88],[-0.37,0.63],[-0.62,0.72],[-0.22,-0.04],[-0.85,-0.41],[0.18,-0.34],[-0.52,0.63],[-0.12,-0.03],[-0.15,0.07],[0.68,0.13],[0.93,-0.32],[0.32,0.19],[0.36,-0.68],[-0.86,0.16],[-0.02,-0.7],[-0.94,-0.9],[0.25,0.05],[-0.79,-0.96],[0.45,0.26],[-0.79,0.47],[-0.57,0.25],[0.49,0.75],[-0.93,0.36],[0.05,0.73],[-0.92,0.05],[-0.62,0.5],[-0.57,0.7],[-0.42,0.28],[-0.99,0.81],[-0.49,0.66],[0.64,-0.83],[0.42,0.28],[-0.93,0.03],[-0.05,0.79],[0.33,0.3],[-0.17,0.91],[0.35,-0.35],[0.99,0.96],[-0.55,-0.16],[0.06,-0.21],[0.19,-0.18],[-0.05,0.92],[-0.89,-0.23],[0.37,-0.09],[0.97,0.82],[0.85,-0.7],[-0.18,-0.61],[-0.94,-0.67],[0.29,0.27],[0.32,-0.54],[0.71,-0.97],[-0.01,-0.13],[-0.35,0.24],[-0.93,0.15],[0.78,-0.49],[0.78,-0.47],[0.99,-0.78],[0.05,-0.48],[0.77,0.41],[0.07,0.13],[0,-0.58],[0.95,0.06],[0.89,0.81],[0.5,0.35],[-0.47,-0.85],[0.44,-0.81],[0.78,0.05],[-0.68,0.03],[0.54,-0.53],[0.73,-0.6],[-0.87,-0.66],[0.52,-0.43],[0.74,-0.97],[0.88,-0.92],[0.44,-0.74],[-0.84,0.69],[-0.74,-0.01],[0.3,-0.56],[-0.87,-0.66],[-0.24,0.47],[0.61,0.21],[-0.87,-0.24],[-0.89,0.98],[-0.99,0.12],[-0.12,-0.88],[-0.7,-0.5],[-0.58,0.26],[0.11,-0.35],[0.97,-0.27],[0.99,-0.46],[0.09,-0.94],[-0.79,0.27],[0.13,0.53],[-0.58,-0.69],[0.27,0.39],[-0.75,-0.44],[-0.59,-0.94],[0.28,-0.2],[0.92,-0.84],[0.6,0.45],[0.45,-0.48],[0.71,-0.54],[0.05,-0.95],[-0.49,-0.12],[-0.21,-0.84],[-0.04,-0.67],[-0.6,0.78],[-0.37,-0.8],[0.2,-0.45],[-0.79,0.2],[0.51,0.62],[0.98,-0.23],[0.58,0.13],[-0.39,-0.29],[0.57,-0.71],[0.87,-0.46],[-0.38,0.32],[-0.92,0.73],[-0.85,-0.05],[0.32,-0.1],[-0.66,0.67],[0.51,0.74],[-0.23,0.19],[-0.57,0.46],[-0.82,-0.4],[0.47,-0.28],[-0.57,0.57],[0.87,-0.96],[-0.8,-0.69],[-0.25,0.47],[0.61,-0.95],[0.1,-0.15],[0.07,0.61],[-0.66,0.35],[0.53,0.68],[-0.95,0.12],[-0.28,0.48],[-0.86,-0.12],[-0.29,0.48],[0.07,-0.39],[0.34,0.84],[-0.74,0.12],[0.57,-0.37],[0.25,-0.3],[0.24,-0.35],[0.71,-0.98],[-0.44,-0.73],[-0.01,-0.45],[-0.46,-0.11],[-0.67,-0.4],[0.51,-0.83],[-0.22,-0.45],[-0.2,0.77],[-0.68,0.47],[-0.78,0],[-0.9,0.59],[-0.74,-0.52],[0.64,-0.86],[-0.43,-0.19],[-0.77,0.28],[-0.31,-0.5],[0.14,-0.51],[-0.76,0.76],[0.18,0.34],[-0.32,0.49],[0.56,-0.7],[-0.45,0.66],[-0.46,-0.15],[-0.44,-0.51],[-0.45,-0.32],[0.17,0.93],[0.08,-0.94],[-0.93,0.87],[-0.95,-0.58],[0.34,-0.71],[-0.13,-0.72],[0.78,-0.65],[0.7,-0.82],[-0.95,0.22],[-0.76,0.96],[0.01,0.62],[-0.71,0.01],[-0.06,-0.49],[-0.72,-0.23],[0.43,-0.11],[0.88,-0.44],[0.06,-0.66],[-0.49,0.6],[-0.22,0.89],[0.59,0.07],[-0.31,-0.94],[-0.78,-0.51],[-0.83,-0.61],[0.93,0.56],[0.5,-0.79],[0.13,-0.73],[-0.56,-0.23],[0.83,0.65],[-0.5,0.97],[-0.44,-0.03],[0.94,-0.59],[-0.32,0.21],[-0.23,0.57],[0.06,0.74],[0.08,-0.01],[0.57,-0.69],[-0.04,0.27],[-0.98,0.98],[-0.42,0.16],[-0.45,0.64],[0.22,0.58],[0.51,-0.59],[-0.5,0.57],[0.31,-0.38],[-0.57,-0.7],[-0.46,-0.94],[-0.27,0.79],[-0.38,0.7],[0.04,-0.49],[-0.45,-0.97],[-0.63,0.54],[-0.93,-0.02],[-0.79,0.92],[0.97,-0.78],[-0.78,0.58],[-0.88,-0.16],[-0.63,-0.33],[0.27,-0.42],[-0.8,0.85],[0.64,0.53],[0.11,0.41],[0.04,-0.74],[-0.28,0.7],[-0.14,-0.1],[-0.41,0.62],[0.82,0.04],[-0.4,0],[0.62,0.6],[0.04,-0.04],[-0.32,-0.8],[-0.31,-0.19],[0.09,0.08],[-0.06,0.67],[-0.54,-0.52],[-0.34,-0.54],[-0.09,-0.24],[0.35,-0.25],[0.2,0.93],[-0.08,0.55],[-0.05,0.61],[-0.51,-0.84],[-0.25,-0.1],[-0.03,0.98],[0.11,0.21],[-0.88,0.68],[0.06,-0.93],[-0.31,0.81],[0.71,0.85],[-0.09,0.85],[0.06,-0.18],[0.39,-0.33],[0.83,-0.53],[-0.88,-0.85],[-0.96,-0.94],[0.97,0.44],[-0.23,0],[-0.31,-0.14],[-0.8,0.56],[0,-0.93],[0.58,-0.56],[-0.96,0.35],[-0.59,0.09],[-0.38,0.55],[-0.14,-0.97],[-1,-0.23],[-0.75,-0.47],[0.68,-0.82],[0.57,-0.43],[-0.01,-0.63],[-0.84,-0.32],[0.96,0.13],[-0.76,-0.64],[-0.24,0.6],[-0.66,1],[-0.01,0.41],[-0.44,-0.87],[0.48,0.44],[0.24,0.89],[0.71,-0.05],[-0.33,-0.34],[-0.3,0.74],[0.01,0.06],[-0.67,0.63],[-0.73,-0.17],[-0.9,0.54],[-0.35,0.33],[0.77,0.82],[-0.55,-0.66],[0.88,-0.84],[-0.58,-0.4],[-0.48,-0.65],[-0.04,-0.47],[0.36,0.64],[-0.69,-0.98],[0.02,-0.38],[-0.31,-0.04],[0.26,-0.91],[0.3,0.82],[0.38,0.72],[0.2,-0.32],[0.08,-0.18],[0.54,0.62],[-0.86,0.72],[0.02,-0.84],[-0.87,0.26],[0.06,0.6],[-0.82,-0.21],[0.56,-0.39],[-0.09,-0.42],[0.97,0.72],[0.29,-0.03],[-0.43,-0.61],[0.38,0.8],[-0.35,-0.02],[-0.89,-0.27],[-0.13,0.25],[-0.95,-0.37],[0.03,-0.3],[-0.02,-0.79],[0.53,-0.79],[-0.42,-0.68],[-0.61,0.76],[0.75,0.01],[-0.63,-0.56],[0.42,0.39],[-0.44,-0.52],[-0.74,-0.88],[0.76,0.78],[0.3,-0.82],[-0.76,0.16],[0.98,0.73],[-0.55,0],[0.38,0.7],[-0.05,0.63],[0.03,-0.68],[0.16,-0.2],[0.42,-0.15],[-0.22,0.06],[-0.44,-0.55],[-0.68,0.76],[-0.85,0.45],[-0.6,0.8],[0.38,-0.06],[-0.57,0.21],[-0.95,-0.22],[-0.15,-0.25],[0.22,0.65],[0.86,-0.08],[0.08,0.34],[0.56,-0.78],[-0.45,0.81],[0.67,-0.46],[-0.03,-0.79],[0.53,0.87],[0.97,0.93],[0.75,0.58],[0.29,0.56],[-0.96,-0.47],[0.17,-0.89],[-0.02,-0.03],[0.05,0.43],[0.16,-0.21],[0.87,0.6],[-0.09,0.77],[0,0.24],[-0.17,0.56],[0.41,0.08],[0.91,-0.95],[0.08,-0.26],[-0.22,-0.16],[0.96,0.59],[-0.82,0.73],[0.45,0.65],[-0.96,0.15],[-0.34,-0.74],[-0.63,0.73],[-0.3,-0.57],[-0.35,0.43],[-0.79,0.56],[0.96,0.98],[0.35,-0.7],[-0.53,-0.3],[0.74,-0.61],[0.22,-0.93],[0.13,-0.27],[-0.43,-0.57],[0.08,-0.78],[0.72,0.92],[-0.87,0.91],[-0.22,-0.43],[0.43,0.35],[0.1,-0.71],[0.58,-0.73],[0.58,0.66],[0.06,-0.61],[0.29,0.53],[-0.32,0.53],[0.05,-0.59],[-0.63,0.44],[0.36,-0.79],[-0.52,0.57],[0.62,-0.13],[-0.71,0.77],[-0.98,-0.52],[0.66,0.17],[0.16,-0.82],[-0.95,0.33],[0.87,0.26],[-0.04,-0.71],[-0.71,0.79],[-0.99,0.49],[0.89,0.57],[-0.25,0.1],[-0.87,1],[-0.49,-0.72],[0.24,-0.48],[0.86,-0.2],[0.5,-0.64],[0.16,-0.07],[0.52,0.32],[-0.75,-0.65],[0.5,0.09],[-0.02,0.21],[0.36,-0.23],[-0.72,-0.16],[0.66,-0.51],[-0.86,-0.17],[-0.24,0.52],[-0.51,-0.06],[-0.78,0.02],[-0.45,-0.16],[0.83,0.44],[-0.32,-0.92],[-0.57,-0.52],[0.85,0.29],[0.78,0.01],[-0.31,0.89],[0.68,0.1],[-0.65,0.9],[0.21,-0.58],[0.74,0.88],[-0.4,0.34],[0.98,0.29],[-0.92,0.09],[-0.08,-0.39],[0.03,-0.98],[-0.76,0.04],[0.27,0.39],[0.3,-0.75],[-0.71,-0.17],[-0.91,0.83],[-0.53,-0.34],[-0.49,0.59],[-0.02,-0.63],[0.11,-0.51],[0.94,-0.98],[-0.63,-0.84],[-0.67,0.94],[-0.39,-0.32],[-0.6,0.72],[-0.99,-0.26],[-0.27,-0.71],[-0.41,0.64],[0.68,0.9],[0.29,-0.44],[-0.72,0.13],[0.89,-0.25],[-0.11,-0.13],[0.91,-0.34],[-0.56,-0.71],[-0.8,0.43],[0.02,-0.12],[0.81,0.22],[-0.66,-0.43],[0.69,-0.71],[0.27,0.92],[-0.87,-0.92],[-0.65,0.54],[0.98,-0.96],[-0.02,0.02],[0.41,0.55],[0.72,0.98],[0.41,0.94],[0.31,-0.06],[-0.74,-0.51],[0.5,0.87],[0.26,-0.53],[0.89,0.74],[-0.92,-0.53],[0.2,0.04],[-0.78,-0.47],[-0.55,0.71],[-0.37,-0.07],[0.91,-0.33],[-0.23,0.35],[-0.77,0.89],[-0.52,0.12],[0.95,0.31],[0.84,-0.68],[0.42,-0.59],[0.21,0.51],[-0.67,0.87],[-0.78,0.77],[0.17,0.74],[0.12,0],[-0.18,0.35],[-0.1,0.56],[0.09,-0.79],[-0.32,0.49],[-0.3,0.24],[-0.85,0.4],[-0.96,-0.69],[0.85,-0.53],[-0.04,0.04],[-0.34,-0.84],[-0.31,-0.14],[0.2,0.7],[0.59,-0.16],[0.92,0.09],[0.85,-0.14],[-0.36,-0.61],[0.87,-0.42],[-0.1,-0.3],[-0.99,0.67],[0.98,-0.27],[-0.3,0.45],[-0.65,-0.74],[-0.52,0.97],[0.64,0.39],[-0.82,0.98],[-0.2,-0.65],[-0.72,-0.57],[-0.85,0.63],[-0.45,0.61],[0.88,-0.56],[0.51,0.3],[-0.15,-0.58],[-0.51,-0.55],[-0.27,0.12],[-0.12,-0.16],[1,-0.5],[0.91,0.22],[0.4,-0.25],[-0.54,-0.23],[-0.12,-0.24],[0.44,-0.81],[0.4,-0.06],[0.76,-0.54],[-0.58,-0.3],[0.23,-0.16],[0.67,0.25],[-0.14,0.28],[0.54,-0.39],[-0.45,-0.76],[0.53,0.59],[-0.96,0.59],[0.72,0.98],[0.11,0.74],[0.67,-0.93],[-0.7,0.7],[0.9,-0.89],[0.96,-0.86],[-0.39,-0.15],[-0.11,0],[0.07,-0.92],[-0.99,0.81],[-0.64,0.69],[0,0.18],[0.77,-0.97],[-0.03,-0.38],[0.61,0.48],[0.77,0.65],[-0.72,-0.53],[-0.99,0.69],[0.01,-0.57],[-0.54,0.65],[-0.27,-0.72],[-0.56,-0.98],[0.88,0.14],[0.89,0.41],[0.55,-0.07],[0.65,0.61],[-0.7,0.86],[-0.76,0.29],[0.8,-0.92],[-0.62,0],[-0.21,-0.5],[-0.72,-0.43],[0.45,0.13],[0.05,0.35],[0.13,-0.97],[-0.53,-0.57],[-0.68,-0.73],[-0.69,0.6],[-0.48,-0.41],[0.09,-0.65],[0.62,-0.78],[-0.85,0.9],[0.38,0.33],[0.67,0.57],[0.8,0.28],[0.49,-0.97],[0.05,0.75],[0.61,0.35],[0.65,-0.36],[-0.69,0.96],[0.03,-0.36],[0.33,0.87],[-0.31,0.23],[-0.33,0.13],[0.38,0.42],[-0.36,0.15],[0.67,-0.48],[-0.01,0.68],[0.02,-0.63],[0.07,0.56],[0.33,-0.46],[0.37,0.56],[0.94,-0.82],[-0.6,0.74],[0.12,-0.34],[-0.88,-0.02],[-0.11,-0.63],[-0.15,-0.43],[0.35,-0.28],[0.65,-0.4],[-0.84,-0.79],[-0.05,-0.94],[0.25,0.09]],"d":[0,1,0,0,1,0,1,1,0,0,1,0,0,0,1,0,1,1,0,0,0,1,1,1,0,0,1,0,1,1,0,1,0,1,0,1,0,0,1,0,1,1,0,1,0,1,1,1,1,0,1,1,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,1,1,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,1,0,0,1,0,1,1,1,0,0,1,1,0,1,1,0,0,0,0,1,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,1,0,1,1,0,0,1,0,1,0,0,0,0,1,1,1,1,0,1,1,0,1,1,0,0,0,1,1,0,1,0,0,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,1,0,1,0,1,0,1,0,0,1,1,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,0,0,0,0,1,0,0,1,0,1,0,0,0,0,0,1,0,0,1,0,0,1,1,0,1,1,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,1,0,0,1,0,0,0,1,0,1,0,1,1,1,0,1,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,1,0,1,1,1,0,0,1,0,0,1,0,1,1,0,1,1,0,0,0,0,1,0,1,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,0,1,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,1,0,1,1,0,0,0,1,0,1,1,0,0,1,1,1,0,0,1,1,0,0,1,0,0,0,0,0,0,1,0,1,1,0,1,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,1,1,0,1,0,1,0,1,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,1,1,1,0,1,1,1,0,1,1,0,1,0,1,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,1,1,1,1,1,0,0,0,0,1,1,0,1,1,0,1,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,1,1,1,0,1,1,0,0,0,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,0,1,1,0,0,0,1,1,1,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,0,1,0,0,0,0,0,0,1,0,1,0,1,0,0,1,0,0,1,0,0,0,1,0,1,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,1,0,0,0,1,1,1,0,1,1,0,0,0,1,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,1,0,1,1,0,0,1,1,1,0,1,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,0,1,1,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,1,1,1,0,0,1,0,1,1,1,0,0,0,1]};
+            var CIRCLE = { X: [[0.94,0.42],[-0.08,0.84],[0.29,0.58],[-0.64,-0.3],[0.16,-0.42],[-0.09,-0.65],[-0.29,0.24],[-0.04,-0.12],[-0.19,-0.59],[0.33,0.57],[-0.58,0.35],[-0.78,0.05],[-0.55,0.12],[0.18,0.36],[0.49,-0.54],[0.62,0.26],[-0.61,-0.69],[-0.04,0.84],[0.14,-0.04],[0.59,-0.26],[-0.46,-0.92],[0.5,-0.32],[0.08,-0.07],[0.73,-0.92],[0.99,0.76],[0.53,-0.49],[-0.62,0.98],[0.56,-0.28],[0.13,0.48],[-0.99,0.17],[0.14,-0.9],[-0.67,1.0],[0.2,-0.7],[-0.21,0.73],[-0.78,0.62],[0.58,0.6],[-0.19,0.45],[-0.98,-0.49],[-0.62,-0.67],[-0.01,-0.69],[-0.54,-0.18],[-0.25,-0.63],[-0.2,0.04],[0.22,-0.22],[0.08,-0.6],[-0.14,0.71],[0.84,-0.92],[0.41,-0.65],[-0.64,-0.64],[0.34,0.23],[-0.66,0.95],[0.35,0.12],[-0.11,0.94],[0.0,0.94],[0.74,-0.54],[0.43,-0.11],[0.07,-0.7],[0.32,-0.91],[-0.0,-0.11],[0.59,-0.39],[-0.36,0.42],[-0.88,0.78],[-0.89,0.79],[-0.38,0.25],[-0.93,-0.84],[0.39,-0.76],[-0.1,0.76],[-0.42,-0.79],[-0.56,0.51],[0.02,0.09],[-0.75,0.53],[0.3,0.32],[-0.83,0.13],[-0.47,-0.8],[0.53,0.28],[-0.86,0.84],[0.57,0.33],[0.17,0.44],[-0.22,0.04],[0.82,0.31],[-0.33,0.71],[0.54,-0.3],[0.74,0.37],[0.98,-0.53],[-0.96,-0.0],[-0.83,-0.43],[0.19,0.87],[-0.01,0.2],[-0.44,0.42],[0.28,-0.59],[-0.41,0.58],[-0.67,-0.59],[-0.46,-0.2],[0.95,-0.73],[-0.42,0.73],[0.11,0.52],[-0.35,-0.85],[0.2,-0.08],[0.49,0.84],[0.69,0.37],[0.12,-0.78],[0.27,0.66],[0.08,0.45],[-0.21,-0.66],[0.83,-0.23],[-0.57,-0.59],[0.97,-0.43],[-0.41,-0.68],[-0.21,-0.33],[0.75,0.97],[-0.69,-0.62],[-0.57,-0.2],[-0.64,-0.37],[0.95,-0.28],[-0.57,0.59],[-0.86,0.73],[-0.45,0.11],[0.8,0.51],[-0.4,-0.2],[0.17,0.47]], d: [0,0,1,0,1,1,1,1,1,1,1,0,1,1,0,1,0,0,1,1,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,0,0,0,0,1,0,1,0,0,0,1,0,0,1,0,1,0,0,1,0,0,0,0,0,1,0,1,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,1,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,1] };
+            var IRIS = {
+                SE: [[1.4,0.2],[1.4,0.2],[1.3,0.2],[1.5,0.2],[1.4,0.2],[1.7,0.4],[1.4,0.3],[1.5,0.2],[1.4,0.2],[1.5,0.1],[1.5,0.2],[1.6,0.2],[1.4,0.1],[1.1,0.1],[1.2,0.2],[1.5,0.4],[1.3,0.4],[1.4,0.3],[1.7,0.3],[1.5,0.3],[1.7,0.2],[1.5,0.4],[1,0.2],[1.7,0.5],[1.9,0.2],[1.6,0.2],[1.6,0.4],[1.5,0.2],[1.4,0.2],[1.6,0.2],[1.6,0.2],[1.5,0.4],[1.5,0.1],[1.4,0.2],[1.5,0.2],[1.2,0.2],[1.3,0.2],[1.4,0.1],[1.3,0.2],[1.5,0.2],[1.3,0.3],[1.3,0.3],[1.3,0.2],[1.6,0.6],[1.9,0.4],[1.4,0.3],[1.6,0.2],[1.4,0.2],[1.5,0.2],[1.4,0.2]],
+                VE: [[4.7,1.4],[4.5,1.5],[4.9,1.5],[4,1.3],[4.6,1.5],[4.5,1.3],[4.7,1.6],[3.3,1],[4.6,1.3],[3.9,1.4],[3.5,1],[4.2,1.5],[4,1],[4.7,1.4],[3.6,1.3],[4.4,1.4],[4.5,1.5],[4.1,1],[4.5,1.5],[3.9,1.1],[4.8,1.8],[4,1.3],[4.9,1.5],[4.7,1.2],[4.3,1.3],[4.4,1.4],[4.8,1.4],[5,1.7],[4.5,1.5],[3.5,1],[3.8,1.1],[3.7,1],[3.9,1.2],[5.1,1.6],[4.5,1.5],[4.5,1.6],[4.7,1.5],[4.4,1.3],[4.1,1.3],[4,1.3],[4.4,1.2],[4.6,1.4],[4,1.2],[3.3,1],[4.2,1.3],[4.2,1.2],[4.2,1.3],[4.3,1.3],[3,1.1],[4.1,1.3]],
+                VI: [[6,2.5],[5.1,1.9],[5.9,2.1],[5.6,1.8],[5.8,2.2],[6.6,2.1],[4.5,1.7],[6.3,1.8],[5.8,1.8],[6.1,2.5],[5.1,2],[5.3,1.9],[5.5,2.1],[5,2],[5.1,2.4],[5.3,2.3],[5.5,1.8],[6.7,2.2],[6.9,2.3],[5,1.5],[5.7,2.3],[4.9,2],[6.7,2],[4.9,1.8],[5.7,2.1],[6,1.8],[4.8,1.8],[4.9,1.8],[5.6,2.1],[5.8,1.6],[6.1,1.9],[6.4,2],[5.6,2.2],[5.1,1.5],[5.6,1.4],[6.1,2.3],[5.6,2.4],[5.5,1.8],[4.8,1.8],[5.4,2.1],[5.6,2.4],[5.1,2.3],[5.1,1.9],[5.9,2.3],[5.7,2.5],[5.2,2.3],[5,1.9],[5.2,2],[5.4,2.3],[5.1,1.8]]
+            };
+            // sklearn StratifiedKFold(k, shuffle=True, random_state=rs) kat numaraları
+            var FOLDS = {"2_0":[1,0,0,1,0,0,1,0,0,0,1,1,1,0,1,1,0,1,0,1,1,1,1,0,1,1,1,0,0,1,0,1,0,0,1,0,1,1,1,1,0,1,1,1,1,0,0,0,1,1,0,1,1,0,0,0,0,1,1,0,0,0,0,0,1,0,1,1,0,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,0],"2_1":[1,0,1,1,1,1,1,0,0,0,0,0,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1,1,0,1,1,1,1,0,1,0,0,1,0,1,1,1,0,0,1,0,0,1,0,1,0,1,1,1,0,0,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0],"2_2":[1,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,1,0,0,0,0,1,1,0,0,1,0,0,1,0,1,1,0,1,0,0,1,0,0,1,1,1,0,0,1,1,0,1,1,1,1,0,1,0,0,0,1,0,0,1,0,1,0,1,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,1,0,1,1,0,0,1,0,1,1,0,0,0,0,0,1,0,0,1,1,1],"2_3":[0,0,1,1,0,0,1,1,1,0,1,1,0,0,1,1,1,1,0,0,1,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,1,0,1,0,1,1,0,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,1,0,0,1,0,0,1,1,1,0,0,1,0,0,1,1,1,1,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,0,1,0,1,0,1,1,0],"2_4":[0,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,1,0,1,1,1,1,1,0,0,0,1,1,1,0,1,0,1,0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,1,0,0,1,1,1,0,1,0,1,0,1,0,0,1,0,1,0,0,1,0,0,0,0,0,1,0],"2_5":[1,1,1,1,0,1,0,1,1,0,0,0,0,0,1,0,0,1,0,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,1,0,1,0,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,1,1,0,1,0,0,0,1,1,0,1,1,0,1,0,1,0,1,1,0,1,1,1,1,1,0,1,0,0,1,0,0,0,1,1,1,1,1,0,1,1,0],"2_6":[1,0,1,0,1,0,0,1,0,0,0,1,0,1,1,0,0,1,1,1,1,0,0,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,1,0,1,1,0,0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,0,0,0,1,0,0,1,1,1,0,0,1,1,0,0,1,0,0,0,0,0],"2_7":[0,0,0,1,0,0,1,0,1,1,1,1,0,0,0,1,0,1,1,1,1,0,1,0,1,1,0,0,0,0,1,1,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,0,0,1,1,0,1,1,0,0,0,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,0,1,1,1,1,0,0,1,0,1,0,0,1,0,0,0,1,1],"2_8":[1,1,1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,1,0,0,1,1,1,1,0,0,0,1,0,1,1,0,1,1,1,0,1,0,1,0,0,1,1,1,1,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,1,0,1,1,1,0,1,1,1,0,0,0,1],"2_9":[0,1,1,1,0,1,0,1,1,0,0,1,0,1,0,1,1,0,1,1,1,0,1,1,1,0,1,0,0,1,1,1,0,0,1,0,1,0,1,0,1,1,1,1,0,1,0,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,1,1,0,1,0,0,0,1,1,0,1,0,1,0,1,1,1,1,1,0,0,0,0,0,1,0],"5_0":[2,0,1,3,1,2,4,1,0,1,2,2,3,0,3,4,2,3,0,3,3,4,3,0,2,3,3,1,1,4,0,3,1,0,4,2,4,2,2,4,1,2,3,4,3,2,1,0,4,4,2,4,4,2,0,1,1,2,2,1,0,2,1,0,4,1,4,4,0,2,1,1,3,1,2,3,0,3,2,0,3,3,2,0,1,1,0,1,3,4,4,3,0,0,0,3,4,4,4,0],"5_1":[2,1,3,2,4,4,3,1,0,1,0,2,4,0,2,4,4,4,3,3,3,4,3,3,2,1,3,2,1,3,4,3,4,1,2,0,2,3,1,2,4,4,1,1,4,0,2,3,2,3,0,3,3,4,1,0,3,2,1,0,2,3,4,4,3,4,1,2,2,3,2,2,0,4,0,0,4,1,0,1,1,1,0,2,1,1,0,2,1,0,0,4,0,2,1,0,4,0,3,0],"5_2":[3,2,4,3,2,0,0,2,1,1,0,1,4,3,4,1,3,0,2,2,2,3,4,0,1,2,1,0,2,1,3,2,1,3,0,2,2,1,1,2,3,3,0,0,3,3,0,4,2,3,3,0,4,0,1,1,3,2,1,4,0,3,0,4,0,0,2,4,2,3,3,1,2,1,4,4,3,4,3,4,0,3,4,1,1,2,1,4,4,0,2,2,0,1,4,0,1,4,4,4],"5_3":[1,1,3,3,0,0,4,4,3,2,2,2,1,0,4,3,4,2,0,1,3,2,2,0,3,1,1,0,0,4,2,4,1,2,1,2,3,4,1,4,0,2,4,1,2,0,3,0,4,0,0,4,4,1,0,2,3,4,0,4,2,0,3,1,1,3,2,4,1,1,2,1,2,3,3,3,3,3,4,1,4,2,4,3,1,3,1,1,2,2,0,0,0,3,0,4,2,3,4,0],"5_4":[0,2,4,2,1,1,0,1,1,0,3,0,0,1,2,2,4,4,1,0,2,1,2,0,3,1,1,2,1,3,2,4,3,4,2,2,2,4,4,4,1,2,1,4,1,4,2,1,4,1,4,3,2,3,3,3,1,4,4,4,3,0,1,3,0,3,4,3,3,0,2,2,0,3,0,1,3,3,3,2,4,1,3,0,3,0,0,4,0,3,2,0,4,2,0,1,0,0,4,2],"5_5":[4,4,2,3,0,4,1,4,2,0,1,2,0,1,4,1,0,3,2,2,3,1,0,3,3,1,0,2,2,2,0,2,4,1,3,0,3,0,2,4,4,3,3,1,2,0,1,0,4,3,2,1,1,0,2,0,2,2,4,3,0,4,1,1,1,4,4,2,4,2,1,3,1,2,0,3,4,1,3,2,2,4,3,0,3,0,0,4,0,1,1,3,3,4,4,4,1,3,3,0],"5_6":[4,1,4,2,3,2,2,3,0,0,0,3,0,3,3,1,1,4,3,2,4,1,2,3,1,2,0,4,4,4,2,4,4,0,3,2,4,4,1,1,2,0,2,1,3,3,1,1,2,0,4,4,3,0,0,2,3,4,2,2,4,3,1,0,0,1,0,3,3,0,0,1,3,3,2,4,1,3,1,0,0,0,2,2,1,4,4,4,1,2,4,3,2,1,3,0,0,1,1,2],"5_7":[1,2,1,4,2,0,4,1,3,4,2,4,0,0,2,2,1,3,3,3,3,1,4,2,3,4,1,1,1,1,3,4,2,1,4,1,0,3,0,2,3,1,1,2,2,0,3,1,3,0,2,0,0,2,1,3,4,0,0,3,3,0,4,3,1,1,0,2,0,0,4,3,4,4,2,3,4,2,0,3,4,4,1,4,2,4,3,0,2,3,1,4,0,1,2,2,0,0,4,2],"5_8":[4,4,4,2,3,1,2,0,4,2,2,4,3,4,0,0,1,3,4,0,3,1,3,0,1,1,1,0,1,1,0,1,3,2,4,3,3,2,3,2,0,2,2,1,4,2,0,4,2,3,4,1,0,1,4,1,3,4,2,4,3,3,0,3,1,4,1,0,3,3,2,4,1,0,0,2,1,4,2,1,1,0,2,3,4,0,1,2,0,4,2,2,0,3,4,3,2,0,0,3],"5_9":[2,4,3,3,0,4,1,4,4,2,0,2,1,3,2,2,3,0,2,4,3,0,4,2,3,2,2,0,0,3,3,3,0,2,4,2,3,1,3,0,3,4,4,4,1,3,0,1,1,4,3,4,1,1,0,1,2,3,0,2,1,1,0,4,1,1,4,3,4,1,1,3,1,1,4,4,1,2,2,0,0,3,4,1,2,0,3,1,2,2,4,3,4,0,0,0,2,0,2,0],"10_0":[5,0,2,6,2,4,8,3,0,2,5,5,7,1,6,9,4,6,0,7,6,9,7,1,5,6,6,3,3,8,1,6,2,1,9,4,9,5,5,8,3,5,6,8,6,4,3,1,8,8,4,9,8,4,1,2,2,5,5,2,1,4,3,0,8,2,9,9,0,5,2,3,7,2,4,7,1,7,4,0,7,6,4,0,3,3,1,3,7,8,9,7,0,1,0,7,9,9,8,0],"10_1":[5,3,7,5,8,8,7,2,0,2,0,4,9,0,5,8,9,9,6,7,6,8,7,6,4,2,7,5,3,7,8,6,9,2,5,0,4,7,2,5,8,9,3,3,9,1,4,7,4,6,0,6,6,9,2,1,6,4,2,1,5,7,8,8,6,9,3,4,4,6,5,5,1,8,1,0,9,3,0,3,3,3,0,5,3,2,1,4,2,0,1,9,1,4,2,1,8,0,7,1],"10_2":[7,4,9,6,5,0,1,5,2,2,0,3,8,6,9,2,7,1,4,4,4,7,9,0,3,5,2,0,5,3,6,5,3,7,0,4,5,2,2,5,6,7,1,1,6,6,0,9,5,7,7,0,8,0,3,3,7,4,2,8,0,7,1,9,0,1,4,8,5,6,7,2,4,2,8,9,6,8,6,8,1,6,9,3,2,5,3,9,8,1,4,4,1,3,9,1,3,9,8,8],"10_3":[2,3,7,6,1,1,9,8,6,4,5,5,2,0,9,6,9,5,1,3,7,5,4,1,7,2,3,0,0,9,5,9,3,4,3,4,6,8,2,8,1,5,8,2,5,1,6,0,9,0,1,8,8,3,0,4,7,9,0,8,4,1,6,2,3,6,5,9,2,2,5,3,4,7,6,6,7,7,8,3,9,5,8,7,2,7,3,2,4,4,0,0,1,6,0,9,4,7,8,1],"10_4":[1,5,9,5,2,3,0,2,2,0,6,0,1,2,5,4,8,9,3,1,4,3,5,0,6,2,3,5,3,7,5,9,7,8,4,4,4,9,9,8,2,5,2,8,3,8,5,2,8,3,9,7,5,6,6,6,3,9,8,9,6,0,2,7,0,6,8,6,7,1,4,5,0,7,0,3,7,6,7,4,9,3,6,1,7,1,1,8,1,7,4,1,8,4,0,2,1,0,9,4],"10_5":[8,8,5,7,1,8,3,9,5,0,3,4,0,2,8,3,0,6,4,5,6,3,0,6,6,3,0,4,4,4,1,4,9,2,6,0,7,1,5,9,8,7,6,2,4,0,2,1,8,6,5,3,3,1,4,1,4,5,9,7,0,9,2,3,2,9,8,4,9,5,3,6,2,5,1,7,9,2,6,5,5,8,7,0,7,0,1,8,1,2,3,6,7,9,9,8,2,7,7,1],"10_6":[9,2,8,4,7,4,4,6,1,0,0,7,1,7,6,3,2,8,6,5,9,3,4,6,3,5,0,9,8,8,5,9,8,0,6,5,9,8,3,2,4,1,5,2,7,6,3,3,4,1,8,9,7,1,1,5,6,9,5,5,9,6,2,1,0,3,1,7,7,0,0,2,6,6,5,9,2,7,2,1,0,0,5,4,3,8,9,8,3,4,8,7,4,3,7,0,1,2,2,4],"10_7":[2,4,3,8,4,1,8,3,6,8,5,9,0,1,4,5,2,6,7,7,6,2,9,4,6,9,3,2,3,2,7,8,5,3,8,2,1,6,0,4,6,3,3,5,4,0,6,3,7,1,4,1,1,5,2,6,9,0,1,7,7,0,8,7,2,3,0,5,1,0,9,6,8,8,5,7,9,4,1,6,8,9,2,9,5,9,7,0,4,7,3,8,0,2,5,4,0,1,9,5],"10_8":[8,8,9,5,7,2,4,0,9,4,4,8,6,8,0,0,3,6,9,1,7,2,7,0,3,3,2,1,2,2,0,3,6,5,9,7,6,5,6,4,0,4,5,2,8,4,1,9,5,7,9,3,0,3,8,2,7,9,4,8,7,6,1,6,2,9,3,1,6,6,5,9,3,1,1,4,2,8,5,3,2,0,4,7,8,0,3,5,1,9,5,5,1,7,8,6,4,1,0,7],"10_9":[4,8,7,7,0,9,2,8,8,4,1,5,3,6,4,5,6,0,5,8,6,1,9,5,7,4,5,1,0,7,6,7,0,4,8,4,7,2,7,1,6,9,8,8,2,6,1,3,3,9,7,8,3,2,1,2,4,6,1,4,3,2,1,9,2,3,9,6,9,3,3,7,2,3,8,9,2,5,4,0,0,7,9,3,5,1,6,2,5,5,8,6,9,0,0,0,4,1,5,0]};
+// ---------------------------------------------------------------- Hafta 8 hesap çekirdeği (DOM yok; node'da da çalışır)
+            function sigm(z) { return 1 / (1 + Math.exp(-z)); }
+            function softplus(z) { return z > 0 ? z + Math.log1p(Math.exp(-z)) : Math.log1p(Math.exp(z)); }   // ln(1 + eᶻ)
+            function mulberry32(a) {
+                return function () {
+                    a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+                    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296;
+                };
+            }
+
+            // Gürültülü çember (torch.manual_seed(1)): 100 eğitim, 200 doğrulama, 1000 test; %10 etiket ters
+            var SPL = { tr: [0, 100], va: [100, 300], te: [300, 1300] };
+            function ncNet(N) {   // torch.manual_seed(0) ile nn.Linear başlangıcı
+                var I = NINIT[N];
+                return { W1: I[0].map(function (r) { return r.slice(); }), b1: I[1].slice(), w2: I[2][0].slice(), b2: I[3][0] };
+            }
+            function ncClone(P) { return { W1: P.W1.map(function (r) { return r.slice(); }), b1: P.b1.slice(), w2: P.w2.slice(), b2: P.b2 }; }
+            function ncZ(P, x, h) {   // çıkış logit'i z = w₂·σ(W₁x + b₁) + b₂
+                var s = 0;
+                for (var j = 0; j < P.w2.length; j++) { var hj = sigm(P.W1[j][0] * x[0] + P.W1[j][1] * x[1] + P.b1[j]); if (h) h[j] = hj; s += P.w2[j] * hj; }
+                return s + P.b2;
+            }
+            function ncEval(P, k) {   // [ort. CE, doğruluk]
+                var a = SPL[k][0], b = SPL[k][1], c = 0, ok = 0;
+                for (var i = a; i < b; i++) { var z = ncZ(P, NC.X[i]); c += NC.d[i] ? softplus(-z) : softplus(z); if ((z >= 0) === (NC.d[i] === 1)) ok++; }
+                return [c / (b - a), ok / (b - a)];
+            }
+            function ncStep(P, eta, lam) {   // toplu GD: ortalama CE'nin gradyanı (+ λ/2·‖W‖², bias hariç)
+                var N = P.w2.length, n = 100, h = new Array(N), G1 = [], Gb1 = [], Gw2 = [], Gb2 = 0, i, j;
+                for (j = 0; j < N; j++) { G1.push([0, 0]); Gb1.push(0); Gw2.push(0); }
+                for (i = 0; i < n; i++) {
+                    var x = NC.X[i], g = (sigm(ncZ(P, x, h)) - NC.d[i]) / n;
+                    for (j = 0; j < N; j++) {
+                        var g1 = g * P.w2[j] * h[j] * (1 - h[j]);
+                        G1[j][0] += g1 * x[0]; G1[j][1] += g1 * x[1]; Gb1[j] += g1; Gw2[j] += g * h[j];
+                    }
+                    Gb2 += g;
+                }
+                for (j = 0; j < N; j++) {
+                    P.W1[j][0] -= eta * (G1[j][0] + lam * P.W1[j][0]); P.W1[j][1] -= eta * (G1[j][1] + lam * P.W1[j][1]);
+                    P.b1[j] -= eta * Gb1[j]; P.w2[j] -= eta * (Gw2[j] + lam * P.w2[j]);
+                }
+                P.b2 -= eta * Gb2;
+            }
+            function ncNorm(P) { var s = 0; P.W1.forEach(function (r) { s += r[0] * r[0] + r[1] * r[1]; }); P.w2.forEach(function (w) { s += w * w; }); return Math.sqrt(s); }
+            // Bir eğitim işi: E epoch, her epoch doğrulama CE'si izlenir (erken durdurma, sabır 1000)
+            function ncJob(N, lam) {
+                var J = { N: N, lam: lam, E: 16000, e: 0, P: ncNet(N), done: false, hist: [], snaps: {}, best: { ce: Infinity, e: 0, P: null }, stop: null };
+                J.snaps[0] = ncClone(J.P);
+                J.hist.push(ncRow(J.P, 0));
+                J.run = function (k) {   // k epoch ilerlet
+                    for (var t = 0; t < k && J.e < J.E; t++) {
+                        ncStep(J.P, 2, J.lam); J.e++;
+                        var v = ncEval(J.P, 'va')[0];
+                        if (v < J.best.ce) J.best = { ce: v, e: J.e, P: ncClone(J.P) };
+                        else if (J.stop === null && J.e - J.best.e >= 1000) J.stop = { e: J.e, best: J.best.e };
+                        if (J.e % 100 === 0) { J.snaps[J.e] = ncClone(J.P); J.hist.push(ncRow(J.P, J.e)); }
+                    }
+                    if (J.e >= J.E) J.done = true;
+                    return J.done;
+                };
+                return J;
+            }
+            function ncRow(P, e) { var a = ncEval(P, 'tr'), b = ncEval(P, 'va'), c = ncEval(P, 'te'); return [e, a[0], a[1], b[0], b[1], c[0], c[1]]; }
+
+            // H7'nin çember ağı (2-N-1, örnek örnek CE, η = 0.5, mulberry32(1)): 120 eğitim + 1000 temiz test noktası
+            function h7Net(N) {
+                var r = mulberry32(1), u = function () { return 2 * r() - 1; }, P = { W1: [], b1: [], w2: [], b2: 0 }, j;
+                for (j = 0; j < N; j++) P.W1.push([u(), u()]);
+                for (j = 0; j < N; j++) P.b1.push(u());
+                for (j = 0; j < N; j++) P.w2.push(u());
+                P.b2 = u(); return P;
+            }
+            function h7Epoch(P) {
+                var N = P.w2.length, h = new Array(N), d1 = new Array(N), i, j;
+                for (i = 0; i < CIRCLE.X.length; i++) {
+                    var x = CIRCLE.X[i], y = sigm(ncZ(P, x, h)), d2 = CIRCLE.d[i] - y;
+                    for (j = 0; j < N; j++) d1[j] = h[j] * (1 - h[j]) * P.w2[j] * d2;
+                    for (j = 0; j < N; j++) P.w2[j] += 0.5 * d2 * h[j];
+                    P.b2 += 0.5 * d2;
+                    for (j = 0; j < N; j++) { P.W1[j][0] += 0.5 * (d1[j] * x[0]); P.W1[j][1] += 0.5 * (d1[j] * x[1]); P.b1[j] += 0.5 * d1[j]; }
+                }
+            }
+            function h7Eval(P, S) {   // [doğru sayısı, ort. CE (1e-12 kırpmalı)]
+                var a = 0, c = 0;
+                for (var i = 0; i < S.X.length; i++) {
+                    var y = sigm(ncZ(P, S.X[i])), yc = Math.min(1 - 1e-12, Math.max(1e-12, y));
+                    if ((y >= 0.5) === (S.d[i] === 1)) a++; c -= S.d[i] * Math.log(yc) + (1 - S.d[i]) * Math.log(1 - yc);
+                }
+                return [a, c / S.X.length];
+            }
+
+            // Iris (versicolor 0 / virginica 1, petal, dönüşümlü sıra) ve H5'in sürekli perceptronu
+            var IX = [], ID = [];
+            for (var q = 0; q < 50; q++) { IX.push(IRIS.VE[q]); ID.push(0); IX.push(IRIS.VI[q]); ID.push(1); }
+            function irisCV(fid, k) {   // katman dışı olasılıklar + katlardaki hata sayıları; ölçek yalnız eğitim katından
+                var p = new Array(100), errs = [], f, i;
+                for (f = 0; f < k; f++) {
+                    var tr = [], te = [];
+                    for (i = 0; i < 100; i++) (fid[i] === f ? te : tr).push(i);
+                    var mu = [0, 0], sd = [0, 0], c;
+                    for (c = 0; c < 2; c++) {
+                        var m = 0, v = 0;
+                        tr.forEach(function (t) { m += IX[t][c]; }); m /= tr.length;
+                        tr.forEach(function (t) { v += (IX[t][c] - m) * (IX[t][c] - m); }); mu[c] = m; sd[c] = Math.sqrt(v / tr.length);
+                    }
+                    var Z = IX.map(function (x) { return [(x[0] - mu[0]) / sd[0], (x[1] - mu[1]) / sd[1]]; }), w = [0, 0], b = 0;
+                    for (var ep = 0; ep < 200; ep++) tr.forEach(function (t) {
+                        var y = 1 / (1 + Math.exp(-(w[0] * Z[t][0] + w[1] * Z[t][1] + b))), g = 0.1 * (ID[t] - y);
+                        w[0] += g * Z[t][0]; w[1] += g * Z[t][1]; b += 0.1 * (ID[t] - y);
+                    });
+                    var e = 0;
+                    te.forEach(function (t) { p[t] = 1 / (1 + Math.exp(-(Z[t][0] * w[0] + Z[t][1] * w[1] + b))); if ((p[t] >= 0.5) !== (ID[t] === 1)) e++; });
+                    errs.push(e);
+                }
+                return { p: p, errs: errs };
+            }
+
+            // Ölçütler
+            function confusion(p, d, t) {   // tahmin = p ≥ t
+                var C = { TP: 0, FN: 0, FP: 0, TN: 0 };
+                for (var i = 0; i < p.length; i++) { var y = p[i] >= t; if (d[i] === 1) { if (y) C.TP++; else C.FN++; } else { if (y) C.FP++; else C.TN++; } }
+                return C;
+            }
+            function aucOf(p, d) {   // P(p(pozitif) > p(negatif)); eşitlik ½
+                var pos = [], neg = [], s = 0;
+                for (var i = 0; i < p.length; i++) (d[i] === 1 ? pos : neg).push(p[i]);
+                pos.forEach(function (a) { neg.forEach(function (b) { s += a > b ? 1 : a === b ? 0.5 : 0; }); });
+                return s / (pos.length * neg.length);
+            }
+
+            function pct(v, n) { return fx(100 * v, n === undefined ? 1 : n); }
+            function isCur(el) { return typeof Reveal !== 'undefined' && Reveal.getCurrentSlide && Reveal.getCurrentSlide() && Reveal.getCurrentSlide().contains(el); }
+            function onEnter(el, fn) { if (typeof Reveal !== 'undefined' && Reveal.on) Reveal.on('slidechanged', function (ev) { if (ev.currentSlide.contains(el)) fn(); }); }
+            function drawCircle(Pn, col) {
+                var ctx = Pn.ctx; ctx.save(); ctx.strokeStyle = col || '#86efac'; ctx.setLineDash([6, 5]); ctx.lineWidth = 2; ctx.beginPath();
+                ctx.arc(Pn.px(0), Pn.py(0), Pn.px(0.7) - Pn.px(0), 0, 6.283); ctx.stroke(); ctx.restore();
+            }
+            function ncPoints(Pn, P, k, r) {   // gürültülü çember noktaları; ters etiket turuncu, yanlış kırmızı halka
+                var a = SPL[k][0], b = SPL[k][1];
+                for (var i = a; i < b; i++) {
+                    var x = NC.X[i]; Pn.dot(x[0], x[1], NC.d[i], r);
+                    if (NC.ters[i]) Pn.ring(x[0], x[1], r + 2.5, '#fdba74', k === 'tr' ? 2.2 : 1.2);
+                    if (P && (ncZ(P, x) >= 0) !== (NC.d[i] === 1)) Pn.ring(x[0], x[1], r + (k === 'tr' ? 5 : 3.5), '#f87171', k === 'tr' ? 2 : 1);
+                }
+            }
+            function ncShade(Pn, P, S) { Pn.shadeY(function (a, b) { return sigm(ncZ(P, [a, b])); }, S || 5); Pn.axes(); drawCircle(Pn); }
+
+            // ---------------------------------------------------------------- Arka planda eğitim işleri (sayfa açılınca başlar)
+            var JOBS = {}, ORDER = ['32_0', '1_0', '2_0', '4_0', '8_0', '16_0', '32_0.0001', '32_0.001', '32_0.01'], WANT = null, LISTEN = [];
+            function job(k) {
+                if (!JOBS[k]) { var p = k.split('_'); JOBS[k] = ncJob(+p[0], +p[1]); }
+                return JOBS[k];
+            }
+            function jobDone(k) { return !!(JOBS[k] && JOBS[k].done); }
+            function tick() {
+                var k = WANT && !jobDone(WANT) ? WANT : null;
+                if (!k) for (var i = 0; i < ORDER.length; i++) if (!jobDone(ORDER[i])) { k = ORDER[i]; break; }
+                if (!k) return;
+                var J = job(k), t0 = Date.now();
+                while (Date.now() - t0 < 35 && !J.done) J.run(20);
+                LISTEN.forEach(function (fn) { fn(k, J.done); });
+                setTimeout(tick, 0);
+            }
+            function progress(k) { var J = JOBS[k]; return J ? Math.floor(100 * J.e / J.E) : 0; }
+            window.H8JOBS = { done: function () { return ORDER.every(jobDone); }, JOBS: JOBS };
+
+            // ---------------------------------------------------------------- H7'nin çember ağı: hiç görmediği 1000 nokta
+            (function () {
+                var cv = $('gr-cv'); if (!cv) return;
+                var Pn = PlaneY(cv, [-1.1, 1.1], [-1.1, 1.1]), N = 6, E = 300, view = 'te', R = {};
+                [2, 3, 4, 6, 8].forEach(function (n) {
+                    var P = h7Net(n); R[n] = {};
+                    for (var e = 1; e <= 500; e++) { h7Epoch(P); if (e === 100 || e === 300 || e === 500) R[n][e] = { P: ncClone(P), tr: h7Eval(P, CIRCLE), te: h7Eval(P, CT) }; }
+                });
+                function draw() {
+                    var r = R[N][E], P = r.P, S = view === 'tr' ? CIRCLE : CT, rad = view === 'tr' ? 5 : 2.6;
+                    Pn.shadeY(function (a, b) { return sigm(ncZ(P, [a, b])); }, 4); Pn.axes(); drawCircle(Pn);
+                    for (var i = 0; i < S.X.length; i++) {
+                        var x = S.X[i]; Pn.dot(x[0], x[1], S.d[i], rad);
+                        if ((ncZ(P, x) >= 0) !== (S.d[i] === 1)) Pn.ring(x[0], x[1], rad + (view === 'tr' ? 4 : 2.5), '#f87171', view === 'tr' ? 2 : 1.5);
+                    }
+                    var gap = r.tr[0] / 1.2 - r.te[0] / 10;
+                    var s = 'N = <b>' + N + '</b> · ' + E + ' epoch' +
+                        '<br>eğitim: <b class="g">' + r.tr[0] + '/120</b> <span class="m">(CE ' + fx(r.tr[1], 4) + ')</span> · test: <b class="' +
+                        (r.te[0] >= 940 ? 'g' : 'r') + '">' + r.te[0] + '/1000</b> <span class="m">(CE ' + fx(r.te[1], 4) + ')</span> · açık: <b>' + fx(gap, 1) + ' puan</b>';
+                    s += '<table class="dtab nowrap-t" style="font-size:0.95em;margin:6px 0 4px;"><tr><th>N</th><th>eğitim</th><th>test</th><th>açık</th><th>test CE</th></tr>' +
+                        [2, 3, 4, 6, 8].map(function (n) {
+                            var q = R[n][E]; return '<tr' + (n === N ? ' style="outline:2px solid #fde047;"' : '') + '><td>' + n + '</td><td>' + q.tr[0] + '/120</td><td>' +
+                                q.te[0] + '/1000</td><td>' + fx(q.tr[0] / 1.2 - q.te[0] / 10, 1) + '</td><td>' + fx(q.te[1], 4) + '</td></tr>';
+                        }).join('') + '</table>';
+                    if (N === 6 && E === 500) s += '<span class="y">300 → 500 epoch: eğitim CE ' + fx(R[6][300].tr[1], 4) + ' → ' + fx(r.tr[1], 4) + ' düşerken test CE ' +
+                        fx(R[6][300].te[1], 4) + ' → ' + fx(r.te[1], 4) + ' çıkıyor: aşırı öğrenmenin ilk işareti.</span>';
+                    else if (r.tr[0] === 120) s += '<span class="y">Eğitimde hatasız ama ' + (1000 - r.te[0]) + ' test noktası yanlış: temiz veride bile açık var.</span>';
+                    else if (N <= 3) s += '<span class="r">' + N + ' doğru çemberi saramıyor: eğitimde de testte de kötü (eksik öğrenme).</span>';
+                    else s += '<span class="m">Açık küçük: veri temiz, model uygun boyda.</span>';
+                    $('gr-out').innerHTML = s;
+                }
+                pickButtons($('gr-n'), function (v) { N = +v; draw(); });
+                pickButtons($('gr-e'), function (v) { E = +v; draw(); });
+                pickButtons($('gr-v'), function (v) { view = v; draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Gürültülü veri (durağan çizim)
+            (function () {
+                var cv = $('gu-cv'); if (!cv) return;
+                var Pn = PlaneY(cv, [-1.1, 1.1], [-1.1, 1.1]);
+                Pn.shadeY(function (a, b) { return a * a + b * b < 0.49 ? 0.62 : 0.38; }, 6); Pn.axes(); drawCircle(Pn);
+                ncPoints(Pn, null, 'tr', 5);
+            })();
+
+            // ---------------------------------------------------------------- Kapasite: N = 1 … 32
+            (function () {
+                var cv = $('kp-cv'); if (!cv) return;
+                var Pn = PlaneY(cv, [-1.1, 1.1], [-1.1, 1.1]), N = 32, view = 'tr', NS = [1, 2, 4, 8, 16, 32], last = -1;
+                function chart() {
+                    var W = 650, H = 150, L = 34, Rr = 10, T = 12, B = 24, bw = (W - L - Rr) / 6, g = '';
+                    function Y(v) { return T + (1 - (v - 40) / 60) * (H - T - B); }
+                    [40, 60, 80, 100].forEach(function (v) {
+                        g += '<line x1="' + L + '" y1="' + Y(v) + '" x2="' + (W - Rr) + '" y2="' + Y(v) + '" stroke="rgba(148,163,184,0.15)"/>' +
+                            '<text x="' + (L - 5) + '" y="' + (Y(v) + 4) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="end">' + v + '</text>';
+                    });
+                    NS.forEach(function (n, i) {
+                        var k = n + '_0', x0 = L + i * bw + bw * 0.14, w = bw * 0.24;
+                        g += '<text x="' + (L + i * bw + bw / 2) + '" y="' + (H - 7) + '" fill="' + (n === N ? '#fde047' : '#94a3b8') + '" font-size="11" font-family="monospace" text-anchor="middle">N = ' + n + '</text>';
+                        if (!jobDone(k)) { g += '<text x="' + (L + i * bw + bw / 2) + '" y="' + Y(60) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="middle">' + progress(k) + '%</text>'; return; }
+                        var hr = JOBS[k].hist[JOBS[k].hist.length - 1];
+                        [[hr[2], '#34d399'], [hr[4], '#fde047'], [hr[6], '#f472b6']].forEach(function (q, j) {
+                            g += '<rect x="' + (x0 + j * w).toFixed(1) + '" y="' + Y(100 * q[0]).toFixed(1) + '" width="' + (w - 2).toFixed(1) + '" height="' + (Y(40) - Y(100 * q[0])).toFixed(1) + '" fill="' + q[1] + '" opacity="0.8"/>';
+                        });
+                    });
+                    g += '<line x1="' + L + '" y1="' + Y(87.9) + '" x2="' + (W - Rr) + '" y2="' + Y(87.9) + '" stroke="#86efac" stroke-dasharray="5 4"/>' +
+                        '<line x1="' + L + '" y1="' + Y(57.7) + '" x2="' + (W - Rr) + '" y2="' + Y(57.7) + '" stroke="#94a3b8" stroke-dasharray="3 4"/>' +
+                        '<text x="' + (L + 4) + '" y="' + (T - 2) + '" fill="#94a3b8" font-size="10" font-family="monospace"><tspan fill="#34d399">■ eğitim</tspan> <tspan fill="#fde047">■ doğrulama</tspan> <tspan fill="#f472b6">■ test</tspan> doğruluk (%) · <tspan fill="#86efac">kesikli: tavan 87.9</tspan> · <tspan fill="#cbd5e1">taban 57.7</tspan></text>';
+                    $('kp-chart').innerHTML = g;
+                }
+                function draw() {
+                    var k = N + '_0';
+                    chart();
+                    if (!jobDone(k)) {
+                        var ctx = Pn.ctx; ctx.fillStyle = '#0b1222'; ctx.fillRect(0, 0, Pn.W, Pn.H); Pn.axes(); drawCircle(Pn); ncPoints(Pn, null, view, view === 'tr' ? 5 : 2.4);
+                        $('kp-out').innerHTML = 'N = <b>' + N + '</b> · eğitiliyor… <b>' + progress(k) + '%</b> <span class="m">(16000 epoch, arka planda)</span>';
+                        return;
+                    }
+                    var J = JOBS[k], hr = J.hist[J.hist.length - 1], b = J.best;
+                    ncShade(Pn, J.P); ncPoints(Pn, J.P, view, view === 'tr' ? 5 : 2.4);
+                    var tb = ncEval(b.P, 'te');
+                    var s = 'N = <b>' + N + '</b> · 16000 epoch' +
+                        '<table class="dtab nowrap-t" style="font-size:0.95em;margin:5px 0;"><tr><th></th><th>eğitim</th><th>doğrulama</th><th>test</th></tr>' +
+                        '<tr><td>doğruluk</td><td class="ok">%' + pct(hr[2]) + '</td><td>%' + pct(hr[4]) + '</td><td>%' + pct(hr[6]) + '</td></tr>' +
+                        '<tr><td>ort. CE</td><td>' + fx(hr[1], 4) + '</td><td>' + fx(hr[3], 4) + '</td><td>' + fx(hr[5], 4) + '</td></tr></table>' +
+                        'açık (eğitim − test): <b class="' + (hr[2] - hr[6] > 0.15 ? 'r' : 'y') + '">' + fx(100 * (hr[2] - hr[6]), 1) + ' puan</b>' +
+                        ' <span class="m">· erken durdurulsaydı (' + b.e + '. epoch): test %' + pct(tb[1]) + '</span>';
+                    if (N === 1) s += '<br><span class="r">Tek doğru çemberi saramaz: eğitimde bile %' + pct(hr[2]) + '. Eksik öğrenme.</span>';
+                    else if (hr[2] > 0.93) s += '<br><span class="r">Eğitimde %' + pct(hr[2]) + ' > %93 (gerçek sınırın eğitim doğruluğu): ters etiketleri ezberledi.</span>';
+                    else s += '<br><span class="m">Gerçek sınır eğitimde %93 alıyor; ' + N + ' nöron henüz onun altında.</span>';
+                    $('kp-out').innerHTML = s;
+                }
+                LISTEN.push(function (k, done) {
+                    if (k.slice(-2) !== '_0') return;
+                    if (done || (isCur(cv) && progress(k) !== last)) { last = progress(k); if (isCur(cv) || done) draw(); }
+                });
+                pickButtons($('kp-n'), function (v) { N = +v; WANT = N + '_0'; draw(); });
+                pickButtons($('kp-v'), function (v) { view = v; draw(); });
+                onEnter(cv, function () { WANT = N + '_0'; draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Eksik / aşırı öğrenme grafiği (kapasite işlerinden)
+            (function () {
+                var sv = $('oy-chart'); if (!sv) return;
+                var NS = [1, 2, 4, 8, 16, 32];
+                function draw() {
+                    var W = 470, H = 250, L = 40, Rr = 12, T = 14, B = 34, g = '';
+                    function X(i) { return L + i / 5 * (W - L - Rr); }
+                    function Y(v) { return T + (1 - (v - 50) / 50) * (H - T - B); }
+                    [50, 60, 70, 80, 90, 100].forEach(function (v) {
+                        g += '<line x1="' + L + '" y1="' + Y(v) + '" x2="' + (W - Rr) + '" y2="' + Y(v) + '" stroke="rgba(148,163,184,0.15)"/>' +
+                            '<text x="' + (L - 6) + '" y="' + (Y(v) + 4) + '" fill="#64748b" font-size="11" font-family="monospace" text-anchor="end">' + v + '</text>';
+                    });
+                    NS.forEach(function (n, i) { g += '<text x="' + X(i) + '" y="' + (H - 16) + '" fill="#94a3b8" font-size="11" font-family="monospace" text-anchor="middle">' + n + '</text>'; });
+                    g += '<text x="' + ((L + W - Rr) / 2) + '" y="' + (H - 2) + '" fill="#94a3b8" font-size="11" font-family="monospace" text-anchor="middle">gizli nöron N (kapasite)</text>';
+                    g += '<line x1="' + L + '" y1="' + Y(87.9) + '" x2="' + (W - Rr) + '" y2="' + Y(87.9) + '" stroke="#86efac" stroke-dasharray="5 4" opacity="0.7"/>' +
+                        '<text x="' + (W - Rr) + '" y="' + (Y(87.9) + 13) + '" fill="#86efac" font-size="10" font-family="monospace" text-anchor="end">tavan 87.9</text>';
+                    if (!NS.every(function (n) { return jobDone(n + '_0'); })) {
+                        g += '<text x="' + ((L + W) / 2) + '" y="' + Y(75) + '" fill="#94a3b8" font-size="13" font-family="monospace" text-anchor="middle">hesaplanıyor…</text>';
+                        sv.innerHTML = g; return;
+                    }
+                    [[2, '#34d399', 'eğitim'], [6, '#f472b6', 'test']].forEach(function (q) {
+                        var pts = NS.map(function (n, i) { var h = JOBS[n + '_0'].hist; return [X(i), Y(100 * h[h.length - 1][q[0]])]; });
+                        g += '<polyline fill="none" stroke="' + q[1] + '" stroke-width="2.6" points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/>';
+                        pts.forEach(function (p) { g += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="4" fill="' + q[1] + '"/>'; });
+                        g += '<text x="' + (pts[5][0] - 6) + '" y="' + (pts[5][1] + (q[0] === 2 ? -9 : 16)) + '" fill="' + q[1] + '" font-size="12" font-family="monospace" font-weight="bold" text-anchor="end">' + q[2] + '</text>';
+                    });
+                    g += '<text x="' + X(0.1) + '" y="' + (T + 10) + '" fill="#93c5fd" font-size="11" font-family="monospace">← eksik öğrenme</text>' +
+                        '<text x="' + X(5) + '" y="' + Y(63) + '" fill="#fca5a5" font-size="11" font-family="monospace" text-anchor="end">açık büyür, aşırı öğrenme →</text>';
+                    sv.innerHTML = g;
+                }
+                LISTEN.push(function (k, done) { if (done) draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Erken durdurma: N = 32 eğitiminin anlık görüntüleri
+            (function () {
+                var cv = $('es-cv'); if (!cv) return;
+                var Pn = PlaneY(cv, [-1.1, 1.1], [-1.1, 1.1]), K = '32_0', cur = { e: 0, P: null, tag: '' }, timer = null, lastP = -1;
+                function J() { return job(K); }
+                function chart() {
+                    var Jb = J(), W = 680, H = 170, L = 40, Rr = 10, T = 12, B = 22, g = '', lo = 2, hi = Math.log10(16000);
+                    function X(e) { return L + (Math.log10(Math.max(e, 100)) - lo) / (hi - lo) * (W - L - Rr); }
+                    function Y(v) { return T + (1 - Math.min(v, 2) / 2) * (H - T - B); }
+                    [0, 0.5, 1, 1.5, 2].forEach(function (v) {
+                        g += '<line x1="' + L + '" y1="' + Y(v) + '" x2="' + (W - Rr) + '" y2="' + Y(v) + '" stroke="rgba(148,163,184,0.15)"/>' +
+                            '<text x="' + (L - 5) + '" y="' + (Y(v) + 4) + '" fill="#64748b" font-size="10" font-family="monospace" text-anchor="end">' + v + '</text>';
+                    });
+                    [100, 300, 1000, 3000, 10000, 16000].forEach(function (e) {
+                        g += '<text x="' + X(e) + '" y="' + (H - 6) + '" fill="#64748b" font-size="10" font-family="monospace" text-anchor="' + (e === 16000 ? 'end' : e === 100 ? 'start' : 'middle') + '">' + e + '</text>';
+                    });
+                    var hs = Jb.hist.filter(function (r) { return r[0] >= 100; });
+                    [[1, '#34d399'], [3, '#fde047'], [5, '#f472b6']].forEach(function (q) {
+                        g += '<polyline fill="none" stroke="' + q[1] + '" stroke-width="2" points="' + hs.map(function (r) { return X(r[0]).toFixed(1) + ',' + Y(r[q[0]]).toFixed(1); }).join(' ') + '"/>';
+                    });
+                    if (Jb.best.e >= 100 && (Jb.done || Jb.e - Jb.best.e >= 1000)) g += '<line x1="' + X(Jb.best.e) + '" y1="' + T + '" x2="' + X(Jb.best.e) + '" y2="' + (H - B) + '" stroke="#fde047" stroke-dasharray="4 3"/>' +
+                        '<text x="' + (X(Jb.best.e) + 4) + '" y="' + (T + 10) + '" fill="#fde047" font-size="10" font-family="monospace">★ ' + Jb.best.e + '</text>';
+                    if (Jb.stop) g += '<line x1="' + X(Jb.stop.e) + '" y1="' + T + '" x2="' + X(Jb.stop.e) + '" y2="' + (H - B) + '" stroke="#94a3b8" stroke-dasharray="2 3"/>' +
+                        '<text x="' + (X(Jb.stop.e) + 4) + '" y="' + (T + 22) + '" fill="#94a3b8" font-size="10" font-family="monospace">⏹ ' + Jb.stop.e + '</text>';
+                    if (cur.e >= 100) g += '<line x1="' + X(cur.e) + '" y1="' + T + '" x2="' + X(cur.e) + '" y2="' + (H - B) + '" stroke="#e2e8f0" stroke-width="1.5"/>';
+                    g += '<text x="' + (W - Rr) + '" y="' + (T + 2) + '" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="end"><tspan fill="#34d399">— eğitim</tspan> <tspan fill="#fde047">— doğrulama</tspan> <tspan fill="#f472b6">— test</tspan> ort. CE · epoch (log)</text>';
+                    if (!Jb.done) g += '<text x="' + ((L + W) / 2) + '" y="' + Y(1) + '" fill="#94a3b8" font-size="12" font-family="monospace" text-anchor="middle">eğitiliyor… ' + progress(K) + '%</text>';
+                    $('es-chart').innerHTML = g;
+                }
+                function show(e, P, tag) { cur = { e: e, P: P, tag: tag || '' }; draw(); }
+                function draw() {
+                    var Jb = J(), P = cur.P || Jb.snaps[0];
+                    ncShade(Pn, P); ncPoints(Pn, null, 'tr', 5);
+                    chart();
+                    $('es-sv').textContent = cur.e;
+                    var a = ncEval(P, 'tr'), b = ncEval(P, 'va'), c = ncEval(P, 'te');
+                    var s = 'epoch <b>' + cur.e + '</b> · ‖W‖ = ' + fx(ncNorm(P), 1) +
+                        '<table class="dtab nowrap-t" style="font-size:0.95em;margin:4px 0;"><tr><th></th><th>eğitim</th><th>doğrulama</th><th>test</th></tr>' +
+                        '<tr><td>ort. CE</td><td>' + fx(a[0], 4) + '</td><td>' + fx(b[0], 4) + '</td><td>' + fx(c[0], 4) + '</td></tr>' +
+                        '<tr><td>doğruluk</td><td>%' + pct(a[1]) + '</td><td>%' + pct(b[1]) + '</td><td>%' + pct(c[1]) + '</td></tr></table>';
+                    if (cur.tag === 'best') s += '<span class="g">★ Doğrulama CE\'si en düşük: ' + cur.e + '. epoch. Erken durdurmanın seçtiği ağ bu.</span>';
+                    else if (cur.tag === 'stop') s += '<span class="g">⏹ Sabır 1000: ' + Jb.stop.e + '. epoch\'ta durur (1000 epoch iyileşme yok), ' + Jb.stop.best + '. epoch\'un kopyasına döner (gösterilen).</span>';
+                    else if (cur.e === 16000) s += '<span class="r">Sonuna kadar: eğitim %' + pct(a[1]) + ', test %' + pct(c[1]) + '. Ağ ters etiketlerin çevresine adacıklar çizdi.</span>';
+                    else if (Jb.best.e && cur.e > Jb.best.e + 300 && (Jb.done || Jb.stop)) s += '<span class="y">Doğrulama CE\'si en iyiden beri ' + fx(b[0] - Jb.best.ce, 3) + ' arttı: ezber başladı.</span>';
+                    else s += '<span class="m">Kaydır ya da “⏵ oynat”: eğitim CE\'si hep düşer, doğrulama CE\'si önce düşer sonra yükselir.</span>';
+                    if (!Jb.done) s += '<br><span class="m">eğitiliyor… ' + progress(K) + '% (kaydırıcı hazır olan epoch\'lara kadar)</span>';
+                    $('es-out').innerHTML = s;
+                }
+                function pause() { if (timer) { clearInterval(timer); timer = null; } $('es-play').textContent = '⏵ oynat'; }
+                function setIdx(i) { var Jb = J(), mx = Math.floor(Jb.e / 100); i = Math.max(0, Math.min(i, mx)); $('es-s').value = i; show(100 * i, Jb.snaps[100 * i]); }
+                $('es-s').addEventListener('input', function (e) { stop(e); pause(); setIdx(+this.value); });
+                function btn(id, fn) { $(id).addEventListener('click', function (e) { stop(e); this.blur(); pause(); fn(); }); }
+                btn('es-best', function () { var Jb = J(); if (!Jb.best.P) return; $('es-s').value = Math.round(Jb.best.e / 100); show(Jb.best.e, Jb.best.P, 'best'); });
+                btn('es-stop', function () { var Jb = J(); if (!Jb.stop) return; $('es-s').value = Math.round(Jb.stop.e / 100); show(Jb.stop.best, Jb.stop.best === Jb.best.e ? Jb.best.P : Jb.snaps[Math.round(Jb.stop.best / 100) * 100], 'stop'); });
+                btn('es-end', function () { setIdx(160); });
+                $('es-play').addEventListener('click', function (e) {
+                    stop(e); this.blur();
+                    if (timer) { pause(); return; }
+                    var i = cur.e >= 16000 ? 0 : Math.round(cur.e / 100);
+                    $('es-play').textContent = '⏸ durdur';
+                    timer = setInterval(function () {
+                        var mx = Math.floor(J().e / 100); i = Math.min(i + (i < 20 ? 1 : 2), 160);
+                        if (i > mx) { i = mx; }
+                        setIdx(i); if (i >= 160) pause();
+                    }, 110);
+                });
+                LISTEN.push(function (k, done) {
+                    if (k !== K) return;
+                    if (done || (isCur(cv) && progress(K) !== lastP)) { lastP = progress(K); if (isCur(cv) || done) draw(); }
+                });
+                onEnter(cv, function () { WANT = K; draw(); });
+                onLeave(pause);
+                show(0, null);
+            })();
+
+            // ---------------------------------------------------------------- L2: λ seç
+            (function () {
+                var cv = $('l2-cv'); if (!cv) return;
+                var Pn = PlaneY(cv, [-1.1, 1.1], [-1.1, 1.1]), L = '0.0001', view = 'tr', LS = ['0', '0.0001', '0.001', '0.01'], last = -1;
+                function key(l) { return '32_' + l; }
+                function draw() {
+                    var k = key(L);
+                    if (!jobDone(k)) {
+                        var ctx = Pn.ctx; ctx.fillStyle = '#0b1222'; ctx.fillRect(0, 0, Pn.W, Pn.H); Pn.axes(); drawCircle(Pn); ncPoints(Pn, null, view, view === 'tr' ? 5 : 2.4);
+                    } else { ncShade(Pn, JOBS[k].P); ncPoints(Pn, JOBS[k].P, view, view === 'tr' ? 5 : 2.4); }
+                    var s = 'λ = <b>' + L + '</b> · N = 32 · 16000 epoch' +
+                        '<table class="dtab nowrap-t" style="font-size:0.95em;margin:5px 0;"><tr><th>λ</th><th>eğitim</th><th>doğrulama</th><th>test</th><th>test CE</th><th>‖W‖</th></tr>' +
+                        LS.map(function (l) {
+                            var kk = key(l), on = l === L ? ' style="outline:2px solid #fde047;"' : '';
+                            if (!jobDone(kk)) return '<tr' + on + '><td>' + l + '</td><td colspan="5" style="color:#64748b;">eğitiliyor… ' + progress(kk) + '%</td></tr>';
+                            var h = JOBS[kk].hist[JOBS[kk].hist.length - 1];
+                            return '<tr' + on + '><td>' + l + '</td><td>%' + pct(h[2]) + '</td><td>%' + pct(h[4]) + '</td><td class="' + (h[6] > 0.82 ? 'ok' : h[6] < 0.6 ? 'bad' : '') + '">%' + pct(h[6]) +
+                                '</td><td>' + fx(h[5], 4) + '</td><td>' + fx(ncNorm(JOBS[kk].P), 2) + '</td></tr>';
+                        }).join('') + '</table>';
+                    if (jobDone(k)) {
+                        var P = JOBS[k].P, mnv = 1, mxv = 0;
+                        for (var i = 300; i < 1300; i++) { var y = sigm(ncZ(P, NC.X[i])); mnv = Math.min(mnv, y); mxv = Math.max(mxv, y); }
+                        if (L === '0') s += '<span class="r">Fren yok: ‖W‖ büyüdükçe sınır ters etiketlerin çevresinde kıvrılıyor.</span>';
+                        else if (L === '0.01') s += '<span class="r">Fazla fren: test noktalarında y yalnız ' + fx(mnv, 2) + '–' + fx(mxv, 2) + ' arasında; ağ her yerde “bilmiyorum” diyor. Eksik öğrenme.</span>';
+                        else s += '<span class="g">Ağırlıklar küçük kaldı; sınır yumuşadı, test CE\'si ' + fx(JOBS['32_0'] && JOBS['32_0'].done ? JOBS['32_0'].hist[160][5] : NaN, 2) + ' → ' + fx(JOBS[k].hist[160][5], 2) + '.</span>';
+                    }
+                    $('l2-out').innerHTML = s;
+                }
+                LISTEN.push(function (k, done) {
+                    if (k.indexOf('32_') !== 0) return;
+                    if (done || (isCur(cv) && progress(k) !== last)) { last = progress(k); if (isCur(cv) || done) draw(); }
+                });
+                pickButtons($('l2-l'), function (v) { L = v; WANT = key(L); draw(); });
+                pickButtons($('l2-v'), function (v) { view = v; draw(); });
+                onEnter(cv, function () { WANT = key(L); draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- k-katlı şema (5 kat, random_state = 0)
+            (function () {
+                var g = $('kk-rows'); if (!g) return;
+                var r = irisCV(FOLDS['5_0'], 5), s = '';
+                for (var t = 0; t < 5; t++) {
+                    var y = 36 + t * 38;
+                    s += '<text x="0" y="' + (y + 19) + '" fill="#94a3b8" font-size="13" font-family="JetBrains Mono, monospace">' + (t + 1) + '</text>';
+                    for (var f = 0; f < 5; f++) s += '<rect x="' + (30 + f * 62) + '" y="' + y + '" width="58" height="28" rx="6" fill="' + (f === t ? 'rgba(244,114,182,0.35)' : 'rgba(52,211,153,0.16)') +
+                        '" stroke="' + (f === t ? '#f472b6' : 'rgba(52,211,153,0.5)') + '"/><text x="' + (59 + f * 62) + '" y="' + (y + 19) + '" fill="' + (f === t ? '#fbcfe8' : '#86efac') +
+                        '" font-size="12" font-family="JetBrains Mono, monospace" text-anchor="middle">kat ' + (f + 1) + '</text>';
+                    s += '<text x="360" y="' + (y + 19) + '" fill="#f9a8d4" font-size="13" font-family="JetBrains Mono, monospace">E' + '₁₂₃₄₅'[t] + ' = ' + r.errs[t] + '/20</text>';
+                }
+                s += '<text x="360" y="' + (36 + 5 * 38 + 6) + '" fill="#e2e8f0" font-size="13" font-family="JetBrains Mono, monospace" font-weight="bold">toplam ' + r.errs.reduce(function (a, b) { return a + b; }) + '/100</text>';
+                g.innerHTML = s;
+            })();
+
+            // ---------------------------------------------------------------- Iris: k-katlı çapraz doğrulama
+            (function () {
+                var cv = $('cv-cv'); if (!cv) return;
+                var ctx = cv.getContext('2d'), CW = cv.width, CH = cv.height, ML = 46, MB = 34, MT = 10, MR = 12, xr = [2.8, 7.2], yr = [0.8, 2.7], k = 5, rs = 0;
+                var COL = ['#60a5fa', '#34d399', '#fbbf24', '#f472b6', '#a78bfa', '#22d3ee', '#fb923c', '#a3e635', '#e879f9', '#94a3b8'];
+                function sx(v) { return ML + (v - xr[0]) / (xr[1] - xr[0]) * (CW - ML - MR); }
+                function sy(v) { return CH - MB - (v - yr[0]) / (yr[1] - yr[0]) * (CH - MB - MT); }
+                var CACHE = {};
+                function fid() { return k === 100 ? ID.map(function (_, i) { return i; }) : FOLDS[k + '_' + rs]; }
+                function cvOf(kk, r) { var key = kk + '_' + r; if (!CACHE[key]) CACHE[key] = irisCV(kk === 100 ? ID.map(function (_, i) { return i; }) : FOLDS[key], kk); return CACHE[key]; }
+                function draw() {
+                    var F = fid(), r = cvOf(k, k === 100 ? 0 : rs), i;
+                    ctx.fillStyle = '#0b1222'; ctx.fillRect(0, 0, CW, CH);
+                    ctx.strokeStyle = '#475569'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(ML, MT); ctx.lineTo(ML, CH - MB); ctx.lineTo(CW - MR, CH - MB); ctx.stroke();
+                    ctx.fillStyle = '#64748b'; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+                    for (var t = 3; t <= 7; t++) ctx.fillText(String(t), sx(t), CH - MB + 14);
+                    ctx.textAlign = 'right'; for (var t2 = 1; t2 <= 2.5; t2 += 0.5) ctx.fillText(fx(t2, 1), ML - 5, sy(t2) + 4);
+                    ctx.fillStyle = '#94a3b8'; ctx.font = '12px monospace'; ctx.textAlign = 'center'; ctx.fillText('petal uzunluğu (cm)', ML + (CW - ML - MR) / 2, CH - 4);
+                    ctx.save(); ctx.translate(13, MT + (CH - MT - MB) / 2); ctx.rotate(-Math.PI / 2); ctx.fillText('petal genişliği (cm)', 0, 0); ctx.restore();
+                    for (i = 0; i < 100; i++) {
+                        var x = sx(IX[i][0]) + (i % 2 ? 2.5 : -2.5), y = sy(IX[i][1]), c = k === 100 ? '#93c5fd' : COL[F[i] % 10];
+                        ctx.beginPath(); ctx.arc(x, y, 5, 0, 6.283);
+                        if (ID[i]) { ctx.fillStyle = c; ctx.fill(); } else { ctx.fillStyle = '#0b1222'; ctx.fill(); ctx.strokeStyle = c; ctx.lineWidth = 2; ctx.stroke(); }
+                        if ((r.p[i] >= 0.5) !== (ID[i] === 1)) { ctx.beginPath(); ctx.arc(x, y, 9, 0, 6.283); ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2.2; ctx.stroke(); }
+                    }
+                    // şerit: 100 çiçek, dönüşümlü sıra
+                    var g = '', w = 6.2;
+                    for (i = 0; i < 100; i++) {
+                        var wrong = (r.p[i] >= 0.5) !== (ID[i] === 1), cx = 2 + i * w;
+                        g += '<rect x="' + cx.toFixed(1) + '" y="6" width="' + (w - 1).toFixed(1) + '" height="22" rx="1.5" fill="' + (k === 100 ? '#93c5fd' : COL[F[i] % 10]) + '" opacity="' + (ID[i] ? 0.95 : 0.5) + '"/>';
+                        if (wrong) g += '<rect x="' + cx.toFixed(1) + '" y="31" width="' + (w - 1).toFixed(1) + '" height="5" fill="#f87171"/>';
+                    }
+                    g += '<text x="2" y="50" fill="#94a3b8" font-size="10" font-family="monospace">çiçek 1 → 100 (dönüşümlü: soluk = versicolor, dolu = virginica) · renk = kat · kırmızı = yanlış</text>';
+                    $('cv-strip').innerHTML = g;
+                    var tot = r.errs.reduce(function (a, b) { return a + b; }), sizes = [];
+                    for (var f = 0; f < k; f++) sizes.push(F.filter(function (v) { return v === f; }).length);
+                    var accs = r.errs.map(function (e, j) { return 1 - e / sizes[j]; }), m = accs.reduce(function (a, b) { return a + b; }) / k,
+                        sd = Math.sqrt(accs.reduce(function (a, b) { return a + (b - m) * (b - m); }, 0) / k);
+                    var s = 'k = <b>' + (k === 100 ? '100 (LOO)' : k) + '</b>' + (k === 100 ? '' : ' · random_state = <b>' + rs + '</b>') +
+                        (k <= 10 ? '<br>katlardaki hata: <b>[' + r.errs.join(', ') + ']</b> <span class="m">(her katta ' + sizes[0] + ' çiçek)</span>' : '') +
+                        '<br>toplam: <b class="' + (tot <= 6 ? 'g' : 'y') + '">' + tot + '/100</b> → doğruluk %' + fx(100 - tot, 0) +
+                        (k <= 10 ? ' <span class="m">· kat doğrulukları: ort. %' + pct(m) + ' ± ' + pct(sd) + '</span>' : '') +
+                        ' · AUC = <b>' + fx(aucOf(r.p, ID), 4) + '</b>' +
+                        '<br><span class="m">aynı veride ölçülen (H5): 6/100</span>';
+                    if (k <= 10) {
+                        var row = [];
+                        for (var q = 0; q < 10; q++) { var rr = cvOf(k, q); row.push(q === rs ? '<b class="y">' + rr.errs.reduce(function (a, b) { return a + b; }) + '</b>' : rr.errs.reduce(function (a, b) { return a + b; })); }
+                        s += '<br>random_state 0–9 için toplam hata: ' + row.join(' · ');
+                    }
+                    if (k === 2) s += '<br><span class="y">k = 2: her model 50 çiçekle eğitiliyor; sonuç bölmeye daha çok bağlı.</span>';
+                    else if (k === 100) s += '<br><span class="g">Birini dışarıda bırak: 100 tur, her tur 99 çiçekle eğitim. Rastgelelik yok.</span>';
+                    else s += '<br><span class="g">Doğrusal model ezberleyemiyor: çapraz doğrulama ile aynı veride ölçüm neredeyse aynı.</span>';
+                    $('cv-out').innerHTML = s;
+                    $('cv-rsv').textContent = k === 100 ? '—' : rs;
+                    $('cv-rs').disabled = k === 100;
+                }
+                pickButtons($('cv-k'), function (v) { k = +v; draw(); });
+                $('cv-rs').addEventListener('input', function (e) { stop(e); rs = +this.value; draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Eşik ve ROC (erken durdurulan ağ, 1000 test noktası)
+            (function () {
+                var cv = $('th-cv'); if (!cv) return;
+                var ctx = cv.getContext('2d'), CW = cv.width, CH = cv.height, M = 34, t = 0.5, PT = null, DT = [], ROC = null, AUC = null;
+                for (var i = 300; i < 1300; i++) DT.push(NC.d[i]);
+                function ready() {
+                    if (PT) return true;
+                    var Jb = JOBS['32_0']; if (!Jb || !(Jb.done || Jb.stop)) return false;
+                    var B = Jb.best.P; PT = []; for (var i = 300; i < 1300; i++) PT.push(sigm(ncZ(B, NC.X[i])));
+                    var th = PT.slice().sort(function (a, b) { return b - a; }), np = DT.filter(function (v) { return v === 1; }).length, nn = 1000 - np;
+                    ROC = [[0, 0]];
+                    var seen = {};
+                    th.forEach(function (v) { if (seen[v]) return; seen[v] = 1; var C = confusion(PT, DT, v); ROC.push([C.FP / nn, C.TP / np]); });
+                    ROC.push([1, 1]); AUC = aucOf(PT, DT);
+                    return true;
+                }
+                function X(v) { return M + v * (CW - M - 10); }
+                function Y(v) { return CH - M - v * (CH - M - 10); }
+                function draw() {
+                    ctx.fillStyle = '#0b1222'; ctx.fillRect(0, 0, CW, CH);
+                    ctx.strokeStyle = 'rgba(148,163,184,0.18)'; ctx.lineWidth = 1;
+                    for (var q = 0; q <= 4; q++) { ctx.beginPath(); ctx.moveTo(X(q / 4), Y(0)); ctx.lineTo(X(q / 4), Y(1)); ctx.moveTo(X(0), Y(q / 4)); ctx.lineTo(X(1), Y(q / 4)); ctx.stroke(); }
+                    ctx.fillStyle = '#64748b'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+                    for (q = 0; q <= 4; q++) { ctx.textAlign = q === 4 ? 'right' : 'center'; ctx.fillText(fx(q / 4, 2), X(q / 4) + (q === 4 ? 4 : 0), Y(0) + 13); }
+                    ctx.textAlign = 'right'; for (q = 0; q <= 4; q++) ctx.fillText(fx(q / 4, 2), X(0) - 4, Y(q / 4) + 3);
+                    ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = '#64748b'; ctx.beginPath(); ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(1), Y(1)); ctx.stroke(); ctx.restore();
+                    $('th-tv').textContent = fx(t, 2);
+                    if (!ready()) { ctx.fillStyle = '#94a3b8'; ctx.font = '12px monospace'; ctx.textAlign = 'center'; ctx.fillText('ağ eğitiliyor… ' + progress('32_0') + '%', CW / 2, CH / 2); $('th-out').innerHTML = 'Erken durdurulan ağ bekleniyor (arka planda eğitiliyor).'; return; }
+                    ctx.strokeStyle = '#67e8f9'; ctx.lineWidth = 2.5; ctx.beginPath();
+                    ROC.forEach(function (p, j) { if (j) ctx.lineTo(X(p[0]), Y(p[1])); else ctx.moveTo(X(p[0]), Y(p[1])); }); ctx.stroke();
+                    var C = confusion(PT, DT, t), np = C.TP + C.FN, nn = C.TN + C.FP, sens = C.TP / np, spec = C.TN / nn, prec = C.TP + C.FP ? C.TP / (C.TP + C.FP) : NaN;
+                    ctx.beginPath(); ctx.arc(X(1 - spec), Y(sens), 6, 0, 6.283); ctx.fillStyle = '#fde047'; ctx.fill();
+                    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 12px monospace'; ctx.textAlign = 'right'; ctx.fillText('AUC = ' + fx(AUC, 4), X(1) - 4, Y(0) - 8);
+                    var f1 = 2 * prec * sens / (prec + sens);
+                    var s = '<table class="cmx" style="font-size:1em;margin:0 0 6px;"><tr><th></th><th>tahmin 1</th><th>tahmin 0</th></tr>' +
+                        '<tr><th>gerçek 1</th><td class="tp">TP ' + C.TP + '</td><td class="fn">FN ' + C.FN + '</td></tr>' +
+                        '<tr><th>gerçek 0</th><td class="fp">FP ' + C.FP + '</td><td class="tn">TN ' + C.TN + '</td></tr></table>' +
+                        'duyarlılık <b>' + fx(sens, 3) + '</b> · özgüllük <b>' + fx(spec, 3) + '</b> · kesinlik <b>' + (isNaN(prec) ? '—' : fx(prec, 3)) + '</b>' +
+                        '<br>doğruluk <b>' + fx((C.TP + C.TN) / 1000, 3) + '</b> · F₁ <b>' + (isNaN(f1) ? '—' : fx(f1, 3)) + '</b> · AUC <b>' + fx(AUC, 4) + '</b> <span class="m">(eşikten bağımsız)</span>';
+                    if (Math.abs(t - 0.3) < 1e-9) s += '<br><span class="y">H5\'in sözü: 0.5 → 0.3 ile duyarlılık arttı, kesinlik düştü.</span>';
+                    else if (t < 0.3) s += '<br><span class="y">Düşük eşik: neredeyse herkese “içeride” diyor; az kaçırır, çok yanlış alarm verir.</span>';
+                    else if (t > 0.7) s += '<br><span class="y">Yüksek eşik: yalnız çok emin olduğunda “içeride” diyor; kesinlik yüksek, çok kaçırır.</span>';
+                    $('th-out').innerHTML = s;
+                }
+                $('th-t').addEventListener('input', function (e) { stop(e); t = +this.value; setOn($('th-pre'), String(t)); draw(); });
+                pickButtons($('th-pre'), function (v) { t = +v; $('th-t').value = v; draw(); });
+                LISTEN.push(function (k) { if (k === '32_0' && !PT && ready()) draw(); });
+                onEnter(cv, function () { WANT = '32_0'; draw(); });
+                draw();
+            })();
+
+            // ---------------------------------------------------------------- Yaygınlık ve PPV (10 000 kişi)
+            (function () {
+                var cv = $('pv-cv'); if (!cv) return;
+                var ctx = cv.getContext('2d'), PREV = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.423, 0.5];
+                var sens = 0.95, spec = 0.95, prev = 0.01;
+                function pf(v) { var s = String(+(100 * v).toFixed(2)); return '%' + s; }
+                function draw() {
+                    var Hn = Math.round(10000 * prev), TP = Math.round(Hn * sens), FN = Hn - TP, Sn = 10000 - Hn, TN = Math.round(Sn * spec), FP = Sn - TN;
+                    var ppv = sens * prev / (sens * prev + (1 - spec) * (1 - prev)), npv = spec * (1 - prev) / (spec * (1 - prev) + (1 - sens) * prev);
+                    var cell = 3, cols = [['#34d399', TP], ['#f43f5e', FN], ['#fbbf24', FP], ['#1e293b', TN]], idx = 0;
+                    ctx.fillStyle = '#0b1222'; ctx.fillRect(0, 0, 300, 300);
+                    cols.forEach(function (c) { ctx.fillStyle = c[0]; for (var n = 0; n < c[1]; n++, idx++) ctx.fillRect((idx % 100) * cell, Math.floor(idx / 100) * cell, cell - 0.4, cell - 0.4); });
+                    $('pv-sv').textContent = fx(sens, 2); $('pv-cv2').textContent = fx(spec, 2); $('pv-pv').textContent = pf(prev);
+                    var s = '<table class="cmx" style="font-size:1em;margin:0 0 6px;"><tr><th>10 000 kişi</th><th>test +</th><th>test −</th><th>toplam</th></tr>' +
+                        '<tr><th>hasta</th><td class="tp">' + TP + '</td><td class="fn">' + FN + '</td><td>' + Hn + '</td></tr>' +
+                        '<tr><th>sağlam</th><td class="fp">' + FP + '</td><td class="tn">' + TN + '</td><td>' + Sn + '</td></tr></table>' +
+                        'PPV = P(hasta | +) = <b class="' + (ppv < 0.5 ? 'r' : 'g') + '">%' + fx(100 * ppv, 1) + '</b> · NPV = P(sağlam | −) = <b>%' + fx(100 * npv, 2) + '</b>' +
+                        '<br>doğruluk ' + pf((TP + TN) / 10000) + ' <span class="m">· “herkes sağlam” deseydik ' + pf(1 - prev) + '</span>';
+                    if (ppv < 0.5) s += '<br><span class="r">Pozitif çıkan ' + (TP + FP) + ' kişiden yalnız ' + TP + '\'i hasta: yanlış alarmlar, nadir hastalıkta gerçek pozitifleri bastırıyor.</span>';
+                    else s += '<br><span class="g">Yaygınlık yüksekken pozitif sonuç güvenilir.' + (Math.abs(prev - 0.423) < 1e-9 ? ' PPV = karışıklık matrisindeki kesinlik (Slayt 18).' : '') + '</span>';
+                    $('pv-out').innerHTML = s;
+                }
+                function fromSliders() { sens = +$('pv-s').value; spec = +$('pv-c').value; prev = PREV[+$('pv-p').value]; setOn($('pv-pre'), ''); draw(); }
+                ['pv-s', 'pv-c', 'pv-p'].forEach(function (id) { $(id).addEventListener('input', function (e) { stop(e); fromSliders(); }); });
+                pickButtons($('pv-pre'), function (v) {
+                    if (v === 'tarama') { sens = 0.95; spec = 0.95; prev = 0.01; } else { sens = 331 / 423; spec = 515 / 577; prev = 0.423; }
+                    $('pv-s').value = sens.toFixed(2); $('pv-c').value = spec.toFixed(2); $('pv-p').value = PREV.indexOf(prev); draw();
+                });
+                draw();
+            })();
+
+            setTimeout(tick, 400);
+            // Kaydırıcılar: sunum kumandası (PageDown/PageUp) slaytı değiştirsin; bırakınca odak Reveal'e dönsün
+            document.querySelectorAll('.reveal input[type=range]').forEach(function (r) {
+                r.addEventListener('keydown', function (e) {
+                    if (e.key === 'PageDown' || e.key === 'PageUp') {
+                        e.preventDefault(); r.blur();
+                        if (typeof Reveal !== 'undefined') { if (e.key === 'PageDown') Reveal.next(); else Reveal.prev(); }
+                    }
+                });
+                r.addEventListener('change', function () { r.blur(); });
+            });
+
+            // Mini quiz
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                var fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) { if (o.dataset.correct === '1') o.classList.add('correct'); });
+                        if (opt.dataset.correct === '1') { fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!'); fb.style.color = '#86efac'; }
+                        else { opt.classList.add('wrong'); fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil.'); fb.style.color = '#fca5a5'; }
+                    });
+                });
+            });
+        })();
     </script>
 </body>
+
 </html>
