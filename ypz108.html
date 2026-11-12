@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Ramazan Ozgur Dogan" />
+  <meta name="description" content="An examination of ethical, moral, legal, and social dimensions of information technologies. Building the skills to analyze security issues and develop a proper perspective on ethical problems in computing." />
+
+  <link rel="icon" type="image/x-icon" href="https://doganr.com/favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+  <!-- Flag Icons (language switcher) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+
+  <!-- Highlight.js for code -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+  <!-- Custom Theme CSS -->
+  <link rel="stylesheet" type="text/css" href="https://doganr.com/theme/css/style.css">
+
+
+  <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+
+  <title>Doğan R. – IT Ethics</title>
+
+<meta name="author" content="Ramazan Ozgur Dogan" />
+<meta name="keywords" content="">
+</head>
+
+<body>
+
+  <!-- Animated background particles -->
+  <div class="bg-particles" id="particles"></div>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav" id="mainNavbar">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand brand-logo" href="https://doganr.com/">
+      <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="brand-img me-2">
+      <span class="brand-text">
+        <span class="brand-name">Doğan R.</span>
+        <small class="brand-subtitle d-none d-md-inline">Asst. Prof. • Trabzon University</small>
+      </span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/">
+            <i class="fa-solid fa-house me-1"></i>Home
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/about.html">
+            About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/publications.html">
+            Publications
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/teaching.html">
+            Teaching
+          </a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-pill" href="#" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Social links menu">
+            <i class="fa-solid fa-share-nodes"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+            <li>
+              <a class="dropdown-item" href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-github"></i>Github
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-linkedin"></i>Linkedin
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-google-scholar"></i>Google scholar
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-solid fa-envelope"></i>E-posta
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Language switcher -->
+        <li class="nav-item">
+          <a class="btn btn-sm lang-switch-btn" href="https://doganr.com/tr/" title="Türkçe'ye geç" aria-label="Türkçe'ye geç" lang="tr">
+            <span class="fi fi-tr"></span>
+          </a>
+        </li>
+
+        <!-- Theme toggle -->
+        <li class="nav-item">
+          <button class="btn btn-sm theme-toggle-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle light/dark theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Main content wrapper -->
+  <div class="page-wrapper">
+<!-- Article page -->
+<div class="article-page-wrapper">
+
+  <!-- Article Hero -->
+  <div class="article-hero">
+    <div class="article-hero-bg"></div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-down">
+            <ol class="breadcrumb justify-content-center glass-breadcrumb">
+              <li class="breadcrumb-item"><a href="https://doganr.com/">Home</a></li>
+              <li class="breadcrumb-item"><a href="https://doganr.com/category/teaching.html">Teaching</a></li>
+              <li class="breadcrumb-item active" aria-current="page">IT Ethics</li>
+            </ol>
+          </nav>
+
+          <!-- Category -->
+          <div class="mb-3" data-aos="fade-up">
+            <a href="https://doganr.com/category/teaching.html" class="tag-badge tag-category tag-lg">
+              <i class="fa-solid fa-folder me-2"></i>Teaching
+            </a>
+          </div>
+
+          <!-- Title -->
+          <h1 class="article-hero-title" id="ypz108" data-aos="fade-up" data-aos-delay="50">
+            IT Ethics
+          </h1>
+
+          <!-- Meta -->
+          <div class="article-hero-meta d-flex align-items-center justify-content-center gap-4 mt-4" data-aos="fade-up" data-aos-delay="100">
+            <span class="meta-item">
+              <i class="fa-solid fa-user-pen me-2"></i>Ramazan Ozgur Dogan
+            </span>
+            <span class="meta-separator">·</span>
+            <span class="meta-item">
+              <i class="fa-regular fa-calendar me-2"></i>Tue, 27 Jan 2026
+            </span>
+          </div>
+
+          <!-- Tags -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article Body -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <!-- Featured Image -->
+
+        <!-- Article Content -->
+        <div class="article-content glass-card p-4 p-md-5 rounded-3" data-aos="fade-up">
+          <h2>Course Information</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Course Code</strong></td>
+<td>YPZ108</td>
+</tr>
+<tr>
+<td><strong>Program</strong></td>
+<td>Artificial Intelligence Engineering</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>Turkish</td>
+</tr>
+<tr>
+<td><strong>Level</strong></td>
+<td>Undergraduate</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>Compulsory</td>
+</tr>
+<tr>
+<td><strong>Prerequisites</strong></td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Theory</strong></td>
+<td>2 Hours</td>
+</tr>
+<tr>
+<td><strong>Practice</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Laboratory</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Credits</strong></td>
+<td>2.00</td>
+</tr>
+<tr>
+<td><strong>ECTS</strong></td>
+<td>3.00</td>
+</tr>
+<tr>
+<td><strong>Instructor</strong></td>
+<td>Asst. Prof. Ramazan Özgür Doğan</td>
+</tr>
+</tbody>
+</table>
+<h2>Course Objective</h2>
+<p>This course focuses on ethics in information technologies. IT ethics is examined from moral, legal, and social perspectives in relation to information technologies. The aim is to develop the ability to analyze security issues that may arise during the use of information technologies and to establish a proper perspective on ethical problems.</p>
+<h2>Course Content</h2>
+<p>Introduction to ethics and information technologies; ethical values and concepts; the structure of ethical theories. Professional ethics and responsibility. Security and network ethics. Privacy and internet environments; privacy and security. Intellectual property and ethical values; data protection. Copyright and patent protection methods; professional responsibility and license agreements. Security issues; hacking and cracking; cybercrimes and their social impacts; fundamental concepts of cyberspace and cybersecurity; cyber actors and attack methods; cyber defense methods. Jurisdiction issues in internet and computing environments. Electronic commerce. Entrepreneurship, innovation, sustainable development awareness, and IT ethics.</p>
+<h2>Weekly Schedule</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Week</th>
+<th>Topic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td>Introduction to IT Ethics and Fundamental Concepts</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td>Ethical Theories: Utilitarianism, Deontology, and Virtue Ethics</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td>Professional Ethics and Cyber Technology</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td>Management Approaches: Traditional Structure and Its Critique</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td>The Concept of Privacy and Personal Data Protection</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td>Privacy–Security Balance: The Surveillance Society</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td>Intellectual Property: Copyright, Patent, and Trademark Law</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td>License Agreements and IT Law</td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td><strong>Midterm Exam</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td>AI Ethics: Algorithms and Automated Decision-Making</td>
+</tr>
+<tr>
+<td style="text-align: center;">11</td>
+<td>Cybercrimes: Definitions and Cyberbullying</td>
+</tr>
+<tr>
+<td style="text-align: center;">12</td>
+<td>Cybersecurity, Network Security, and Cyber Defense Methods</td>
+</tr>
+<tr>
+<td style="text-align: center;">13</td>
+<td>Social Media Ethics, Algorithmic Manipulation, and Echo Chambers</td>
+</tr>
+<tr>
+<td style="text-align: center;">14</td>
+<td>Big Data Ethics, Data Mining, and Digital Activism</td>
+</tr>
+<tr>
+<td style="text-align: center;">15</td>
+<td>End-of-Semester Review</td>
+</tr>
+<tr>
+<td style="text-align: center;">16</td>
+<td><strong>Final Exam</strong></td>
+</tr>
+</tbody>
+</table>
+<h2>Course Learning Outcomes</h2>
+<p>Upon successful completion of this course, students will be able to:</p>
+<ol>
+<li>Explain IT ethics and its fundamental concepts.</li>
+<li>Develop solutions for technology-related social conflicts of the information age.</li>
+<li>Explain information security, digital citizenship, and intellectual property concepts.</li>
+<li>Apply personal information security rules in professional life and organize their professional activities in accordance with the law.</li>
+<li>Apply privacy and security rules in their professional lives.</li>
+<li>Evaluate their behaviors and decisions regarding intellectual property rights.</li>
+<li>Take precautions against crimes related to internet and information technologies.</li>
+<li>Gain knowledge on responsibility, privacy, and cybersecurity topics.</li>
+</ol>
+<h2>Recommended Textbooks</h2>
+<ul>
+<li>Tavani, H. T. (2007). <em>Ethics and Technology: Ethical Issues in an Age of Information and Communication Technology.</em> Wiley.</li>
+<li>Tavani, H. T. (2011). <em>Ethics and Technology: Controversies, Questions, and Strategies for Ethical Computing.</em> John Wiley &amp; Sons.</li>
+<li>Winston, M., &amp; Edelbach, R. (2011). <em>Society, Ethics, and Technology.</em> Cengage Learning.</li>
+<li>Barger, R. N. (2008). <em>Computer Ethics: A Case-Based Approach.</em> New York, NY: Cambridge University Press.</li>
+</ul>
+<h2>Course Materials</h2>
+<p>Interactive lecture slides are available at the link below.</p>
+<p><a href="/slides/YPZ108/index.html">View Course Slides</a></p>
+        </div>
+
+        <!-- Author Box -->
+        <div class="author-box glass-card p-4 rounded-3 mt-4 d-flex align-items-center gap-4" data-aos="fade-up">
+          <div class="author-avatar-placeholder">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div>
+            <p class="author-box-name mb-1">Ramazan Ozgur Dogan</p>
+            <p class="author-box-bio mb-0 text-muted">Academic blog of Asst. Prof. Ramazan Özgür Doğan — AI researcher at Trabzon University. Deep learning, medical imaging, and beyond.</p>
+          </div>
+        </div>
+
+        <!-- Tags Cloud -->
+
+        <!-- Neighbors (prev/next) -->
+
+      </div>
+
+      <!-- Sidebar / Table of Contents placeholder -->
+      <div class="col-lg-3 offset-lg-1 d-none d-lg-block">
+        <div class="toc-sidebar sticky-lg-top" style="top: 90px;">
+          <div class="glass-card p-4 rounded-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-list-ul me-2"></i>Contents
+            </h6>
+            <div id="toc-content" class="toc-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <!-- Share box -->
+          <div class="glass-card p-4 rounded-3 mt-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-share-nodes me-2"></i>Share
+            </h6>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="https://twitter.com/intent/tweet?url=https://doganr.com/ypz108.html&text=IT%20Ethics" target="_blank" class="share-btn share-twitter" title="Twitter/X">
+                <i class="fa-brands fa-x-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/shareArticle?url=https://doganr.com/ypz108.html&title=IT%20Ethics" target="_blank" class="share-btn share-linkedin" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+              <button class="share-btn share-copy" title="Copy link" onclick="copyLink()">
+                <i class="fa-solid fa-link"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+  </div>
+
+  <!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-glow"></div>
+  <div class="container">
+    <div class="row gy-4 align-items-center">
+
+      <!-- Brand -->
+      <div class="col-md-4 text-center text-md-start">
+        <a href="https://doganr.com/" class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none">
+          <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="footer-logo" loading="lazy" width="28" height="28">
+          <span class="footer-brand-name">Doğan R.</span>
+        </a>
+        <p class="footer-tagline mt-2 mb-0">Asst. Prof. • Trabzon University</p>
+      </div>
+
+      <!-- Social Links -->
+      <div class="col-md-4 text-center">
+        <div class="footer-social d-flex gap-3 justify-content-center">
+          <a href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Github" aria-label="Github">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Linkedin" aria-label="Linkedin">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Google scholar" aria-label="Google scholar">
+            <i class="fa-brands fa-google-scholar"></i>
+          </a>
+          <a href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="E-posta" aria-label="E-posta">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="col-md-4 text-center text-md-end">
+        <p class="footer-copy mb-0">
+          &copy; 2026 <strong>Ramazan Ozgur Dogan</strong>
+        </p>
+        <p class="footer-powered mt-1 mb-0">
+          Powered by <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>
+          &amp; <a href="https://getbootstrap.com/" target="_blank" class="footer-link">Bootstrap 5</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom mt-4 pt-3 text-center">
+      <p class="footer-bottom-text mb-0">
+        Built with <i class="fa-solid fa-code" style="color: var(--accent-2);"></i> and a lot of ☕.
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Highlight.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- Custom JS -->
+  <script src="https://doganr.com/theme/js/theme.js"></script>
+
+<script>
+// Copy link
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector('.share-copy');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-link"></i>', 2000);
+  });
+}
+</script>
+</body>
+
+</html>

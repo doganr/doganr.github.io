@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Etiği 13. Hafta - Sosyal Medya ve Algoritmalar</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Week 13 — Indigo & Purple Theme */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-transform: none;
+        }
+        .reveal h1 { font-weight: 800; letter-spacing: -0.02em; }
+        .reveal h2 { font-weight: 700; color: #f8fafc; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .social-badge {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        /* Animasyonlar */
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%      { opacity: 0.85; transform: scale(1.02); }
+        }
+        .pulse-soft { animation: pulse-soft 3s infinite ease-in-out; }
+
+        @keyframes scroll-down {
+            0%   { transform: translateY(-100%); }
+            100% { transform: translateY(0%); }
+        }
+        .scroll-anim {
+            position: absolute; left: 0; right: 0; height: 100%;
+            background: linear-gradient(180deg, rgba(99,102,241,0) 0%, rgba(99,102,241,0.15) 50%, rgba(99,102,241,0) 100%);
+            animation: scroll-down 4s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes slow-drift {
+            0%,100% { transform: translateY(0); }
+            50%     { transform: translateY(-6px); }
+        }
+        .slow-drift { animation: slow-drift 4s infinite ease-in-out; }
+
+        /* Mega stat */
+        .stat-mega {
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #a5b4fc 0%, #6366f1 60%, #4338ca 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        /* Echo chamber visualization */
+        .echo-ring {
+            border-radius: 50%;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation: echo-pulse 4s infinite ease-out;
+        }
+        @keyframes echo-pulse {
+            0%   { width: 60px; height: 60px; opacity: 1; }
+            100% { width: 240px; height: 240px; opacity: 0; }
+        }
+        .echo-ring:nth-child(2) { animation-delay: 1.3s; }
+        .echo-ring:nth-child(3) { animation-delay: 2.6s; }
+
+        /* Timeline arrow */
+        .arrow-down::after {
+            content: ''; display: block; margin: 0.5rem auto;
+            width: 1px; height: 20px;
+            background: linear-gradient(180deg, rgba(99,102,241,0.6), transparent);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 1: KAPAK                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 30% 50%, #312e81 0%, #020617 60%, #000 100%)">
+                <div class="bg-glow bg-indigo-600 top-0 left-0"></div>
+                <div class="flex flex-col items-center justify-center h-full">
+                    <div class="px-4 py-2 bg-indigo-500/10 rounded-full text-xs font-bold tracking-widest mb-6 border border-indigo-500/30">
+                        <span class="text-indigo-400">HAFTA 13</span>
+                        <span class="text-slate-600 mx-2">•</span>
+                        <span class="text-slate-400">BİLİŞİM ETİĞİ</span>
+                    </div>
+
+                    <div class="relative mb-8 group">
+                        <div class="absolute inset-0 bg-indigo-600 rounded-full blur-[60px] opacity-30 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+                        <div class="absolute inset-[-20px] rounded-full border border-indigo-500/20 animate-[spin_15s_linear_infinite]"></div>
+                        <div class="absolute inset-[-40px] rounded-full border border-purple-500/10 border-dashed animate-[spin_25s_linear_infinite_reverse]"></div>
+                        <div class="p-8 bg-indigo-500/10 rounded-full border border-indigo-500/20 relative z-10 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 pulse-soft">
+                            <i data-lucide="share-2" style="width: 80px; height: 80px;" class="text-indigo-400 drop-shadow-[0_0_15px_rgba(99,102,241,0.8)]"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl mb-4 leading-tight">Algoritmanın <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-300">Aynası</span></h1>
+                    <p class="text-xl text-slate-400 font-light tracking-widest uppercase">13. Hafta: Sosyal Medya ve Algoritmik Etik</p>
+                    <div class="mt-8 flex gap-6 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <span class="flex items-center gap-2"><i data-lucide="eye" size="12" class="text-indigo-500"></i> İLGİ</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="filter" size="12" class="text-indigo-500"></i> BALON</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-2"><i data-lucide="flame" size="12" class="text-indigo-500"></i> ÖFKE</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 2: AÇILIŞ HİKAYESİ + İSTATİSTİKLER  -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <!-- 2.0: Hikaye -->
+                <section data-background-color="#020617">
+                    <div class="bg-glow bg-indigo-600 bottom-0 right-0"></div>
+                    <div class="grid grid-cols-2 gap-10 items-center text-left">
+                        <div>
+                            <div class="social-badge mb-6">23:47 • Yatağında</div>
+                            <h2 class="text-4xl mb-4">Bir Saat <span class="text-indigo-400">Olmuştu…</span></h2>
+                            <p class="text-slate-300 text-xs leading-relaxed mb-5">
+                                Mert "uyumadan 5 dakika bakacağım" diyerek TikTok'u açtı. İlk video bir spor klibiydi. Sonra "kimseye faydası olmayan sistem" üzerine öfkeli bir yorum geldi. Ardından <strong class="text-white">"gerçek erkek nasıl olunur?"</strong> başlıklı bir video. Sonra bir tane daha, bir tane daha… Saatine baktığında <strong class="text-white">01:14</strong> olmuştu. Ekran süresi: 1 saat 27 dakika. İzlediği videolardan <strong class="text-white">tek birini bile</strong> hatırlamıyordu.
+                            </p>
+                            <p class="text-slate-400 text-xs leading-relaxed italic">
+                                Algoritma onu uyutmak için değil, <strong class="text-white">ekranda tutmak için</strong> tasarlanmıştı.
+                            </p>
+                        </div>
+                        <!-- SAĞ: Doomscroll görseli -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-indigo-500 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity rounded-3xl"></div>
+                            <!-- GÖRSEL: Karanlıkta yatakta yatan bir gencin elinde telefon, ekrandan gelen mor/indigo ışık yüzünü kaplamış, gözleri yorgun, sonsuz scroll metaforu — images/doomscroll_phone.png -->
+                            <img src="images/doomscroll_phone.png" alt="Sonsuz scroll" class="w-full rounded-2xl border border-indigo-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:420px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-indigo-500/20 items-center justify-center flex-col" style="height:420px;">
+                                <i data-lucide="smartphone" class="text-indigo-400 mb-4 slow-drift" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/doomscroll_phone.png</p>
+                                <p class="text-slate-600 text-[10px] italic mt-2">karanlıkta telefona kapılmış genç</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.1: İstatistikler -->
+                <section data-background-color="#0c0a09">
+                    <h2 class="text-2xl mb-6"><i data-lucide="bar-chart-3" class="text-indigo-400 inline mr-2" size="24"></i>Sayılarla <span class="text-indigo-400">Dikkat Savaşı</span></h2>
+                    <p class="text-[11px] text-slate-500 italic mb-8">DataReportal "Digital 2024", Common Sense Media, MIT Sloan & Vosoughi (2018)</p>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="fragment glass-card p-6 border-indigo-500/20 text-center">
+                            <div class="stat-mega mb-2">2s 23dk</div>
+                            <p class="text-xs text-white font-bold m-0 mb-1">Günlük Sosyal Medya Süresi</p>
+                            <p class="text-[10px] text-slate-500 m-0">Türkiye ortalaması (2024)</p>
+                        </div>
+                        <div class="fragment glass-card p-6 border-purple-500/20 text-center">
+                            <div class="stat-mega mb-2" style="background: linear-gradient(180deg, #d8b4fe 0%, #a855f7 60%, #6b21a8 100%); -webkit-background-clip: text; background-clip: text;">×6</div>
+                            <p class="text-xs text-white font-bold m-0 mb-1">Yalan Haber Hızı</p>
+                            <p class="text-[10px] text-slate-500 m-0">Doğru habere göre (MIT 2018)</p>
+                        </div>
+                        <div class="fragment glass-card p-6 border-pink-500/20 text-center">
+                            <div class="stat-mega mb-2" style="background: linear-gradient(180deg, #f9a8d4 0%, #ec4899 60%, #9d174d 100%); -webkit-background-clip: text; background-clip: text;">%32</div>
+                            <p class="text-xs text-white font-bold m-0 mb-1">Ergen Kızlarda Olumsuz Beden Algısı</p>
+                            <p class="text-[10px] text-slate-500 m-0">Instagram — Meta iç araştırma raporu</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10 max-w-3xl mx-auto">
+                        <p class="text-[10px] text-slate-400 italic m-0 text-center"><i data-lucide="quote" size="12" class="text-indigo-400 inline mr-1"></i> "Bir hizmet karşılığında <strong class="text-indigo-400">para ödemiyorsanız</strong>, satılan ürün sizsiniz." — internet aforizması</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 3: İLGİ EKONOMİSİ                    -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-indigo-500/20 rounded-xl"><i data-lucide="eye" class="text-indigo-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">İlgi <span class="text-indigo-400">Ekonomisi</span></h2>
+                </div>
+                <p class="text-slate-300 text-sm leading-relaxed mb-8 max-w-3xl">
+                    Sosyal medya ücretsizdir çünkü <strong class="text-white">para ödeyen müşteri siz değilsiniz — siz, satılan üründünüz.</strong>
+                </p>
+                <div class="grid grid-cols-3 gap-5">
+                    <div class="fragment glass-card p-5 text-center border-indigo-500/20 hover:border-indigo-500/40 transition-all group">
+                        <div class="p-3 bg-indigo-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="clock" class="text-indigo-400" size="32"></i>
+                        </div>
+                        <h4 class="text-white font-bold text-sm m-0 mb-2">Zaman = Para</h4>
+                        <p class="text-[10px] text-slate-400 m-0 mb-3">Ekrana baktığın her saniye reklam verene satılır.</p>
+                        <div class="p-1.5 bg-indigo-500/5 rounded-lg border border-indigo-500/10">
+                            <p class="text-[9px] text-indigo-400 m-0 italic">Time on app = revenue</p>
+                        </div>
+                    </div>
+                    <div class="fragment glass-card p-5 text-center border-purple-500/20 hover:border-purple-500/40 transition-all group">
+                        <div class="p-3 bg-purple-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="mouse-pointer-2" class="text-purple-400" size="32"></i>
+                        </div>
+                        <h4 class="text-white font-bold text-sm m-0 mb-2">Etkileşim Her Şeydir</h4>
+                        <p class="text-[10px] text-slate-400 m-0 mb-3">Yorum, beğeni, paylaşım — algoritmanın yakıtı budur.</p>
+                        <div class="p-1.5 bg-purple-500/5 rounded-lg border border-purple-500/10">
+                            <p class="text-[9px] text-purple-400 m-0 italic">Tepki = Yayılım</p>
+                        </div>
+                    </div>
+                    <div class="fragment glass-card p-5 text-center border-pink-500/20 hover:border-pink-500/40 transition-all group">
+                        <div class="p-3 bg-pink-500/10 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="trending-up" class="text-pink-400" size="32"></i>
+                        </div>
+                        <h4 class="text-white font-bold text-sm m-0 mb-2">Doğru Değil, Hızlı</h4>
+                        <p class="text-[10px] text-slate-400 m-0 mb-3">Algoritma <strong class="text-white">"doğru mu?"</strong> diye sormaz; <strong class="text-white">"tıklatıyor mu?"</strong> diye sorar.</p>
+                        <div class="p-1.5 bg-pink-500/5 rounded-lg border border-pink-500/10">
+                            <p class="text-[9px] text-pink-400 m-0 italic">Truth ≠ Virality</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 4: FİLTRE BALONU + YANKI ODASI       -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#0c0a09">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-indigo-500/20 rounded-xl"><i data-lucide="filter" class="text-indigo-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Filtre Balonu <span class="text-indigo-400">vs.</span> Yankı Odası</h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6 items-stretch">
+                        <div class="fragment glass-card p-5 border-indigo-500/20 text-left">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="p-2 bg-indigo-500/20 rounded-lg"><i data-lucide="circle-dashed" class="text-indigo-400" size="24"></i></div>
+                                <h3 class="text-lg text-indigo-400 font-bold m-0">Filtre Balonu</h3>
+                            </div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-3">
+                                <strong class="text-white">Algoritma seçer.</strong> Sen farkına bile varmadan, geçmiş tıklamalarına göre dünya senin için <em>kişiselleştirilir.</em>
+                            </p>
+                            <div class="p-2 bg-indigo-500/5 rounded-lg border border-indigo-500/10">
+                                <p class="text-[10px] text-slate-400 m-0">"Aynı arama, iki kişiye iki farklı sonuç gösterir." — <strong class="text-indigo-400">Eli Pariser, 2011</strong></p>
+                            </div>
+                        </div>
+                        <div class="fragment glass-card p-5 border-purple-500/20 text-left">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="p-2 bg-purple-500/20 rounded-lg"><i data-lucide="users" class="text-purple-400" size="24"></i></div>
+                                <h3 class="text-lg text-purple-400 font-bold m-0">Yankı Odası</h3>
+                            </div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-3">
+                                <strong class="text-white">Sen seçersin.</strong> Aynı fikri paylaştığın insanlarla çevrelenir, muhalif görüşleri görmezden gelirsin. Onaylanma duygusu pekişir.
+                            </p>
+                            <div class="p-2 bg-purple-500/5 rounded-lg border border-purple-500/10">
+                                <p class="text-[10px] text-slate-400 m-0">Bir görüş <strong class="text-purple-400">"tek duyduğun"</strong> olduğu için doğru gibi gelir; oysa duymadıkların yanlış olduğunu gösterebilir.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-3 bg-rose-500/5 rounded-xl border border-rose-500/10 max-w-3xl mx-auto">
+                        <p class="text-[10px] text-rose-400 m-0 text-center"><i data-lucide="alert-triangle" size="12" class="inline mr-1"></i> Sonuç: <strong>Kutuplaşma.</strong> Karşı görüş yalnızca "yanlış" değil, <strong>"kötü niyetli insan"</strong> olarak algılanmaya başlar.</p>
+                    </div>
+                </section>
+
+                <!-- 4.1: Rage-Bait & Algoritmanın Duygusu -->
+                <section data-background-color="#020617">
+                    <h2 class="text-2xl mb-6"><i data-lucide="flame" class="text-indigo-400 inline mr-2" size="24"></i>Rage-Bait: <span class="text-indigo-400">Öfke Tuzağı</span></h2>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="text-left">
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                                Araştırma açık: <strong class="text-white">Öfke uyandıran içerikler 6 kat hızlı yayılıyor.</strong> Algoritma "tıklatanı" öne çıkarır; doğruluk onun ölçütlerinden biri bile değildir.
+                            </p>
+                            <div class="space-y-2">
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-rose-500 rounded-r-xl">
+                                    <p class="text-[11px] font-bold text-rose-400 m-0 mb-1">😡 Öfke</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Yorum yapma dürtüsü patlar — etkileşim eğrisi fırlar.</p>
+                                </div>
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-amber-500 rounded-r-xl">
+                                    <p class="text-[11px] font-bold text-amber-400 m-0 mb-1">😱 Korku</p>
+                                    <p class="text-[10px] text-slate-400 m-0">"Hemen paylaş, herkes görsün!" güdüsü — viral sıçrama.</p>
+                                </div>
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-purple-500 rounded-r-xl">
+                                    <p class="text-[11px] font-bold text-purple-400 m-0 mb-1">😢 Üzüntü</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Beğeni ve dayanışma yorumları yağar — uzun süreli duygusal etkileşim.</p>
+                                </div>
+                                <div class="fragment p-3 bg-slate-900 border-l-4 border-emerald-500 rounded-r-xl">
+                                    <p class="text-[11px] font-bold text-emerald-400 m-0 mb-1">😌 Sakin Bilgi</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Az tepki = az yayılım. <strong class="text-white">Eğitici içerik cezalandırılır.</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Echo görseli -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-indigo-500 blur-[80px] opacity-10 rounded-3xl"></div>
+                            <!-- GÖRSEL: Tek bir konuşan kafanın etrafında genişleyen ses dalgaları, içeriğinde aynı yüzlerden oluşan kalabalık, mor-indigo ışık — images/echo_chamber.png -->
+                            <img src="images/echo_chamber.png" alt="Yankı odası" class="w-full rounded-2xl border border-indigo-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:380px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-10 border-indigo-500/20 items-center justify-center flex-col" style="height:380px;">
+                                <div class="relative" style="width:240px; height:240px;">
+                                    <div class="echo-ring"></div>
+                                    <div class="echo-ring"></div>
+                                    <div class="echo-ring"></div>
+                                    <i data-lucide="megaphone" class="text-indigo-400 absolute top-1/2 left-1/2" style="transform:translate(-50%,-50%);" size="60"></i>
+                                </div>
+                                <p class="text-slate-500 text-sm mt-2">images/echo_chamber.png</p>
+                                <p class="text-slate-600 text-[10px] italic">tek ses, sonsuz yankı</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 5: CAMBRIDGE ANALYTICA               -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(135deg, #020617 0%, #312e81 100%)">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-rose-500/20 rounded-xl"><i data-lucide="vote" class="text-rose-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">Vaka: <span class="text-rose-400">Cambridge Analytica (2018)</span></h2>
+                </div>
+                <div class="grid grid-cols-2 gap-8 items-center text-left">
+                    <div>
+                        <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                            <em>"This Is Your Digital Life"</em> adlı akademik bir anket uygulaması, izinsiz biçimde <strong class="text-white">87 milyon Facebook kullanıcısının</strong> verisini topladı. Cambridge Analytica bu veriyi kullanarak <strong class="text-white">psikolojik profiller</strong> çıkardı ve mikro hedefli reklamlarla siyasi kampanyalara hizmet etti:
+                        </p>
+                        <div class="space-y-3">
+                            <div class="fragment p-3 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                <p class="text-[10px] font-bold text-rose-400 m-0 mb-1">🇺🇸 ABD 2016 Seçimleri</p>
+                                <p class="text-[10px] text-slate-400 m-0">Trump kampanyasında "kararsız seçmen" gruplarına yönelik kişiselleştirilmiş ikna mesajları.</p>
+                            </div>
+                            <div class="fragment p-3 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                <p class="text-[10px] font-bold text-rose-400 m-0 mb-1">🇬🇧 Brexit Referandumu</p>
+                                <p class="text-[10px] text-slate-400 m-0">"Leave" kampanyasına yönelik mikro hedefli reklamların etkisi tartışıldı.</p>
+                            </div>
+                            <div class="fragment p-3 bg-rose-500/5 rounded-xl border border-rose-500/10">
+                                <p class="text-[10px] font-bold text-rose-400 m-0 mb-1">⚖️ Sonuç</p>
+                                <p class="text-[10px] text-slate-400 m-0">Facebook <strong class="text-white">5 milyar dolar</strong> ceza ödedi; Cambridge Analytica iflas etti — ama demokrasi tartışması bitmedi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SAĞ: Veri akış görseli -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-rose-500 blur-[80px] opacity-15 rounded-3xl"></div>
+                        <!-- GÖRSEL: ABD haritası üzerinde her kişiye akan veri ipliklerinden oluşan ağ; sağda bir oy sandığı; mor-indigo-koyu kırmızı ışık — images/cambridge_data.png -->
+                        <img src="images/cambridge_data.png" alt="Cambridge Analytica" class="w-full rounded-2xl border border-rose-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:380px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden glass-card p-10 border-rose-500/20 items-center justify-center flex-col" style="height:380px;">
+                            <i data-lucide="vote" class="text-rose-400 mb-4 slow-drift" size="80"></i>
+                            <p class="text-slate-500 text-sm">images/cambridge_data.png</p>
+                            <p class="text-slate-600 text-[10px] italic mt-2">veri ipliklerinin oy sandığına akışı</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 6: FRANCES HAUGEN — FACEBOOK FILES   -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-purple-600 bottom-0 left-0"></div>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-purple-500/20 rounded-xl"><i data-lucide="file-warning" class="text-purple-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">Frances Haugen: <span class="text-purple-400">Whistleblower</span></h2>
+                </div>
+                <div class="grid grid-cols-2 gap-8 items-center text-left">
+                    <!-- SOL: Görsel -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-purple-500 blur-[80px] opacity-10 rounded-3xl"></div>
+                        <!-- GÖRSEL: Bir dosya yığınından dökülen belgeler, üzerinde "CONFIDENTIAL" damgası, arka planda Senato kürsü silüeti, sıcak mor ışık — images/haugen_files.png -->
+                        <img src="images/haugen_files.png" alt="Facebook Files" class="w-full rounded-2xl border border-purple-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:420px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden glass-card p-12 border-purple-500/20 items-center justify-center flex-col" style="height:420px;">
+                            <i data-lucide="file-text" class="text-purple-400 mb-4 slow-drift" size="80"></i>
+                            <p class="text-slate-500 text-sm">images/haugen_files.png</p>
+                            <p class="text-slate-600 text-[10px] italic mt-2">dökülen "CONFIDENTIAL" belgeler</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                            2021 yılında eski Facebook ürün yöneticisi Frances Haugen, on binlerce iç belgeyi kamuoyuyla paylaştı. Belgeler tek bir gerçeği gözler önüne seriyordu: <strong class="text-white">Facebook, kullanıcıya zarar verdiğini biliyordu — ama büyüme uğruna sessiz kalmayı tercih etmişti.</strong>
+                        </p>
+                        <div class="space-y-2">
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-purple-500/5 rounded-xl border border-purple-500/10">
+                                <div class="p-1.5 bg-purple-500/20 rounded-lg shrink-0"><i data-lucide="user-x" class="text-purple-400" size="16"></i></div>
+                                <p class="text-slate-300 text-xs m-0">Instagram, <strong class="text-white">ergen kızların %32'sinde</strong> beden algısını olumsuz yönde etkiliyordu.</p>
+                            </div>
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-purple-500/5 rounded-xl border border-purple-500/10">
+                                <div class="p-1.5 bg-purple-500/20 rounded-lg shrink-0"><i data-lucide="trending-up" class="text-purple-400" size="16"></i></div>
+                                <p class="text-slate-300 text-xs m-0">2018'deki algoritma değişikliği, öfke ve kutuplaşmayı içeren içerikleri <strong class="text-white">5 kat daha fazla</strong> öne çıkardı.</p>
+                            </div>
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-purple-500/5 rounded-xl border border-purple-500/10">
+                                <div class="p-1.5 bg-purple-500/20 rounded-lg shrink-0"><i data-lucide="globe" class="text-purple-400" size="16"></i></div>
+                                <p class="text-slate-300 text-xs m-0">Etiyopya iç savaşı sırasında etnik <strong class="text-white">nefreti yayan paylaşımlar</strong> yeterince denetlenmedi.</p>
+                            </div>
+                            <div class="fragment flex items-center gap-3 p-2.5 bg-purple-500/5 rounded-xl border border-purple-500/10">
+                                <div class="p-1.5 bg-purple-500/20 rounded-lg shrink-0"><i data-lucide="dollar-sign" class="text-purple-400" size="16"></i></div>
+                                <p class="text-slate-300 text-xs m-0">Bir iç belge özetliyordu: <em>"Kâr ile kullanıcı güvenliği arasında, <strong class="text-white">kâr tercih edildi.</strong>"</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 7: DEEPFAKE & DEZENFORMASYON         -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section>
+                <section data-background-color="#0c0a09">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-indigo-500/20 rounded-xl"><i data-lucide="venetian-mask" class="text-indigo-400" size="28"></i></div>
+                        <h2 class="text-4xl m-0">Deepfake: <span class="text-indigo-400">Görmek Artık İnanmak Değil</span></h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center text-left">
+                        <div>
+                            <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                                Yapay zeka artık gerçek bir kişinin <strong class="text-white">yüzünü ve sesini</strong> taklit edip ona hiç söylemediği cümleleri söylettirebiliyor.
+                            </p>
+                            <div class="space-y-3">
+                                <div class="fragment p-3 bg-indigo-500/5 rounded-xl border-l-4 border-indigo-500">
+                                    <p class="text-[11px] font-bold text-indigo-400 m-0 mb-1">🎤 Ses Klonlama</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Yalnızca 3 saniyelik bir ses örneğiyle %85 inandırıcılığa ulaşan modeller (ElevenLabs vb.).</p>
+                                </div>
+                                <div class="fragment p-3 bg-purple-500/5 rounded-xl border-l-4 border-purple-500">
+                                    <p class="text-[11px] font-bold text-purple-400 m-0 mb-1">🎬 Yüz Değiştirme</p>
+                                    <p class="text-[10px] text-slate-400 m-0">Tom Cruise, ünlüler ve Türk siyasetçilerinin sahte videoları milyonlarca kez izlendi.</p>
+                                </div>
+                                <div class="fragment p-3 bg-pink-500/5 rounded-xl border-l-4 border-pink-500">
+                                    <p class="text-[11px] font-bold text-pink-400 m-0 mb-1">💸 Yeni Nesil Dolandırıcılık</p>
+                                    <p class="text-[10px] text-slate-400 m-0">"Anne, başım dertte, hemen para gönder!" — kendi çocuğunun klonlanmış sesiyle gelen telefon.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SAĞ: Deepfake split görseli -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-indigo-500 blur-[80px] opacity-10 rounded-3xl"></div>
+                            <!-- GÖRSEL: İki yarıya bölünmüş bir yüz; sol taraf gerçek doku, sağ taraf yapay zeka piksel/glitch hatları, arka plan koyu mor — images/deepfake_split.png -->
+                            <img src="images/deepfake_split.png" alt="Deepfake" class="w-full rounded-2xl border border-indigo-500/20 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" style="height:420px; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden glass-card p-12 border-indigo-500/20 items-center justify-center flex-col" style="height:420px;">
+                                <i data-lucide="venetian-mask" class="text-indigo-400 mb-4 slow-drift" size="80"></i>
+                                <p class="text-slate-500 text-sm">images/deepfake_split.png</p>
+                                <p class="text-slate-600 text-[10px] italic mt-2">yarı gerçek / yarı AI yüz</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7.1: Türkiye dezenformasyon yasası -->
+                <section data-background-color="#020617">
+                    <h2 class="text-2xl mb-6"><i data-lucide="gavel" class="text-indigo-400 inline mr-2" size="24"></i>Türkiye'de <span class="text-indigo-400">Dezenformasyon Yasası</span></h2>
+                    <div class="grid grid-cols-2 gap-6 items-center">
+                        <div class="glass-card p-5 border-indigo-500/30 text-left">
+                            <div class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest mb-3">📜 5237 Sayılı TCK md. 217/A</div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-3">
+                                "Halkı yanıltıcı bilgiyi alenen yayma" suçu — 2022 yılında eklenen madde.
+                            </p>
+                            <div class="bg-slate-900 rounded-xl p-4 border border-slate-800">
+                                <p class="text-[10px] text-slate-300 m-0">İç ve dış güvenliği ya da kamu sağlığını ilgilendiren <strong class="text-white">gerçeğe aykırı bir bilgiyi</strong>, halk arasında <strong class="text-white">endişe, korku veya panik yaratacak biçimde</strong> alenen yayan kişiye verilebilecek ceza:</p>
+                                <p class="text-[12px] text-indigo-400 font-bold m-0 mt-2 text-center">1 – 3 yıl hapis</p>
+                            </div>
+                        </div>
+                        <div class="text-left space-y-3">
+                            <div class="fragment p-3 bg-slate-900 border-l-4 border-emerald-500 rounded-r-xl">
+                                <p class="text-[10px] font-bold text-emerald-400 mb-0.5 m-0">✓ Amaç</p>
+                                <p class="text-[10px] text-slate-400 m-0">Seçim, deprem, salgın gibi kriz dönemlerinde bilgi kirliliğinin önüne geçmek.</p>
+                            </div>
+                            <div class="fragment p-3 bg-slate-900 border-l-4 border-amber-500 rounded-r-xl">
+                                <p class="text-[10px] font-bold text-amber-400 mb-0.5 m-0">⚠ Eleştiri</p>
+                                <p class="text-[10px] text-slate-400 m-0">"Yanıltıcı" kavramının geniş yorumlanması; basın özgürlüğü açısından RSF ve AB'nin kaygılarına yol açtı.</p>
+                            </div>
+                            <div class="fragment p-3 bg-slate-900 border-l-4 border-indigo-500 rounded-r-xl">
+                                <p class="text-[10px] font-bold text-indigo-400 mb-0.5 m-0">📡 Uygulamada</p>
+                                <p class="text-[10px] text-slate-400 m-0">Maddenin uygulanması için <strong class="text-white">kasıt</strong> aranır: yalnızca paylaşmak değil, "yanıltma niyetiyle" paylaşmak suç oluşturur.</p>
+                            </div>
+                            <div class="fragment p-3 bg-slate-900 border-l-4 border-purple-500 rounded-r-xl">
+                                <p class="text-[10px] font-bold text-purple-400 mb-0.5 m-0">🌍 Uluslararası Bağlam</p>
+                                <p class="text-[10px] text-slate-400 m-0">AB Dijital Hizmetler Yasası (DSA, 2023) platformların kendisine yapısal sorumluluk yüklüyor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 8: ETİK İKİLEM — ENGAGEMENT MÜDÜRÜ   -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-color="#020617">
+                <div class="bg-glow bg-indigo-600 bottom-0 right-0"></div>
+                <div class="grid grid-cols-2 gap-8 items-center">
+                    <div class="text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="p-1.5 bg-indigo-500/20 rounded-lg animate-pulse"><i data-lucide="mouse-pointer-click" class="text-indigo-400" size="16"></i></div>
+                            <span class="social-badge" style="margin-bottom:0;">ETİK İKİLEM</span>
+                        </div>
+                        <h2 class="text-2xl mb-4 m-0"><span class="text-indigo-400">Senaryo:</span> %40 Daha Fazla Süre</h2>
+                        <div class="glass-card p-4 border-indigo-400/30 mb-4">
+                            <p class="text-[11px] text-slate-200 m-0 leading-relaxed">
+                                Bir sosyal medya devinde algoritma mühendisisin. Yeni bir A/B testi şunu gösteriyor: kullanıcıya <strong class="text-white">tartıştığı / hoşlanmadığı</strong> hesapların içerikleri daha çok gösterildiğinde, uygulamada kalma süresi <span class="bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded border border-indigo-500/30 font-bold text-[10px]">%40</span> artıyor. Reklam geliri tavan yapacak. Ürün müdürün <strong class="text-white">"yarın canlıya alalım"</strong> diyor.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-rose-500 hover:bg-rose-950/40 transition-all cursor-pointer">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-rose-900/50 transition-colors"><i data-lucide="trending-up" class="text-slate-400 group-hover:text-rose-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-rose-400 m-0">Yayına Al</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Benim işim hedefleri tutturmak. Ne göreceğine kullanıcı karar verir."</p>
+                            </div>
+                            <div class="group p-3 bg-slate-800 border border-slate-700 rounded-xl hover:border-emerald-500 hover:bg-emerald-950/40 transition-all cursor-pointer">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="p-1.5 bg-slate-900 rounded-lg group-hover:bg-emerald-900/50 transition-colors"><i data-lucide="shield-check" class="text-slate-400 group-hover:text-emerald-400 transition-colors" size="16"></i></div>
+                                    <h4 class="font-bold text-white text-xs group-hover:text-emerald-400 m-0">İtiraz Et</h4>
+                                </div>
+                                <p class="text-[9px] text-slate-400 italic m-0">"Bu, kutuplaşmayı kâra çevirmek demek. Konuyu etik kurula taşırım."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-left">
+                        <div class="fragment p-3 bg-slate-900 border-l-4 border-blue-500 rounded-r-xl">
+                            <p class="text-[10px] font-bold text-blue-400 mb-0.5 m-0">🔵 Faydacı Bakış</p>
+                            <p class="text-[9px] text-slate-400 m-0">Şirket kazancı kısa vadede pozitif; ama milyarlarca kullanıcı ve toplumsal doku zarar görür. Toplam fayda büyük ölçüde negatiftir.</p>
+                        </div>
+                        <div class="fragment p-3 bg-slate-900 border-l-4 border-purple-500 rounded-r-xl">
+                            <p class="text-[10px] font-bold text-purple-400 mb-0.5 m-0">🟣 Kant / Deontolojik</p>
+                            <p class="text-[9px] text-slate-400 m-0">Kullanıcının öfkesini metaya çevirmek, insanı yalnızca <strong>araç</strong> olarak kullanmaktır — kategorik buyruğun açık ihlali.</p>
+                        </div>
+                        <div class="fragment p-3 bg-slate-900 border-l-4 border-emerald-500 rounded-r-xl">
+                            <p class="text-[10px] font-bold text-emerald-400 mb-0.5 m-0">🟢 Erdem Etiği</p>
+                            <p class="text-[9px] text-slate-400 m-0">Erdemli mühendis yalnızca "yapılabilir mi?" sorusunu değil, <strong>"yapılmalı mı?"</strong> sorusunu da sorar — Haugen'in tutumu gibi.</p>
+                        </div>
+                        <div class="fragment p-3 bg-indigo-500/5 border border-indigo-500/20 rounded-xl">
+                            <p class="text-[10px] text-indigo-400 m-0"><i data-lucide="gavel" size="10" class="inline mr-1"></i> <strong>AB AI Yasası:</strong> "Manipülatif tasarım" yüksek riskli kategoride yer alır — bu tür uygulamalar şirkete yapısal yaptırım getirir.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 9: SAĞLIKLI KULLANIM KİTİ           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="linear-gradient(135deg, #020617 0%, #312e81 100%)">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-indigo-500/20 rounded-xl"><i data-lucide="brain-cog" class="text-indigo-400" size="28"></i></div>
+                    <h2 class="text-4xl m-0">Algoritmaya Karşı <span class="text-indigo-400">Zihin Kiti</span></h2>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="bell-off" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left"><strong class="text-white">Bildirimleri kapat</strong> — dopamin döngüsünü kır.</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="timer" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Ekran süresi sınırı koy — <strong class="text-white">iOS Screen Time / Android Digital Wellbeing</strong> ile.</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="user-minus" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Sana <strong class="text-white">kötü hissettiren hesapları</strong> sustur veya takipten çık.</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="search-check" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Paylaşmadan önce <strong class="text-white">doğrulama yap</strong>: teyit.org, doğrulukpayi.com, Snopes.</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="users-round" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Karşıt görüşten <strong class="text-white">en az bir hesap</strong> takip et — balonu bilinçli olarak kır.</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="moon" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Yatak odasında telefon yok — <strong class="text-white">uyku ve ruh sağlığın için.</strong></p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="flame" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Öfke uyandıran bir gönderiye <strong class="text-white">hemen cevap verme; 5 dakika bekle.</strong></p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="sparkles" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Eğitici ve sanatsal içerikleri <strong class="text-white">"Daha fazla göster"</strong> seçeneğiyle besle.</p>
+                    </div>
+                    <div class="fragment flex items-center gap-3 p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/10">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg shrink-0"><i data-lucide="log-out" class="text-indigo-400" size="16"></i></div>
+                        <p class="text-[10px] text-slate-300 m-0 text-left">Haftada bir gün <strong class="text-white">dijital detoks</strong> — beyne ve dikkate nefes aldır.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SLAYT 10: KAPANIŞ                          -->
+            <!-- ═══════════════════════════════════════════ -->
+            <section data-background-gradient="radial-gradient(circle at 50% 100%, #312e81 0%, #000 100%)">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2 class="text-4xl mb-4">Haftaya Bakış</h2>
+                    <p class="text-xl text-slate-400 mb-8">Sıradaki Konu: <span class="text-amber-400 border-b border-amber-400">Büyük Veri ve Dijital Aktivizm</span></p>
+
+                    <div class="glass-card p-6 max-w-3xl mb-6 border-indigo-500/30">
+                        <h4 class="text-white text-sm font-bold mb-5 text-center tracking-widest">BU HAFTA NE ÖĞRENDİK?</h4>
+                        <div class="grid grid-cols-4 gap-6 text-center">
+                            <div>
+                                <i data-lucide="eye" class="text-indigo-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-indigo-400 text-xs font-bold m-0">İlgi Ekonomisi</p>
+                                <p class="text-slate-500 text-[10px] m-0">Ürün sensin</p>
+                            </div>
+                            <div>
+                                <i data-lucide="filter" class="text-purple-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-purple-400 text-xs font-bold m-0">Filtre Balonu</p>
+                                <p class="text-slate-500 text-[10px] m-0">Pariser, Kutuplaşma</p>
+                            </div>
+                            <div>
+                                <i data-lucide="vote" class="text-rose-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-rose-400 text-xs font-bold m-0">Cambridge / Haugen</p>
+                                <p class="text-slate-500 text-[10px] m-0">Demokrasi & Çocuk</p>
+                            </div>
+                            <div>
+                                <i data-lucide="venetian-mask" class="text-pink-400 mx-auto mb-2" size="24"></i>
+                                <p class="text-pink-400 text-xs font-bold m-0">Deepfake</p>
+                                <p class="text-slate-500 text-[10px] m-0">TCK 217/A</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-4 max-w-2xl border-indigo-500/20">
+                        <p class="text-sm italic text-slate-300 m-0">
+                            <i data-lucide="quote" class="inline text-indigo-400" size="14"></i>
+                            "Algoritma sana <strong class="text-indigo-400">duymak istediğini</strong> verir, ama <strong class="text-indigo-400">duymaya ihtiyacın olanı</strong> göstermez." — Eli Pariser
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        initReveal({
+            hash: false,
+            history: false,
+            center: true,
+            transition: 'convex',
+            backgroundTransition: 'fade',
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+</html>

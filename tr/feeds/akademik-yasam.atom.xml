@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Doğan R. - Akademik Yaşam</title><link href="https://doganr.com/tr/" rel="alternate"/><link href="https://doganr.com/feeds/akademik-yasam.atom.xml" rel="self"/><id>https://doganr.com/tr/</id><updated>2025-06-01T10:00:00+03:00</updated><subtitle>Dr. Öğr. Üyesi • Trabzon Üniversitesi</subtitle><entry><title>TÜBİTAK 2219 Burs Deneyimim: Ohio State'ten Trabzon'a</title><link href="https://doganr.com/tr/tubitak-2219-ohio-state-deneyimi.html" rel="alternate"/><published>2025-06-01T10:00:00+03:00</published><updated>2025-06-01T10:00:00+03:00</updated><author><name>Ramazan Ozgur Dogan</name></author><id>tag:doganr.com,2025-06-01:/tr/tubitak-2219-ohio-state-deneyimi.html</id><summary type="html">&lt;p&gt;Mayıs 2024'te TÜBİTAK 2219 Yurt Dışı Doktora Sonrası Araştırma Bursu kapsamında The Ohio State University'de Ziyaretçi Araştırmacı olarak bir yıl geçirdim. Çok modlu yapay zeka ve klinik veri analizi üzerine yürüttüğüm araştırmalardan edindiğim deneyimleri paylaşıyorum.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;TÜBİTAK 2219 Burs Deneyimim: Ohio State'ten Trabzon'a&lt;/h1&gt;
+&lt;p&gt;Mayıs 2024'te &lt;strong&gt;The Ohio State University (OSU)&lt;/strong&gt;'da bir yıllık doktora sonrası araştırma için bavulumu toplayıp
+Columbus, Ohio'ya uçtum. Araştırmam, &lt;strong&gt;TÜBİTAK 2219 Yurt Dışı Doktora Sonrası Araştırma Bursu&lt;/strong&gt; ile desteklendi.&lt;/p&gt;
+&lt;p&gt;Bu, daha önce pankreas segmentasyonu üzerine çalıştığım &lt;strong&gt;Youngstown State University&lt;/strong&gt;'deki (2019–2020)
+araştırma ziyaretimden sonra ikinci uluslararası deneyimimdi. Ancak OSU bambaşka bir ölçekteydi.&lt;/p&gt;
+&lt;h2&gt;TÜBİTAK 2219 Nedir?&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;TÜBİTAK 2219 Programı&lt;/strong&gt;, Türk akademisyenlerin yurt dışında doktora sonrası araştırma yapmalarını destekler:
+- Aylık burs (~2500 USD)
+- Gidiş-dönüş uçak bileti
+- Sağlık sigortası
+- 12 aya kadar destek&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Başvuru ipucu:&lt;/strong&gt; Güçlü bir &lt;strong&gt;ev sahibi araştırmacı&lt;/strong&gt; bulmak, makale sayınızdan çok daha önemlidir.&lt;/p&gt;
+&lt;h2&gt;OSU'daki Araştırmam&lt;/h2&gt;
+&lt;p&gt;OSU'da &lt;strong&gt;klinik ve farmakolojik veriler için çok modlu yapay zeka&lt;/strong&gt; üzerine çalışan bir laboratuvara katıldım.
+Odak alanlarım:&lt;/p&gt;
+&lt;h3&gt;1. İlaç Yanıtı Tahmini için Çok Modlu Füzyon&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Genomik veriler&lt;/strong&gt; (gen ekspresyon profilleri)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Moleküler yapı&lt;/strong&gt; (SMILES / grafik temsilleri)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Klinik notlar&lt;/strong&gt; (NLP özellikleri)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Bu verileri birleştirerek hastaya özgü ilaç yanıtlarını tahmin etmeyi amaçladık — &lt;strong&gt;hassas tıp&lt;/strong&gt;a doğru bir adım.&lt;/p&gt;
+&lt;h3&gt;2. Tıbbi Temel Modeller&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;SAM (Segment Anything Model)&lt;/strong&gt; ve &lt;strong&gt;MedSAM&lt;/strong&gt;'ı tıbbi görüntü segmentasyonu için ince ayar yapmaya
+önemli miktarda zaman ayırdım. Bu büyük modellerin sıfır-atış genellemesi etkileyici olsa da klinik
+doğruluk için alana özgü ince ayar hâlâ gereklidir.&lt;/p&gt;
+&lt;h3&gt;3. Sağlık Alanında Yorumlanabilir Yapay Zeka&lt;/h3&gt;
+&lt;p&gt;OSU'dan önemli bir ders: &lt;strong&gt;Klinisyenler kara kutuya güvenmez.&lt;/strong&gt; Şunları araştırdık:
+- BT/MRI taramalarında &lt;strong&gt;Grad-CAM&lt;/strong&gt; görselleştirmeleri
+- Tablo halindeki klinik tahminler için &lt;strong&gt;SHAP değerleri&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;Kültürel Çıkarımlar&lt;/h2&gt;
+&lt;p&gt;Araştırmanın ötesinde, en iyi 10 ABD üniversitesinden birinde bilimin nasıl yapıldığını gözlemlemekten
+çok şey öğrendim:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Eleştiri kültürü&lt;/strong&gt; — gerçek tartışmalarla haftalık grup toplantıları&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Yeniden üretilebilirlik kültürü&lt;/strong&gt; — kod, veri ve model ağırlıkları varsayılan olarak paylaşılır&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Okuma kültürü&lt;/strong&gt; — her doktora öğrencisi haftada 2-3 makale okur ve sunar&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;İşbirliği kolaydır&lt;/strong&gt; — başka bir profesöre işbirliği için e-posta atmak normaldir&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;2219 Başvurusunda Öneriler&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;18 ay öncesinden başlayın&lt;/strong&gt; — ev sahibini bulmak, başvuruyu hazırlamak ve sonucu beklemek uzun sürer&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ünlü isimler yerine ortak ilgi alanlarına sahip laboratuvarları hedefleyin&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Evrak işlerini erkenden öğrenin&lt;/strong&gt; — uluslararası seyahat bürokratik süreçler gerektirir&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Yurt dışındaki Türk akademisyen ağlarına katılın&lt;/strong&gt; — aktif gruplar mevcuttur&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Sıradaki Adımlar&lt;/h2&gt;
+&lt;p&gt;Mayıs 2025'te &lt;strong&gt;Trabzon Üniversitesi&lt;/strong&gt;'ne hem yeni araştırma yönelimlerim hem de güçlendirilmiş işbirlikleriyle
+döndüm. Mevcut projeler:
+- İlaç-hastalık etkileşimi tahmini için çok modlu öğrenme çerçevesi
+- Tıbbi temel modellerin Türk hastane veri setlerine adaptasyonu&lt;/p&gt;
+&lt;p&gt;TÜBİTAK 2219'a başvurmayı düşünüyorsanız bana mesaj atabilirsiniz — deneyimimi paylaşmaktan memnuniyet duyarım!&lt;/p&gt;
+&lt;p&gt;📧 &lt;strong&gt;dogan@trabzon.edu.tr&lt;/strong&gt;&lt;/p&gt;</content><category term="Akademik Yaşam"/><category term="tubitak"/><category term="doktora sonrası"/><category term="araştırma"/><category term="ohio state"/><category term="akademik kariyer"/></entry></feed>

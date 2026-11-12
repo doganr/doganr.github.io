@@ -1,0 +1,487 @@
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Ramazan Ozgur Dogan" />
+  <meta name="description" content="Predicting adverse drug-drug interactions (DDIs) is a critical safety challenge in pharmacology. I explore how CNNs can tackle this problem using molecular fingerprints and graph representations." />
+
+  <link rel="icon" type="image/x-icon" href="https://doganr.com/favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+  <!-- Flag Icons (language switcher) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+
+  <!-- Highlight.js for code -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+  <!-- Custom Theme CSS -->
+  <link rel="stylesheet" type="text/css" href="https://doganr.com/theme/css/style.css">
+
+
+  <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+
+  <title>Doğan R. – Drug-Drug Interaction Prediction with Deep Learning</title>
+
+<meta name="author" content="Ramazan Ozgur Dogan" />
+<meta name="keywords" content="drug interaction, deep learning, pharmacology, CNN, graph neural network">
+</head>
+
+<body>
+
+  <!-- Animated background particles -->
+  <div class="bg-particles" id="particles"></div>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav" id="mainNavbar">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand brand-logo" href="https://doganr.com/">
+      <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="brand-img me-2">
+      <span class="brand-text">
+        <span class="brand-name">Doğan R.</span>
+        <small class="brand-subtitle d-none d-md-inline">Asst. Prof. • Trabzon University</small>
+      </span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/">
+            <i class="fa-solid fa-house me-1"></i>Home
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/about.html">
+            About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/publications.html">
+            Publications
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/teaching.html">
+            Teaching
+          </a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-pill" href="#" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Social links menu">
+            <i class="fa-solid fa-share-nodes"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+            <li>
+              <a class="dropdown-item" href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-github"></i>Github
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-linkedin"></i>Linkedin
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-google-scholar"></i>Google scholar
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-solid fa-envelope"></i>E-posta
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Language switcher -->
+        <li class="nav-item">
+          <a class="btn btn-sm lang-switch-btn" href="https://doganr.com/tr/" title="Türkçe'ye geç" aria-label="Türkçe'ye geç" lang="tr">
+            <span class="fi fi-tr"></span>
+          </a>
+        </li>
+
+        <!-- Theme toggle -->
+        <li class="nav-item">
+          <button class="btn btn-sm theme-toggle-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle light/dark theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Main content wrapper -->
+  <div class="page-wrapper">
+<!-- Article page -->
+<div class="article-page-wrapper">
+
+  <!-- Article Hero -->
+  <div class="article-hero">
+    <div class="article-hero-bg"></div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-down">
+            <ol class="breadcrumb justify-content-center glass-breadcrumb">
+              <li class="breadcrumb-item"><a href="https://doganr.com/">Home</a></li>
+              <li class="breadcrumb-item"><a href="https://doganr.com/category/ai-in-healthcare.html">AI in Healthcare</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Drug-Drug Interaction...</li>
+            </ol>
+          </nav>
+
+          <!-- Category -->
+          <div class="mb-3" data-aos="fade-up">
+            <a href="https://doganr.com/category/ai-in-healthcare.html" class="tag-badge tag-category tag-lg">
+              <i class="fa-solid fa-folder me-2"></i>AI in Healthcare
+            </a>
+          </div>
+
+          <!-- Title -->
+          <h1 class="article-hero-title" id="drug-drug-interaction-prediction-deep-learning" data-aos="fade-up" data-aos-delay="50">
+            Drug-Drug Interaction Prediction with Deep Learning
+          </h1>
+
+          <!-- Meta -->
+          <div class="article-hero-meta d-flex align-items-center justify-content-center gap-4 mt-4" data-aos="fade-up" data-aos-delay="100">
+            <span class="meta-item">
+              <i class="fa-solid fa-user-pen me-2"></i>Ramazan Ozgur Dogan
+            </span>
+            <span class="meta-separator">·</span>
+            <span class="meta-item">
+              <i class="fa-regular fa-calendar me-2"></i>Mon, 10 Jun 2024
+            </span>
+          </div>
+
+          <!-- Tags -->
+          <div class="article-hero-tags d-flex flex-wrap justify-content-center gap-2 mt-4" data-aos="fade-up" data-aos-delay="150">
+            <a href="https://doganr.com/tag/drug-interaction.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>drug interaction
+            </a>
+            <a href="https://doganr.com/tag/deep-learning.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>deep learning
+            </a>
+            <a href="https://doganr.com/tag/pharmacology.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>pharmacology
+            </a>
+            <a href="https://doganr.com/tag/cnn.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>CNN
+            </a>
+            <a href="https://doganr.com/tag/graph-neural-network.html" class="tag-badge tag-small">
+              <i class="fa-solid fa-tag me-1"></i>graph neural network
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article Body -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <!-- Featured Image -->
+
+        <!-- Article Content -->
+        <div class="article-content glass-card p-4 p-md-5 rounded-3" data-aos="fade-up">
+          <h1>Drug-Drug Interaction Prediction with Deep Learning</h1>
+<p>Every year, <strong>adverse drug reactions</strong> cause hundreds of thousands of hospitalizations worldwide. A significant
+portion involve <strong>drug-drug interactions (DDIs)</strong> — when two drugs taken together produce unexpected and harmful effects.</p>
+<p>With over 20,000 approved drugs on the market, the number of possible pairs exceeds <strong>200 million</strong>. Traditional
+clinical testing cannot cover this space. This is where <strong>AI steps in</strong>.</p>
+<h2>The Problem Formulation</h2>
+<p>Given a pair of molecules (Drug A, Drug B), we want to predict:
+1. <strong>Whether</strong> they interact adversely
+2. <strong>What type</strong> of interaction (pharmacokinetic? pharmacodynamic?)</p>
+<p>This can be framed as a <strong>binary or multi-class classification</strong> problem.</p>
+<h2>Our CNN-Based Approach</h2>
+<p>In our paper published in <em>Süleyman Demirel Üniversitesi Fen Bilimleri Enstitüsü Dergisi</em> (2023), we developed
+a CNN-based model that:</p>
+<ol>
+<li>Encodes each drug as a <strong>molecular fingerprint</strong> (ECFP4 — Extended Connectivity Fingerprint)</li>
+<li>Concatenates the two fingerprint vectors</li>
+<li>Passes them through convolutional layers to extract interaction patterns</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="k">class</span> <span class="nc">DDIPredictor</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Treat concatenated fingerprints as a 1D &quot;image&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv_layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool1d</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool1d</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool1d</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.4</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp_a</span><span class="p">,</span> <span class="n">fp_b</span><span class="p">):</span>
+        <span class="n">combined</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">fp_a</span><span class="p">,</span> <span class="n">fp_b</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_layers</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</code></pre></div>
+
+<h2>Why CNNs Work Here</h2>
+<p>You might wonder why CNNs (typically used for images) work on molecular fingerprints. The key insight:</p>
+<ul>
+<li>Molecular fingerprints are <strong>bit vectors</strong> where nearby bits often encode structurally similar subgraphs</li>
+<li>CNN kernels can learn <strong>local pharmacophore patterns</strong> in the fingerprint space</li>
+<li>This outperforms simple MLPs on this task because of the implicit structural encoding</li>
+</ul>
+<h2>Performance on DrugBank</h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>AUC-ROC</th>
+<th>F1</th>
+<th>Precision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random Forest</td>
+<td>0.872</td>
+<td>0.81</td>
+<td>0.84</td>
+</tr>
+<tr>
+<td>MLP</td>
+<td>0.891</td>
+<td>0.83</td>
+<td>0.86</td>
+</tr>
+<tr>
+<td><strong>CNN (ours)</strong></td>
+<td><strong>0.924</strong></td>
+<td><strong>0.88</strong></td>
+<td><strong>0.90</strong></td>
+</tr>
+<tr>
+<td>GNN (SOTA)</td>
+<td>0.941</td>
+<td>0.90</td>
+<td>0.92</td>
+</tr>
+</tbody>
+</table>
+<h2>The Future: Graph Neural Networks</h2>
+<p>While our CNN model performs well, the natural representation for molecules is a <strong>graph</strong> — atoms as nodes,
+bonds as edges. GNNs are now the dominant approach:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Conceptual GNN-based DDI (using PyTorch Geometric)</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.nn</span> <span class="kn">import</span> <span class="n">GCNConv</span><span class="p">,</span> <span class="n">global_mean_pool</span>
+
+<span class="k">class</span> <span class="nc">MoleculeEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_features</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">GCNConv</span><span class="p">(</span><span class="n">node_features</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">GCNConv</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">global_mean_pool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>  <span class="c1"># Graph-level embedding</span>
+</code></pre></div>
+
+<p>Current state-of-the-art models combine GNN molecular encoders with <strong>transformer-based interaction modules</strong>,
+achieving &gt;95% AUC on standard benchmarks.</p>
+<h2>Open Datasets for DDI Research</h2>
+<ul>
+<li><a href="https://go.drugbank.com/">DrugBank</a> — gold standard, requires registration</li>
+<li><a href="http://tatonettilab.org/resources/tatonetti-stm.html">TWOSIDES</a> — polypharmacy side effects</li>
+<li><a href="https://www.ebi.ac.uk/chembl/">ChEMBL</a> — bioactivity data</li>
+<li><a href="http://stitch.embl.de/">STITCH</a> — drug-protein and drug-drug interactions</li>
+</ul>
+<hr>
+<p>This is an exciting intersection of <strong>AI and pharmacology</strong> that I continue to explore. If you're working on
+similar problems, feel free to reach out!</p>
+        </div>
+
+        <!-- Author Box -->
+        <div class="author-box glass-card p-4 rounded-3 mt-4 d-flex align-items-center gap-4" data-aos="fade-up">
+          <div class="author-avatar-placeholder">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div>
+            <p class="author-box-name mb-1">Ramazan Ozgur Dogan</p>
+            <p class="author-box-bio mb-0 text-muted">Academic blog of Asst. Prof. Ramazan Özgür Doğan — AI researcher at Trabzon University. Deep learning, medical imaging, and beyond.</p>
+          </div>
+        </div>
+
+        <!-- Tags Cloud -->
+        <div class="tag-cloud-section glass-card p-4 rounded-3 mt-4" data-aos="fade-up">
+          <h5 class="tag-cloud-title mb-3">
+            <i class="fa-solid fa-tags me-2"></i>Tags
+          </h5>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="https://doganr.com/tag/drug-interaction.html" class="tag-badge">drug interaction</a>
+            <a href="https://doganr.com/tag/deep-learning.html" class="tag-badge">deep learning</a>
+            <a href="https://doganr.com/tag/pharmacology.html" class="tag-badge">pharmacology</a>
+            <a href="https://doganr.com/tag/cnn.html" class="tag-badge">CNN</a>
+            <a href="https://doganr.com/tag/graph-neural-network.html" class="tag-badge">graph neural network</a>
+          </div>
+        </div>
+
+        <!-- Neighbors (prev/next) -->
+
+      </div>
+
+      <!-- Sidebar / Table of Contents placeholder -->
+      <div class="col-lg-3 offset-lg-1 d-none d-lg-block">
+        <div class="toc-sidebar sticky-lg-top" style="top: 90px;">
+          <div class="glass-card p-4 rounded-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-list-ul me-2"></i>Contents
+            </h6>
+            <div id="toc-content" class="toc-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <!-- Share box -->
+          <div class="glass-card p-4 rounded-3 mt-3">
+            <h6 class="toc-title mb-3">
+              <i class="fa-solid fa-share-nodes me-2"></i>Share
+            </h6>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="https://twitter.com/intent/tweet?url=https://doganr.com/drug-drug-interaction-prediction-deep-learning.html&text=Drug-Drug%20Interaction%20Prediction%20with%20Deep%20Learning" target="_blank" class="share-btn share-twitter" title="Twitter/X">
+                <i class="fa-brands fa-x-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/shareArticle?url=https://doganr.com/drug-drug-interaction-prediction-deep-learning.html&title=Drug-Drug%20Interaction%20Prediction%20with%20Deep%20Learning" target="_blank" class="share-btn share-linkedin" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+              <button class="share-btn share-copy" title="Copy link" onclick="copyLink()">
+                <i class="fa-solid fa-link"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+  </div>
+
+  <!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-glow"></div>
+  <div class="container">
+    <div class="row gy-4 align-items-center">
+
+      <!-- Brand -->
+      <div class="col-md-4 text-center text-md-start">
+        <a href="https://doganr.com/" class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none">
+          <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="footer-logo" loading="lazy" width="28" height="28">
+          <span class="footer-brand-name">Doğan R.</span>
+        </a>
+        <p class="footer-tagline mt-2 mb-0">Asst. Prof. • Trabzon University</p>
+      </div>
+
+      <!-- Social Links -->
+      <div class="col-md-4 text-center">
+        <div class="footer-social d-flex gap-3 justify-content-center">
+          <a href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Github" aria-label="Github">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Linkedin" aria-label="Linkedin">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Google scholar" aria-label="Google scholar">
+            <i class="fa-brands fa-google-scholar"></i>
+          </a>
+          <a href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="E-posta" aria-label="E-posta">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="col-md-4 text-center text-md-end">
+        <p class="footer-copy mb-0">
+          &copy; 2026 <strong>Ramazan Ozgur Dogan</strong>
+        </p>
+        <p class="footer-powered mt-1 mb-0">
+          Powered by <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>
+          &amp; <a href="https://getbootstrap.com/" target="_blank" class="footer-link">Bootstrap 5</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom mt-4 pt-3 text-center">
+      <p class="footer-bottom-text mb-0">
+        Built with <i class="fa-solid fa-code" style="color: var(--accent-2);"></i> and a lot of ☕.
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Highlight.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- Custom JS -->
+  <script src="https://doganr.com/theme/js/theme.js"></script>
+
+<script>
+// Copy link
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector('.share-copy');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-link"></i>', 2000);
+  });
+}
+</script>
+</body>
+
+</html>
