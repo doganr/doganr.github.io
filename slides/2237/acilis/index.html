@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Açılış, Tanışma ve Program Vizyonu · TÜBİTAK 2237-A</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700;800&display=swap">
+    <link rel="stylesheet" href="../assets/vendor/reset.min.css">
+    <link rel="stylesheet" href="../assets/vendor/reveal.min.css">
+    <link rel="stylesheet" href="../assets/ilafar.css">
+    <style>
+        #cover-cv { width: 500px; height: 500px; }
+        .flow { display: flex; align-items: flex-start; justify-content: space-between; position: relative; margin-top: 8px; }
+        .flow::before { content: ''; position: absolute; left: 40px; right: 40px; top: 34px; height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--navy), var(--red)); }
+        .flow .fs { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 190px; text-align: center; }
+        .flow .fs .dot { width: 74px; height: 74px; border-radius: 50%; background: #fff; border: 5px solid var(--navy); display: grid; place-items: center; font-size: 30px; box-shadow: var(--shadow); }
+        .flow .fs.now .dot { border-color: var(--red); animation: pulse 1.6s infinite; }
+        .flow .fs b { font-family: var(--mono); font-size: 17px; color: var(--red); }
+        .flow .fs span { font-size: 17px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+        .person { display: flex; gap: 12px; align-items: center; background: #fff; border-radius: 14px; padding: 10px 14px; box-shadow: 0 6px 18px -10px rgba(0, 43, 70, 0.45); }
+        .person b { font-size: 19px; color: var(--navy); display: block; }
+        .person span { font-size: 16px; color: var(--ink-2); line-height: 1.38; display: block; }
+        .venn3 { position: relative; width: 600px; height: 470px; flex: none; }
+        .venn3 .c { position: absolute; width: 300px; height: 300px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+            padding: 46px; box-sizing: border-box; font-size: 15.5px; line-height: 1.35; transition: transform 1.2s cubic-bezier(.2, .8, .2, 1), opacity 0.8s; opacity: 0; }
+        .venn3 .c h4 { font-size: 23px; margin-bottom: 6px; }
+        .venn3 .c1 { left: 40px; top: 0; background: rgba(205, 6, 30, 0.13); border: 3px solid var(--red); transform: translate(-60px, -40px); }
+        .venn3 .c2 { right: 40px; top: 0; background: rgba(0, 66, 106, 0.13); border: 3px solid var(--navy); transform: translate(60px, -40px); }
+        .venn3 .c3 { left: 150px; top: 165px; background: rgba(245, 158, 11, 0.16); border: 3px solid var(--amber); transform: translateY(60px); }
+        section.present .venn3 .c { transform: none; opacity: 1; }
+        .venn3 .c1 { padding: 40px 90px 90px 40px; } .venn3 .c2 { padding: 40px 40px 90px 90px; } .venn3 .c3 { padding: 110px 46px 40px; }
+        .venn3 .mid { position: absolute; left: 300px; top: 210px; transform: translate(-50%, -50%); font-family: var(--head); font-weight: 900; font-size: 20px; color: var(--navy);
+            background: #fff; border-radius: 999px; padding: 6px 14px; box-shadow: var(--shadow); z-index: 2; white-space: nowrap; }
+        .kurul h4 { font-size: 19px; margin-bottom: 8px; }
+        .kurul li { font-size: 16.5px; line-height: 1.5; list-style: none; margin-bottom: 3px; }
+        .kurul ul { padding: 0; margin: 0; }
+        #grp-dots { position: relative; width: 640px; height: 340px; flex: none; }
+        #grp-dots .d { position: absolute; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-size: 17px; transition: transform 1.1s cubic-bezier(.2, .8, .2, 1); }
+        #grp-dots .g { position: absolute; width: 112px; height: 112px; border-radius: 50%; border: 3px dashed #b9c6d2; opacity: 0; transition: opacity 0.6s 1s; }
+        section.present #grp-dots .g { opacity: 1; }
+        #grp-dots .gl { position: absolute; font-family: var(--mono); font-size: 13px; font-weight: 800; color: var(--gray); width: 112px; text-align: center; }
+        .prog { display: flex; flex-direction: column; gap: 6px; }
+        .prog .pr { display: grid; grid-template-columns: 150px 1fr 320px; gap: 14px; align-items: center; background: #fff; border-radius: 12px; padding: 11px 16px;
+            box-shadow: 0 4px 14px -9px rgba(0, 43, 70, 0.5); border-left: 6px solid var(--navy); }
+        .prog .pr b { font-family: var(--mono); font-size: 18px; color: var(--navy); }
+        .prog .pr span { font-size: 20px; font-weight: 600; color: var(--ink); }
+        .prog .pr i { font-style: normal; font-size: 16px; color: var(--ink-2); text-align: right; }
+        .prog .pr.br { background: transparent; box-shadow: none; border-left-color: transparent; padding: 1px 14px; }
+        .prog .pr.br span { font-size: 14px; color: var(--gray); font-weight: 500; }
+        .prog .pr.u { border-left-color: var(--red); } .prog .pr.l { border-left-color: var(--teal); } .prog .pr.h { border-left-color: var(--amber); } .prog .pr.a { border-left-color: var(--violet); }
+        .steps3 { display: grid; grid-template-columns: 1fr 70px 1fr 70px 1fr; align-items: center; }
+        .steps3 .ar { font-size: 40px; color: var(--red); text-align: center; font-weight: 900; }
+        .codebox { display: inline-flex; gap: 6px; font-family: var(--mono); font-weight: 800; font-size: 34px; }
+        .codebox span { width: 52px; height: 64px; border-radius: 12px; display: grid; place-items: center; background: #fff; color: var(--navy); box-shadow: var(--shadow); }
+        .codebox span.n { color: var(--red); }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- 1 · KAPAK -->
+            <section data-id="cover" class="dark nofoot" data-sound="chime"
+                data-background-gradient="radial-gradient(circle at 12% 90%, rgba(205,6,30,0.45) 0%, rgba(205,6,30,0) 40%), radial-gradient(circle at 78% 22%, #0d6fa8 0%, #00426a 36%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:30px">
+                        <div class="f1 st slow">
+                            <div class="kick">TÜBİTAK 2237-A Bilimsel Eğitim Etkinliği</div>
+                            <h1 style="font-size:52px; margin-top:16px; line-height:1.06">Uygulamalı Eğitimle Sağlık Araştırmalarında <span class="red">Yapay Zekâ</span> ve Hukuki Çerçevesi</h1>
+                            <h3 style="color:#c9d8e4; font-weight:600; margin-top:14px">Açılış, Tanışma ve Program Vizyonu</h3>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:18px">
+                                <span class="chip w">📅 24–25 Ekim 2026</span><span class="chip w">📍 KTÜ İLAFAR, Trabzon</span>
+                            </div>
+                            <div class="row ac" style="gap:16px; margin-top:24px">
+                                <span class="logo-tb"><img src="../assets/img/h_tubitak.png" alt="TÜBİTAK"></span>
+                                <p class="muted" style="font-size:16px; max-width:430px">Bu etkinlik TÜBİTAK BİDEB 2237-A Bilimsel Eğitim Etkinlikleri Desteği Programı kapsamında desteklenmektedir.</p>
+                            </div>
+                        </div>
+                        <canvas id="cover-cv" width="1000" height="1000"></canvas>
+                    </div>
+                </div>
+                <aside class="notes" data-n="1">Salona hoş geldiniz. Etkinliğin TÜBİTAK BİDEB 2237-A Bilimsel Eğitim Etkinlikleri Desteği Programı kapsamında desteklendiğini belirtin.</aside>
+            </section>
+
+            <!-- 2 · AÇILIŞ OTURUMU -->
+            <section data-id="acilis">
+                <div class="sl mid">
+                    <div class="kick">Açılış oturumu · 09:00–09:45</div>
+                    <h2>Hoş geldiniz</h2>
+                    <div class="g2 st" style="margin-top:6px">
+                        <div class="person"><div class="ava" style="background:var(--navy)">HD</div><div><b>Doç. Dr. Hülya DOĞAN</b><span>Etkinlik Yürütücüsü · KTÜ Mühendislik Fakültesi, Yazılım Mühendisliği</span></div></div>
+                        <div class="person"><div class="ava" style="background:var(--red)">FS</div><div><b>Prof. Dr. Feride Sena SEZEN</b><span>KTÜ Eczacılık Fakültesi · Düzenleme ve Bilim Kurulu</span></div></div>
+                    </div>
+                    <h3 style="margin-top:22px">Bu oturumda</h3>
+                    <div class="flow st">
+                        <div class="fs now"><div class="dot">🎙️</div><b>09:00</b><span>Açılış konuşmaları</span></div>
+                        <div class="fs"><div class="dot">📝</div><b>09:10</b><span>Ön-test</span></div>
+                        <div class="fs"><div class="dot">🧭</div><b>09:20</b><span>Amaç, kadro ve program</span></div>
+                        <div class="fs"><div class="dot">💡</div><b>09:30</b><span>Tanışma: proje fikri turu</span></div>
+                        <div class="fs"><div class="dot">🚀</div><b>10:00</b><span>İlk ders başlıyor</span></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="2">09:00–09:10 açılış konuşmaları: önce Doç. Dr. Hülya Doğan, ardından Prof. Dr. Feride Sena Sezen. Oturumun akışını kısaca söyleyin; amaç ve program anlatımı ön-testten sonra gelecek.</aside>
+            </section>
+
+            <!-- 3 · ÖN-TEST -->
+            <section data-id="ontest" data-sound="chime">
+                <div class="sl">
+                    <div class="kick">Ön-test</div>
+                    <h2>Önce kısa bir ön-test</h2>
+                    <div class="row grow" style="gap:30px; align-items:center">
+                        <div class="col f1" style="gap:16px">
+                            <p class="lead">Yapay zekâ, sağlık verisi yönetimi ve proje yazımı konusundaki <b>bugünkü bilginizi</b> ölçüyoruz.</p>
+                            <div class="row" style="gap:12px; flex-wrap:wrap"><span class="chip">📝 10 soru</span><span class="chip">⏱️ yaklaşık 5 dakika</span><span class="chip r">🔁 Pazar 17:00 aynı sorular</span></div>
+                            <div class="box">
+                                <p style="font-size:19px"><b>İsim yazmıyoruz.</b> Ön-test ile son-testi eşleştirmek için kendi kodunuzu üretin:<br>
+                                    annenizin adının <b>ilk iki harfi</b> + doğduğunuz <b>ayın iki hanesi</b></p>
+                                <div class="row ac" style="gap:16px; margin-top:12px">
+                                    <span class="small muted">Ayşe · Temmuz →</span>
+                                    <span class="codebox"><span>A</span><span>Y</span><span class="n">0</span><span class="n">7</span></span>
+                                </div>
+                            </div>
+                            <p class="small muted">Bilmediğiniz soruda tahmin yerine “Bilmiyorum” deyin: ölçüm daha doğru olur.</p>
+                        </div>
+                        <div class="col" style="align-items:center; gap:14px">
+                            <div class="linkqr" data-key="on" data-size="240"></div>
+                            <div class="timer" data-sec="600" style="--tsz:120px"></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="3">Ön-test 10 sorudan oluşuyor ve yaklaşık 5 dakika sürüyor; QR kodu okutma süresiyle birlikte 10 dakika yeterli. QR kodu okutamayanlar için bağlantıyı yüksek sesle okuyun. Amaç ve program anlatımına ön-test bittikten sonra geçin; böylece ölçüm etkilenmez.</aside>
+            </section>
+
+            <!-- 4 · NEDEN -->
+            <section data-id="neden">
+                <div class="sl mid">
+                    <div class="kick">Neden bu etkinlik?</div>
+                    <h2 style="font-size:40px">Sağlıkta veri hızla artıyor; onu klinik çıktıya dönüştürecek <span class="red">ortak dil</span> hâlâ eksik.</h2>
+                    <div class="g3 st" style="margin-top:18px">
+                        <div class="card"><span class="em">📦</span><h4>Kara kutu</h4><p>Sağlıkçı için algoritmalar hâlâ içi görülmeyen bir kutu.</p></div>
+                        <div class="card r"><span class="em">🩺</span><h4>Klinik bağlam</h4><p>Mühendis için verinin klinik anlamı ve tıbbi öncelikleri belirsiz.</p></div>
+                        <div class="card a"><span class="em">⚖️</span><h4>Hukuki belirsizlik</h4><p>KVKK ve özel nitelikli sağlık verisi, projeleri yarı yolda bırakıyor.</p></div>
+                    </div>
+                    <div class="lesson fragment rise" style="margin-top:20px">Bu etkinlik, <b>2–3 Mart 2024</b>’te KTÜ’de düzenlenen “Sağlık Alanındaki Akademisyenlere Yönelik Disiplinler Arası Entegrasyon Eğitimi”nin devamıdır.</div>
+                </div>
+                <aside class="notes" data-n="4">2–3 Mart 2024’teki ilk etkinlikte en çok ilgi gören konu, yapay zekâ yöntemlerinin klinik verilerle buluşturulmasıydı; katılımcılar daha derin bir uygulama eğitimi istedi. Bu etkinlik o ihtiyaca yanıt olarak tasarlandı.</aside>
+            </section>
+
+            <!-- 5 · AMAÇ -->
+            <section data-id="amac">
+                <div class="sl">
+                    <div class="kick">Amaç</div>
+                    <h2>Bu iki günün amacı</h2>
+                    <div class="row grow" style="gap:20px; align-items:center">
+                        <div class="col" style="gap:16px; width:470px">
+                            <div class="card st" style="border-top-color:var(--navy)"><span class="chip">💻 Mühendislikten gelenler için</span><p style="font-size:22px; margin-top:10px">Klinik verinin yapısını ve tıbbi öncelikleri anlamak</p></div>
+                            <div class="card r st"><span class="chip r">🩺 Sağlık bilimlerinden gelenler için</span><p style="font-size:22px; margin-top:10px">Algoritmaların nasıl modellendiğini kavramak, <b>kara kutuyu açmak</b></p></div>
+                        </div>
+                        <div class="pulse" style="font-size:64px; color:var(--red); font-weight:900">⇒</div>
+                        <div class="card f1 pop-in" style="--d:0.9s; background:var(--navy); border-top-color:var(--red)">
+                            <span class="chip w">🎯 Ortak hedef</span>
+                            <p style="font-size:27px; line-height:1.4; margin-top:14px; color:#fff">Teknik olarak sağlam ve hukuki standartlara uygun, nitelikli bilimsel projeler üretmek</p>
+                            <p style="color:#ffb3bd; margin-top:12px; font-size:19px; font-weight:700">TÜBİTAK 1001, 1002 vb.</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="5">Salondakilerin yarısı sağlık, yarısı mühendislik kökenli. İki tarafın da neden burada olduğunu söyleyin; ortak hedefin KVKK’ya uygun, fonlanabilir bir proje olduğunu vurgulayın.</aside>
+            </section>
+
+            <!-- 6 · KAPSAM -->
+            <section data-id="kapsam">
+                <div class="sl">
+                    <div class="kick">Kapsam</div>
+                    <h2>Üç eksen, tek proje</h2>
+                    <div class="row grow" style="gap:20px; align-items:center; justify-content:center">
+                        <div class="venn3">
+                            <div class="c c1"><h4 class="red">🩺 Sağlık</h4>Laboratuvar ve klinik veri: hücre kültürü, in vivo modeller, görüntü ve sinyal</div>
+                            <div class="c c2"><h4>💻 Mühendislik</h4>Makine öğrenmesi ve derin öğrenme; Python ve Google Colab ile uygulama</div>
+                            <div class="c c3"><h4 style="color:#a35f00">⚖️ Hukuk</h4>6698 sayılı KVKK, anonimleştirme ve algoritmik kararların hukuki sorumluluğu</div>
+                            <div class="mid">🎯 tek proje</div>
+                        </div>
+                        <div class="col" style="gap:10px; width:380px">
+                            <div class="box r"><p>🩺 → laboratuvar gezisi ve veri seti anlatımları</p></div>
+                            <div class="box"><p>💻 → Python uygulamaları</p></div>
+                            <div class="box a"><p>⚖️ → 2. gün sabahki KVKK ve sorumluluk hukuku dersleri</p></div>
+                            <div class="lesson"><p>Üçü 2. gün öğleden sonra <b>tek proje taslağında</b> birleşiyor.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="6">Her ekseni oturumlara bağlayın: sağlık → laboratuvar gezisi ve veri seti anlatımları; mühendislik → Python uygulamaları; hukuk → 2. gün sabahki KVKK ve sorumluluk hukuku dersleri. Üçü 2. gün öğleden sonra tek proje taslağında birleşiyor.</aside>
+            </section>
+
+            <!-- 7 · EĞİTİCİLER -->
+            <section data-id="kadro">
+                <div class="sl mid">
+                    <div class="kick">Eğitici kadrosu</div>
+                    <h2>Yedi eğitici, üç disiplin</h2>
+                    <div class="g3" style="gap:18px; margin-top:6px; align-items:start">
+                        <div class="col st" style="gap:10px">
+                            <span class="chip r" style="align-self:flex-start">🩺 SAĞLIK</span>
+                            <div class="person"><div class="ava" style="background:var(--red)">FS</div><div><b>Prof. Dr. Feride Sena SEZEN</b><span>KTÜ İLAFAR · ilaç araştırmaları, farmasötik teknoloji</span></div></div>
+                            <div class="person"><div class="ava" style="background:var(--red)">ÜU</div><div><b>Arş. Gör. Dr. Ümit UZUN</b><span>KTÜ İLAFAR · hücre kültürü ve in vitro modellerden veri üretimi</span></div></div>
+                            <div class="person"><div class="ava" style="background:var(--red)">EG</div><div><b>Araş. Gör. Dr. Elif GÜN</b><span>KTÜ İLAFAR · deney hayvanları ve in vivo modellerden veri</span></div></div>
+                        </div>
+                        <div class="col st" style="gap:10px">
+                            <span class="chip" style="align-self:flex-start">💻 MÜHENDİSLİK</span>
+                            <div class="person"><div class="ava" style="background:var(--navy)">HD</div><div><b>Doç. Dr. Hülya DOĞAN</b><span>Etkinlik yürütücüsü · KTÜ Yazılım Mühendisliği · yapay zekâ, veri madenciliği</span></div></div>
+                            <div class="person"><div class="ava" style="background:var(--navy)">RÖ</div><div><b>Dr. Öğr. Üyesi Ramazan Özgür DOĞAN</b><span>Trabzon Üniversitesi, Yapay Zekâ Mühendisliği · derin öğrenme, modelleme</span></div></div>
+                        </div>
+                        <div class="col st" style="gap:10px">
+                            <span class="chip a" style="align-self:flex-start">⚖️ HUKUK</span>
+                            <div class="person"><div class="ava" style="background:var(--amber)">AH</div><div><b>Öğr. Gör. Ali Haydar DOĞU</b><span>KTÜ İktisadi ve İdari Bilimler Fakültesi · kişisel verilerin korunması, bilişim hukuku</span></div></div>
+                            <div class="person"><div class="ava" style="background:var(--amber)">BE</div><div><b>Beste EKİN</b><span>KVKK Uzmanı · KVKK · sağlık verisi mevzuatı, idari otorite bakışı</span></div></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="7">Eğitmenler salondaysa her biri ayağa kalkıp kendini tek cümleyle tanıtabilir. Kadro, etkinliğin üç eksenini birebir karşılıyor.</aside>
+            </section>
+
+            <!-- 8 · KURULLAR -->
+            <section data-id="kurullar">
+                <div class="sl mid">
+                    <div class="kick">Kurullar</div>
+                    <h2>Etkinliğin kurulları</h2>
+                    <div class="kurul st" style="margin-top:8px; align-items:start; display:grid; grid-template-columns:1.35fr 1.1fr 1fr 0.9fr; gap:16px">
+                        <div class="card"><h4>🏛️ Düzenleme Kurulu</h4><ul>
+                            <li>Prof. Dr. Feride Sena SEZEN · KTÜ</li><li>Doç. Dr. Vasif NABİYEV · KTÜ</li><li><b>Doç. Dr. Hülya DOĞAN · KTÜ (Koordinatör)</b></li>
+                            <li>Doç. Dr. Ferhat BOZKURT · Atatürk Üniversitesi</li><li>Dr. Öğr. Üyesi İbrahim Etem ARICA · KTÜ</li>
+                            <li>Dr. Öğr. Üyesi Ramazan Özgür DOĞAN · Trabzon Üniversitesi</li><li>Öğr. Gör. Ali Haydar DOĞU · KTÜ</li></ul></div>
+                        <div class="card r"><h4>🔬 Bilim Kurulu</h4><ul>
+                            <li>Prof. Dr. Feride Sena SEZEN</li><li>Doç. Dr. Vasif NABİYEV</li><li>Doç. Dr. Hülya DOĞAN</li>
+                            <li>Dr. Öğr. Üyesi İbrahim Etem ARICA</li><li>Dr. Öğr. Üyesi Ramazan Özgür DOĞAN</li><li>Öğr. Gör. Ali Haydar DOĞU</li></ul></div>
+                        <div class="card a"><h4>📍 Yerel Düzenleme Kurulu</h4><ul>
+                            <li>Doç. Dr. Hülya DOĞAN</li><li>Öğr. Gör. İlyas AY · KTÜ İLAFAR</li><li>Prof. Dr. Feride Sena SEZEN</li><li>Öğr. Gör. Ali Haydar DOĞU</li></ul></div>
+                        <div class="card g"><h4>🤝 Organizasyon ekibi</h4><ul>
+                            <li>Fatma Tuana DOĞU</li><li>Berkay DEMİRÇİ</li></ul>
+                            <p class="small" style="margin-top:12px">İki gün boyunca pratik sorularınız için onlara başvurabilirsiniz.</p></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="8">Kurullara, İLAFAR’a ve organizasyon ekibine teşekkür edin. İki gün boyunca pratik sorular için Fatma Tuana Doğu ve Berkay Demirçi’ye başvurulabileceğini söyleyin.</aside>
+            </section>
+
+            <!-- 9 · KATILIMCILAR -->
+            <section data-id="katilimci">
+                <div class="sl">
+                    <div class="kick">Katılımcılar</div>
+                    <h2>İki disiplin, beş karma grup</h2>
+                    <div class="row grow" style="gap:26px; align-items:center">
+                        <div class="col" style="gap:14px; width:440px">
+                            <div class="card stat"><div class="big count" data-to="20">0</div><div class="lbl">katılımcı akademisyen</div></div>
+                            <div class="g2" style="gap:14px">
+                                <div class="card r stat"><div class="big r count" data-to="2">0</div><div class="lbl">disiplin, eşit ağırlıkta: sağlık bilimleri ve mühendislik</div></div>
+                                <div class="card a stat"><div class="big count" data-to="5" style="color:#d97706">0</div><div class="lbl">karma çalışma grubu, 4’er kişi; her grubun sorumlu bir mentörü var</div></div>
+                            </div>
+                        </div>
+                        <div class="col f1" style="gap:10px; align-items:center">
+                            <div id="grp-dots"></div>
+                            <div class="row" style="gap:16px"><span class="chip r">🩺 sağlık</span><span class="chip">💻 mühendislik</span></div>
+                        </div>
+                    </div>
+                    <div class="lesson">Getirdiğiniz proje fikri, grup çalışmasının <b>başlangıç noktası</b> olacak.</div>
+                </div>
+                <aside class="notes" data-n="9">Her grupta iki disiplinden araştırmacılar dengeli dağılacak. Gruplar 2. gün öğleden sonraki atölyede çalışmaya başlayacak; tanışma turundaki proje fikirleri grupları kurarken kullanılacak.</aside>
+            </section>
+
+            <!-- 10 · 1. GÜN -->
+            <section data-id="gun1">
+                <div class="sl" style="gap:10px">
+                    <div class="kick">1. gün · 24 Ekim Cumartesi</div>
+                    <h2>Temellerden koda</h2>
+                    <div class="prog st">
+                        <div class="pr a"><b>09:00–09:45</b><span>Açılış, Tanışma ve Program Vizyonu</span><i>H. Doğan, F. S. Sezen</i></div>
+                        <div class="pr"><b>10:00–10:45</b><span>Sağlıkta Yapay Zekâ Vizyonu ve Algoritmik Temeller I</span><i>H. Doğan</i></div>
+                        <div class="pr br"><b></b><span>☕ çay-kahve arası</span><i></i></div>
+                        <div class="pr"><b>11:00–11:45</b><span>Sağlıkta Yapay Zekâ Vizyonu ve Algoritmik Temeller II</span><i>H. Doğan</i></div>
+                        <div class="pr l"><b>12:00–12:45</b><span>Laboratuvar Gezisi ve Yerinde Veri Anlatımı (İLAFAR)</span><i>Ü. Uzun, E. Gün, F. S. Sezen</i></div>
+                        <div class="pr br"><b>12:45</b><span>🍽️ öğle arası</span><i></i></div>
+                        <div class="pr l"><b>14:00–14:45</b><span>Hücreden Koda: Veri Seti Anlatımı</span><i>Ü. Uzun</i></div>
+                        <div class="pr u"><b>15:00–15:45</b><span>Hücreden Koda: Python Uygulaması I</span><i>H. Doğan, R. Ö. Doğan</i></div>
+                        <div class="pr br"><b></b><span>☕ çay-kahve arası</span><i></i></div>
+                        <div class="pr l"><b>16:00–16:45</b><span>Canlı Modellerden Koda: Veri Seti Anlatımı</span><i>E. Gün</i></div>
+                        <div class="pr u"><b>17:00–17:45</b><span>Canlı Modellerden Koda: Python Uygulaması II</span><i>H. Doğan, R. Ö. Doğan</i></div>
+                    </div>
+                    <p class="small muted">💻 Öğleden sonraki uygulamalar için dizüstü bilgisayar ve Google hesabı.</p>
+                </div>
+                <aside class="notes" data-n="10">Programı satır satır okumayın; üç bloğu söyleyin: sabah temeller, öğlen laboratuvar, öğleden sonra veriden koda. Oturumlar 45 dakika, aralar 15 dakika. Öğleden sonraki uygulamalar için bilgisayar ve Google hesabını hatırlatın.</aside>
+            </section>
+
+            <!-- 11 · 2. GÜN -->
+            <section data-id="gun2">
+                <div class="sl" style="gap:10px">
+                    <div class="kick">2. gün · 25 Ekim Pazar</div>
+                    <h2>Hukuktan proje dosyasına</h2>
+                    <div class="prog st">
+                        <div class="pr h"><b>09:00–09:45</b><span>Yapay Zekâ Etiği, Sorumluluk Hukuku ve Anonimleştirme I</span><i>A. H. Doğu</i></div>
+                        <div class="pr h"><b>10:00–10:45</b><span>Yapay Zekâ Etiği, Sorumluluk Hukuku ve Anonimleştirme II</span><i>A. H. Doğu</i></div>
+                        <div class="pr br"><b></b><span>☕ çay-kahve arası</span><i></i></div>
+                        <div class="pr h"><b>11:00–11:45</b><span>Sağlık Verilerinde KVKK ve İdari Standartlar</span><i>B. Ekin</i></div>
+                        <div class="pr"><b>12:00–12:45</b><span>Başarılı Bir Proje Dosyası Nasıl Kurgulanır?</span><i>R. Ö. Doğan, H. Doğan, F. S. Sezen</i></div>
+                        <div class="pr br"><b>12:45</b><span>🍽️ öğle arası</span><i></i></div>
+                        <div class="pr u"><b>14:00–14:45</b><span>Proje Yazım Atölyesi I: Problem Tespiti ve Hipotez</span><i>Mentör ekibi</i></div>
+                        <div class="pr u"><b>15:00–15:45</b><span>Proje Yazım Atölyesi II: Yöntem ve Hukuki Uyum</span><i>Mentör ekibi</i></div>
+                        <div class="pr br"><b></b><span>☕ çay-kahve arası</span><i></i></div>
+                        <div class="pr a"><b>16:00</b><span>Panel Simülasyonu ve Proje Sunumları</span><i>Mentör ekibi</i></div>
+                        <div class="pr a"><b>17:00</b><span>Son-Test, Kapanış ve Sertifika Töreni</span><i>Mentör ekibi</i></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="11">Sabah hukuk ve proje dosyası; öğleden sonra tamamen grup çalışması ve panel. Pazar günü erken ayrılmak isteyenlere son-test ve sertifikanın 17:00’de olduğunu hatırlatın.</aside>
+            </section>
+
+            <!-- 12 · HEDEF ÇIKTI -->
+            <section data-id="hedef">
+                <div class="sl mid">
+                    <div class="kick">Hedef çıktı</div>
+                    <h2 style="font-size:40px">İki günün sonunda her grubun elinde <span class="red">ARDEB formatında</span> bir proje taslağı olacak.</h2>
+                    <div class="g4 st" style="margin-top:20px">
+                        <div class="card"><div class="big" style="font-size:52px">01</div><h4>Özgün Değer</h4><p>Klinik problem, araştırma sorusu ve hipotez</p></div>
+                        <div class="card r"><div class="big r" style="font-size:52px">02</div><h4>Yöntem</h4><p>Veri, algoritma ve KVKK/etik süreçleri</p></div>
+                        <div class="card a"><div class="big" style="font-size:52px; color:#d97706">03</div><h4>Proje Yönetimi</h4><p>İş paketleri, takvim ve riskler</p></div>
+                        <div class="card g"><div class="big" style="font-size:52px; color:var(--green)">04</div><h4>Yaygın Etki</h4><p>Bilimsel, klinik ve ekonomik katkı</p></div>
+                    </div>
+                    <div class="lesson fragment rise" style="margin-top:22px; font-size:22px">🏆 Pazar 16:00’da taslaklar <b>panel simülasyonunda</b> sunulacak ve puanlanacak.</div>
+                </div>
+                <aside class="notes" data-n="12">Hedefin somut olduğunu vurgulayın: Pazar akşamı her grubun elinde, sonrasında geliştirilip TÜBİTAK 1001, 1002 gibi programlara sunulabilecek bir taslak olacak.</aside>
+            </section>
+
+            <!-- 13 · ÖLÇME -->
+            <section data-id="olcme">
+                <div class="sl mid">
+                    <div class="kick">Ölçme ve değerlendirme</div>
+                    <h2>Üç adımda ölçme</h2>
+                    <div class="steps3 st" style="margin-top:26px">
+                        <div class="card"><span class="chip">BUGÜN 09:10</span><h3 style="margin-top:10px">📝 Ön-test</h3><p>Başlangıçtaki bilgi düzeyi</p></div>
+                        <div class="ar">→</div>
+                        <div class="card a"><span class="chip a">PAZAR 16:00</span><h3 style="margin-top:10px">🏆 Panel puanlaması</h3><p>Taslaklar TÜBİTAK kriterleriyle, katılımcılar ve eğitmenlerce puanlanır</p></div>
+                        <div class="ar">→</div>
+                        <div class="card r"><span class="chip r">PAZAR 17:00</span><h3 style="margin-top:10px">✅ Son-test</h3><p>Aynı sorular; bilgi artışı ölçülür</p></div>
+                    </div>
+                </div>
+                <aside class="notes" data-n="13">Ön-test ve son-test aynı sorulardan oluşuyor; aradaki fark etkinliğin etkisini gösterecek. Panel puanlaması aynı zamanda gruplara geri bildirim demek.</aside>
+            </section>
+
+            <!-- 14 · TANIŞMA -->
+            <section data-id="tanisma" class="dark" data-sound="swell"
+                data-background-gradient="radial-gradient(circle at 12% 88%, rgba(205,6,30,0.5) 0%, rgba(205,6,30,0) 42%), radial-gradient(circle at 80% 18%, #0d6fa8 0%, #00426a 38%, #001a2c 100%)">
+                <div class="sl mid">
+                    <div class="row ac" style="gap:50px">
+                        <div class="f1">
+                            <div class="kick">Tanışma turu</div>
+                            <h1 style="font-size:76px; margin-top:12px">Kırk beş saniyede <span class="red">siz</span></h1>
+                            <div class="col st" style="gap:14px; margin-top:24px">
+                                <div class="row ac" style="gap:16px"><div class="ava" style="background:#ff5a6e; width:54px; height:54px; font-size:24px">1</div><p style="font-size:26px">Adınız ve kurumunuz</p></div>
+                                <div class="row ac" style="gap:16px"><div class="ava" style="background:#ff5a6e; width:54px; height:54px; font-size:24px">2</div><p style="font-size:26px">Disiplininiz: sağlık mı, mühendislik mi?</p></div>
+                                <div class="row ac" style="gap:16px"><div class="ava" style="background:#ff5a6e; width:54px; height:54px; font-size:24px">3</div><p style="font-size:26px">Getirdiğiniz proje fikri, <b>tek cümleyle</b></p></div>
+                            </div>
+                        </div>
+                        <div class="col" style="align-items:center; gap:12px">
+                            <div class="timer" id="tn-timer" data-sec="45" style="--tsz:230px"></div>
+                            <button class="btn go" id="tn-next" style="font-size:20px">👤 Sıradaki kişi ▶</button>
+                            <div class="readout" id="tn-count">Kişi 0 / 20</div>
+                        </div>
+                    </div>
+                    <p class="muted" style="margin-top:26px; font-size:19px">Sıradaki · 10:00 · <b style="color:#fff">Sağlıkta Yapay Zekâ Vizyonu ve Algoritmik Temeller I</b> · Doç. Dr. Hülya DOĞAN</p>
+                </div>
+                <aside class="notes" data-n="14">Her katılımcıya 45 saniye; 20 kişi yaklaşık 15 dakika sürer. Süreyi nazikçe tutun. Eğitmenler proje fikirlerini ve disiplinleri not alsın; 2. gün grupları buna göre kurulacak.</aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="../assets/vendor/reveal.min.js"></script>
+    <script src="../assets/vendor/notes.min.js"></script>
+    <script src="../assets/vendor/qrcode.min.js"></script>
+    <script src="../assets/formlar.js"></script>
+    <script src="../assets/ilafar.js"></script>
+    <script src="acilis.js"></script>
+</body>
+
+</html>

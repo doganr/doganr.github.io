@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İleri Programlama 1. Hafta — Nesne Yönelimli Programlamaya Giriş</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .reveal pre {
+            width: 100%;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            font-size: 0.42em;
+            line-height: 1.5;
+        }
+
+        .reveal pre code {
+            border-radius: 14px;
+            padding: 18px 22px;
+            max-height: 560px;
+        }
+
+        .code-note {
+            font-family: 'JetBrains Mono', monospace;
+            color: #94a3b8;
+            font-size: 0.62em;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: rgba(108, 99, 255, 0.12);
+            border: 1px solid rgba(96, 125, 255, 0.35);
+            color: #93c5fd;
+        }
+
+        .concept-card {
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+        }
+
+        .concept-card h4 {
+            font-size: 0.8em;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .concept-card p {
+            font-size: 0.62em;
+            color: #a3accb;
+            line-height: 1.5;
+        }
+
+        .kw {
+            color: #f0abfc;
+            font-weight: 700;
+        }
+
+        /* Mock uygulama penceresi cercevesi */
+        .app-frame {
+            display: inline-block;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #12121f;
+        }
+
+        .app-frame .titlebar,
+        .qt-app .titlebar {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 13px;
+            background: #1a1a2e;
+        }
+
+        .app-frame .adot,
+        .qt-app .adot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .app-frame .atitle,
+        .qt-app .atitle {
+            margin-left: 8px;
+            font-size: 11px;
+            color: #8a8aac;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .app-frame img {
+            display: block;
+            width: 300px;
+            height: auto;
+        }
+
+        .arrow-cta {
+            color: #7dd3fc;
+            font-weight: 800;
+            font-size: 0.7em;
+        }
+
+        /* GUI uzerine ok cekerek nesneleri isaretleme */
+        .gui-annot {
+            position: relative;
+            width: 900px;
+            height: 340px;
+            margin: 0 auto;
+        }
+
+        .annot-chip {
+            position: absolute;
+            width: 168px;
+            padding: 9px 13px;
+            border-radius: 13px;
+            background: rgba(2, 6, 23, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: left;
+            font-size: 0.5em;
+            line-height: 1.45;
+            color: #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .annot-chip b { font-weight: 800; }
+        .annot-chip span { color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
+        .annot-chip { z-index: 3; }
+
+        /* ===== CANLI QT WIDGET (guidemo.py QSS ile birebir) ===== */
+        .qt-app {
+            display: inline-block;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #12121f;
+            font-family: 'DejaVu Sans', 'Segoe UI', sans-serif;
+        }
+
+        .qt-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 26px 34px 30px;
+            min-width: 220px;
+        }
+
+        .qt-deger {
+            font-size: 30px;
+            font-weight: 800;
+            color: #7dd3fc;
+        }
+
+        .qt-deger.bump {
+            animation: qtpulse 0.36s ease;
+        }
+
+        @keyframes qtpulse {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.32); color: #a5f3fc; }
+            100% { transform: scale(1); }
+        }
+
+        .qt-deger.warn { color: #fbbf24; }
+        .qt-deger.warn.bump { animation: qtpulsewarn 0.36s ease; }
+
+        @keyframes qtpulsewarn {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.28); color: #fde68a; }
+            100% { transform: scale(1); }
+        }
+
+        /* Hareket duyarliligi olan kullanicilar icin */
+        @media (prefers-reduced-motion: reduce) {
+            .live-dot { animation: none; }
+            .qt-deger.bump,
+            .qt-deger.warn.bump { animation: none; }
+            .runline { transition: none; }
+            .glow-sphere,
+            .cover-icon,
+            .oop-tok,
+            .code-tagline .blink { animation: none; }
+        }
+
+        .qt-btn {
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 11px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: filter 0.12s, transform 0.06s;
+            font-family: inherit;
+        }
+
+        .qt-btn:hover { filter: brightness(1.13); }
+        .qt-btn:active { transform: translateY(1px); }
+
+        .qt-btn.reset {
+            background: rgba(255, 255, 255, 0.09);
+            color: #cbd5e1;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.55em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #86efac;
+        }
+
+        .live-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+            animation: livepulse 1.6s infinite;
+        }
+
+        @keyframes livepulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* Calisan kod paneli */
+        .run-panel {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px 20px;
+            min-width: 340px;
+        }
+
+        .run-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55em;
+            color: #8a8aac;
+            margin-bottom: 10px;
+        }
+
+        .runline {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.56em;
+            color: #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border-left: 3px solid transparent;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .runline.active {
+            background: rgba(125, 211, 252, 0.14);
+            border-left-color: #7dd3fc;
+            color: #fff;
+        }
+
+        .run-badge {
+            margin-top: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55em;
+            color: #8a8aac;
+        }
+
+        .run-badge b { color: #7dd3fc; }
+
+        /* ===== MINI QUIZ ===== */
+        .quiz {
+            text-align: left;
+            max-width: 760px;
+            margin: 0 auto 12px;
+        }
+
+        .quiz-q {
+            font-size: 0.66em;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .quiz-opt {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
+            margin-bottom: 7px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: #e2e8f0;
+            font-size: 0.6em;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .quiz-opt code {
+            color: #93c5fd;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .quiz-opt:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(147, 197, 253, 0.5);
+        }
+
+        .quiz.answered .quiz-opt { cursor: default; }
+
+        .quiz-opt.correct {
+            background: rgba(34, 197, 94, 0.16);
+            border-color: #22c55e;
+            color: #dcfce7;
+        }
+
+        .quiz-opt.wrong {
+            background: rgba(244, 63, 94, 0.16);
+            border-color: #f43f5e;
+            color: #fee2e2;
+        }
+
+        .quiz-fb {
+            font-size: 0.58em;
+            min-height: 1.4em;
+            margin-top: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #94a3b8;
+        }
+
+        /* ===== TIKLANABILIR KOD HOTSPOT ===== */
+        .manual-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5em;
+            line-height: 1.9;
+            text-align: left;
+            background: #1e1e1e;
+            color: #e2e8f0;
+            padding: 20px 24px;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            white-space: pre;
+            margin: 0;
+        }
+
+        .manual-code .tk { color: #f92672; }
+        .manual-code .ty { color: #66d9ef; font-style: italic; }
+        .manual-code .st { color: #e6db74; }
+        .manual-code .fn { color: #a6e22e; }
+
+        .hotspot {
+            cursor: pointer;
+            border-bottom: 1.5px dashed rgba(240, 171, 252, 0.6);
+            border-radius: 3px;
+            padding: 0 2px;
+            transition: background 0.15s;
+        }
+
+        .hotspot:hover { background: rgba(240, 171, 252, 0.18); }
+        .hotspot.on { background: rgba(240, 171, 252, 0.28); color: #fff; }
+        .hotspot:focus-visible { outline: 2px solid #f0abfc; outline-offset: 2px; }
+
+        .hs-panel {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(96, 125, 255, 0.35);
+            border-radius: 18px;
+            padding: 22px 24px;
+            min-width: 340px;
+            max-width: 380px;
+        }
+
+        .hs-panel h4 {
+            font-size: 0.8em;
+            font-weight: 800;
+            color: #93c5fd;
+            margin-bottom: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .hs-panel p {
+            font-size: 0.66em;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .hint-legend {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.5em;
+            color: #64748b;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px dashed rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            padding: 5px 14px;
+        }
+
+        /* ===== KAPAK (haftaya özgü, karizmatik) ===== */
+        .cover-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 116px;
+            height: 116px;
+            border-radius: 50%;
+            background: rgba(96, 125, 255, 0.12);
+            border: 1px solid rgba(147, 197, 253, 0.4);
+            color: #93c5fd;
+            box-shadow: 0 0 55px rgba(96, 125, 255, 0.35);
+            animation: coverpulse 2.6s ease-in-out infinite;
+        }
+
+        @keyframes coverpulse {
+            0%, 100% { box-shadow: 0 0 45px rgba(96, 125, 255, 0.30); transform: scale(1); }
+            50% { box-shadow: 0 0 85px rgba(167, 139, 250, 0.55); transform: scale(1.06); }
+        }
+
+        .grad-text {
+            background: linear-gradient(90deg, #7dd3fc 0%, #a78bfa 50%, #fb7185 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .code-tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62em;
+            color: #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 10px;
+            padding: 7px 16px;
+        }
+
+        .code-tagline .blink {
+            color: #7dd3fc;
+            font-weight: 700;
+            animation: blink 1.05s steps(1) infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .oop-field {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .oop-tok {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: rgba(147, 197, 253, 0.16);
+            animation: oopdrift 13s ease-in-out infinite alternate;
+        }
+
+        @keyframes oopdrift {
+            from { transform: translateY(-12px); opacity: 0.09; }
+            to { transform: translateY(12px); opacity: 0.22; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <img src="../images/logo.png" class="watermark" alt="Logo">
+        <div class="slides">
+
+            <!-- 1. BAŞLIK (kapak — haftaya özgü) -->
+            <section data-background-gradient="radial-gradient(circle at 50% 38%, #0b1327 0%, #020617 72%)">
+                <div class="glow-sphere"
+                    style="width: 620px; height: 620px; top: -12%; left: -12%; background: #1e3a8a;"></div>
+                <div class="glow-sphere"
+                    style="width: 520px; height: 520px; bottom: -12%; right: -12%; background: #881337; animation-delay: -5s;">
+                </div>
+                <!-- Haftaya özgü tema: uçuşan OOP token'ları -->
+                <div class="oop-field">
+                    <span class="oop-tok" style="top:15%;left:9%;">class</span>
+                    <span class="oop-tok" style="top:70%;left:13%;animation-delay:-3s;">__init__</span>
+                    <span class="oop-tok" style="top:27%;right:10%;animation-delay:-6s;">self</span>
+                    <span class="oop-tok" style="top:64%;right:13%;animation-delay:-2s;">QWidget</span>
+                    <span class="oop-tok" style="top:13%;right:31%;animation-delay:-8s;">object</span>
+                    <span class="oop-tok" style="bottom:13%;left:33%;animation-delay:-5s;">.show()</span>
+                    <span class="oop-tok" style="top:45%;left:5%;animation-delay:-7s;">()</span>
+                    <span class="oop-tok" style="bottom:17%;right:31%;animation-delay:-4s;">nesne</span>
+                </div>
+                <!-- Ana içerik -->
+                <div class="flex flex-col items-center" style="position:relative;z-index:5;">
+                    <span class="week-number text-base mb-5">İleri Programlama · Hafta 01</span>
+                    <div class="cover-icon mb-6"><i data-lucide="boxes" style="width:56px;height:56px;"></i></div>
+                    <h1 class="mb-4 leading-tight font-black tracking-tighter text-white">Fonksiyon mu Yazacağız,<br><span
+                            class="grad-text">Nesne mi Üreteceğiz?</span></h1>
+                    <p class="text-slate-400 font-light tracking-[0.3em] uppercase text-sm">Nesne Yönelimli
+                        Programlamaya Giriş</p>
+                    <div class="code-tagline mt-6"><span class="blink">▌</span><span><span
+                                style="color:#7dd3fc;">nesne</span> = <span style="color:#a78bfa;">Sınıf</span>()
+                            &nbsp;<span style="color:#475569;"># her şey buradan başlar</span></span></div>
+                </div>
+            </section>
+
+            <!-- 2. DÖNEM VİZYONU -->
+            <section>
+                <span class="chip mb-4"><i data-lucide="route" style="width:14px;height:14px;"></i> Bu Dönem</span>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Yaşayarak, Kod Yazarak
+                    Öğreneceğiz</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up">
+                        <h4>🧩 Nesneyi Yaşayarak</h4>
+                        <p>Kavramları slaytta değil, çalışan bir masaüstü uygulaması yazarak öğreneceğiz.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <h4>🖥️ Araç: PySide6 (Qt)</h4>
+                        <p>Bir GUI'de <b>her şey bir nesnedir</b> — pencere, buton, etiket. OOP için birebir laboratuvar.
+                        </p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <h4>📈 Hafta Hafta</h4>
+                        <p>Kalıtım → polimorfizm → soyut sınıflar → thread → tasarım desenleri; her konu çalışan
+                        örneklerle.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Hedef: dönem sonunda nesne yönelimli, GUI tabanlı Qt
+                    uygulamalarını kendin tasarlayıp yazabilmek.</p>
+            </section>
+
+            <!-- 3. NEDEN NESNELER -->
+            <section>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Neden Nesneler?</h2>
+                <div class="grid grid-cols-2 gap-6 text-left items-start">
+                    <div class="concept-card" style="border-color: rgba(244,63,94,0.3);">
+                        <h4 style="color:#fb7185;">🧱 Prosedürel</h4>
+                        <p>Veri ve fonksiyonlar ayrı durur. Program büyüdükçe global değişkenler <b>dağılır</b>, bakım
+                            zorlaşır.</p>
+                        <pre style="margin-top:10px;"><code class="language-python" data-trim data-line-numbers>sayac = 0
+def artir():
+    global sayac
+    sayac += 1</code></pre>
+                    </div>
+                    <div class="concept-card fragment fade-right" style="border-color: rgba(96,125,255,0.35);">
+                        <h4 style="color:#93c5fd;">🧩 Nesne Yönelimli</h4>
+                        <p><b>Veri + davranış tek nesnede.</b> Her nesne kendi durumundan sorumlu → düzenli, yeniden
+                            kullanılabilir.</p>
+                        <pre style="margin-top:10px;"><code class="language-python" data-trim data-line-numbers>class Sayac:
+    def __init__(self):
+        self.deger = 0
+    def artir(self):
+        self.deger += 1</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. SINIF vs NESNE -->
+            <section>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Sınıf mı, Nesne mi?</h2>
+                <div class="grid grid-cols-2 gap-6 text-left mb-6">
+                    <div class="concept-card fragment fade-up">
+                        <h4>📐 Sınıf (Class)</h4>
+                        <p>Bir <b>şablon / kalıp</b>. "Buton nasıl olmalı?" tarifi. Tek başına bir şey yapmaz.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <h4>🔘 Nesne (Object)</h4>
+                        <p>Kalıptan üretilmiş <b>somut örnek</b>. Aynı sınıftan binlerce nesne üretilebilir.</p>
+                    </div>
+                </div>
+                <div class="fragment fade-in">
+                    <p class="code-note mb-2">Qt'de <span class="kw">QPushButton</span> bir sınıftır; her buton onun bir
+                        nesnesidir:</p>
+                    <pre><code class="language-python" data-trim data-line-numbers="1|2">kaydet = QPushButton("Kaydet")   # 1. nesne
+sil    = QPushButton("Sil")      # 2. nesne — ayni sinif, farkli nesne</code></pre>
+                </div>
+            </section>
+
+            <!-- 5. GUI = NESNELER DÜNYASI (gerçek GUI + callout) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="mouse-pointer-click"
+                        style="width:14px;height:14px;"></i> Ana Fikir</span>
+                <h2 class="text-3xl font-black mb-4 tracking-tighter text-white">Bir GUI'de <span
+                        style="color:#93c5fd;">her şey</span> bir nesnedir</h2>
+                <div class="gui-annot">
+                    <!-- Gerçek GUI (en altta) -->
+                    <div class="app-frame" style="position:absolute;left:309px;top:82px;z-index:1;">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot" style="background:#27c93f"></span><span
+                                class="atitle">Sayac.py</span></div>
+                        <img src="images/gui_sayac_0.png" alt="Sayaç uygulaması" style="width:280px;">
+                    </div>
+                    <!-- Oklar (GUI'nin ÜSTÜNDE — widget'lara değsin) -->
+                    <svg viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet"
+                        style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2;">
+                        <defs>
+                            <marker id="ah-cyan" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+                                <path d="M0,0 L7,3 L0,6 Z" fill="#7dd3fc"></path>
+                            </marker>
+                            <marker id="ah-purple" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+                                <path d="M0,0 L7,3 L0,6 Z" fill="#a78bfa"></path>
+                            </marker>
+                            <marker id="ah-blue" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+                                <path d="M0,0 L7,3 L0,6 Z" fill="#93c5fd"></path>
+                            </marker>
+                        </defs>
+                        <line class="fragment" data-fragment-index="1" x1="188" y1="156" x2="398" y2="156"
+                            stroke="#7dd3fc" stroke-width="2.5" marker-end="url(#ah-cyan)"></line>
+                        <line class="fragment" data-fragment-index="2" x1="712" y1="218" x2="556" y2="215"
+                            stroke="#a78bfa" stroke-width="2.5" marker-end="url(#ah-purple)"></line>
+                        <line class="fragment" data-fragment-index="3" x1="450" y1="46" x2="450" y2="94"
+                            stroke="#93c5fd" stroke-width="2.5" marker-end="url(#ah-blue)"></line>
+                    </svg>
+                    <!-- Etiketler (en üstte) -->
+                    <div class="annot-chip fragment" data-fragment-index="3"
+                        style="left:50%;transform:translateX(-50%);top:10px;width:auto;white-space:nowrap;text-align:center;border-color:rgba(147,197,253,0.55);">
+                        <b style="color:#93c5fd;">QWidget</b> nesnesi <span>→ tüm pencere</span>
+                    </div>
+                    <div class="annot-chip fragment" data-fragment-index="1"
+                        style="left:18px;top:128px;border-color:rgba(125,211,252,0.55);">
+                        <b style="color:#7dd3fc;">QLabel</b> nesnesi<br><span>→ "Değer: 0" yazısı</span>
+                    </div>
+                    <div class="annot-chip fragment" data-fragment-index="2"
+                        style="right:18px;top:198px;border-color:rgba(167,139,250,0.55);">
+                        <b style="color:#a78bfa;">QPushButton</b> nesnesi<br><span>→ "Artır" butonu</span>
+                    </div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in" data-fragment-index="4">Üçü de ayrı birer <b>nesne</b> —
+                    hepsi aynı pencerede yaşıyor. İşte bu yüzden GUI, nesne yönelimli düşünmeyi öğrenmenin en doğal
+                    yoludur.</p>
+            </section>
+
+            <!-- 6. KURULUM + İLK PENCERE -->
+            <section>
+                <h2 class="text-3xl font-black mb-5 uppercase tracking-tighter text-white">Kurulum & İlk Pencere</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1;">
+                        <pre class="mb-3"><code class="language-bash" data-trim>pip install PySide6</code></pre>
+                        <pre><code class="language-python" data-trim data-line-numbers="1|3|4|5|6">from PySide6.QtWidgets import QApplication, QLabel
+
+app = QApplication([])            # her Qt uygulamasi 1 tane ister
+etiket = QLabel("Merhaba, Qt!")   # bir NESNE olusturduk
+etiket.show()                     # nesneye "kendini goster" dedik
+app.exec()                        # olay dongusunu baslat</code></pre>
+                    </div>
+                    <div class="fragment fade-left flex flex-col items-center" style="padding-top:60px;">
+                        <span class="arrow-cta mb-2">Sonuç ↓</span>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">Merhaba</span></div>
+                            <img src="images/gui_hello.png" alt="Merhaba penceresi">
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in">4 satır → ilk pencere. <span class="fragment fade-in">Ama
+                    "etiketi <code>app</code>'e hiç eklemedik, nasıl açıldı?" → <b style="color:#fde047;">sıradaki
+                    slayt.</b></span></p>
+            </section>
+
+            <!-- 7. KAP OLMADAN NASIL PENCERE OLDU (parent = None) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"
+                    style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;"><i
+                        data-lucide="help-circle" style="width:14px;height:14px;"></i> İyi Soru</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Kap (QWidget) Eklemeden
+                    Nasıl Pencere Oldu?</h2>
+                <!-- KURAL -->
+                <div
+                    style="display:inline-flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:10px 16px;background:rgba(96,125,255,0.12);border:1px solid rgba(96,125,255,0.45);border-radius:14px;padding:10px 22px;margin-bottom:18px;">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:0.62em;color:#e2e8f0;"><span
+                            style="color:#7dd3fc;">etiket</span>.parent() → <b style="color:#fca5a5;">None</b></span>
+                    <span style="color:#7dd3fc;font-size:0.9em;font-weight:800;">⇒</span>
+                    <span style="font-size:0.66em;font-weight:800;color:#fff;">Qt onu <span
+                            style="color:#93c5fd;">üst-düzey pencere</span> yapar</span>
+                </div>
+                <!-- İki durum -->
+                <div class="grid grid-cols-2 gap-6 text-left">
+                    <div class="concept-card fragment fade-up">
+                        <h4>🧩 Parent VERİRSEN</h4>
+                        <div style="border:1.5px dashed rgba(148,163,184,0.5);border-radius:10px;padding:14px;margin:8px 0 10px;">
+                            <div style="font-size:0.5em;color:#64748b;font-family:'JetBrains Mono',monospace;margin-bottom:7px;">QWidget (kap)</div>
+                            <div style="background:rgba(125,211,252,0.14);border:1px solid rgba(125,211,252,0.5);border-radius:8px;padding:9px;text-align:center;font-size:0.55em;color:#7dd3fc;font-weight:700;">QLabel</div>
+                        </div>
+                        <p>Widget, kabın <b>içinde</b> görünür.<br><code>QLabel("...", parent=kap)</code></p>
+                    </div>
+                    <div class="concept-card fragment fade-up"
+                        style="border-color:rgba(147,197,253,0.6);background:rgba(96,125,255,0.06);">
+                        <h4 style="color:#93c5fd;">🪟 Parent YOK (None) — bizim durum</h4>
+                        <div style="border:1px solid rgba(255,255,255,0.15);border-radius:10px;overflow:hidden;margin:8px 0 10px;">
+                            <div style="display:flex;gap:5px;padding:6px 9px;background:#1a1a2e;"><span style="width:8px;height:8px;border-radius:50%;background:#ff5f56;"></span><span style="width:8px;height:8px;border-radius:50%;background:#ffbd2e;"></span><span style="width:8px;height:8px;border-radius:50%;background:#27c93f;"></span></div>
+                            <div style="background:#12121f;padding:14px;text-align:center;font-size:0.6em;color:#f0f0f8;font-weight:700;">QLabel = pencere</div>
+                        </div>
+                        <p>Widget'in <b>kendisi</b> üst-düzey pencere olur.<br><code>QLabel("Merhaba, Qt!")</code>
+                            <span style="color:#64748b;"># parent yok</span></p>
+                    </div>
+                </div>
+                <p class="code-note mt-5 fragment fade-in"><b style="color:#93c5fd;">QLabel, QWidget'ten türer</b> →
+                    parent verilmezse Qt onu kendi penceresi yapar. Uygulamaya elle eklemezsin: <b>QApplication tektir
+                    (singleton)</b>, Qt global tutar, her widget otomatik ona bağlanır.</p>
+            </section>
+
+            <!-- 8. BİRDEN ÇOK BİLEŞEN (class'sız: kap + düzen) -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="layout-grid" style="width:14px;height:14px;"></i> Class Yok ·
+                    Fonksiyonel</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Peki İki Bileşen Olursa?
+                    <span class="code-note">Kap + Düzen</span></h2>
+                <div class="flex items-start justify-center gap-8">
+                    <div style="flex:1;">
+                        <pre><code class="language-python" data-trim data-line-numbers="5|6|8|9">from PySide6.QtWidgets import (QApplication, QWidget,
+    QLabel, QPushButton, QVBoxLayout)
+
+app = QApplication([])
+pencere = QWidget()               # KAP: üst pencere
+duzen = QVBoxLayout(pencere)      # DÜZEN: dizer
+
+duzen.addWidget(QLabel("Merhaba, Qt!"))   # 1. bileşen
+duzen.addWidget(QPushButton("Tıkla"))     # 2. bileşen
+
+pencere.show()
+app.exec()</code></pre>
+                    </div>
+                    <div class="fragment fade-left flex flex-col items-center" style="padding-top:20px;">
+                        <span class="arrow-cta mb-2">Sonuç ↓</span>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">Pencere</span></div>
+                            <img src="images/gui_coklu.png" alt="Etiket ve buton" style="width:240px;">
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in">Tek widget kendi başına pencereydi. <b>Birden çok widget</b>
+                    için bir <b>kap</b> (<code>QWidget</code>) gerekir; bileşenleri <b>düzen</b> (<code>QVBoxLayout</code>)
+                    dizer, <code>addWidget</code> ile eklenir. <span class="fragment fade-in">Peki düzeni eklemek
+                    <b>zorunlu</b> mu? → <b style="color:#93c5fd;">sıradaki: düzen şart mı?</b></span></p>
+            </section>
+
+            <!-- 9. DÜZEN ŞART MI? (QWidget default: layout yok -> ust uste biner) -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="layers" style="width:14px;height:14px;"></i>
+                    <code>QWidget.layout()</code> → <code>None</code></span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Düzen Şart mı? <span
+                        class="code-note">Default: Düzen Yok</span></h2>
+                <div class="flex items-center justify-center gap-8">
+                    <div style="flex:1.3;">
+                        <pre><code class="language-python" data-trim data-line-numbers="2|3-4" style="font-size:0.64em;">app = QApplication([])
+pencere = QWidget()              # layout() → None
+QPushButton("Buton A", pencere) # ikisi de (0, 0)...
+QPushButton("B", pencere)       # ...üst üste biner!
+pencere.show(); app.exec()</code></pre>
+                    </div>
+                    <div class="fragment fade-left flex flex-col items-center">
+                        <span class="arrow-cta mb-2">Sonuç ↓</span>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">Düzensiz</span></div>
+                            <img src="images/gui_duzensiz.png" alt="Düzensiz — üst üste binmiş butonlar"
+                                style="width:210px;">
+                        </div>
+                        <span class="code-note mt-2" style="font-size:0.8em;">İki buton köşede <b>üst üste</b> 🙈</span>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in"><b>Zorunlu değil</b> — ama düzen koymazsan bileşenler
+                    <code>(0,0)</code>'da üst üste yığılır, pencere büyüyünce yerinde donar. Elle
+                    <code>move()</code>/<code>setGeometry()</code> ile de koyabilirsin; <b>ama</b> asıl kolay ve
+                    <b>responsive</b> yol düzenlerdir. <span class="fragment fade-in">→
+                    <b style="color:#93c5fd;">peki hangi düzenler var?</b></span></p>
+            </section>
+
+            <!-- 10. DÜZEN AİLESİ (VBox / HBox / Grid — aynı butonlar, farklı dizilim) -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="layout-grid" style="width:14px;height:14px;"></i> Kap + Düzen ·
+                    Fonksiyonel</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Tek Düzen Değil: <span
+                        class="code-note">Düzen Ailesi</span></h2>
+                <p class="code-note mb-4">Aynı butonları (<b>A · B · C</b>) kaba koyduk; <b>hangi düzeni</b> seçtiğimiz
+                    dizilimi belirler. Kod tek satır değişir: <code>QVBoxLayout</code> → <code>QHBoxLayout</code> →
+                    <code>QGridLayout</code>.</p>
+                <div class="flex items-stretch justify-center gap-6">
+                    <div class="fragment fade-up flex flex-col items-center">
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">VBox</span></div>
+                            <img src="images/duzen_vbox.png" alt="Dikey düzen" style="height:150px;">
+                        </div>
+                        <code class="mt-2" style="font-size:0.9em;">QVBoxLayout</code>
+                        <span class="code-note" style="font-size:0.8em;">Dikey · alt alta</span>
+                    </div>
+                    <div class="fragment fade-up flex flex-col items-center">
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">HBox</span></div>
+                            <img src="images/duzen_hbox.png" alt="Yatay düzen" style="width:210px;">
+                        </div>
+                        <code class="mt-2" style="font-size:0.9em;">QHBoxLayout</code>
+                        <span class="code-note" style="font-size:0.8em;">Yatay · yan yana</span>
+                    </div>
+                    <div class="fragment fade-up flex flex-col items-center">
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">Grid</span></div>
+                            <img src="images/duzen_grid.png" alt="Izgara düzen" style="height:150px;">
+                        </div>
+                        <code class="mt-2" style="font-size:0.9em;">QGridLayout</code>
+                        <span class="code-note" style="font-size:0.8em;">Izgara · <code>(w, satır, sütun)</code></span>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in">Düzen bir <b>strateji</b>: aynı bileşenler, farklı yerleşim.
+                    <span class="fragment fade-in">Üstelik düzenler <b>iç içe</b> de girer →
+                    <b style="color:#93c5fd;">karmaşık arayüzler kuralım.</b></span></p>
+            </section>
+
+            <!-- 11. İÇ İÇE DÜZENLER (addLayout — duzen icinde duzen) -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="layout-template" style="width:14px;height:14px;"></i> Düzen
+                    İçinde Düzen · <code>addLayout</code></span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Düzenler İç İçe Girer <span
+                        class="code-note">addLayout</span></h2>
+                <div class="flex items-center justify-center gap-8">
+                    <div style="flex:1.3;">
+                        <pre><code class="language-python" data-trim data-line-numbers="1-2|4-6|7" style="font-size:0.6em;">dis = QVBoxLayout(pencere)          # DIŞ: dikey
+dis.addWidget(QLabel("Kaydedilsin mi?"))
+
+satir = QHBoxLayout()               # İÇ: yatay
+satir.addWidget(QPushButton("Evet"))
+satir.addWidget(QPushButton("Hayır"))
+dis.addLayout(satir)               # düzeni düzene ekle!</code></pre>
+                    </div>
+                    <div class="fragment fade-left flex flex-col items-center">
+                        <span class="arrow-cta mb-2">Sonuç ↓</span>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">Onay</span></div>
+                            <img src="images/gui_nested.png" alt="İç içe düzen — üstte başlık, altta iki buton"
+                                style="width:230px;">
+                        </div>
+                        <span class="code-note mt-2" style="font-size:0.8em;">Üstte başlık, altta <b>yan yana</b> butonlar</span>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in">Bir düzeni başka bir düzene <code>addWidget</code> değil
+                    <b><code>addLayout</code></b> ile eklersin. Böylece <b>dikey + yatay</b> birlikte çalışır — gerçek
+                    ekranlar hep <b>iç içe basit düzenlerden</b> kurulur. <span class="fragment fade-in">Ama bu kod hâlâ
+                    dağınık → <b style="color:#93c5fd;">bir sınıfa toplayalım.</b></span></p>
+            </section>
+
+            <!-- 12. PENCEREYİ SINIF YAP (satir satir vurgu) -->
+            <section>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Pencereyi Bir <span
+                        style="color:#93c5fd;">Sınıf</span> Yap <span class="code-note">(→ ile satır satır)</span></h2>
+                <pre><code class="language-python" data-trim
+                        data-line-numbers="3|4|5|6|7|8|13-14|16|17-18">from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
+
+class Pencere(QWidget):                 # QWidget'tan KALITIM
+    def __init__(self):                 # kurucu metot
+        super().__init__()              # ust sinifin kurucusu
+        self.setWindowTitle("Hafta 1")  # self = bu nesnenin kendisi
+        btn = QPushButton("Tıkla")
+        btn.clicked.connect(self.tiklandi)   # sinyal -> slot
+
+        duzen = QVBoxLayout(self)
+        duzen.addWidget(btn)
+
+    def tiklandi(self):                 # bir METOT (davranis)
+        print("Nesne yonelimli!")
+
+app = QApplication([])
+pencere = Pencere()                     # sinifimizdan bir NESNE
+pencere.show()
+app.exec()</code></pre>
+            </section>
+
+            <!-- 13. if __name__ == "__main__" (giris noktasi / entry point) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="terminal-square" style="width:14px;height:14px;"></i> Giriş
+                    Noktası (entry point)</span>
+                <h2 class="text-2xl font-black mb-4 tracking-tighter text-white"><code
+                        style="color:#93c5fd;">if __name__ == "__main__":</code> — Neden?</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;max-width:540px;"><code class="language-python" data-trim
+                            data-line-numbers="1-2|4|5-8">class Pencere(QWidget):
+    ...                  # sinifimiz
+
+if __name__ == "__main__":   # sadece dogrudan
+    app = QApplication([])
+    pencere = Pencere()
+    pencere.show()
+    app.exec()</code></pre>
+                    <div class="flex flex-col gap-3 text-left" style="max-width:370px;">
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(34,197,94,0.45);">
+                            <h4>▶ <code>python hafta1.py</code></h4>
+                            <p><code>__name__</code> → <code style="color:#86efac;">"__main__"</code> ✅ blok
+                                <b>çalışır</b>, pencere açılır.</p>
+                        </div>
+                        <div class="concept-card fragment fade-left" style="border-color:rgba(251,191,36,0.45);">
+                            <h4>📦 <code>import hafta1</code></h4>
+                            <p><code>__name__</code> → <code style="color:#fbbf24;">"hafta1"</code> ⛔ blok
+                                <b>çalışmaz</b>, sınıf hazır olur.</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-3 fragment fade-in">Özetle: bu blok yalnızca dosya <b>doğrudan çalıştırılınca</b>
+                    işler; <code>Pencere</code>'yi başka modüle import edince uygulama <b>kendiliğinden açılmaz</b>.</p>
+            </section>
+
+            <!-- 14. HAM QWidget vs ÖZELLEŞTİRİLMİŞ (miras somutlaştırma) -->
+            <section data-background-color="#020617">
+                <span class="chip mb-2"><i data-lucide="git-branch" style="width:14px;height:14px;"></i> Miras =
+                    Özelleştirme</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Peki
+                    <code style="color:#93c5fd;">class Pencere(QWidget)</code> Ne Kazandırdı?</h2>
+                <div class="flex items-stretch justify-center gap-5">
+                    <!-- SOL: ham QWidget -->
+                    <div class="flex flex-col items-center gap-2" style="flex:1;max-width:340px;">
+                        <pre style="width:100%;margin:0;font-size:0.34em;"><code class="language-python" data-trim># ham QWidget nesnesi
+w = QWidget()
+w.show()   # bos pencere</code></pre>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">QWidget</span></div>
+                            <img src="images/gui_raw.png" alt="Boş QWidget penceresi" style="width:175px;">
+                        </div>
+                        <div class="concept-card" style="border-color:rgba(251,191,36,0.4);width:100%;padding:10px 14px;">
+                            <p>Hazır ama <b>bomboş</b> — başlık yok, buton yok, davranış yok.</p>
+                        </div>
+                    </div>
+                    <!-- OK -->
+                    <div class="flex flex-col items-center justify-center gap-1" style="min-width:96px;padding-top:24px;">
+                        <i data-lucide="arrow-right" style="width:40px;height:40px;color:#7dd3fc;"></i>
+                        <span class="code-note" style="text-align:center;line-height:1.35;">miras al<br>+ kendi<br>parçanı
+                            ekle</span>
+                    </div>
+                    <!-- SAĞ: özelleştirilmiş -->
+                    <div class="flex flex-col items-center gap-2 fragment fade-left" style="flex:1;max-width:430px;">
+                        <pre style="width:100%;margin:0;font-size:0.34em;"><code class="language-python" data-trim>class Pencere(QWidget):   # devral
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Hafta 1")
+        # + QPushButton, QVBoxLayout ...</code></pre>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">Hafta 1</span></div>
+                            <img src="images/gui_pencere.png" alt="Özelleştirilmiş pencere" style="width:175px;">
+                        </div>
+                        <div class="concept-card" style="border-color:rgba(34,197,94,0.4);width:100%;padding:10px 14px;">
+                            <p>Aynı QWidget'ı <b>devraldık</b> + kendi başlığımızı ve butonumuzu <b>ekledik</b>.</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-4 fragment fade-in">Miras işte bu: hazır <code>QWidget</code>'ın <b>her şeyini</b>
+                    al, üstüne kendi parçalarını ekle — pencereyi sıfırdan yazmazsın.</p>
+            </section>
+
+            <!-- 15. ANAHTAR SATIRLAR — INTERAKTIF HOTSPOT -->
+            <section data-background-color="#020617">
+                <span class="chip mb-3"><i data-lucide="scan-search" style="width:14px;height:14px;"></i> Tıkla &
+                    Keşfet</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Anahtar Satırlar</h2>
+                <div class="flex items-center justify-center gap-8">
+<pre class="manual-code"><span class="tk">class</span> <span class="ty">Pencere</span>(<span class="hotspot" data-k="widget" tabindex="0" role="button">QWidget</span>):
+    <span class="tk">def</span> <span class="hotspot" data-k="init" tabindex="0" role="button">__init__</span>(<span class="hotspot" data-k="self" tabindex="0" role="button">self</span>):
+        <span class="hotspot" data-k="super" tabindex="0" role="button">super().__init__()</span>
+        <span class="hotspot" data-k="self" tabindex="0" role="button">self</span>.setWindowTitle(<span class="st">"Hafta 1"</span>)</pre>
+                    <div class="hs-panel" role="region" aria-live="polite">
+                        <h4 id="hs-title">👆 Bir anahtar kelimeye tıkla</h4>
+                        <p id="hs-body">Koddaki altı çizili parçalara tıkla — ne işe yaradıklarını burada anlatayım.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Dördü de OOP'nin taşıyıcı kolonları: <b>kalıtım</b>,
+                    <b>kurucu</b>, <b>üst sınıf çağrısı</b> ve <b>self</b>.</p>
+            </section>
+
+            <!-- 16. self NEDİR -->
+            <section data-background-color="#020617">
+                <h2 class="text-4xl font-black mb-8 tracking-tighter text-white"><span
+                        class="kw">self</span> nedir?</h2>
+                <div class="glass-card mx-auto p-8" style="max-width:760px; text-align:left;">
+                    <p class="bio-text mb-4">Her metot, ilk parametre olarak <b>hangi nesne üzerinde çalıştığını</b>
+                        alır. Ona geleneksel olarak <code class="kw">self</code> deriz.</p>
+                    <pre><code class="language-python" data-trim data-line-numbers="1-2|3|4">p1 = Pencere()
+p2 = Pencere()
+p1.tiklandi()   # self  ->  p1
+p2.tiklandi()   # self  ->  p2   (ayni metot, farkli nesne)</code></pre>
+                    <p class="code-note mt-4 fragment fade-in">Aynı sınıf, iki ayrı nesne, iki ayrı durum.
+                        <code>self</code> ikisini karıştırmadan tutar.</p>
+                </div>
+            </section>
+
+            <!-- 17. self CANLI KARŞILAŞTIRMA (self ile vs self'siz) -->
+            <section data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-2">
+                    <span class="chip"><i data-lucide="git-compare" style="width:14px;height:14px;"></i> self İle vs
+                        self'siz · Canlı</span>
+                    <span class="live-badge"><span class="live-dot"></span> İki butona da bas — farkı gör</span>
+                </div>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Aynı Buton, İki Sonuç —
+                    Tek Fark: <span style="color:#7dd3fc;">self</span></h2>
+                <div class="flex items-start justify-center gap-5" style="margin-top:2px;">
+                    <!-- SOL: self ile -->
+                    <div class="flex flex-col items-center gap-2" style="flex:1;max-width:430px;">
+                        <pre style="width:100%;margin:0;font-size:0.36em;"><code class="language-python" data-trim>def artir(self):
+    self.deger += 1        # nesnede saklanir
+    self.etiket.setText(
+        f"Değer: {self.deger}")</code></pre>
+                        <div class="qt-app">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">self ile</span></div>
+                            <div class="qt-body" style="padding:14px 28px 18px;gap:10px;">
+                                <div class="qt-deger" id="sw-val">Değer: 0</div>
+                                <button type="button" class="qt-btn" id="sw-inc">Artır (+1)</button>
+                            </div>
+                        </div>
+                        <div class="concept-card" style="border-color:rgba(34,197,94,0.4);width:100%;padding:12px 16px;">
+                            <p>✅ <b>Öznitelik</b> — nesnede yaşar, <b>birikir</b>. <span id="sw-note"
+                                    style="color:#7dd3fc;">(0 tık → 0)</span></p>
+                        </div>
+                    </div>
+                    <!-- SAĞ: self'siz -->
+                    <div class="flex flex-col items-center gap-2" style="flex:1;max-width:430px;">
+                        <pre style="width:100%;margin:0;font-size:0.36em;"><code class="language-python" data-trim>def artir(self):
+    deger = 0              # yeniden dogar
+    deger += 1
+    self.etiket.setText(
+        f"Değer: {deger}")</code></pre>
+                        <div class="qt-app">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">self'siz</span></div>
+                            <div class="qt-body" style="padding:14px 28px 18px;gap:10px;">
+                                <div class="qt-deger warn" id="swo-val">Değer: 0</div>
+                                <button type="button" class="qt-btn" id="swo-inc">Artır (+1)</button>
+                            </div>
+                        </div>
+                        <div class="concept-card" style="border-color:rgba(251,191,36,0.4);width:100%;padding:12px 16px;">
+                            <p>⚠️ <b>Yerel değişken</b> — metot bitince <b>ölür</b>. <span id="swo-note"
+                                    style="color:#fbbf24;">(0 tık → hep 1)</span></p>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-3">Tek fark <span class="kw">self</span>: öznitelik nesnede saklanır; yerel
+                    değişken metot bitince ölür (self'i büsbütün unutsan çoğu zaman <code>UnboundLocalError</code>).</p>
+            </section>
+
+            <!-- 18. ÖZNİTELİK & METOT & KAPSÜLLEME -->
+            <section>
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Öznitelik · Metot ·
+                    Kapsülleme</h2>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up">
+                        <h4>📦 Öznitelik</h4>
+                        <p>Nesnenin <b>durumu / verisi</b>.<br><code>self.sayac = 0</code></p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <h4>⚙️ Metot</h4>
+                        <p>Nesnenin <b>davranışı</b>.<br><code>def artir(self): ...</code></p>
+                    </div>
+                    <div class="concept-card fragment fade-up" style="border-color: rgba(96,125,255,0.35);">
+                        <h4>🔒 Kapsülleme</h4>
+                        <p>Durum + davranışı <b>tek nesnede</b> bir arada tutmak.</p>
+                    </div>
+                </div>
+                <p class="code-note mt-8 fragment fade-in">Şimdi hepsini tek bir çalışan uygulamada birleştirelim.</p>
+            </section>
+
+            <!-- 19. SAYAÇ — KUR (kod + GUI) -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="wrench" style="width:14px;height:14px;"></i> Örnek · 1/3</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Sayaç — Nesneyi Kur</h2>
+                <div class="flex items-start justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim
+                            data-line-numbers="5|7-9|3-4">class SayacPenceresi(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Sayaç")
+        self.sayac = 0                  # OZNITELIK (durum)
+
+        self.etiket = QLabel("Değer: 0")
+        btn = QPushButton("Artır (+1)")
+        btn.clicked.connect(self.artir) # olay -> metot
+
+        duzen = QVBoxLayout(self)
+        duzen.addWidget(self.etiket)
+        duzen.addWidget(btn)</code></pre>
+                    <div class="fragment fade-left flex flex-col items-center" style="padding-top:40px;">
+                        <span class="arrow-cta mb-2">Sonuç ↓</span>
+                        <div class="app-frame">
+                            <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                    style="background:#ffbd2e"></span><span class="adot"
+                                    style="background:#27c93f"></span><span class="atitle">Sayac</span></div>
+                            <img src="images/gui_sayac_0.png" alt="Sayaç 0">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 20. SAYAÇ — DAVRANIŞ -->
+            <section>
+                <span class="chip mb-3"><i data-lucide="code-2" style="width:14px;height:14px;"></i> Örnek · 2/3</span>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter text-white">Sayaç — Davranışı Ekle</h2>
+                <div class="flex items-center justify-center gap-8">
+                    <pre style="flex:1;"><code class="language-python" data-trim data-line-numbers="1|2|3-4">    def artir(self):              # METOT (davranis)
+        self.sayac += 1           # 1) durumu degistir
+        self.etiket.setText(
+            f"Değer: {self.sayac}")  # 2) arayuzu guncelle</code></pre>
+                    <div class="concept-card" style="max-width:320px;">
+                        <p><b>İki adım:</b><br>1️⃣ <code>self.sayac</code> özniteliğini değiştir (durum).<br>2️⃣
+                            <code>setText</code> ile <code>QLabel</code>'i tazele (arayüz).</p>
+                        <p class="mt-3" style="color:#7dd3fc;">→ Şimdi bunu <b>gerçekten çalıştıralım.</b></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. CANLI — SEN ÇALIŞTIR (etkilesimli sayac) -->
+            <section data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip"><i data-lucide="play" style="width:14px;height:14px;"></i> Örnek · 3/3 · Canlı</span>
+                    <span class="live-badge"><span class="live-dot"></span> Bu widget gerçek — tıkla!</span>
+                </div>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Butona Bas, Nesne Tepki
+                    Versin</h2>
+                <div class="flex items-center justify-center gap-10">
+                    <div class="run-panel">
+                        <div class="run-title"># Her tıkta artir() çalışır:</div>
+                        <code class="runline" id="lc-l1">self.sayac += 1</code>
+                        <code class="runline" id="lc-l2">self.etiket.setText(f"Değer: {self.sayac}")</code>
+                        <div class="run-badge">Tık sayısı: <b id="lc-clicks">0</b></div>
+                    </div>
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">Sayac.py — canlı</span></div>
+                        <div class="qt-body">
+                            <div class="qt-deger" id="lc-val">Değer: 0</div>
+                            <div class="flex gap-3">
+                                <button type="button" class="qt-btn" id="lc-inc">Artır (+1)</button>
+                                <button type="button" class="qt-btn reset" id="lc-reset">Sıfırla</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-6">Buradaki pencere gerçekten çalışıyor: tıkladığında <code>self.sayac</code>
+                    artar, soldaki satırlar sırayla işler, <code>QLabel</code> tazelenir. <b>Kod = davranış.</b></p>
+            </section>
+
+            <!-- 22. CANLI — İKİ BAĞIMSIZ NESNE -->
+            <section data-background-color="#020617">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="chip" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">
+                        <i data-lucide="copy" style="width:14px;height:14px;"></i> Nesnenin Kalbi</span>
+                    <span class="live-badge"><span class="live-dot"></span> İki nesne, iki ayrı durum</span>
+                </div>
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-white">Her Nesnenin Kendi
+                    <span style="color:#7dd3fc;">self</span>'i Vardır</h2>
+                <p class="code-note mb-6">Aynı sınıftan iki nesne ürettik. Birini artır → diğeri <b>değişmez</b>. Kanıtı
+                    sen tıkla:</p>
+                <pre style="max-width:560px;margin:0 auto 22px;"><code class="language-python" data-trim>a = SayacPenceresi()   # kendi self.sayac'i
+b = SayacPenceresi()   # AYRI self.sayac'i</code></pre>
+                <div class="flex items-center justify-center gap-8">
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">a</span></div>
+                        <div class="qt-body">
+                            <div class="qt-deger" id="dcA-val">Değer: 0</div>
+                            <button type="button" class="qt-btn" id="dcA-inc">Artır (+1)</button>
+                        </div>
+                    </div>
+                    <span style="font-size:2em;color:#475569;">⇹</span>
+                    <div class="qt-app">
+                        <div class="titlebar"><span class="adot" style="background:#ff5f56"></span><span class="adot"
+                                style="background:#ffbd2e"></span><span class="adot"
+                                style="background:#27c93f"></span><span class="atitle">b</span></div>
+                        <div class="qt-body">
+                            <div class="qt-deger" id="dcB-val">Değer: 0</div>
+                            <button type="button" class="qt-btn" id="dcB-inc">Artır (+1)</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">Bağımsızlar çünkü <code>a.sayac</code> ile <code>b.sayac</code>
+                    bellekte ayrı yerlerde. <b>İşte "nesne" budur.</b></p>
+            </section>
+
+            <!-- 23. MINI QUIZ · 1 -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 1/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Anladın mı? Tıkla, Gör</h2>
+
+                <div class="quiz fragment" data-ok="kaydet bir örnek/nesnedir; QPushButton ise sınıftır."
+                    data-no="Sınıf değil, nesne arıyoruz — nesne kalıptan üretilen somut örnektir.">
+                    <div class="quiz-q">1) Aşağıdakilerden hangisi bir <span style="color:#7dd3fc;">nesne</span>
+                        (object)?</div>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>class QPushButton</code> — Qt'nin buton
+                        sınıfı</button>
+                    <button type="button" class="quiz-opt" data-correct="1"><code>kaydet = QPushButton("Kaydet")</code></button>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>QWidget</code> — pencere sınıfı</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+
+                <div class="quiz fragment" data-ok="self.sayac nesnenin durumunu tutar → bir özniteliktir."
+                    data-no="Bu bir veri; davranış (metot) değil.">
+                    <div class="quiz-q">2) <code style="color:#93c5fd;">self.sayac</code> nedir?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">Bir <b>metot</b> (davranış)</button>
+                    <button type="button" class="quiz-opt" data-correct="1">Bir <b>öznitelik</b> (durum/veri)</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Bir <b>sınıf</b> (şablon)</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 24. MINI QUIZ · 2 -->
+            <section>
+                <span class="chip mb-3" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.4);color:#fde047;">
+                    <i data-lucide="zap" style="width:14px;height:14px;"></i> Mini Quiz · 2/2</span>
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-white">Bir Tur Daha</h2>
+
+                <div class="quiz fragment" data-ok="Doğru — miras alınan QWidget'ın kurucusunu çalıştırır."
+                    data-no="Hayır; super() üst sınıfın __init__'ini çağırmak içindir.">
+                    <div class="quiz-q">3) <code style="color:#93c5fd;">super().__init__()</code> neden çağrılır?</div>
+                    <button type="button" class="quiz-opt" data-correct="0">Pencereyi kapatmak için</button>
+                    <button type="button" class="quiz-opt" data-correct="1">Üst sınıf <code>QWidget</code>'ın kurucusunu
+                        çalıştırmak için</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Yeni bir nesne üretmek için</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+
+                <div class="quiz fragment" data-ok="Doğru — sinyal→slot: tıklama olayı artir() metodunu çağırır."
+                    data-no="Hayır; connect metodu hemen çalıştırmaz, olay olunca çağırmak için bağlar.">
+                    <div class="quiz-q">4) <code style="color:#93c5fd;">btn.clicked.connect(self.artir)</code> ne yapar?</div>
+                    <button type="button" class="quiz-opt" data-correct="0"><code>artir()</code>'ı hemen bir kez
+                        çalıştırır</button>
+                    <button type="button" class="quiz-opt" data-correct="1">Butona basılınca <code>artir()</code>
+                        çağrılsın diye bağlar (sinyal→slot)</button>
+                    <button type="button" class="quiz-opt" data-correct="0">Yeni bir buton nesnesi oluşturur</button>
+                    <div class="quiz-fb" role="status" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- 25. ÖZET -->
+            <section data-background-color="#020617">
+                <h2 class="text-3xl font-black mb-8 uppercase tracking-tighter text-white">Bu Hafta Ne Öğrendik?</h2>
+                <div class="grid grid-cols-2 gap-3 text-left" style="max-width:820px;margin:0 auto;">
+                    <div class="concept-card fragment fade-up"><p>✅ <b>Sınıf</b> = kalıp, <b>nesne</b> = örnek</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ <code>__init__</code> kurucu ve <code>self</code></p>
+                    </div>
+                    <div class="concept-card fragment fade-up"><p>✅ <b>Öznitelik</b> (durum) & <b>metot</b> (davranış)</p>
+                    </div>
+                    <div class="concept-card fragment fade-up"><p>✅ <b>Kapsülleme</b> — durum + davranış bir arada</p>
+                    </div>
+                    <div class="concept-card fragment fade-up"><p>✅ GUI'de her şey nesne (QWidget, QPushButton…)</p></div>
+                    <div class="concept-card fragment fade-up"><p>✅ İlk <b>sinyal → slot</b> (olay → metot)</p></div>
+                </div>
+            </section>
+
+            <!-- 26. DERS SONU UYGULAMA -->
+            <section>
+                <span class="chip mb-3"
+                    style="background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.35);color:#fda4af;"><i
+                        data-lucide="dumbbell" style="width:14px;height:14px;"></i> Ders Sonu Uygulama</span>
+                <h2 class="text-3xl font-black mb-3 uppercase tracking-tighter text-white">Sayaç'ı Sen Büyüt</h2>
+                <p class="code-note mb-6">Bu haftaki <code>SayacPenceresi</code> uygulamasını aç ve üç adımı ekle —
+                    küçük ama gerçek bir nesne yönelimli uygulama.</p>
+                <div class="grid grid-cols-3 gap-4 text-left">
+                    <div class="concept-card fragment fade-up"><h4>1 · Sıfırla</h4><p>Sayacı 0'a döndüren "Sıfırla"
+                            butonu ve <code>sifirla()</code> metodu ekle. <span style="color:#7dd3fc;">(21. slaytta çalışan hâlini gördün.)</span></p></div>
+                    <div class="concept-card fragment fade-up"><h4>2 · Azalt</h4><p>"Azalt (−1)" butonu ekle. Değer 0'ın
+                            altına düşmesin (<code>if</code>).</p></div>
+                    <div class="concept-card fragment fade-up"><h4>3 · İki Nesne</h4><p><code>SayacPenceresi()</code>'nden
+                            <b>iki</b> nesne oluştur, ikisini de göster. Sayaçlar bağımsız mı? <span style="color:#7dd3fc;">(22. slayt ipucu.)</span></p></div>
+                </div>
+                <p class="code-note mt-6 fragment fade-in">🎯 3. görev "nesne" kavramının kalbidir: her nesnenin kendi
+                    <code>self.sayac</code>'ı vardır.</p>
+            </section>
+
+            <!-- 27. SONRAKİ HAFTA -->
+            <section data-background-color="#020617">
+                <div class="p-16 border border-white/5 rounded-[4rem] bg-gradient-to-br from-blue-950/20 to-rose-950/20">
+                    <span class="week-number text-base">Sonraki Hafta</span>
+                    <h2 class="text-5xl mb-6 font-black text-white">Kalıtım I</h2>
+                    <p class="text-lg text-slate-400 font-light">Hazır <code>QPushButton</code>'dan kendi <b>özel
+                            butonumuzu</b> türetip özelleştireceğiz — kalıtımın temelleri.</p>
+                    <div class="mt-10"><a href="../index.html" class="nav-link">← Ders Ana Sayfası</a></div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // main.js -> initReveal() watermark (ilk slayt) + lucide yenileme mantigini da getirir
+        initReveal({
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            margin: 0.06,
+            slideNumber: 'c/t',
+            plugins: (typeof RevealHighlight !== 'undefined' ? [RevealHighlight] : [])
+        });
+    </script>
+    <script>
+        // ===== CANLI ETKİLEŞİMLER (ayrı script: init/CDN hatası etkileşimi düşürmesin) =====
+        (function () {
+            const $ = function (id) { return document.getElementById(id); };
+            const stop = function (e) { e.stopPropagation(); };
+
+            function bump(el) {
+                el.classList.remove('bump');
+                void el.offsetWidth; // reflow -> animasyonu yeniden tetikle
+                el.classList.add('bump');
+            }
+
+            // ---- 1) Canlı tek sayaç (slayt 21) ----
+            (function () {
+                let sayac = 0, tik = 0;
+                const val = $('lc-val'), inc = $('lc-inc'), reset = $('lc-reset'),
+                    clicks = $('lc-clicks'), l1 = $('lc-l1'), l2 = $('lc-l2');
+                if (!inc) return;
+
+                function flashLines() {
+                    [l1, l2].forEach(function (el, i) {
+                        setTimeout(function () {
+                            el.classList.add('active');
+                            setTimeout(function () { el.classList.remove('active'); }, 430);
+                        }, i * 170);
+                    });
+                }
+                inc.addEventListener('click', function (e) {
+                    stop(e);
+                    sayac += 1; tik += 1;
+                    val.textContent = 'Değer: ' + sayac;
+                    clicks.textContent = tik;
+                    flashLines();
+                    bump(val);
+                });
+                reset.addEventListener('click', function (e) {
+                    stop(e);
+                    sayac = 0;
+                    val.textContent = 'Değer: 0';
+                    bump(val);
+                });
+            })();
+
+            // ---- 2) İki bağımsız nesne (slayt 22) ----
+            [['dcA-val', 'dcA-inc'], ['dcB-val', 'dcB-inc']].forEach(function (ids) {
+                let sayac = 0;
+                const val = $(ids[0]), inc = $(ids[1]);
+                if (!inc) return;
+                inc.addEventListener('click', function (e) {
+                    stop(e);
+                    sayac += 1;
+                    val.textContent = 'Değer: ' + sayac;
+                    bump(val);
+                });
+            });
+
+            // ---- 2b) self ile vs self'siz canlı karşılaştırma (slayt 17) ----
+            (function () {
+                const swVal = $('sw-val'), swInc = $('sw-inc'), swNote = $('sw-note');
+                if (swInc) {
+                    let deger = 0, tik = 0;
+                    swInc.addEventListener('click', function (e) {
+                        stop(e);
+                        deger += 1; tik += 1;               // self.deger -> nesnede saklanir, birikir
+                        swVal.textContent = 'Değer: ' + deger;
+                        swNote.textContent = tik + ' tık → Değer ' + deger;
+                        bump(swVal);
+                    });
+                }
+                const swoVal = $('swo-val'), swoInc = $('swo-inc'), swoNote = $('swo-note');
+                if (swoInc) {
+                    let tik = 0;
+                    swoInc.addEventListener('click', function (e) {
+                        stop(e);
+                        tik += 1;                            // yerel deger: her cagride 0'dan dogar -> hep 1
+                        swoVal.textContent = 'Değer: 0';     // "yeniden dogdu"
+                        setTimeout(function () {
+                            swoVal.textContent = 'Değer: 1';
+                            bump(swoVal);
+                        }, 130);
+                        swoNote.textContent = tik + ' tık → hâlâ 1';
+                    });
+                }
+            })();
+
+            // ---- 3) Mini quiz (slayt 23) ----
+            document.querySelectorAll('.quiz').forEach(function (q) {
+                const fb = q.querySelector('.quiz-fb');
+                q.querySelectorAll('.quiz-opt').forEach(function (opt) {
+                    opt.addEventListener('click', function (e) {
+                        stop(e);
+                        if (q.classList.contains('answered')) return;
+                        q.classList.add('answered');
+                        q.querySelectorAll('.quiz-opt').forEach(function (o) {
+                            if (o.dataset.correct === '1') o.classList.add('correct');
+                        });
+                        if (opt.dataset.correct === '1') {
+                            fb.textContent = '✅ ' + (q.dataset.ok || 'Doğru!');
+                            fb.style.color = '#86efac';
+                        } else {
+                            opt.classList.add('wrong');
+                            fb.textContent = '❌ ' + (q.dataset.no || 'Doğru cevap yeşil işaretlendi.');
+                            fb.style.color = '#fca5a5';
+                        }
+                    });
+                });
+            });
+
+            // ---- 4) Tıklanabilir kod hotspot (slayt 15) ----
+            const HS = {
+                widget: ['class Pencere(QWidget)',
+                    'Hazır QWidget sınıfından türetiyoruz — tüm pencere yeteneklerini (boyut, kapatma, olaylar…) hazır devralırız. 2. haftanın konusu: kalıtım.'],
+                init: ['def __init__(self)',
+                    'Kurucu metot: nesne "doğduğu" an otomatik çalışır. Pencereyi burada kurar, özniteliklerini burada tanımlarız.'],
+                super: ['super().__init__()',
+                    'Miras alınan QWidget’ın kurucusunu çağırır; pencere altyapısını Qt kurar. Bunu unutmak tipik bir hatadır.'],
+                self: ['self',
+                    'O metodun üzerinde çalıştığı nesnenin kendisi. Durumuna (öznitelik) ve davranışına (metot) hep self ile erişiriz — her nesne kendi self’ini taşır.']
+            };
+            document.querySelectorAll('.hotspot[data-k]').forEach(function (h) {
+                function activate(e) {
+                    stop(e);
+                    document.querySelectorAll('.hotspot.on').forEach(function (x) { x.classList.remove('on'); });
+                    const k = h.dataset.k;
+                    document.querySelectorAll('.hotspot[data-k="' + k + '"]').forEach(function (x) { x.classList.add('on'); });
+                    const d = HS[k];
+                    if (d) { $('hs-title').textContent = d[0]; $('hs-body').textContent = d[1]; }
+                }
+                h.addEventListener('click', activate);
+                h.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(e); }
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>

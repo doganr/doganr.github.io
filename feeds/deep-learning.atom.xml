@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Doğan R. - Deep Learning</title><link href="https://doganr.com/" rel="alternate"/><link href="https://doganr.com/feeds/deep-learning.atom.xml" rel="self"/><id>https://doganr.com/</id><updated>2025-03-01T09:00:00+03:00</updated><subtitle>Asst. Prof. • Trabzon University</subtitle><entry><title>Vision Transformers vs. CNNs: Which Should You Use for Medical Imaging?</title><link href="https://doganr.com/vision-transformers-vs-cnns-medical-imaging.html" rel="alternate"/><published>2025-03-01T09:00:00+03:00</published><updated>2025-03-01T09:00:00+03:00</updated><author><name>Ramazan Ozgur Dogan</name></author><id>tag:doganr.com,2025-03-01:/vision-transformers-vs-cnns-medical-imaging.html</id><summary type="html">&lt;p&gt;CNNs dominated medical imaging for a decade, but Vision Transformers are rapidly changing the playing field. Here's a practical comparison based on my research using Swin Transformers for 3D shape estimation.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Vision Transformers vs. CNNs: Which Should You Use?&lt;/h1&gt;
+&lt;p&gt;The computer vision landscape has been transformed (pun intended) by &lt;strong&gt;Vision Transformers (ViTs)&lt;/strong&gt;. Since the 2020
+ViT paper and the 2021 Swin Transformer, the community has debated: should we abandon CNNs?&lt;/p&gt;
+&lt;p&gt;For medical imaging, the answer is nuanced. Let me share what I've learned from using &lt;strong&gt;Swin Transformers&lt;/strong&gt; in my
+recent work on Shape-from-Focus (SfF) — a technique for reconstructing 3D surfaces from multi-focus microscopy images,
+published in &lt;em&gt;Optics and Lasers in Engineering&lt;/em&gt; (2025).&lt;/p&gt;
+&lt;h2&gt;A Quick Recap: What's the Difference?&lt;/h2&gt;
+&lt;h3&gt;CNNs&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Process images through local &lt;strong&gt;convolution kernels&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Capture &lt;strong&gt;local features&lt;/strong&gt; efficiently&lt;/li&gt;
+&lt;li&gt;Strong &lt;strong&gt;inductive bias&lt;/strong&gt; (translation equivariance)&lt;/li&gt;
+&lt;li&gt;Excellent for pixel-level tasks with limited data&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Vision Transformers&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Use &lt;strong&gt;self-attention&lt;/strong&gt; to model &lt;strong&gt;global relationships&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;No local bias — every patch can attend to every other patch&lt;/li&gt;
+&lt;li&gt;Require &lt;strong&gt;more data&lt;/strong&gt; to train from scratch&lt;/li&gt;
+&lt;li&gt;Naturally encode &lt;strong&gt;long-range dependencies&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Why Swin Transformers for Shape-from-Focus?&lt;/h2&gt;
+&lt;p&gt;Shape-from-Focus requires estimating &lt;em&gt;depth&lt;/em&gt; from a &lt;strong&gt;stack of images&lt;/strong&gt; taken at different focus distances. The
+key insight is that sharp regions in each image correspond to the in-focus depth layer.&lt;/p&gt;
+&lt;p&gt;Traditional SfF methods compute local &lt;strong&gt;focus measures&lt;/strong&gt; (variance, Laplacian energy) per pixel. These are local
+by nature — they miss context from neighboring regions.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Swin Transformer&lt;/strong&gt; solves this with its &lt;strong&gt;shifted window attention&lt;/strong&gt;:
+- Divides the image into non-overlapping windows
+- Computes self-attention &lt;strong&gt;within&lt;/strong&gt; each window (efficient)
+- &lt;strong&gt;Shifts&lt;/strong&gt; windows between layers to capture cross-window context&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Simplified Swin Transformer block&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;SwinBlock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Module&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;num_heads&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;window_size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shift&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="nb"&gt;super&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;attn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;WindowAttention&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;num_heads&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;window_size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shift&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;shift&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;norm1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;LayerNorm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mlp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;MLP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;norm2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;LayerNorm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="c1"&gt;# Cyclic shift for cross-window information&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shift&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;torch&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;roll&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shifts&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shift&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shift&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;dims&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;attn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;norm1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mlp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;norm2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Results: Swin vs. CNN on Shape-from-Focus&lt;/h2&gt;
+&lt;p&gt;We compared our Swin-based approach against classical CNN baselines on microscopy image stacks:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Method&lt;/th&gt;
+&lt;th&gt;RMSE (μm) ↓&lt;/th&gt;
+&lt;th&gt;SSIM ↑&lt;/th&gt;
+&lt;th&gt;PSNR (dB) ↑&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Laplacian (classic)&lt;/td&gt;
+&lt;td&gt;12.4&lt;/td&gt;
+&lt;td&gt;0.71&lt;/td&gt;
+&lt;td&gt;28.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;CNN-based SfF&lt;/td&gt;
+&lt;td&gt;8.1&lt;/td&gt;
+&lt;td&gt;0.84&lt;/td&gt;
+&lt;td&gt;32.6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Swin-SfF (ours)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;5.3&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;0.91&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;36.2&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The Swin Transformer achieved &lt;strong&gt;~35% lower RMSE&lt;/strong&gt; compared to CNN baselines — primarily because global context
+helps disambiguate textureless regions where local focus measures fail.&lt;/p&gt;
+&lt;h2&gt;When to Choose What&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Scenario&lt;/th&gt;
+&lt;th&gt;Best Choice&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Small dataset (&amp;lt;1000 images)&lt;/td&gt;
+&lt;td&gt;CNN&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Large dataset (&amp;gt;10k images)&lt;/td&gt;
+&lt;td&gt;ViT / Swin&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Pixel-level segmentation&lt;/td&gt;
+&lt;td&gt;CNN (e.g., U-Net) or hybrid&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Classification, depth, global reasoning&lt;/td&gt;
+&lt;td&gt;Swin / ViT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Edge deployment / fast inference&lt;/td&gt;
+&lt;td&gt;Lightweight CNN (MobileNet)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3D volumetric data&lt;/td&gt;
+&lt;td&gt;3D Swin or CNN&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;My Recommendation&lt;/h2&gt;
+&lt;p&gt;For most &lt;strong&gt;medical imaging&lt;/strong&gt; tasks in 2025:
+1. &lt;strong&gt;Start with a CNN baseline&lt;/strong&gt; (U-Net, EfficientNet) — fast to train, well-understood
+2. &lt;strong&gt;Try Swin Transformer&lt;/strong&gt; if you have enough data and need global context
+3. &lt;strong&gt;Consider hybrid architectures&lt;/strong&gt; — CNN encoder + Transformer decoder often beats pure approaches&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;📄 &lt;strong&gt;Paper:&lt;/strong&gt; &lt;a href="https://doi.org/10.1016/j.optlaseng.2025.109108"&gt;DOI: 10.1016/j.optlaseng.2025.109108&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;📂 &lt;strong&gt;Code:&lt;/strong&gt; Available on GitHub (see Repositories page)&lt;/p&gt;</content><category term="Deep Learning"/><category term="vision transformer"/><category term="CNN"/><category term="deep learning"/><category term="medical imaging"/><category term="swin transformer"/></entry><entry><title>Deep Learning for Medical Image Segmentation: A Practical Introduction</title><link href="https://doganr.com/deep-learning-medical-image-segmentation.html" rel="alternate"/><published>2025-01-15T10:00:00+03:00</published><updated>2025-01-15T10:00:00+03:00</updated><author><name>Ramazan Ozgur Dogan</name></author><id>tag:doganr.com,2025-01-15:/deep-learning-medical-image-segmentation.html</id><summary type="html">&lt;p&gt;An introduction to deep learning approaches for medical image segmentation, focusing on real-world challenges and solutions from my research experience with pancreas CT segmentation.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Deep Learning for Medical Image Segmentation&lt;/h1&gt;
+&lt;p&gt;Medical image segmentation is one of the most impactful applications of deep learning in healthcare. Accurate
+segmentation of anatomical structures — like the pancreas in CT scans — enables clinicians to detect tumors earlier,
+plan surgeries more precisely, and monitor treatment progress automatically.&lt;/p&gt;
+&lt;p&gt;In this post I'll share key insights from my research on &lt;strong&gt;automatic pancreas segmentation using a two-phase Mask R-CNN
+and 3D U-Net approach&lt;/strong&gt;, published in &lt;em&gt;Computer Methods and Programs in Biomedicine&lt;/em&gt; (2021).&lt;/p&gt;
+&lt;h2&gt;Why Is Pancreas Segmentation So Hard?&lt;/h2&gt;
+&lt;p&gt;The pancreas is notoriously difficult to segment automatically:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Small and irregular shape&lt;/strong&gt; — unlike the liver or heart, the pancreas has no consistent geometry&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Low contrast&lt;/strong&gt; — it blends with surrounding fat and other soft tissue in CT&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;High inter-patient variability&lt;/strong&gt; — size and location vary dramatically between individuals&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These challenges make classical algorithms (thresholding, region growing) essentially useless. Deep learning is
+the only realistic path forward.&lt;/p&gt;
+&lt;h2&gt;The Two-Phase Approach&lt;/h2&gt;
+&lt;p&gt;Our solution breaks the problem into two stages:&lt;/p&gt;
+&lt;h3&gt;Phase 1 — Coarse Localization (Mask R-CNN)&lt;/h3&gt;
+&lt;p&gt;First, we use &lt;strong&gt;Mask R-CNN&lt;/strong&gt; to roughly locate the pancreas region in each CT slice. This dramatically reduces the
+search space and eliminates irrelevant background anatomy.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Conceptual pseudocode&lt;/span&gt;
+&lt;span class="n"&gt;roi&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mask_rcnn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;detect_pancreas_region&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ct_slice&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;cropped_volume&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;extract_roi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;full_ct_volume&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;roi&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;margin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Phase 2 — Fine Segmentation (3D U-Net)&lt;/h3&gt;
+&lt;p&gt;The cropped region is then fed into a &lt;strong&gt;3D U-Net&lt;/strong&gt;, which operates on volumetric patches and captures 3D spatial
+context — critical for a structure as thin and irregular as the pancreas.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# 3D U-Net processes the ROI volume&lt;/span&gt;
+&lt;span class="n"&gt;segmentation_mask&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;unet_3d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cropped_volume&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;final_mask&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;postprocess&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;segmentation_mask&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Key Results&lt;/h2&gt;
+&lt;p&gt;Our approach achieved a &lt;strong&gt;Dice Similarity Coefficient (DSC) of ~85%&lt;/strong&gt; on the NIH Pancreas-CT dataset — competitive
+with state-of-the-art methods at the time, with significantly reduced false positives compared to single-stage approaches.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Method&lt;/th&gt;
+&lt;th&gt;DSC (%)&lt;/th&gt;
+&lt;th&gt;HD (mm)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Single-stage U-Net&lt;/td&gt;
+&lt;td&gt;78.3&lt;/td&gt;
+&lt;td&gt;14.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Two-phase (ours)&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;85.1&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;9.8&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nnunet (reference)&lt;/td&gt;
+&lt;td&gt;86.4&lt;/td&gt;
+&lt;td&gt;9.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;Lessons Learned&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Coarse-to-fine always helps&lt;/strong&gt; for small structures — don't try to segment directly from full volume&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;3D context matters&lt;/strong&gt; — 2D slice-by-slice approaches miss inter-slice information&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Data augmentation is essential&lt;/strong&gt; — we applied random rotations, elastic deformations, and intensity shifts&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Post-processing removes noise&lt;/strong&gt; — connected component analysis and morphological operations clean up predictions&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;What's Next?&lt;/h2&gt;
+&lt;p&gt;Current research directions include:
+- &lt;strong&gt;Foundation models&lt;/strong&gt; (SAM, MedSAM) for few-shot medical segmentation
+- &lt;strong&gt;Multimodal learning&lt;/strong&gt; — combining CT, MRI, and clinical notes
+- &lt;strong&gt;Interpretable AI&lt;/strong&gt; — helping clinicians understand model decisions&lt;/p&gt;
+&lt;p&gt;I'm actively working on multimodal medical AI as part of my postdoctoral research at &lt;strong&gt;The Ohio State University&lt;/strong&gt;,
+supported by a &lt;strong&gt;TÜBİTAK 2219 fellowship&lt;/strong&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;📄 &lt;strong&gt;Full paper:&lt;/strong&gt; &lt;a href="https://doi.org/10.1016/j.cmpb.2021.106141"&gt;DOI: 10.1016/j.cmpb.2021.106141&lt;/a&gt;&lt;/p&gt;</content><category term="Deep Learning"/><category term="deep learning"/><category term="medical imaging"/><category term="segmentation"/><category term="CNN"/><category term="U-Net"/></entry></feed>

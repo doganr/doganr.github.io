@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Ramazan Ozgur Dogan" />
+  <meta name="description" content="Academic blog of Asst. Prof. Ramazan Özgür Doğan — AI researcher at Trabzon University. Deep learning, medical imaging, and beyond." />
+
+  <link rel="icon" type="image/x-icon" href="https://doganr.com/favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+  <!-- Flag Icons (language switcher) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+
+  <!-- Highlight.js for code -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+  <!-- Custom Theme CSS -->
+  <link rel="stylesheet" type="text/css" href="https://doganr.com/theme/css/style.css">
+
+
+  <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+
+  <title>Doğan R. – Archives</title>
+
+</head>
+
+<body>
+
+  <!-- Animated background particles -->
+  <div class="bg-particles" id="particles"></div>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav" id="mainNavbar">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand brand-logo" href="https://doganr.com/">
+      <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="brand-img me-2">
+      <span class="brand-text">
+        <span class="brand-name">Doğan R.</span>
+        <small class="brand-subtitle d-none d-md-inline">Asst. Prof. • Trabzon University</small>
+      </span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/">
+            <i class="fa-solid fa-house me-1"></i>Home
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/about.html">
+            About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/publications.html">
+            Publications
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-pill" href="https://doganr.com/pages/teaching.html">
+            Teaching
+          </a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-pill" href="#" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Social links menu">
+            <i class="fa-solid fa-share-nodes"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+            <li>
+              <a class="dropdown-item" href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-github"></i>Github
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-linkedin"></i>Linkedin
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-brands fa-google-scholar"></i>Google scholar
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me">
+                <i class="fa-solid fa-envelope"></i>E-posta
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Language switcher -->
+        <li class="nav-item">
+          <a class="btn btn-sm lang-switch-btn" href="https://doganr.com/tr/" title="Türkçe'ye geç" aria-label="Türkçe'ye geç" lang="tr">
+            <span class="fi fi-tr"></span>
+          </a>
+        </li>
+
+        <!-- Theme toggle -->
+        <li class="nav-item">
+          <button class="btn btn-sm theme-toggle-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle light/dark theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Main content wrapper -->
+  <div class="page-wrapper">
+<div class="subpage-wrapper">
+  <div class="subpage-hero">
+    <div class="container text-center">
+      <h1 class="subpage-title" data-aos="fade-up">
+        <i class="fa-solid fa-archive me-3"></i>Archives
+      </h1>
+      <p class="subpage-subtitle" data-aos="fade-up" data-aos-delay="100">All articles, chronologically</p>
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <div class="col-lg-8 mx-auto">
+
+
+
+          <div class="archive-year-group mb-4" data-aos="fade-up">
+            <div class="archive-year-badge mb-3">
+              <span class="year-number">2026</span>
+            </div>
+            <div class="archive-list glass-card p-0 rounded-3 overflow-hidden">
+
+        <a href="https://doganr.com/ypz108.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Tue, 27 Jan 2026</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">IT Ethics</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/teaching.html" class="tag-badge tag-small" onclick="event.stopPropagation()">Teaching</a>
+          </span>
+        </a>
+
+
+
+        <a href="https://doganr.com/ypz209.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Tue, 27 Jan 2026</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">Advanced Programming</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/teaching.html" class="tag-badge tag-small" onclick="event.stopPropagation()">Teaching</a>
+          </span>
+        </a>
+
+
+
+        <a href="https://doganr.com/ypz312.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Tue, 27 Jan 2026</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">Artificial Neural Networks</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/teaching.html" class="tag-badge tag-small" onclick="event.stopPropagation()">Teaching</a>
+          </span>
+        </a>
+
+
+          </div></div><!-- close prev year -->
+          <div class="archive-year-group mb-4" data-aos="fade-up">
+            <div class="archive-year-badge mb-3">
+              <span class="year-number">2025</span>
+            </div>
+            <div class="archive-list glass-card p-0 rounded-3 overflow-hidden">
+
+        <a href="https://doganr.com/tubitak-2219-ohio-state-experience.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Sun, 01 Jun 2025</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">From Ohio State to Trabzon: My TÜBİTAK 2219 Experience</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/academic-life.html" class="tag-badge tag-small" onclick="event.stopPropagation()">Academic Life</a>
+          </span>
+        </a>
+
+
+
+        <a href="https://doganr.com/vision-transformers-vs-cnns-medical-imaging.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Sat, 01 Mar 2025</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">Vision Transformers vs. CNNs: Which Should You Use for Medical Imaging?</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/deep-learning.html" class="tag-badge tag-small" onclick="event.stopPropagation()">Deep Learning</a>
+          </span>
+        </a>
+
+
+
+        <a href="https://doganr.com/deep-learning-medical-image-segmentation.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Wed, 15 Jan 2025</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">Deep Learning for Medical Image Segmentation: A Practical Introduction</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/deep-learning.html" class="tag-badge tag-small" onclick="event.stopPropagation()">Deep Learning</a>
+          </span>
+        </a>
+
+
+          </div></div><!-- close prev year -->
+          <div class="archive-year-group mb-4" data-aos="fade-up">
+            <div class="archive-year-badge mb-3">
+              <span class="year-number">2024</span>
+            </div>
+            <div class="archive-list glass-card p-0 rounded-3 overflow-hidden">
+
+        <a href="https://doganr.com/ecg-signal-processing-qrs-detection.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Fri, 20 Sep 2024</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">ECG Signal Processing: From QRS Detection to Deep Learning</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/signal-processing.html" class="tag-badge tag-small" onclick="event.stopPropagation()">Signal Processing</a>
+          </span>
+        </a>
+
+
+
+        <a href="https://doganr.com/drug-drug-interaction-prediction-deep-learning.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Mon, 10 Jun 2024</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">Drug-Drug Interaction Prediction with Deep Learning</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/ai-in-healthcare.html" class="tag-badge tag-small" onclick="event.stopPropagation()">AI in Healthcare</a>
+          </span>
+        </a>
+
+
+
+        <a href="https://doganr.com/python-ai-research-roadmap.html" class="archive-item d-flex align-items-center gap-3 p-3 text-decoration-none border-bottom border-subtle">
+          <span class="archive-date">Tue, 05 Mar 2024</span>
+          <span class="archive-separator d-none d-sm-inline">—</span>
+          <span class="archive-title">Getting Started with Python for AI Research: A Practical Roadmap</span>
+          <span class="archive-category ms-auto">
+            <a href="https://doganr.com/category/teaching.html" class="tag-badge tag-small" onclick="event.stopPropagation()">Teaching</a>
+          </span>
+        </a>
+
+      </div></div><!-- close last year -->
+
+    </div>
+  </div>
+</div>
+  </div>
+
+  <!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-glow"></div>
+  <div class="container">
+    <div class="row gy-4 align-items-center">
+
+      <!-- Brand -->
+      <div class="col-md-4 text-center text-md-start">
+        <a href="https://doganr.com/" class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none">
+          <img src="https://doganr.com/images/prof_pic.jpg" alt="Doğan R." class="footer-logo" loading="lazy" width="28" height="28">
+          <span class="footer-brand-name">Doğan R.</span>
+        </a>
+        <p class="footer-tagline mt-2 mb-0">Asst. Prof. • Trabzon University</p>
+      </div>
+
+      <!-- Social Links -->
+      <div class="col-md-4 text-center">
+        <div class="footer-social d-flex gap-3 justify-content-center">
+          <a href="https://github.com/doganr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Github" aria-label="Github">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ramazanozgurdogan/" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Linkedin" aria-label="Linkedin">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://scholar.google.com/citations?user=F2NkKNAAAAAJ" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="Google scholar" aria-label="Google scholar">
+            <i class="fa-brands fa-google-scholar"></i>
+          </a>
+          <a href="mailto:dogan@trabzon.edu.tr" target="_blank" rel="noopener noreferrer me" class="footer-social-btn"
+            title="E-posta" aria-label="E-posta">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="col-md-4 text-center text-md-end">
+        <p class="footer-copy mb-0">
+          &copy; 2026 <strong>Ramazan Ozgur Dogan</strong>
+        </p>
+        <p class="footer-powered mt-1 mb-0">
+          Powered by <a href="https://getpelican.com/" target="_blank" class="footer-link">Pelican</a>
+          &amp; <a href="https://getbootstrap.com/" target="_blank" class="footer-link">Bootstrap 5</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom mt-4 pt-3 text-center">
+      <p class="footer-bottom-text mb-0">
+        Built with <i class="fa-solid fa-code" style="color: var(--accent-2);"></i> and a lot of ☕.
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Highlight.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- Custom JS -->
+  <script src="https://doganr.com/theme/js/theme.js"></script>
+
+</body>
+
+</html>
